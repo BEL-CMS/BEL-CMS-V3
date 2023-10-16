@@ -9,12 +9,14 @@
  * @author as Stive - stive@determe.be
 */
 
+namespace BELCMS\PDO;
+
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class BDD
+final class BDD
 {
 	#########################################
 	# Variable declaration
@@ -200,7 +202,7 @@ class BDD
 		try {
 			$this->cnx->execute($data);
 			self::rowCount();
-			$GLOBALS['REQUEST_SQL']++;
+			$_SESSION['NB_REQUEST_SQL']++;
 			$this->lastId = self::lastId();
 			$return = true;
 		} catch (Exception $e) {
@@ -421,7 +423,7 @@ class BDD
 	#########################################
 	public function __destruct ()
 	{
-		if (SHOW_ALL_REQUEST_SQL === true) {
+		if (constant('SHOW_ALL_REQUEST_SQL') === true) {
 			debug($this->cnx);
 		}
 		unset($this->cnx);

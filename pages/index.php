@@ -14,16 +14,13 @@ if (!defined('CHECK_INDEX')):
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-if (defined('DB_PREFIX')) { $DB_PREFIX = constant('DB_PREFIX'); } else { $DB_PREFIX = ''; }
-
-$tables = array(
-	#########################################
-	# Tables
-	#########################################
-	'TABLE_CONFIG' => $DB_PREFIX.'config',
-	'TABLE_USERS'  => $DB_PREFIX.'users',
-);
-foreach ($tables as $name => $value) {
-	define($name, $value); unset($tables);
+#########################################
+# Demarre une $_SESSION
+#########################################
+class Pages
+{
+	private function models ()
+	{
+		
+	}
 }
-?>

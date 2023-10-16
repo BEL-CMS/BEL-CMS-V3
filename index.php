@@ -14,6 +14,7 @@
 if(!isset($_SESSION)) {
 	session_start();
 }
+$_SESSION['NB_REQUEST_SQL'] = 0;
 #########################################
 # Définit comme l'index
 #########################################
@@ -31,4 +32,8 @@ require_once ROOT.DS.'requires'.DS.'requires.all.php';
 # Initialise le C.M.S
 #########################################
 $belcms = new BelCMS;
-debug($belcms);
+$belcms->typeMime;
+$belcms->render();
+header('Content-Type: <?=$belcms->typeMime;?>');
+echo $belcms->render;
+die();
