@@ -9,7 +9,7 @@
  * @author as Stive - stive@determe.be
 */
 
-namespace BELCMS\TPL;
+namespace BelCMS\Templates;
 
 class Templates
 {

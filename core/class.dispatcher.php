@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
 */
 
+namespace BelCMS\Core;
+use BelCMS\Requires\Common as Common;
+
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -29,37 +32,54 @@ final class Dispatcher
 		}
     }
 	#########################################
+	# return le lien complet en tableau
+	#########################################
+	public static function link ()
+	{
+		$return     = null;
+		$dispatcher = new Dispatcher;
+		$return     = $dispatcher->link;
+		return $return;
+	}
+	#########################################
 	# return le nom de la page.
 	#########################################
-	public static function page ()
+	public static function page ($page = null)
 	{
 		$return = null;
-		$dispatcher = new Dispatcher ();
+		$dispatcher = new Dispatcher;
 		if (count($dispatcher->link) != 0 AND isset($dispatcher->link[0])) {
 			$return = Common::VarSecure($dispatcher->link[0], null) === false ? '' : $dispatcher->link[0];
+		} else {
+			$return = Common::VarSecure($page);
 		}
 		return $return;
 	}
 	#########################################
 	# return le nom de la vu.
+	# https://bel-cms.dev/news/=>view<=/nom/id
 	#########################################
 	public static function view () : string
 	{	
-		$return = null;
-		$dispatcher = new Dispatcher ();
-		if (isset($dispatcher->link[1]) AND !empty($dispatcher->link[1])) {
-			$return = Common::VarSecure($dispatcher->link[1], null) === false ? '' : $dispatcher->link[1];
+		$return = 'index';
+		$dispatcher = new Dispatcher;
+		if (count($dispatcher->link) != 0 AND isset($dispatcher->link[1]) AND !empty($dispatcher->link[1])) {
+			if (Common::VarSecure($dispatcher->link[1], null) === false) {
+				$return = 'index';
+			} else {
+				$return = Common::VarSecure($dispatcher->link[1], null);
+			}
 		}
 		return $return;
 	}
 	#########################################
 	# return le nom :
-	# ex: https://bel-cms.dev/news/le_nom/id
+	# https://bel-cms.dev/news/view/=>nom<=/id
 	#########################################
 	public static function name ($link) : string
 	{
 		$return = null;
-		$dispatcher = new Dispatcher ();
+		$dispatcher = new Dispatcher;
 		if (isset($dispatcher->link[2]) AND !empty($dispatcher->link[2])) {
 			$return = Secure::isString($dispatcher->link[2]);
 		}
@@ -68,11 +88,12 @@ final class Dispatcher
 	#########################################
 	# return l'ID ex: numéro de la :
 	# page, numéro de l'article, du downloads...
+	# https://bel-cms.dev/news/view/nom/=>id<=
 	#########################################
 	public static function id () : int
 	{
 		$return = null;
-		$dispatcher = new Dispatcher ();
+		$dispatcher = new Dispatcher;
 		if (isset($dispatcher->link[3]) AND !empty($dispatcher->link[3])) {
 			$return = Secure::isInt($dispatcher->link[3]);
 		}
@@ -157,5 +178,18 @@ final class Dispatcher
 		}
 		return $return;
 	}
-
+	#########################################
+	# return le numero de la page 
+	# ex: https://bel-cms.dev/news/le_nom/id?page=1
+	#########################################
+	public static function RequestPages () : int
+	{
+		$return = 0;
+		if (isset($_GET['page']) AND is_numeric($_GET['page']) ) {
+			$return = intval($_GET['page']);
+		} else {
+			$return = 1;
+		}
+		return $return;
+	}
 }

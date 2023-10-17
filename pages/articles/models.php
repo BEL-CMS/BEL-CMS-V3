@@ -20,7 +20,7 @@ final class ModelsArticles
 	# TABLE_PAGES_ARTICLES_CAT
 	public function getArticles ($id = false)
 	{
-		$config = \BELCMS\CORE\BelCMSConfig::GetConfigPage('Articles');
+		$config = BelCMSConfig::GetConfigPage('Articles');
 		if (isset($config->config['MAX_ARTICLES'])) {
 			$nbpp = (int) $config->config['MAX_ARTICLES'];
 		} else {
@@ -29,11 +29,11 @@ final class ModelsArticles
 
 		$page = (\BELCMS\CORE\Dispatcher::RequestPages() * $nbpp) - $nbpp;
 
-		$sql = New \BELCMS\CORE\BDD();
+		$sql = New BDD();
 		$sql->table('TABLE_PAGES_ARTICLES');
 
 		if ($id) {
-			$request = \BELCMS\CORE\Common::secureRequest($id);
+			$request = Common::secureRequest($id);
 			if (is_numeric($id)) {
 				$sql->where(array(
 					'name'  => 'id',
@@ -55,8 +55,8 @@ final class ModelsArticles
 					$sql->data->tags = explode(',', $sql->data->tags);
 				}
 				$author = $sql->data->author;
-				$sql->data->username = \BELCMS\CORE\Users::hashkeyToUsernameAvatar($author);
-				$sql->data->avatar   = \BELCMS\CORE\Users::hashkeyToUsernameAvatar($author, 'avatar');
+				$sql->data->username = Users::hashkeyToUsernameAvatar($author);
+				$sql->data->avatar   = Users::hashkeyToUsernameAvatar($author, 'avatar');
 			} else {
 				$sql->data = null;
 			}
@@ -72,8 +72,8 @@ final class ModelsArticles
 					$sql->data[$k]->tags = explode(',', $sql->data[$k]->tags);
 				}
 				$author = $sql->data[$k]->author;
-				$sql->data[$k]->username = \BELCMS\CORE\Users::hashkeyToUsernameAvatar($author);
-				$sql->data[$k]->avatar   = \BELCMS\CORE\Users::hashkeyToUsernameAvatar($author, 'avatar');
+				$sql->data[$k]->username = Users::hashkeyToUsernameAvatar($author);
+				$sql->data[$k]->avatar   = Users::hashkeyToUsernameAvatar($author, 'avatar');
 			}
 		}
 		return $sql->data;

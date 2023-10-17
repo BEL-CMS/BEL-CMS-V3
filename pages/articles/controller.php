@@ -9,23 +9,24 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace BELCMS\Controller;
+namespace Belcms\Pages\Controller;
+use Belcms\Pages\Pages;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Articles
+class Articles extends Pages
 {
-	var $models = 'ModelsArticles';
+	var $models = 'Articles';
 
 	function index ()
 	{
-		$config =  GetConfigPage('articles');
-		$set['pagination'] = $this->pagination($config->config['MAX_ARTICLES'], 'articles', TABLE_PAGES_ARTICLES);
-		$set['articles'] = $this->models->getArticles();
-		$this->set($set);
+		//$config =  GetConfigPage('articles');
+		//$set['pagination'] = $this->pagination($config->config['MAX_ARTICLES'], 'articles', TABLE_PAGES_ARTICLES);
+		//$set['articles'] = $this->models->getArticles();
+		//$this->set($set);
 		$this->render('index');
 	}
 

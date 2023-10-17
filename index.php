@@ -27,7 +27,9 @@ define('SHOW_ALL_REQUEST_SQL', false);
 #########################################
 # Fichier requis
 #########################################
+require_once ROOT.DS.'requires'.DS.'constant.php';
 require_once ROOT.DS.'requires'.DS.'requires.all.php';
+use BelCMS\Core\BelCMS as BelCMS;
 #########################################
 # Initialise le C.M.S
 #########################################
@@ -36,4 +38,4 @@ $belcms->typeMime;
 $belcms->render();
 header('Content-Type: <?=$belcms->typeMime;?>');
 echo $belcms->render;
-die();
+return;

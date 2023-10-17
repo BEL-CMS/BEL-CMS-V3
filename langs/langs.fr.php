@@ -389,13 +389,19 @@ $array = array(
 	'IPV4_IPV6_NO_VALID'                  => 'IPV4 - IPV6 non valide.',
 	'EMAIL_USER_BAN'                      => 'L\'email renseigne est invalide.',
 	'IMPOSSIBLE_TO_BAN_YOURSELF'          => 'Impossible de se bannir soi-même.',
-	'EMAIL_USER'                          => 'E-mail renseigné',         
+	'EMAIL_USER'                          => 'E-mail renseigné',   
+	'NO_TEXT_DEFINED'                     => 'Le texte n\'est pas definit',      
 	#####################################
 	# WIDGETS
 	# ###################################
 	'CONNECTED'                           => 'Connectés',
 	'NO_WIDGETS_NAME'                     => 'Aucun nom de widget',
 	'N0_WIDGET_WHIT_THIS_NAME'            => 'Aucun Widget portant ce nom',
+	#####################################
+	# Class.belcms.php
+	#####################################
+	'ERROR_LOADING_INSTANCE'             => 'Erreur de chargement de l\'instance : ',
+	'ERROR_LOADING'                      => 'Erreur de chargement de : ',
 	#####################################
 	# LANG
 	# ###################################

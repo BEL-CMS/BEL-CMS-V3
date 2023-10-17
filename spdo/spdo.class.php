@@ -9,7 +9,8 @@
  * @author as Stive - stive@determe.be
 */
 
-namespace BELCMS\PDO;
+namespace BelCMS\PDO;
+use BelCMS\Requires\Common as Common;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -61,10 +62,10 @@ final class BDD
 	{
 		if (!is_null($data) && defined($data)) {
 			$this->table = constant($data);
-		} else if (Common::tableExists($data)) {
+		} else if (self::tableExists($data)) {
 			$this->table = $data;
 		} else {
-			throw new Exception('Table : '.$data.' does not exist');
+			throw new \Exception('Table : '.$data.' does not exist');
 		}
 	}
 	#########################################
@@ -205,7 +206,7 @@ final class BDD
 			$_SESSION['NB_REQUEST_SQL']++;
 			$this->lastId = self::lastId();
 			$return = true;
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$r  = '<pre>'.PHP_EOL;
 			$r .= str_pad('', 100, '-',STR_PAD_RIGHT).PHP_EOL;
 			$r .= str_pad('Date Time', 20, ' ',STR_PAD_RIGHT) .date("H:i:s").PHP_EOL;
@@ -418,6 +419,51 @@ final class BDD
 	{
 		$this->rowCount = $this->cnx->rowCount();
 	}
+	#########################################
+	# Test table if exists
+	#########################################
+	public static function TableExists ($table, $full = false)
+	{
+		$cnx = PDOConnection::getInstance();
+		$cnx = $cnx->cnx;
+
+		if ($full) {
+			$sql = "SHOW TABLES";
+		} else {
+			$table = defined($table) ? constant($table) : $table;
+			$sql = "SHOW TABLES LIKE '$table'";
+		}
+
+		$result = $cnx->query($sql);
+
+		if ($full) {
+			$return = $result;
+		} else {
+			if ($result->rowCount() > 0) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+		}
+
+		return $return;
+	}
+	#########################################
+	# return les colonnes de la table définit
+	#########################################
+	public static function ShowColumns ($table)
+	{
+		$cnx = PDOConnection::getInstance();
+		$cnx = $cnx->cnx;
+		$query = $cnx->prepare("SHOW COLUMNS FROM ".$table."");
+		$query->execute();
+		if ($query === false)
+			return false;
+		$list = $query->fetchAll(\PDO::FETCH_COLUMN, 0);
+
+		return $list;
+	}
+
 	#########################################
 	# Close Class
 	#########################################

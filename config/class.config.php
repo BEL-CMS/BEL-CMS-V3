@@ -9,8 +9,8 @@
  * @author as Stive - stive@determe.be
 */
 
-namespace BELCMS\CONFIG;
-use BELCMS\PDO\BDD as BDD;
+namespace BelCMS\Config;
+use BelCMS\PDO\BDD as BDD;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -22,21 +22,20 @@ endif;
 ################################################
 final class Config
 {
-	var $config;
-
 	public function __construct()
 	{
 		foreach (self::getConfigBDD() as $v) {
-			$return[mb_strtoupper($v->name)] = (string) $v->value;
+			if (!defined(mb_strtoupper($v->name))) {
+				define($v->name, $v->value);
+			}
 		}
-		$this->config = $return;
 	}
 
 	private function getConfigBDD (): array
 	{
 		$return = (object) array();
 		$sql = new BDD;
-		$sql->table('TABLE_CONFIG');
+		$sql->table(constant('TABLE_CONFIG'));
 		$sql->fields(array('name', 'value'));
 		$sql->queryAll();
 		$return = $sql->data;
@@ -49,9 +48,4 @@ final class Config
 		return constant('LANGS');
 	}
 }
-$config = new Config;
-foreach ($config->config as $name => $value) {
-	if (!defined(strtoupper($name))) {
-		define($name, $value);
-	}
-}
+new Config;

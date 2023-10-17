@@ -9,6 +9,12 @@
  * @author as Stive - stive@determe.be
  */
 
+namespace BelCMS\Requires;
+use \DateTime as DateTime;
+use \IntlDateFormatter as IntlDateFormatter;
+use BelCMS\PDO\BDD as BDD;
+use BelCMS\Core\Secure as Secure;
+
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -209,10 +215,11 @@ final class Common
 	#########################################
 	# Localisation géographique par IP
 	#########################################
+	/*
 	public static function GeoIP ($ip)
 	{
-		if (function_exists('geoip_country_name_by_name')) {
-			$country = geoip_country_name_by_name($ip);
+		if (function_exists('\geoip_country_name_by_name')) {
+			$country = \geoip_country_name_by_name($ip);
 				if ($country) {
 					$return = $country;
 				} else {
@@ -306,13 +313,13 @@ final class Common
 			return date('Y-m-d');
 		}
 
-		if (CMS_WEBSITE_LANG == FRENCH) {
+		if (constant('CMS_WEBSITE_LANG') == constant('FRENCH')) {
 			$lg = 'fr_FR';
-		} else if (CMS_WEBSITE_LANG == ENGLISH) {
+		} else if (constant('CMS_WEBSITE_LANG') == constant('ENGLISH')) {
 			$lg = 'en_US';
-		} else if (CMS_WEBSITE_LANG == NETHERLANDS) {
+		} else if (constant('CMS_WEBSITE_LANG') == constant('NETHERLANDS')) {
 			$lg = 'nl_NL';
-		} else if (CMS_WEBSITE_LANG == DEUTCH) {
+		} else if (constant('CMS_WEBSITE_LANG') == constant('DEUTCH')) {
 			$lg = 'de_DE';
 		}
 
@@ -546,48 +553,6 @@ final class Common
 		return $text;
 	}
 	#########################################
-	# Test table if exists
-	#########################################
-	public static function TableExists ($table, $full = false)
-	{
-		$cnx = PDOConnection::getInstance();
-		$cnx = $cnx->cnx;
-
-		if ($full) {
-			$sql = "SHOW TABLES";
-		} else {
-			$table = defined($table) ? constant($table) : $table;
-			$sql = "SHOW TABLES LIKE '$table'";
-		}
-
-		$result = $cnx->query($sql);
-
-		if ($full) {
-			$return = $result;
-		} else {
-			if ($result->rowCount() > 0) {
-				$return = true;
-			} else {
-				$return = false;
-			}
-		}
-
-		return $return;
-	}
-
-	public static function ShowColumns ($table)
-	{
-		$cnx = PDOConnection::getInstance();
-		$cnx = $cnx->cnx;
-		$query = $cnx->prepare("SHOW COLUMNS FROM ".$table."");
-		$query->execute();
-		if ($query === false)
-			return false;
-		$list = $query->fetchAll(PDO::FETCH_COLUMN, 0);
-
-		return $list;
-	}
-	#########################################
 	# Request ID or rewrite_name secure
 	#########################################
 	public static function SecureRequest ($data = false) {
@@ -627,47 +592,6 @@ final class Common
 			$return = in_array($search, self::ScanDirectory(constant('DIR_PAGES'))) ? true : false;
 		}
 		return (bool) $return;
-	}
-	#########################################
-	# Check sub page
-	#########################################
-	public static function ExistsSubPage ($page = false, $view = false)
-	{
-		$return = array(
-			'model'      => (bool) false,
-			'view'       => (bool) false,
-			'controller' => (bool) false
-		);
-
-		if (GET_PAGE == 'page') {
-			$return = array(
-				'model'      => (bool) true,
-				'view'       => (bool) true,
-				'controller' => (bool) true
-			);
-			return $return;
-		}
-
-		$page = ($page === false) ? GET_PAGE   : trim($page);
-		$view = ($view === false) ? GET_ACTION : trim($view);
-
-		if (!self::ExistsPage($page)) {
-			$return = (bool) false;
-		} else {
-			$scan = Common::ScanFiles(constant('ROOT_PAGES').$page.DS);
-			if (in_array('controller.php', $scan)) {
-				$return['controller'] = (bool) true;
-			}
-			$view = 'view.'.$view.'.php';
-			if (in_array($view, $scan)) {
-				$return['view'] = (bool) true;
-			}
-			if (in_array('model.php', $scan)) {
-				$return['model'] = (bool) true;
-			}
-		}
-
-		return $return;
 	}
 	public static function translate ($data, $ucfirst = true) {
 		$str  = $data;
@@ -715,83 +639,6 @@ final class Common
 
 		return $return;
 	}
-	public static function Pagination ($nbpp = 5, $page = null, $table = null, $where = false)
-	{
-		$management  = defined('MANAGEMENT') ? '?management&' : '?';
-		$current     = (int) GET_PAGES;
-		$page_url    = $page.$management;
-		$total       = self::PaginationCount($nbpp, $table, $where);
-		$adjacents   = 1;
-		$current     = ($current == 0 ? 1 : $current);
-		$start       = ($current - 1) * $nbpp;
-		$prev        = $current - 1;
-		$next        = $current + 1;
-		$setLastpage = ceil($total/$nbpp);
-		$lpm1        = $setLastpage - 1;
-		$setPaginate = "";
-
-		if ($setLastpage >= 1) {
-			$setPaginate .= "<ul class='pagination'>";
-			// $setPaginate .= "<li>Page $current of $setLastpage</li>"; /* retirer: compteur de nombre de page
-			if ($setLastpage < 7 + ($adjacents * 2)) {
-				for ($counter = 1; $counter <= $setLastpage; $counter++) {
-					if ($counter == $current) {
-						$setPaginate.= "<li class='active'><a>$counter</a></li>";
-					} else {
-						$setPaginate.= "<li><a href='{$page_url}page=$counter'>$counter</a></li>";
-					}
-				}
-			} else if($setLastpage > 5 + ($adjacents * 2)) {
-				if ($current < 1 + ($adjacents * 2)) {
-					for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
-						if ($counter == $current) {
-							$setPaginate.= "<li class='active'><a>$counter</a></li>";
-						} else {
-							$setPaginate.= "<li><a href='{$page_url}page=$counter'>$counter</a></li>";
-						}
-					}
-					$setPaginate.= "<li><a href='{$page_url}page=$lpm1'>$lpm1</a></li>";
-					$setPaginate.= "<li><a href='{$page_url}page=$setLastpage'>$setLastpage</a></li>";
-				}
-				else if($setLastpage - ($adjacents * 2) > $current && $current > ($adjacents * 2)) {
-					$setPaginate.= "<li><a href='{$page_url}page=1'>1</a></li>";
-					$setPaginate.= "<li><a href='{$page_url}page=2'>2</a></li>";
-					for ($counter = $current - $adjacents; $counter <= $current + $adjacents; $counter++) {
-						if ($counter == $current) {
-							$setPaginate.= "<li class='active'><a>$counter</a></li>";
-						}
-						else {
-							$setPaginate.= "<li><a href='{$page_url}page=$counter'>$counter</a></li>";
-						}
-					}
-					$setPaginate.= "<li><a href='{$page_url}page=$lpm1'>$lpm1</a></li>";
-					$setPaginate.= "<li><a href='{$page_url}page=$setLastpage'>$setLastpage</a></li>";
-				} else {
-					$setPaginate.= "<li><a href='{$page_url}page=1'>1</a></li>";
-					$setPaginate.= "<li><a href='{$page_url}page=2'>2</a></li>";
-					for ($counter = $setLastpage - (2 + ($adjacents * 2)); $counter <= $setLastpage; $counter++) {
-						if ($counter == $current) {
-							$setPaginate.= "<li class='active'><a>$counter</a></li>";
-						} else {
-							$setPaginate.= "<li><a href='{$page_url}page=$counter'>$counter</a></li>";
-						}
-					}
-				}
-			}
-
-			if ($current < $counter - 1) {
-				$setPaginate .= "<li><a href='{$page_url}page=$next'>Next</a></li>";
-				$setPaginate .= "<li><a href='{$page_url}page=$setLastpage'>Last</a></li>";
-			} else{
-				$setPaginate .= "<li class='active'><a>Next</a></li>";
-				$setPaginate .= "<li class='active'><a>Last</a></li>";
-			}
-
-			$setPaginate.= "</ul>".PHP_EOL;
-		}
-
-		return $setPaginate;
-	}
 	#########################################
 	# Security Upload
 	#########################################
@@ -820,18 +667,18 @@ final class Common
 
 			$extension = strrchr($_FILES[$name]['name'], '.');
 			if (!in_array($extension, $extensions)):
-				$err = UPLOAD_ERROR_FILE;
+				$err = constant('UPLOAD_ERROR_FILE');
 			endif;
 
 			if ($size>$sizeMax):
-				$err = UPLOAD_ERROR_SIZE;
+				$err = constant('UPLOAD_ERROR_SIZE');
 			endif;
 
 			if (!isset($err)):
 				if (move_uploaded_file($_FILES[$name]['tmp_name'], $dir .'/'. ($file))):
-					$return = UPLOAD_FILE_SUCCESS;
+					$return = constant('UPLOAD_FILE_SUCCESS');
 				else:
-					$return = UPLOAD_ERROR;
+					$return = constant('UPLOAD_ERROR');
 				endif;
 			else:
 				$return = $err;
@@ -944,24 +791,24 @@ final class Common
 			$file = '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
 			$file .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'.PHP_EOL;
 
-			$scanDir = self::ScanDirectory(ROOT_PAGES);
+			$scanDir = self::ScanDirectory(ROOT);
 			$pages	 = array();
 
 			$file .= '<url>'.PHP_EOL;
-			$file .= '<loc>'.BASE_URL.'</loc>'.PHP_EOL;
+			$file .= '<loc>'.ROOT.'</loc>'.PHP_EOL;
 			$file .= '<changefreq>daily</changefreq>'.PHP_EOL;
 			$file .= '<priority>1</priority>'.PHP_EOL;
 			$file .= '</url>'.PHP_EOL;
 
 			foreach ($scanDir as $k => $v) {
 				$file .= '<url>'.PHP_EOL;
-				$file .= '<loc>'.BASE_URL.$v.'</loc>'.PHP_EOL;
+				$file .= '<loc>'.ROOT.$v.'</loc>'.PHP_EOL;
 				$file .= '<changefreq>daily</changefreq>'.PHP_EOL;
 				$file .= '<priority>0.80</priority>'.PHP_EOL;
 				$file .= '</url>'.PHP_EOL;
 			}
 			$file .= '</urlset>'.PHP_EOL;
-			fwrite($fp, chr(0xEF) . chr(0xBB)  . chr(0xBF) . utf8_encode($file)); //Ajout de la marque d'Octet
+			fwrite($fp, chr(0xEF) . chr(0xBB)  . chr(0xBF) . $file); //Ajout de la marque d'Octet
 			fclose($fp);
 		}
 	}

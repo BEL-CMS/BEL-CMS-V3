@@ -20,8 +20,10 @@ $tables = array(
 	#########################################
 	# Tables
 	#########################################
-	'TABLE_CONFIG' => $DB_PREFIX.'config',
-	'TABLE_USERS'  => $DB_PREFIX.'users',
+	'TABLE_CONFIG'   => $DB_PREFIX.'config',
+	'TABLE_PAGES_CONFIG' => $DB_PREFIX.'config_pages',
+	'TABLE_USERS'=> $DB_PREFIX.'users',
+
 );
 foreach ($tables as $name => $value) {
 	define($name, $value); unset($tables);

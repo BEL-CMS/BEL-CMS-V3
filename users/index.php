@@ -9,7 +9,10 @@
  * @author as Stive - stive@determe.be
 */
 
-namespace BELCMS\User;
+namespace BelCMS\User;
+use BelCMS\PDO\BDD as BDD;
+use BelCMS\Core;
+use BelCMS\Requires\Common as Common;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');

@@ -9,10 +9,11 @@
  * @author as Stive - stive@determe.be
 */
 
-use BELCMS\Config\Config as Config;
-use BELCMS\PDO\BDD as BDD;
-use BELCMS\User\User as User;
-
+namespace BelCMS\Core;
+use BelCMS\Config\Config as Config;
+use BelCMS\PDO\BDD as BDD;
+use BelCMS\User\User as User;
+use BelCMS\Core\Dispatcher as Dispatcher;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -24,6 +25,9 @@ endif;
 ################################################
 final class BelCMS
 {
+	var 		$link,
+				$new;
+
 	public		$render,
 				$typeMime;
 
@@ -44,30 +48,47 @@ final class BelCMS
 	private function content ()
 	{
 		ob_start();
+		$namePage	  = Dispatcher::page(constant('CMS_DEFAULT_PAGE'));
+		$require	  = ucfirst($namePage);
+		$view		  = Dispatcher::view();
 		if (Dispatcher::isManagement() === true) {
 			echo 'Management';
 		} else if (Dispatcher::isPage(constant('CMS_DEFAULT_PAGE')) === true) {
-			require DIR_PAGES.'index.php';
-			$dir = DIR_PAGES.Dispatcher::page(constant('CMS_DEFAULT_PAGE')).DS.'controller.php';
+			require constant('DIR_PAGES').'index.php';
+			$dir = constant('DIR_PAGES').$namePage.DS.'controller.php';
 			if (is_file($dir)) {
 				require_once $dir;
+				$require = "Belcms\Pages\Controller\\".$require;
+				$this->new = new $require;
+				if (method_exists($this->new, $view)) {
+					call_user_func_array(array($this->new,$view),Dispatcher::link());
+					echo $this->new->page;
+					$content = ob_get_contents();
+					debug($content);
+				} else {
+					Notification::error(constant('ERROR_LOADING_INSTANCE').$require, 'Page', true);
+					$buffer = ob_get_contents();
+				}
 			} else {
-				//Notification::error(constant('name'));
+				Notification::error(constant('ERROR_LOADING').$dir, 'Page', true);
+				$content = ob_get_contents();
 			}
 		} else {
-			require DIR_ERROR.'404.html';
+			require constant('DIR_CORE').'404.html';
+			$content = ob_get_contents();
 		}
-		$content = ob_get_contents();
+
 		if (ob_get_length() != 0) {
 			ob_end_clean();
 		}
+
 		return $content;
 	}
 
 	private function template ()
 	{
 		ob_start();
-		new template;
+		// new template;
 		$content = ob_get_contents();
 		if (ob_get_length() != 0) {
 			ob_end_clean();
@@ -115,11 +136,11 @@ final class BelCMS
 	public function langs ()
 	{
 		if (defined('LANGS')) {
-			require_once DIR_LANGS.'langs'.DS.constan('LANGS').'.php';
+			require_once constant('DIR_LANGS').'langs'.DS.constant('LANGS').'.php';
 			$this->langs = constant('LANGS');
 		} else {
 			if ($this->langs == 'fr') {
-				require_once DIR_LANGS.'langs'.DS.$this->langs.'.php';
+				require_once constant('DIR_LANGS').'langs'.DS.$this->langs.'.php';
 			}
 		}
 

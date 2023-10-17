@@ -9,7 +9,7 @@
  * @author as Stive - stive@determe.be
 */
 
-namespace BELCMS\PDO;
+namespace BelCMS\PDO;
 use PDO;
 
 if (!defined('CHECK_INDEX')):
@@ -34,11 +34,17 @@ class PDOConnection
 		$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
 		$pdo_options[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES utf8';
 
+		$DB_HOST    = constant('DB_HOST');
+		$DB_PORT = constant('DB_PORT');
+		$DB_NAME = constant('DB_NAME');
+		$DB_USER = constant('DB_USER');
+		$DB_PASS= constant('DB_PASSWORD');
+
 		try {
-			$this->cnx = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME, DB_USER, DB_PASSWORD, $pdo_options);
+			$this->cnx= new PDO('mysql:host='.$DB_HOST.';port='.$DB_PORT.';dbname='.$DB_NAME, $DB_USER, $DB_PASS, $pdo_options);
 			$this->isConnected = true;
 		}
-		catch (PDOException $e) {
+		catch (\PDOException $e) {
 			$r  = '<pre>'.PHP_EOL;
 			$r .= str_pad('', 100, '-',STR_PAD_RIGHT).PHP_EOL;
 			$r .= str_pad('Date Time', 20, ' ',STR_PAD_RIGHT) .date("H:i:s").PHP_EOL;
