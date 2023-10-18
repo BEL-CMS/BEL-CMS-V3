@@ -29,7 +29,7 @@ if(is_dir($directory)){
 ################################################
 # Principaux fichier a inclure
 ################################################
-$files = array(
+$files = array (
 	ROOT.DS.'config'.DS.'config.pdo.php',
 	ROOT.DS.'spdo'.DS.'tables.php',
 	ROOT.DS.'spdo'.DS.'connect.php',
@@ -37,12 +37,15 @@ $files = array(
 	ROOT.DS.'core'.DS.'class.error.php',
 	ROOT.DS.'core'.DS.'class.debug.php',
 	ROOT.DS.'core'.DS.'class.notification.php',
+	ROOT.DS.'core'.DS.'class.comment.php',
 	ROOT.DS.'config'.DS.'class.config.php',
 	ROOT.DS.'requires'.DS.'common.php',
 	ROOT.DS.'core'.DS.'class.dispatcher.php',
 	ROOT.DS.'core'.DS.'class.secure.php',
 	ROOT.DS.'core'.DS.'class.secures.php',
+	ROOT.DS.'core'.DS.'class.config.php',
 	ROOT.DS.'users'.DS.'index.php',
+	ROOT.DS.'pages'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.belcms.php',
 );
 foreach ($files as $include) {

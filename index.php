@@ -35,7 +35,6 @@ use BelCMS\Core\BelCMS as BelCMS;
 #########################################
 $belcms = new BelCMS;
 $belcms->typeMime;
-$belcms->render();
 header('Content-Type: <?=$belcms->typeMime;?>');
-echo $belcms->render;
+$belcms->render();
 return;

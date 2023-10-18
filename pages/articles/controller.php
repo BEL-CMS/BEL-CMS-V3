@@ -11,6 +11,7 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
+use BelCMS\Core\Config as Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -19,17 +20,17 @@ endif;
 
 class Articles extends Pages
 {
-	var $models = 'Articles';
+	var $useModels = 'Articles';
 
 	function index ()
 	{
-		//$config =  GetConfigPage('articles');
-		//$set['pagination'] = $this->pagination($config->config['MAX_ARTICLES'], 'articles', TABLE_PAGES_ARTICLES);
-		//$set['articles'] = $this->models->getArticles();
-		//$this->set($set);
+		$config =  Config::GetConfigPage('articles');
+		$set['pagination'] = $this->pagination($config->config['MAX_ARTICLES'], 'articles', constant('TABLE_PAGES_ARTICLES'));
+		$set['articles'] = $this->models->getArticles();
+		$this->set($set);
 		$this->render('index');
 	}
-
+/*
 	function readmore ($name = false, $page = null, $id = false)
 	{
 		$set = array();
@@ -56,4 +57,5 @@ class Articles extends Pages
 			echo json_encode(null);
 		}
 	}
+*/
 }

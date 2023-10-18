@@ -91,7 +91,8 @@ final class Notification
 		$render .= '<title>Error : '.$title.'</title>';
 		$render .= '<link rel="stylesheet" href="/assets/css/belcms.notification.css">';
 		$render .= '<style type="text/css">';
-		$render .= 'body {background-color: #1a232f;background-image: -moz-radial-gradient(center center,circle cover,#273648,#0d1218 100%);background-image: -webkit-radial-gradient(center center,circle cover,#273648,#0d1218 100%);background-image: -o-radial-gradient(center center,circle cover,#273648,#0d1218 100%);background-image: -ms-radial-gradient(center center,circle cover,#273648,#0d1218 100%);background-image: radial-gradient(center center,circle cover,#273648,#0d1218 100%);}section#error {width: 100%;max-width: 700px;margin: 300px calc(50% - 350px) auto;height: 300px;}</style>';
+		$render .= 'body {background-image: url("/assets/img/patern_notif.png");}section#error {width: 100%;max-width: 700px;margin: 300px calc(50% - 350px) auto;height: 300px;}';
+		$render .= '</style>';
 		$render .= '</head>';
 		$render .= '<body>';
 		$render .= '<section id="error">';

@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Comment as Comment;
+use BelCMS\Requires\Common as Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -20,8 +23,8 @@ $countComment = Comment::countComments('articles', $articles->id);
 		<div class="card-header"><h1><?=$articles->name?></h1></div>
 		<div class="card-body">
 			<ul class="bel_cms_blog_userdate">
-				<li><?=BY?> : <a href="Members/View/<?=$articles->username?>" title="<?=POST_BY?> <?=$articles->username?>"><?=$articles->username?></a></li>
-				<li><?=DATE?> : <?=Common::transformDate($articles->date_create, 'FULL', 'NONE')?></li>
+				<li><?=constant('BY');?> : <a href="Members/View/<?=$articles->username?>" title="<?=constant('POST_BY');?> <?=$articles->username?>"><?=$articles->username?></a></li>
+				<li><?=constant('DATE');?> : <?=Common::transformDate($articles->date_create, 'FULL', 'NONE')?></li>
 			</ul>
 			<div class="bel_cms_blog_content">
 				<?=$articles->content?>
@@ -31,8 +34,8 @@ $countComment = Comment::countComments('articles', $articles->id);
 		</div>
 		<div class="card-footer">
 			<ul class="bel_cms_blog_infos">
-				<li><i class="ion-chatbox-working"></i> <?=$countComment?> <?=COMMENTS?></li>
-				<li><i class="ion-ios-eye"></i> <?=$articles->view?> <?=SEEN?></li>
+				<li><i class="ion-chatbox-working"></i> <?=$countComment?> <?=constant('COMMENTS');?></li>
+				<li><i class="ion-ios-eye"></i> <?=$articles->view?> <?=constant('SEEN');?></li>
 			</ul>
 		</div>
 	</div>

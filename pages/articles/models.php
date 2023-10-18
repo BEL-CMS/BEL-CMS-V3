@@ -9,18 +9,24 @@
  * @author as Stive - stive@determe.be
  */
 
+namespace Belcms\Pages\Models;
+use BelCMS\Core\Config as Config;
+use BelCMS\PDO\BDD as BDD;
+use BelCMS\Requires\Common as Common;
+use BelCMS\User\User as User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-final class ModelsArticles
+final class Articles
 {
 	# TABLE_PAGES_ARTICLES
 	# TABLE_PAGES_ARTICLES_CAT
 	public function getArticles ($id = false)
 	{
-		$config = BelCMSConfig::GetConfigPage('Articles');
+		$config = Config::GetConfigPage('Articles');
 		if (isset($config->config['MAX_ARTICLES'])) {
 			$nbpp = (int) $config->config['MAX_ARTICLES'];
 		} else {
@@ -55,8 +61,16 @@ final class ModelsArticles
 					$sql->data->tags = explode(',', $sql->data->tags);
 				}
 				$author = $sql->data->author;
-				$sql->data->username = Users::hashkeyToUsernameAvatar($author);
-				$sql->data->avatar   = Users::hashkeyToUsernameAvatar($author, 'avatar');
+				//$user = User::getInfosUserAll($author);
+				debug($_SESSION['USER']);
+
+				if (empty($user)) {
+					$sql->data->username = constant('UNKNOW');
+					$sql->data->avatar   = constant('DEFAULT_AVATAR');
+				} else {
+					//$sql->data->username = $user->user->username;
+					//$sql->data->avatar   = $user->profils->avatar;
+				}
 			} else {
 				$sql->data = null;
 			}
@@ -72,8 +86,17 @@ final class ModelsArticles
 					$sql->data[$k]->tags = explode(',', $sql->data[$k]->tags);
 				}
 				$author = $sql->data[$k]->author;
-				$sql->data[$k]->username = Users::hashkeyToUsernameAvatar($author);
-				$sql->data[$k]->avatar   = Users::hashkeyToUsernameAvatar($author, 'avatar');
+				$user = User::getInfosUserAll($author);
+
+				debug($author);
+				
+				if (empty($user->user)) {
+					$sql->data->data[$k]->username = constant('ERROR_NO_USER');
+					$sql->data->data[$k]->avatar   = constant('DEFAULT_AVATAR');
+				} else {
+					$sql->data->data[$k]->username = $user->user->username;
+					$sql->data->data[$k]->avatar   = $user->profils->avatar;
+				}
 			}
 		}
 		return $sql->data;

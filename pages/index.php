@@ -10,6 +10,7 @@
 */
 
 namespace Belcms\Pages;
+use BelCMS\Core\Dispatcher as Dispatcher;
 use BelCMS\Core\Notification as Notification;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Core\Secures as Secures;
@@ -25,18 +26,20 @@ endif;
 class Pages
 {
 	var $vars = array(),
-		$intern;
+		$useModels,
+		$typeMime = 'text/html';
 
-	public	$page;
+	public	$page,
+			$models;
 
-	private $models,
-			$data;
+	private $data,
+			$namePage;
 
 	function __construct()
 	{
 		self::get();
-		if (isset($this->models) and !empty($this->models)){
-			self::loadModel($this->models);
+		if (isset($this->useModels) and !empty($this->useModels)){
+			self::loadModel($this->useModels);
 		}
 	}
 	#########################################
@@ -45,13 +48,14 @@ class Pages
 	#########################################
 	function render($filename)
 	{
+		$this->namePage = str_replace('Belcms\Pages\Controller\\', '', get_class($this));
 		// Test si l'utilisateur a accès à la page.
-		if (Secures::getAccessPage(strtolower(get_class($this))) === false) {
+		if (Secures::getAccessPage(strtolower($this->namePage)) === false) {
 			self::error('Page', constant('NO_ACCESS_GROUP_PAGE'), 'infos');
 			return false;
 		}
 		// Test si la page est activée.
-		if (Secures::getPageActive(strtolower(get_class($this))) === false) {
+		if (Secures::getPageActive(strtolower($this->namePage)) === false) {
 			self::error('Page', constant('NO_ACCESS_PAGE'), 'warning');
 			return false;
 		}
@@ -59,30 +63,20 @@ class Pages
 		extract($this->vars);
 		// Démarre la mémoire tampon
 		ob_start();
-		if ($this->intern) {
-			$dir    = constant('DIR_ADMIN').'pages'.DS.strtolower(get_class($this)).DS.$filename.'.php';
-			$custom = null;
-		} else {
-			if (defined('MANAGEMENT')) {
-				$dir = isset($_GET['widgets']) ?
-				$dir = constant('DIR_WIDGETS').strtolower(get_class($this)).DS.'management'.DS.$filename.'.php':
-				$dir = constant('DIR_PAGES').strtolower(get_class($this)).DS.'management'.DS.$filename.'.php';
-			} else {
-				$dir = constant('DIR_PAGES').strtolower(get_class($this)).DS.$filename.'.php';
-			}
-			$custom = defined('MANAGEMENT') ? null :
-				constant('DIR_TPL').constant('CMS_TPL_WEBSITE').DS.'custom'.DS.lcfirst(get_class($this)).'.'.$filename.'.php';
-		}
+		$dir    = constant('DIR_PAGES').strtolower($this->namePage).DS.$filename.'.php';
+		$custom = constant('DIR_TPL').constant('CMS_TPL_WEBSITE').DS.'custom'.DS.lcfirst($this->namePage).'.'.$filename.'.php';
 		// Regarde s'il y a un fichier personnalisé et l'inclus,
 		// ou bien récupère l'original.
 		if (is_file($custom)) {
-			require_once $custom;
+			require $custom;
 		} else if (is_file($dir)) {
-			require_once $dir;
+			require $dir;
+			//debug($this);
 		} else {
-			$error_name    = constant('FILE_NO_FOUND');
-			$error_content = '<p><strong>'.constant('FILE').' : '.$filename.' '.constant('NO_FOUND').'</strong><p>';
-			self::error($error_name, $error_content, 'error');
+			$error_type = 'warning';
+			$error_name = constant('FILE_NO_FOUND');
+			$error_text = constant('FILE').' : <br>'.$dir.' '.constant('NOT_FOUND');
+			self::error($error_type, $error_text, $error_name, true);
 		}
 		// Met en le tampon dans une variable ($this->page);
 		$this->page = ob_get_contents();
@@ -93,15 +87,29 @@ class Pages
 			ob_end_clean();
 		}
 	}
-	private function models ()
+	#########################################
+	# inclus le models
+	#########################################
+	public function loadModel ($name)
 	{
-		$this->models = '';
+		$dir = constant('DIR_PAGES').strtolower($name).DS.'models.php';
+
+		if (is_file($dir)) {
+			require_once $dir;
+			$name = "Belcms\Pages\Models\\".$name;
+			$this->models = new $name();
+		} else {
+			$error_type    = 'error';
+			$error_name    = constant('FILE_NO_FOUND_MODELS');
+			$error_text = constant('FILE').' : <br>'.$dir.' '.constant('NOT_FOUND');
+			self::error($error_type, $error_text, $error_name, true);
+		}
 	}
 	#########################################
 	# Assemble les variable passé par,
 	# le controller en $this-set(array());
 	#########################################
-	function set ($d)
+	public function set ($d)
 	{
 		$this->vars = array_merge($this->vars,$d);
 	}
@@ -109,26 +117,9 @@ class Pages
 	# Récupère les données passées par
 	# un formulaire ou un lien.
 	#########################################
-	private function get ()
+	public function get ()
 	{
 		$this->data = $_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST : $_GET;
-	}
-	#########################################
-	# inclus le models
-	#########################################
-	function loadModel ($models)
-	{
-		$dir = null;
-		if (is_file($dir)) {
-			require_once $dir;
-			$this->models = new $name();
-		} else {
-			ob_start();
-			$error_name    = constant('FILE_NO_FOUND');
-			$error_content = '<p><strong>'.constant('FILE').' : '.$dir.' '.constant('NO_FOUND').'</strong><p>';
-			self::error($error_name, $error_content, 'error');
-			ob_end_clean();
-		}
 	}
 	#########################################
 	# Redirect
@@ -266,11 +257,12 @@ class Pages
 	# Retourn un message d'information de type
 	# error - success - warning - infos
 	#########################################
-	function error ($title, $msg, $type)
+	function error ($type = 'warning', $text = 'inconnu', $title = 'INFO', $full = false)
 	{
 		ob_start();
-		Notification::$type($msg, $title);
-		$this->page = ob_get_contents();
+		echo Notification::$type($text, $title, $full);
+		$return =  ob_get_contents();
 		ob_end_clean();
+		echo $return;
 	}
 }

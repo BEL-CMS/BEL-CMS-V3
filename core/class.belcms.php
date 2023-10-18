@@ -41,7 +41,7 @@ final class BelCMS
 
 	public function __construct ()
 	{
-		$this->user     = self::user ();
+		$this->user     = User::getInfosUserAll('09f42cf2d7901fca4d4deea46393267f');
 		$this->typeMime = self::typeMime ();
 	}
 
@@ -54,17 +54,19 @@ final class BelCMS
 		if (Dispatcher::isManagement() === true) {
 			echo 'Management';
 		} else if (Dispatcher::isPage(constant('CMS_DEFAULT_PAGE')) === true) {
-			require constant('DIR_PAGES').'index.php';
 			$dir = constant('DIR_PAGES').$namePage.DS.'controller.php';
 			if (is_file($dir)) {
 				require_once $dir;
 				$require = "Belcms\Pages\Controller\\".$require;
 				$this->new = new $require;
+				//debug($this->new);
 				if (method_exists($this->new, $view)) {
 					call_user_func_array(array($this->new,$view),Dispatcher::link());
 					echo $this->new->page;
+					if (empty($this->new->page)) {
+						Notification::error(constant('ERROR_LOADING_PAGE'), 'Page', true);
+					}
 					$content = ob_get_contents();
-					debug($content);
 				} else {
 					Notification::error(constant('ERROR_LOADING_INSTANCE').$require, 'Page', true);
 					$buffer = ob_get_contents();
@@ -74,7 +76,7 @@ final class BelCMS
 				$content = ob_get_contents();
 			}
 		} else {
-			require constant('DIR_CORE').'404.html';
+			require constant('DIR_ERROR').'404.html';
 			$content = ob_get_contents();
 		}
 
@@ -126,11 +128,6 @@ final class BelCMS
 	private function config ()
 	{
 
-	}
-
-	private function user ()
-	{
-		$user = new User;
 	}
 
 	public function langs ()

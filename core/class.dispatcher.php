@@ -106,6 +106,12 @@ final class Dispatcher
 	{
 		$return = false;
 		$page   = Dispatcher::page();
+
+		if (!empty($page)) {
+			//$page = constant('CMS_DEFAULT_PAGE');
+			//debug($page);
+		}
+
 		if (!empty($page)) {
 			if (Common::ExistsPage($page) === true) {
 				$return = (bool) true;
@@ -167,14 +173,16 @@ final class Dispatcher
 	#########################################
 	public static function header () : string
 	{
-		if (Dispatcher::isPage() === true) {
-			$return = 'text/html';
-		} else if (isset($_GET['echo'])) {
-			$return = 'text/html';
+		$page = constant('CMS_DEFAULT_PAGE');
+		//debug($page);
+		if (isset($_GET['text'])) {
+			$return = 'text/plain';
 		} else if (isset($_GET['json']) or isset($_GET['jquery'])) {
 			$return = 'application/json';
+		} else if (Dispatcher::isPage() === true) {
+			$return = 'text/html';
 		} else {
-			$return = 'text/plain';
+			$return = 'text/html';
 		}
 		return $return;
 	}

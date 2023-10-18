@@ -16,6 +16,10 @@ endif;
 
 $array = array(
 	#####################################
+	# Langue - DEFAUT
+	#####################################
+	'DEFAULT_AVATAR'                      => 'assets/images/default_avatar.jpg',
+	#####################################
 	# Langue Français - COMMUN
 	#####################################
 	'SUCCESS'                             => 'Succès',
@@ -31,9 +35,6 @@ $array = array(
 	'WRONG_USER_PASS'                     => 'Mauvaise combinaison de Pseudonyme-email et/ou mot de passe.',
 	'NO_USER_WITH_USER_AND_MAIL'          => 'Aucun utilisateur avec ce nom et/ou mail.',
 	'NAME_OR_PASS_REQUIRED'               => 'Le nom ou le mot de passe est obligatoire.',
-	#####################################
-	# Langue Français - 
-	#####################################
 	#####################################
 	# Fichier lang en français - Erreur
 	### ##################################
@@ -402,6 +403,13 @@ $array = array(
 	#####################################
 	'ERROR_LOADING_INSTANCE'             => 'Erreur de chargement de l\'instance : ',
 	'ERROR_LOADING'                      => 'Erreur de chargement de : ',
+	'ERROR_LOADING_PAGE'                 => 'Erreur lors du chargement de la page : erreur inconnu !',
+	#####################################
+	# root\pages\index.php
+	#####################################
+	'FILE_NO_FOUND'                      => 'Fichier non trouvé',
+	'FILE_NO_FOUND_MODELS'               => 'Fichier models non trouvé',
+	'NOT_FOUND'                          => 'pas trouvé', 
 	#####################################
 	# LANG
 	# ###################################

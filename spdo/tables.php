@@ -20,10 +20,15 @@ $tables = array(
 	#########################################
 	# Tables
 	#########################################
-	'TABLE_CONFIG'   => $DB_PREFIX.'config',
-	'TABLE_PAGES_CONFIG' => $DB_PREFIX.'config_pages',
-	'TABLE_USERS'=> $DB_PREFIX.'users',
-
+	'TABLE_CONFIG'              => $DB_PREFIX.'config',
+	'TABLE_PAGES_CONFIG'        => $DB_PREFIX.'config_pages',
+	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
+	'TABLE_PAGES_ARTICLES'      => $DB_PREFIX.'page_articles',
+	'TABLE_PAGES_ARTICLES_CAT'  => $DB_PREFIX.'page_articles_cat',
+	'TABLE_USERS'               => $DB_PREFIX.'users',
+	'TABLE_USERS_GROUPS'        => $DB_PREFIX.'users_groups',
+	'TABLE_USERS_PROFILS'       => $DB_PREFIX.'users_profils',
+	'TABLE_USERS_SOCIAL'        => $DB_PREFIX.'users_social',
 );
 foreach ($tables as $name => $value) {
 	define($name, $value); unset($tables);

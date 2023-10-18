@@ -13,6 +13,7 @@ namespace BelCMS\User;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Core;
 use BelCMS\Requires\Common as Common;
+use BelCMS\Core\Config as BelCMSConfig;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -217,5 +218,155 @@ class User
 		$return['type'] = constant('SUCCESS');
 
 		return $return;
+	}
+	#########################################
+	# Change hash_key en username ou avatar
+	#########################################
+	public static function getInfosUserAll ($hash_key = false)
+	{
+		$return = (object) array ();
+		if ($hash_key !== false) {
+			/* Return info de la table user */
+			$user = new BDD();
+			$user->table('TABLE_USERS');
+			$user->where(array(
+				'name'  => 'hash_key',
+				'value' => $hash_key
+			));
+			$user->fields(array('username','mail', 'ip', 'valid', 'expire', 'token'));
+			$user->isObject(false);
+			$user->queryOne();
+			if (!empty($user->data)) {
+				$a = array('user' => (object) $user->data);
+				/* Return info des groupes de l'user */
+				$group = new BDD();
+				$group->table('TABLE_USERS_GROUPS');
+				$group->where(array(
+					'name'  => 'hash_key',
+					'value' => $hash_key
+				));
+				$group->fields(array('user_group','user_groups'));
+				$group->isObject(false);
+				$group->queryOne();
+				$b = array('groups' => (object) $group->data);
+				/* Return le profils de l'user */
+				$profils = new BDD();
+				$profils->table('TABLE_USERS_PROFILS');
+				$profils->where(array(
+					'name'  => 'hash_key',
+					'value' => $hash_key
+				));
+				$profils->fields(array('gender','public_mail','websites','list_ip','avatar','config','info_text','birthday','country','hight_avatar','friends'));
+				$profils->isObject(false);
+				$profils->queryOne();
+				$c = array('profils' => (object) $profils->data);
+				/* Return le profils de l'user */
+				$social = new BDD();
+				$social->table('TABLE_USERS_SOCIAL');
+				$social->where(array(
+					'name'  => 'hash_key',
+					'value' => $hash_key
+				));
+				$social->fields(array('Facebook','youtube','whatsapp','instagram','messenger','tiktok','snapchat','telegram','pinterest','x_twitter','reddit','linkedIn','skype','viber','teams_ms','discord','twitch'));
+				$social->isObject(false);
+				$social->queryOne();
+				$d = array('social' => (object) $social->data);
+				/* Return info du social */
+				$return = (object) array_merge($a, $b, $c, $d);
+			} else {
+				$return = false;
+			}
+		}
+	}
+	#########################################
+	# Change hash_key en username ou avatar
+	#########################################
+	public static function hashkeyToUsernameAvatar ($hash_key = null, $username = 'username')
+	{
+		if ($hash_key !== null && strlen($hash_key) == 32) {
+			$sql = New BDD();
+			$sql->table('TABLE_USERS');
+			$sql->where(array(
+				'name'  => 'hash_key',
+				'value' => $hash_key
+			));
+			$sql->fields(array('username', 'avatar'));
+			$sql->queryOne();
+			if (!empty($sql->data)) {
+				if ($username == 'username') {
+					$return = $sql->data->username;
+				} else {
+					if (empty($sql->data->avatar)) {
+						$return = constant('DEFAULT_AVATAR');
+					} else {
+						if (is_file($sql->data->avatar) or is_file(ROOT.DS.$sql->data->avatar)) {
+							$return = $sql->data->avatar;
+						} else {
+							$return = constant('DEFAULT_AVATAR');
+						}
+					}
+				}
+			} else {
+				if ($username == 'username') {
+					$return = constant('UNKNOWN');
+				} else {
+					$return = constant('DEFAULT_AVATAR');
+				}
+			}
+		} else {
+			if ($username == 'username') {
+				$return = constant('UNKNOWN');
+			} else {
+				$return = constant('DEFAULT_AVATAR');
+			}
+		}
+		return $return;
+	}
+	public static function colorUsername ($hash_key = null, $username = null)
+	{
+		$color = "#000000";
+		if ($hash_key == null and $username)
+		{
+			$sql = New BDD();
+			$sql->table('TABLE_USERS');
+			$sql->where(array(
+				'name'  => 'username',
+				'value' => Common::VarSecure($username)
+			));
+			$sql->fields(array('main_groups'));
+			$sql->queryOne();
+			if (!empty($sql->data)) {
+				foreach (BelCMSConfig::getGroups() as $k => $v) {
+					if ($sql->data->main_groups == $v['id']) {
+						$color = $v['color'];
+						break;
+					}
+				}
+			} else {
+				$color = "#000000";
+			}
+		} elseif (Common::hash_key($hash_key)) {
+			$sql = New BDD();
+			$sql->table('TABLE_USERS');
+			$sql->where(array(
+				'name'  => 'hash_key',
+				'value' => $hash_key
+			));
+			$sql->fields(array('main_groups'));
+			$sql->queryOne();
+
+			if (!empty($sql->data)) {
+				foreach (BelCMSConfig::getGroups() as $k => $v) {
+					if ($sql->data->main_groups == $v['id']) {
+						$color = $v['color'];
+						break;
+					}
+				}
+			} else {
+				$color = "#000000";
+			}
+		}
+
+		return $color;
 	}
 }
