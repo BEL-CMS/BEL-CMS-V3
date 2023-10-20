@@ -30,20 +30,25 @@ class Articles extends Pages
 		$this->set($set);
 		$this->render('index');
 	}
-/*
+
 	function readmore ($name = false, $page = null, $id = false)
 	{
-		$set = array();
-		$set['articles'] = $this->models->getArticles($id);
-
-		if (!is_object($set['articles']) && $set['articles'] == 0) {
-			$this->error(get_class($this), NAME_OF_THE_UNKNOW, 'error');
-			return;
+		if (strlen($id) == 0) {
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), 'INFO', false);
 		} else {
-			$this->models->NewView($id);
+			$set = array();
+			$set['articles'] = $this->models->getArticles($id);
+			if (!is_object($set['articles']) && $set['articles'] == 0) {
+				$this->error = true;
+				$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), 'INFO', false);
+				return;
+			} else {
+				$this->models->NewView($id);
+			}
+			$this->set($set);
+			$this->render('readmore');
 		}
-		$this->set($set);
-		$this->render('readmore');
 	}
 
 	function json ($api_key)
@@ -57,5 +62,4 @@ class Articles extends Pages
 			echo json_encode(null);
 		}
 	}
-*/
 }

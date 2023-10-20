@@ -607,9 +607,9 @@ final class Common
 	public static function transformOpt ($data, $reverse = false, $bool = false) {
 		$return = array();
 		if ($reverse === false) {
-			$opt = explode('|', $data);
+			$opt = explode('{||}', $data);
 			foreach ($opt as $k => $v) {
-				$tmp_opt = explode('=', $v);
+				$tmp_opt = explode('==', $v);
 				if ($bool === true) {
 					$return[$tmp_opt[0]] = $tmp_opt[1] == 1 ? true : false;
 				} else {
@@ -619,9 +619,9 @@ final class Common
 		} else if ($reverse === true) {
 			foreach ($data as $k => $v) {
 				$v = (empty($v)) ? '0' : $v;
-				$return[] = $k.'='.$v;
+				$return[] = $k.'=='.$v;
 			}
-			$return = implode('|', $return);
+			$return = implode('{||}', $return);
 		}
 		return $return;
 	}

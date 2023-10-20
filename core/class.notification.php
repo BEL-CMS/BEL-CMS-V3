@@ -17,21 +17,14 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 #########################################
-# Notification Alert (red, blue, green, orange)
+# Notification Alert (red, blue, green, orange, grey)
 #########################################
 final class Notification
 {
-	public static function alert($text = NO_TEXT_DEFINED, $title = INFO, $full = false)
+	public static function alert ($text = null, $title = null, $full = false)
 	{
-		if ($full === true) {
-			echo self::renderFull(null, $text, $title);
-			die();
-		} else {
-			echo self::render(null, $text, $title);
-		}
-	}
-	public static function error ($text = NO_TEXT_DEFINED, $title = ERROR, $full = false)
-	{
+		$title = $title != null ? $title : defined('INFO');
+		$text  = $text  != null ? $text  : defined('NO_TEXT_DEFINED');
 		if ($full === true) {
 			echo self::renderFull('error', $text, $title);
 			die();
@@ -39,8 +32,21 @@ final class Notification
 			echo self::render ('error', $text, $title);
 		}
 	}
-	public static function warning ($text = NO_TEXT_DEFINED, $title = WARNING, $full = false)
+	public static function error ($text = null, $title = null, $full = false)
 	{
+		$title = $title != null ? $title : defined('INFO');
+		$text  = $text  != null ? $text  : defined('NO_TEXT_DEFINED');
+		if ($full === true) {
+			echo self::renderFull('error', $text, $title);
+			die();
+		} else {
+			echo self::render ('error', $text, $title);
+		}
+	}
+	public static function warning ($text = null, $title = null, $full = false)
+	{
+		$title = $title != null ? $title : defined('INFO');
+		$text  = $text  != null ? $text  : defined('NO_TEXT_DEFINED');
 		if ($full === true) {
 			echo self::renderFull('warning', $text, $title);
 			die();
@@ -48,8 +54,10 @@ final class Notification
 			echo self::render ('warning', $text, $title);
 		}
 	}
-	public static function success ($text = NO_TEXT_DEFINED, $title = SUCCESS, $full = false)
+	public static function success ($text = null, $title = null, $full = false)
 	{
+		$title = $title != null ? $title : defined('INFO');
+		$text  = $text  != null ? $text  : defined('NO_TEXT_DEFINED');
 		if ($full === true) {
 			echo self::renderFull('success', $text, $title);
 			die();
@@ -57,8 +65,10 @@ final class Notification
 			echo self::render ('success', $text, $title);
 		}
 	}
-	public static function infos ($text = NO_TEXT_DEFINED, $title = INFO, $full = false)
+	public static function infos ($text = null, $title = null, $full = false)
 	{
+		$title = $title != null ? $title : defined('INFO');
+		$text  = $text  != null ? $text  : defined('NO_TEXT_DEFINED');
 		if ($full === true) {
 			echo self::renderFull('infos', $text, $title);
 			die();
@@ -68,15 +78,39 @@ final class Notification
 	}
 	private static function render ($type = null, $text = 'BEL-CMS : Alert neutral', $title = 'Alert !')
 	{
+		switch ($type) {
+			case 'alert':
+				$bg = 'background-color: rgba(223, 83, 73, .8) !important;';
+			break;
 
-		$render  = '<section class="belcms_notification">';
-		$render .= '<header class="belcms_notification_header '.$type.'">';
-		$render .= '<span>'.$title.'</span>';
-		$render .= '</header>';
-		$render .= '<div class="belcms_notification_msg">';
+			case 'error':
+				$bg = 'background-color: rgba(223, 83, 73, .8) !important;';
+			break;
+
+			case 'success':
+				$bg = 'background-color: rgba(106, 189, 110, .8) !important;';
+			break;
+
+			case 'warning':
+				$bg = 'background-color: rgba(255, 170, 43, .8) !important;';
+			break;
+
+			case 'infos':
+				$bg = 'background-color: rgba(42, 167, 246, .8) !important;';
+			break;
+
+			default:
+				$bg = 'background-color: rgba(102, 97, 90, 1) !important;';
+			break;
+		}
+		$render  = '<section style="border: 1px solid rgba(209, 207, 207, 1);background:rgba(248, 248, 248, 1);margin: 15px  auto;width:100%;overflow:hidden;">'.PHP_EOL;
+		$render .= '<header style="display: block;width:100%;padding:15px;overflow:hidden;color:rgba(255, 255, 255, 0.95);min-height:auto !important;'.$bg.'">'.PHP_EOL;
+		$render .= '<span style="display:block;float:left;margin-left:15px;line-height:24px;font-size:16px;font-weight: bold;">'.$title.'</span>'.PHP_EOL;
+		$render .= '</header>'.PHP_EOL;
+		$render .= '<div style="margin:15px;padding: 15px;text-align: justify;border: 1px solid rgba(209, 207, 207, 1);background-color:rgba(244, 242, 242, 1);font-weight:13px;color:var(--gray-dark);">'.PHP_EOL;
 		$render .= $text;
-		$render .= '</div> ';
-		$render .= '</section>';
+		$render .= '</div>'.PHP_EOL;
+		$render .= '</section>'.PHP_EOL;
 		return $render;
 	}
 	################################################

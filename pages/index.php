@@ -21,19 +21,24 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 #########################################
-# Demarre une $_SESSION
+# Demarre la class Pages
 #########################################
 class Pages
 {
-	var $vars = array(),
-		$useModels,
-		$typeMime = 'text/html';
+	var 		$vars = array(),
+				$useModels,
+				$typeMime = 'text/html',
+				$error    = false,
+				$errorInfos;
 
-	public	$page,
-			$models;
+	public		$page,
+				$subPage,
+				$models;
 
-	private $data,
-			$namePage;
+	protected 	$pageName,
+				$subPageName;
+
+	private 	$data;
 
 	function __construct()
 	{
@@ -41,6 +46,10 @@ class Pages
 		if (isset($this->useModels) and !empty($this->useModels)){
 			self::loadModel($this->useModels);
 		}
+		$this->pageName    = Dispatcher::page();
+		$this->subPageName = Dispatcher::view();
+		$dirLangs = constant('DIR_PAGES').strtolower($this->pageName).DS.'langs'.DS.'lang.'.constant('CMS_WEBSITE_LANG').'.php';
+		require $dirLangs;
 	}
 	#########################################
 	# Retourne le rendu de la page,
@@ -48,35 +57,60 @@ class Pages
 	#########################################
 	function render($filename)
 	{
-		$this->namePage = str_replace('Belcms\Pages\Controller\\', '', get_class($this));
 		// Test si l'utilisateur a accès à la page.
-		if (Secures::getAccessPage(strtolower($this->namePage)) === false) {
-			self::error('Page', constant('NO_ACCESS_GROUP_PAGE'), 'infos');
+		if (Secures::getAccessPage(strtolower($this->pageName)) === false) {
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('NO_ACCESS_GROUP_PAGE'), 'Info', $full = true);
 			return false;
 		}
 		// Test si la page est activée.
-		if (Secures::getPageActive(strtolower($this->namePage)) === false) {
-			self::error('Page', constant('NO_ACCESS_PAGE'), 'warning');
+		if (Secures::getPageActive(strtolower($this->pageName)) === false) {
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_ACCESS_PAGE'), 'warning', true);
 			return false;
 		}
 		// Extrait les données mis en variable pour les données à la page HTML.
 		extract($this->vars);
 		// Démarre la mémoire tampon
 		ob_start();
-		$dir    = constant('DIR_PAGES').strtolower($this->namePage).DS.$filename.'.php';
-		$custom = constant('DIR_TPL').constant('CMS_TPL_WEBSITE').DS.'custom'.DS.lcfirst($this->namePage).'.'.$filename.'.php';
-		// Regarde s'il y a un fichier personnalisé et l'inclus,
-		// ou bien récupère l'original.
-		if (is_file($custom)) {
-			require $custom;
-		} else if (is_file($dir)) {
-			require $dir;
-			//debug($this);
+		$this->page = ob_get_contents();
+		// Si il y a un template 
+		if (defined('CMS_TPL_WEBSITE') and !empty(constant('CMS_TPL_WEBSITE'))) {
+			// Si il y a un template avec une page custom
+			$dir = constant('DIR_PAGES').constant('CMS_TPL_WEBSITE').DS.'custom'.DS.strtolower($this->pageName).'.'.strtolower($filename).'.php';
+			// Si le fichier existe, on inclut
+			if (is_file($dir)) {
+				include $dir;
+			// Autrement on test de prendre la page par default
+			} else {
+				$dir = constant('DIR_PAGES').strtolower($this->pageName).DS.$filename.'.php';
+				// test si le fichier exsite dans la page (normalement oui, c'est un fichier d'origine).
+				if (is_file($dir)) {
+					include $dir;
+				// Autrement une page d'erreur se met en route.
+				} else {
+					$this->error = true;
+					$this->errorInfos = array('warning', $error_text, constant('NOT_FOUND'), $full = true);
+					return false;
+				}
+			}
+		// S'il n'y a pas de template
 		} else {
-			$error_type = 'warning';
-			$error_name = constant('FILE_NO_FOUND');
-			$error_text = constant('FILE').' : <br>'.$dir.' '.constant('NOT_FOUND');
-			self::error($error_type, $error_text, $error_name, true);
+			// On teste s'il a une page custom dans le template par défaut
+			$custom = constant('DIR_PAGES').strtolower('default').DS.'custom'.DS.strtolower($this->pageName).'.'.strtolower($filename).'.php';
+			$dirDefault = constant('DIR_PAGES').strtolower($this->pageName).DS.$filename.'.php';
+			// Si le fichier existe, on inclut
+			if (is_file($custom)) {
+				include $dir;
+			// Si pas, on essaye d'inclure le fichier par défaut (il doit exister normalement !)
+			} else if (is_file($dirDefault)) {
+				include $dirDefault;
+			// Vraiment, au cas où le fichier a été effacé, j'inclus une erreur
+			} else {
+				$this->error = true;
+				$this->errorInfos = array('warning', $error_text, constant('FILE_NO_FOUND'), $full = true);
+				return false;
+			}
 		}
 		// Met en le tampon dans une variable ($this->page);
 		$this->page = ob_get_contents();
@@ -103,6 +137,16 @@ class Pages
 			$error_name    = constant('FILE_NO_FOUND_MODELS');
 			$error_text = constant('FILE').' : <br>'.$dir.' '.constant('NOT_FOUND');
 			self::error($error_type, $error_text, $error_name, true);
+		}
+	}
+	#########################################
+	# récupere le fichier de langue
+	#########################################
+	public function loadLang ($name)
+	{
+		$fileLoadlang = constant('DIR_PAGES').strtolower($name).DS.'langs'.DS.'lang.fr.php';
+		if (is_file($fileLoadlang)) {
+			require $fileLoadlang;
 		}
 	}
 	#########################################
@@ -211,8 +255,8 @@ class Pages
 							$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
 						}
 					}
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$lpm1.'">'.$lpm1.'</a></li>';
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$setLastpage.'">'.$setLastpage.'</a></li>';
+					$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$lpm1.'">'.$lpm1.'</a></li>';
+					$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$setLastpage.'">'.$setLastpage.'  </a></li>';
 				}
 				else if($setLastpage - ($adjacents * 2) > $current && $current > ($adjacents * 2)) {
 					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page=1">1</a></li>';
@@ -243,26 +287,12 @@ class Pages
 			if ($current < $counter - 1) {
 				$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$next.'"><i class="fa-solid fa-forward"></i></a></li>';
 				$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$setLastpage.'"><i class="fa-solid fa-slash"></i></a></li>';
-			} else{
+			} else {
 				$setPaginate .= '<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>';
 				$setPaginate .= '<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-slash"></i></a></li>';
 			}
-			//$setPaginate .= '<li class="">Page '.$current.' '. OF . ' '.$setLastpage.'</li>';
-			//$setPaginate .= '</ul></nav>'.PHP_EOL;
 		}
 
 		return $setPaginate;
-	}
-	#########################################
-	# Retourn un message d'information de type
-	# error - success - warning - infos
-	#########################################
-	function error ($type = 'warning', $text = 'inconnu', $title = 'INFO', $full = false)
-	{
-		ob_start();
-		echo Notification::$type($text, $title, $full);
-		$return =  ob_get_contents();
-		ob_end_clean();
-		echo $return;
 	}
 }

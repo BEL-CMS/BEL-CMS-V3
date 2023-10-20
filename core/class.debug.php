@@ -19,7 +19,7 @@ class Debug
 	public function __construct($data, $exitAfter = true)
 	{
 		$var  = '<pre>'.PHP_EOL;
-		$var .= var_dump($data).PHP_EOL;
+		$var .= var_dump($data);
 		$var .= str_pad('', 100, '#',STR_PAD_RIGHT).PHP_EOL;
 		$var .= '</pre>'.PHP_EOL;
 		echo $var;

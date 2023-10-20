@@ -8,6 +8,7 @@
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
 */
+ini_set('default_charset', 'utf-8');
 #########################################
 # Demarre une $_SESSION
 #########################################
@@ -35,6 +36,12 @@ use BelCMS\Core\BelCMS as BelCMS;
 #########################################
 $belcms = new BelCMS;
 $belcms->typeMime;
-header('Content-Type: <?=$belcms->typeMime;?>');
-$belcms->render();
-return;
+header('Content-Type: <?=$belcms->typeMime;?> charset=utf-8');
+if ($belcms->typeMime == 'text/html') {
+	echo $belcms->template;
+} else if ($belcms->typeMime == 'application/json') {
+	echo json_encode($belcms->page);
+} else if ($belcms->typeMime == 'text/plain') {
+	echo $belcms->page;
+}
+die();

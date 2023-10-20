@@ -38,6 +38,7 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.debug.php',
 	ROOT.DS.'core'.DS.'class.notification.php',
 	ROOT.DS.'core'.DS.'class.comment.php',
+	ROOT.DS.'core'.DS.'class.gesthost.php',
 	ROOT.DS.'config'.DS.'class.config.php',
 	ROOT.DS.'requires'.DS.'common.php',
 	ROOT.DS.'core'.DS.'class.dispatcher.php',
@@ -46,6 +47,7 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.config.php',
 	ROOT.DS.'users'.DS.'index.php',
 	ROOT.DS.'pages'.DS.'index.php',
+	ROOT.DS.'templates'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.belcms.php',
 );
 foreach ($files as $include) {

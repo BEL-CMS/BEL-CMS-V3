@@ -1,0 +1,98 @@
+body , .main-loader-wrap , .fixed-filter .filter-header , .wrap-inner .gallery-items.hid-port-info .grid-det , .team-social li a:hover , .tab-content h3 {
+	background:#2A2A2E;
+}
+header.main-header , .nav-holder-wrap , .footer-inner  , .loader-spin:after , .pl-row span  , .inline-filter a , .grid-det , .gallery-items.hid-port-info .grid-det , .fixed-filter  , .filter-wrap.inline-filter.boxed-filter , .wrap-inner , .portfolio-wrap .swiper-scrollbar , .scroll-nav-wrap , .inline-facts , .team-social li a  , .custom-inner-content ul  , .tab-content  , .tb-item  , .chart  , .client-text  , .client-item , .contact-detail , .pagination , .ws_column , .cat-wid li a {
+	background: #35353A;
+}
+ .middle-circle  , .appn i , .tooltip    , .team-link:before , .client-item:hover .client-img , #contact-form input[type=text]:focus, #contact-form textarea:focus, input[type=email]:focus     {
+	background: #303035;
+}
+.breadcrumb-wrap:before  , .nav-holder-wrap:before  , #subscribe .enteremail , .inline-facts:before        {
+	background: rgba(255,255,255,0.05)
+}
+.appn span  , .sec-dec , blockquote   , .team-box  , .resum-header , .custom-inner-content , .serv-text   , .testi-header h3  , .testi-num , .testi-text , .skillbar-bg    , #contact-form input[type="text"], #contact-form textarea , .post , .comment-text , .control-group .controls input , .control-group .controls textarea  {
+	background: #3F3F44
+}
+ 
+.loader-dec:before , .loader-dec:after , .dec-list:before  , .page-nav:before , .piechart:before , .swiper-pagination.client-pagin:before , .testilider:before  , .team-single-social:before  , .widget-posts-descr:before, .widget-posts-descr:after , .single-post:after , .post-author-wrap ul:before    {
+	background: rgba(255,255,255,0.09)
+}
+.nav-holder li  , .to-top span  , .fixed-filter .filter-header , .sl-tabs li i      {
+	background: rgba(255,255,255,0.02)
+}
+ header.main-header:before , .nav-social:before , .footer-decor , .grid-det:before   , .sec-dec:before   , .serv-dec , .line-dec      {
+	background: rgba(255,255,255,0.1)
+}
+.fixed-filter .gallery-filters a:before, .fixed-filter .gallery-filters a:after, .inline-filter .gallery-filters a:after, .inline-filter .gallery-filters a:before , .scroll-nav ul li a:before, .scroll-nav ul li a:after  , .sl-tabs li:after  , .search {
+	background: rgba(255,255,255,0.2)
+}
+.share-wrapper , .share-button:before , .post-tags li a    {
+    background: #292929;
+}
+.footer-wrap:before , .circle-bg  , .dec-list li  , .piechart-holder h4  , .card-item_num      {
+	background: #2D2D32;
+}
+.element-item:before , .nav-button span  {
+	background: #fff
+}
+.breadcrumb-wrap span , .nav-holder li a , .nav-contacts li a , .footer-inner h3 , .policy-box  , .to-top span  , .to-top:hover i , #subscribe .enteremail , #subscribe .enteremail::-webkit-input-placeholder , .inline-filter a  , .grid-det h3 a , .gallery-items.hid-port-info .grid-det h3 a  , .fixed-filter .gallery-filters a  , .section-title h2 , .text-title , .project-detail-wrap p , .dec-list li , .appn  i , .tooltip  , .appn span , .scroll-nav ul li a , .about-text h3 , .about-text p , .team-info p , .team-link  , .resum-header h3 , .custom-inner-content h4 , .custom-inner-content p , .tab-content p  , .tab-content h3 , .sl-tabs li h3 , .piechart-holder h4  , .client-text h4 , .clients-header h2  , .contact-detail h3 , #contact-form input[type="text"], #contact-form textarea , .error_message , #success_page h3  , .pagination a , .widget-sidebar.ws_column h3   , .widget-posts-descr a , .cat-wid li a , .post h4 a ,  .post p  , .post-author-wrap h3 a , .post-author-wrap p , #comments-title, #reply-title , .fn a , .comment-text p  , .control-group .controls input , .control-group .controls textarea  , .subscribe-message {
+	color: #fff
+}
+.nav-title  , .footer-inner p  ,  .fixed-filter .filter-header , .section-title h4  ,  .project-detail-wrap blockquote p  , .inline-facts h6 , .team-info h4 , .resum-header span , .custom-inner-content ul li , .percent , .testi-text p , .skill-bar-percent , .custom-skillbar-title span  , .contact-detail   p , #success_page p , .widget-posts-date    , .post-opt li span, .post-opt li a  , .post-author-wrap span , .comment-meta, .comment-meta a  {
+	color: #999;
+}
+.to-top i , .appn:hover span , .sl-tabs li.current h3 , .testi-text:before , .post-author-wrap li a   {
+	color: #000;
+} 
+ 
+.nav-holder li  , .nav-holder li:first-child , .to-top span  , .footer-inner , .footer-wrap:before  , .pl-row span  , .grid-det  , .sec-dec   , .dec-list li  , .scroll-nav ul li  , .scroll-nav ul , .scroll-nav ul li:last-child , .inline-facts:before   , .tab-content  , .tab-content h3 , .piechart-holder h4  , .pagination , .pagination a     {
+	border-color: rgba(255,255,255,0.05)
+}
+.policy-box , .circle-bg , .middle-circle , .loader-spin:after , .inline-filter a  , .fixed-filter .filter-header  , .fixed-filter .gallery-filters a  , .section-title h4  , .appn span , .tooltip  , .team-social-wrap , .team-social li a   , .team-box   , .resum-header , .custom-inner-content , .custom-inner-holder , .custom-inner-content ul , .serv-text , .tb-item , .sl-tabs li i  , .client-text , .clients-header h2 , .testi-header h3  , .testi-num , .testi-text , .contact-detail , .card-item_num , .widget-sidebar.ws_column h3   , .cat-item:before , #comments-title, #reply-title , .comment-text   {
+	border-color: rgba(255,255,255,0.09)
+}
+.loader-spin span   {
+	border-color: #666;
+}
+#subscribe .enteremail  {
+	border-left-color: #666;
+}
+.footer-inner:before , .pattern-bg  , .dec-counter , .testi-text:before {
+	opacity: 0.08;
+}
+.shadow-box , header.main-header , .share-button , .to-top i  , .filter-wrap.inline-filter.boxed-filter.fix-box , .page-nav a.ppn, .page-nav a.npn , .tooltip , .portfolio-wrap .carousel-counter , .scroll-nav-wrap , .inline-facts , .piechart-holder h4  , .client-item , .client-item:hover , .testilider .swiper-pagination , .testi-link  , .contact-detail  , #contact-form input[type=text]:focus, #contact-form textarea:focus, input[type=email]:focus   {
+    box-shadow: 0px 5px 10px 2px rgb(0 0 0 / 5%);
+}
+.loader-spin span {
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+}
+.team-single-social li a , #contact-form input[type="text"], #contact-form textarea , .input-wrap , .post , .post-tags li a , .post-author-wrap li a , .control-group .controls input  , .control-group .controls textarea   {
+	border-color: transparent;
+}
+.input-wrap {
+	background: none;
+}
+.inline-facts i {
+    box-shadow: 0px 0px 0px 7px rgba(255,255,255,0.14);
+}
+@media only screen and (max-width: 1258px){
+.inline-filter {
+    background: #35353A;
+}
+}
+@media only screen and (max-width: 1068px){
+.mob-filter_btn {
+ 	background: #35353A;
+    border-bottom: 1px solid rgba(255,255,255,0.09);
+    border-top: 1px solid rgba(255,255,255,0.09);
+	color: #fff
+ 
+}
+.filter-wrap.inline-filter .gallery-filters a {
+    border-bottom: 1px solid rgba(255,255,255,0.09);
+}
+.fixed-filter .filter-header {
+    color: #fff;
+}
+}

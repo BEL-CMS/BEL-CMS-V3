@@ -1,0 +1,77 @@
+.full, .boxed, .boxed-margin { background: #eee url(../images/bg/light_bg.png) repeat }
+#header {
+	background: transparent url(../images/ie_fff_80.png) repeat;
+	background: rgba(255, 255, 255, 0.9);
+	box-shadow: 0 2px rgba(255, 255, 255, 0.5);
+}
+.modern .boxed-margin, .modern .boxed, .modern .full {
+	background: transparent url(../images/bg/bg_modern_light.png) repeat
+}
+#mobilepro, .sf-menu a, .ttw-music-player .play, .timeRefDays, .timeRefHours, .timeRefMinutes, .timeRefSeconds { color: #000 !important }
+.event-timer li {border: 1px solid #F8F8F8}
+.social a { color: #5C5C5C }
+.little-head .search input {
+	background: transparent url(../images/ie_fff_80.png) repeat;
+	background: rgba(255, 255, 255, 0.6);
+}
+#popupLogin .def-block, .breadcrumbIn {
+	background: transparent url(../images/ie_fff_80.png) repeat !important;
+	background: rgba(255, 255, 255, 0.9) !important;
+}
+.ttw-music-player .player-controls, .def-block, .footer-last {
+	background: transparent url(../images/ie_fff_80.png) repeat !important;
+	background: rgba(255, 255, 255, 0.4) !important;
+}
+.sf-menu ul li {
+	background: transparent url(../images/ie_fff_80.png) repeat !important;
+	background: rgba(255, 255, 255, 0.8) !important;
+}
+.sf-menu li li:hover > a, .sf-menu li li > a:hover, .sf-menu li li.current > a {
+	color: #fff !important;
+	background: rgba(0, 0, 0, 0) url(../images/ie_000_80.png) repeat;
+	background: rgba(0, 0, 0, 0.8);
+}
+.sf-menu li li a {color: #000}
+.sf-menu li li li:first-child {border-top: 1px solid #FFF !important;}
+.sf-menu li li {border-top: 1px solid #FFF;border-bottom: 1px solid #B4B4B4;border-top: 1px solid rgba(255, 255, 255, 0.5);border-bottom: 1px solid rgba(180, 180, 180, 0.5);}
+.sf-menu li a span {color: #666}
+.ttw-music-player .player .title { color: #000; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8) }
+.ttw-music-player .pause { color: #000 }
+.little-head {
+	border-bottom: 1px solid #BDBDBD;
+	-webkit-box-shadow: 0 1px rgba(255, 255, 255, 0.75);
+	box-shadow: 0 1px rgba(255, 255, 255, 0.75);
+}
+.ttw-music-player .tracklist {
+	background: transparent url(../images/ie_fff_80.png) repeat;
+	background: rgba(255, 255, 255, 0.4);
+	color: #000
+}
+.ttw-music-player li.playing, .ttw-music-player .tracklist li:hover {color: #000 !important;font-weight: bold}
+.ttw-music-player .tracklist li {text-shadow: none;border-bottom: 1px solid #BDBDBD;-webkit-box-shadow: 0 1px rgba(255, 255, 255, 0.75);box-shadow: 0 1px rgba(255, 255, 255, 0.75)}
+.ttw-music-player .rating-bar:before {color: #979797}
+.ttw-music-player .buy {color: #FFF}
+.ttw-music-player .more {text-shadow:none}
+.liner, .news, .widget .list li a, .tabs, .post, .topic-say {border-bottom: 1px solid #BDBDBD;-webkit-box-shadow: 0 1px rgba(255, 255, 255, 0.75);box-shadow: 0 1px rgba(255, 255, 255, 0.75)}
+h1, h2, h3, h4, h5, h6, .event-month, a, .ttw-music-player .previous:hover, .ttw-music-player .next:hover, .tabs li a.active, .video-grid a strong, strong, .ajde_evcal_calendar .calendar_header p, .ttw-music-player .more:hover {color: #000}
+.mtracks > .pane > .slider {background: #AAA}
+.tipsy-inner {background-color: #000;color: #FFF}
+.tipsy-arrow {background: url('../images/tipsy_000.gif') no-repeat top left}
+.active .accordion-head, .active .toggle-head {color: #000;border: 1px solid #8D8D8D}
+.accordion-head:hover .accordion-head-sign, .toggle-head:hover .toggle-head-sign {color: #242424}
+.active .accordion-content, .active .toggle-content {border: 1px solid #000}
+.accordion-head, .toggle-head {border: 1px solid #C7C7C7;color: #7C7C7C}
+.breadcrumbIn ul li {color: #5C5C5C}
+.Alphabet li a:hover {background: rgba(0, 0, 0, 0) url(../images/ie_000_40.png) repeat;background: rgba(0, 0, 0, 0.6);color: #fff}
+.Alphabet li a {background: rgba(0, 0, 0, 0) url(../images/ie_fff_80.png) repeat;background: rgba(255, 255, 255, 0.6);color: #000}
+.tags a {border: 1px solid #A3A3A3}
+.eventon_fullcal .evo_fc_day {color: #888}
+#evcal_list {border: 1px solid #FFF}
+.evo_fc_day.has_events {color: #FF0078}
+table a { color: #fff }
+.topic-say .reply-time, .topic-say .grid_2 span {color: #A0A0A0}
+.error-page h2 small {color: #838383}
+@media only screen and (min-width: 100px) and (max-width: 479px) {
+	.sf-menu a { color: #000 !important}
+	.sf-menu li li:hover > a, .sf-menu li li > a:hover, .sf-menu li li.current > a {color: #ddd !important}
+}

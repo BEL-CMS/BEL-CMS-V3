@@ -14,6 +14,7 @@ use BelCMS\Core\Config as Config;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Requires\Common as Common;
 use BelCMS\User\User as User;
+use BelCMS\Core\Dispatcher as Dispatcher;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -33,7 +34,7 @@ final class Articles
 			$nbpp = (int) 3;
 		}
 
-		$page = (\BELCMS\CORE\Dispatcher::RequestPages() * $nbpp) - $nbpp;
+		$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
 
 		$sql = New BDD();
 		$sql->table('TABLE_PAGES_ARTICLES');
@@ -62,10 +63,8 @@ final class Articles
 				}
 				$author = $sql->data->author;
 				//$user = User::getInfosUserAll($author);
-				debug($_SESSION['USER']);
-
 				if (empty($user)) {
-					$sql->data->username = constant('UNKNOW');
+					$sql->data->username = constant('UNKNOWN');
 					$sql->data->avatar   = constant('DEFAULT_AVATAR');
 				} else {
 					//$sql->data->username = $user->user->username;
@@ -86,17 +85,6 @@ final class Articles
 					$sql->data[$k]->tags = explode(',', $sql->data[$k]->tags);
 				}
 				$author = $sql->data[$k]->author;
-				$user = User::getInfosUserAll($author);
-
-				debug($author);
-				
-				if (empty($user->user)) {
-					$sql->data->data[$k]->username = constant('ERROR_NO_USER');
-					$sql->data->data[$k]->avatar   = constant('DEFAULT_AVATAR');
-				} else {
-					$sql->data->data[$k]->username = $user->user->username;
-					$sql->data->data[$k]->avatar   = $user->profils->avatar;
-				}
 			}
 		}
 		return $sql->data;

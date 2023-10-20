@@ -20,8 +20,10 @@ $tables = array(
 	#########################################
 	# Tables
 	#########################################
+	'TABLE_COMMENTS'            => $DB_PREFIX.'comments',
 	'TABLE_CONFIG'              => $DB_PREFIX.'config',
 	'TABLE_PAGES_CONFIG'        => $DB_PREFIX.'config_pages',
+	'TABLE_CONFIG_TPL'          => $DB_PREFIX.'config_tpl',
 	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
 	'TABLE_PAGES_ARTICLES'      => $DB_PREFIX.'page_articles',
 	'TABLE_PAGES_ARTICLES_CAT'  => $DB_PREFIX.'page_articles_cat',

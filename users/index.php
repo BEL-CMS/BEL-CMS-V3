@@ -40,7 +40,7 @@ class User
 	#########################################
 	public static function isLogged ():bool
 	{
-		if (isset($_SESSION['USER']['HASH_KEY']) and strlen($_SESSION['USER']['HASH_KEY']) == 32) {
+		if (isset($_SESSION['USER']->hash_key) and strlen($_SESSION['USER']->hash_key) == 32) {
 			$return = true;
 		} else {
 			$return = false;
@@ -165,7 +165,7 @@ class User
 						true,
 						true
 					);
-					$_SESSION['USER']['HASH_KEY'] = $results['hash_key'];
+					$_SESSION['USER']->hash_key = $results['hash_key'];
 					$update = New BDD();
 					$update->table('TABLE_USERS');
 					$update->where(array('name'=>'hash_key','value'=> $results['hash_key']));
@@ -177,11 +177,11 @@ class User
 					self::logout();
 					$return['msg']  = constant('WRONG_USER_PASS');
 					$return['type'] = constant('ERROR');
-						$results['expire']++;
-						$insert = New BDD();
-						$insert->table('TABLE_USERS');
-						$insert->where(array('name'=>'hash_key','value'=> $results['hash_key']));
-						$insert->update(array('expire'=> $results['expire']));
+					$results['expire']++;
+					$insert = New BDD();
+					$insert->table('TABLE_USERS');
+					$insert->where(array('name'=>'hash_key','value'=> $results['hash_key']));
+					$insert->update(array('expire'=> $results['expire']));
 				}
 			} else {
 				// En cas de modification manuel des cookies pour tromper le login

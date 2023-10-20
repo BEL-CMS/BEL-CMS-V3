@@ -46,12 +46,15 @@ final class Dispatcher
 	#########################################
 	public static function page ($page = null)
 	{
+		if ($page === null) {
+			$page = 'articles';
+		}
 		$return = null;
 		$dispatcher = new Dispatcher;
 		if (count($dispatcher->link) != 0 AND isset($dispatcher->link[0])) {
-			$return = Common::VarSecure($dispatcher->link[0], null) === false ? '' : $dispatcher->link[0];
+			$return = Common::VarSecure($dispatcher->link[0], null);
 		} else {
-			$return = Common::VarSecure($page);
+			$return = Common::VarSecure($page, null);
 		}
 		return $return;
 	}
@@ -76,9 +79,9 @@ final class Dispatcher
 	# return le nom :
 	# https://bel-cms.dev/news/view/=>nom<=/id
 	#########################################
-	public static function name ($link) : string
+	public static function name () : string
 	{
-		$return = null;
+		$return = 'index';
 		$dispatcher = new Dispatcher;
 		if (isset($dispatcher->link[2]) AND !empty($dispatcher->link[2])) {
 			$return = Secure::isString($dispatcher->link[2]);
@@ -105,13 +108,10 @@ final class Dispatcher
 	public static function isPage ($pages = null): bool
 	{
 		$return = false;
-		$page   = Dispatcher::page();
 
-		if (!empty($page)) {
-			//$page = constant('CMS_DEFAULT_PAGE');
-			//debug($page);
+		if ($pages == null) {
+			$page = constant('CMS_DEFAULT_PAGE');
 		}
-
 		if (!empty($page)) {
 			if (Common::ExistsPage($page) === true) {
 				$return = (bool) true;
