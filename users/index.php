@@ -38,9 +38,9 @@ class User
 	#########################################
 	# is logged true or false
 	#########################################
-	public static function isLogged ():bool
+	public static function isLogged () : bool
 	{
-		if (isset($_SESSION['USER']->hash_key) and strlen($_SESSION['USER']->hash_key) == 32) {
+		if ($_SESSION['USER']['HASH_KEY'] !== false AND strlen($_SESSION['USER']['HASH_KEY'] == 32)) {
 			$return = true;
 		} else {
 			$return = false;
@@ -165,7 +165,7 @@ class User
 						true,
 						true
 					);
-					$_SESSION['USER']->hash_key = $results['hash_key'];
+					$_SESSION['USER']['HASH_KEY'] = $results['hash_key'];
 					$update = New BDD();
 					$update->table('TABLE_USERS');
 					$update->where(array('name'=>'hash_key','value'=> $results['hash_key']));
@@ -208,7 +208,7 @@ class User
 			unset($_SESSION['LOGIN_MANAGEMENT']);
 		}
 
-		unset($_SESSION['USER']);
+		unset($_SESSION['USER']['HASH_KEY']);
 		setcookie('BEL-CMS-HASH_KEY', '', -1, '/');
 		setcookie('BEL-CMS-NAME', '', -1, '/');
 		setcookie('BEL-CMS-PASS', '', -1, '/');
@@ -273,54 +273,13 @@ class User
 				$d = array('social' => (object) $social->data);
 				/* Return info du social */
 				$return = (object) array_merge($a, $b, $c, $d);
+				$return->profils->birthday = Common::TransformDate($return->profils->birthday, 'MEDIUM', 'NONE');
+				$return->user->color = User::colorUsername($hash_key);
 			} else {
 				$return = false;
 			}
+			return $return;
 		}
-	}
-	#########################################
-	# Change hash_key en username ou avatar
-	#########################################
-	public static function hashkeyToUsernameAvatar ($hash_key = null, $username = 'username')
-	{
-		if ($hash_key !== null && strlen($hash_key) == 32) {
-			$sql = New BDD();
-			$sql->table('TABLE_USERS');
-			$sql->where(array(
-				'name'  => 'hash_key',
-				'value' => $hash_key
-			));
-			$sql->fields(array('username', 'avatar'));
-			$sql->queryOne();
-			if (!empty($sql->data)) {
-				if ($username == 'username') {
-					$return = $sql->data->username;
-				} else {
-					if (empty($sql->data->avatar)) {
-						$return = constant('DEFAULT_AVATAR');
-					} else {
-						if (is_file($sql->data->avatar) or is_file(ROOT.DS.$sql->data->avatar)) {
-							$return = $sql->data->avatar;
-						} else {
-							$return = constant('DEFAULT_AVATAR');
-						}
-					}
-				}
-			} else {
-				if ($username == 'username') {
-					$return = constant('UNKNOWN');
-				} else {
-					$return = constant('DEFAULT_AVATAR');
-				}
-			}
-		} else {
-			if ($username == 'username') {
-				$return = constant('UNKNOWN');
-			} else {
-				$return = constant('DEFAULT_AVATAR');
-			}
-		}
-		return $return;
 	}
 	public static function colorUsername ($hash_key = null, $username = null)
 	{
@@ -328,16 +287,16 @@ class User
 		if ($hash_key == null and $username)
 		{
 			$sql = New BDD();
-			$sql->table('TABLE_USERS');
+			$sql->table('TABLE_USERS_GROUPS');
 			$sql->where(array(
-				'name'  => 'username',
-				'value' => Common::VarSecure($username)
+				'name'  => 'hash_key',
+				'value' => Common::VarSecure($hash_key, null)
 			));
-			$sql->fields(array('main_groups'));
+			$sql->fields(array('user_group'));
 			$sql->queryOne();
 			if (!empty($sql->data)) {
 				foreach (BelCMSConfig::getGroups() as $k => $v) {
-					if ($sql->data->main_groups == $v['id']) {
+					if ($sql->data->user_group == $v['id']) {
 						$color = $v['color'];
 						break;
 					}
@@ -347,17 +306,17 @@ class User
 			}
 		} elseif (Common::hash_key($hash_key)) {
 			$sql = New BDD();
-			$sql->table('TABLE_USERS');
+			$sql->table('TABLE_USERS_GROUPS');
 			$sql->where(array(
 				'name'  => 'hash_key',
 				'value' => $hash_key
 			));
-			$sql->fields(array('main_groups'));
+			$sql->fields(array('user_group'));
 			$sql->queryOne();
 
 			if (!empty($sql->data)) {
 				foreach (BelCMSConfig::getGroups() as $k => $v) {
-					if ($sql->data->main_groups == $v['id']) {
+					if ($sql->data->user_group == $v['id']) {
 						$color = $v['color'];
 						break;
 					}

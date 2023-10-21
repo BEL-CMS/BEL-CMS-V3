@@ -15,7 +15,8 @@ ini_set('default_charset', 'utf-8');
 if(!isset($_SESSION)) {
 	session_start();
 }
-$_SESSION['NB_REQUEST_SQL'] = 0;
+$_SESSION['NB_REQUEST_SQL']   = 0;
+$_SESSION['USER']['HASH_KEY'] = false;
 #########################################
 # Définit comme l'index
 #########################################
@@ -37,7 +38,9 @@ use BelCMS\Core\BelCMS as BelCMS;
 $belcms = new BelCMS;
 $belcms->typeMime;
 header('Content-Type: <?=$belcms->typeMime;?> charset=utf-8');
-if ($belcms->typeMime == 'text/html') {
+if (isset($_GET['echo'])) {
+	echo $belcms->page;
+} else if ($belcms->typeMime == 'text/html') {
 	echo $belcms->template;
 } else if ($belcms->typeMime == 'application/json') {
 	echo json_encode($belcms->page);

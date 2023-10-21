@@ -1,0 +1,99 @@
+#belcms_section_members_main {
+	display: block;
+	max-width: 100%;
+	overflow: hidden;
+	color: #212529;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 15px;
+}
+.belcms_section_members_detail_infos {
+	width: 100%;
+	display: block;
+}
+.belcms_section_members_detail_infos ul {
+	width: 100%;
+	list-style: none;
+	padding: 0; padding: 0;
+	display: table;
+	border-bottom: 1px solid #ccc;
+}
+.belcms_section_members_detail_infos ul li {
+	width: 100%;
+	font-weight: normal !important;
+	padding: 8px;
+	border-bottom: 1px dotted #ccc;
+	display: table-row;
+}
+.belcms_section_members_detail_infos ul li strong {
+	font-weight: bolder;
+	display: table-cell;
+	text-align: left;
+	border-spacing:8px;
+}
+#belcms_section_members_view {
+	display: block;
+	max-width: 100%;
+	overflow: hidden;
+	color: #212529;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 15px;
+}
+#belcms_section_members_view_left {
+	flex: 0 0 41.666667%;
+	max-width: 41.666667%;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+#belcms_section_members_view_right {
+	flex: 0 0 58.333333%;
+	max-width: 58.333333%;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+#belcms_section_members_view_avatar {
+	max-width: 100%;
+	height: auto;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 3px;
+	text-align: center;
+}
+#belcms_section_members_view_avatar img {
+	max-width: 100%;
+	height: auto;
+	margin: auto;
+}
+#bel_cms_members_view_lt_grps {
+	width: 100%;
+	height: auto;
+	border: 1px solid #ccc;
+	padding: 3px;
+	margin-top: 15px;
+}
+#bel_cms_members_view_lt_grps ul {
+	display: block;
+	list-style: none;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+#bel_cms_members_view_lt_grps ul li {
+	display: block;
+	width: 100%;
+	margin-bottom: 5px;
+	line-height: 20px;
+	text-align: left;
+	padding-left: 15px;
+}
+#bel_cms_members_view_lt_grps ul li:last-child {
+	margin-bottom: 0;
+}
+#bel_cms_members_view_lt_grps ul li.title {
+	text-align: center;
+	background: rgba(0,0,0,.15);
+	line-height: 26px;
+}

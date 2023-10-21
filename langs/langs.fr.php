@@ -25,6 +25,7 @@ $array = array(
 	'SUCCESS'                             => 'Succès',
 	'ERROR'                               => 'Erreur',
 	'WARNING'                             => 'Alert',
+	'INFO'                                => 'Information',
 	#####################################
 	# Langue Français - ROOT\USERS
 	#####################################
@@ -212,6 +213,7 @@ $array = array(
 	'ACCESS_TO_CONTROLLER_IMPOSSIBLE'     => 'Accès au controller impossible',
 	'PLEASE_ENTER_YOUR_MAIL'              => 'Veuillez entrer votre e-mail',
 	'UNKNOWN'                             => 'Inconnu',
+	'INVALID_ID'                          => 'ID non valide',
 	#####################################
 	# UPLOAD
 	#####################################

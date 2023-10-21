@@ -35,13 +35,13 @@ class Articles extends Pages
 	{
 		if (strlen($id) == 0) {
 			$this->error = true;
-			$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), 'INFO', false);
+			$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), constant('INFO'), false);
 		} else {
 			$set = array();
 			$set['articles'] = $this->models->getArticles($id);
 			if (!is_object($set['articles']) && $set['articles'] == 0) {
 				$this->error = true;
-				$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), 'INFO', false);
+				$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), constant('INFO'), false);
 				return;
 			} else {
 				$this->models->NewView($id);

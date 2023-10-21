@@ -1,0 +1,182 @@
+/** LOGIN **/
+html {
+	margin: 0;
+	padding: 10% 0;
+}
+body#LoginForm {
+    background-color: #1a232f;
+    background-image: -moz-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
+    background-image: -webkit-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
+    background-image: -o-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
+    background-image: -ms-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
+    background-image: radial-gradient(center center,circle cover,#273648,#0d1218 100%);
+}
+}
+.form-heading {
+	color:#fff; font-size:23px;
+}
+.panel h2 {
+	color:#444444; font-size:18px; margin:0 0 8px 0;
+}
+.panel p {
+	color:#777777;
+	font-size:14px;
+	margin-bottom:30px;
+	line-height:24px;
+}
+.login-form .form-control {
+	background: #f7f7f7 none repeat scroll 0 0;
+	border: 1px solid #d4d4d4;
+	border-radius: 4px;
+	font-size: 14px;
+	height: 50px;
+	line-height: 50px;
+}
+ @media only screen and (min-width: 900px) 
+ {
+	.login-form {
+		max-width: 500px;
+		margin: auto;
+	}
+ }
+.main-div {
+	background: #ffffff none repeat scroll 0 0;
+	border-radius: 2px;
+	margin: 10px auto 30px;
+	padding: 50px 70px 70px 71px;
+}
+.login-form .form-group {
+	margin-bottom:10px;
+}
+.form-group input {
+	width: 100%;
+}
+.login-form {
+	text-align:center;
+}
+.forgot {
+	display: block;
+	float: left;
+}
+.forgot a,
+.nouser a {
+	color: #777777;
+	font-size: 14px;
+	text-decoration: none;
+}
+.forgot a:hover,
+.nouser a:hover {
+	color: #777777;
+	text-decoration: none;
+	border: 1px dashed #777777;
+}
+.nouser {
+	display: block;
+	float: right;
+}
+ @media only screen and (max-width: 400px) 
+ {
+	.forgot,
+	.nouser {
+		display: block;
+		float: none;
+		margin-bottom: 5px !important;
+		text-align: left;
+	}
+ }
+.login-form
+.btn.btn-primary {
+	background: #f0ad4e none repeat scroll 0 0;
+	border-color: #f0ad4e;
+	color: #ffffff;
+	font-size: 14px;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	padding: 0;
+}
+.forgot {
+	text-align: left; margin-bottom:30px;
+}
+.botto-text {
+	color: #ffffff;
+	font-size: 14px;
+	margin: auto;
+}
+.login-form .btn.btn-primary.reset {
+  background: #ff9900 none repeat scroll 0 0;
+}
+.back {
+	text-align: left; margin-top:10px;
+}
+.back a {
+	color: #444444; font-size: 13px;text-decoration: none;
+}
+
+#login-management {
+	position: relative;
+}
+#loading {
+	display: none;
+	background-color: rgba(0, 0, 0, .75);
+	height: 50px;
+	top: calc( 50% - 50px);
+	width: 90%;
+	left: 5%;
+	position: absolute;
+	-webkit-border-radius: 20px;
+	   -moz-border-radius: 20px;
+	        border-radius: 20px;
+	opacity: 0;
+	z-index: 999999;
+
+}
+#loading span {
+	color: rgba(255, 255, 255, 1);
+	display: block;
+	float: left;
+	line-height: 50px;
+	text-transform: uppercase;
+	font-size: 16px;
+}
+#loadspinner {
+	display: block;
+	float: left;
+	margin-right: 15px;
+	width: 30px;
+	height: 30px;
+	line-height: 39px;
+	margin-top: 11px;
+	margin-left: 11px;
+    -webkit-animation-name: loadspinner;
+    -webkit-animation-duration: 1000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: loadspinner;
+    -moz-animation-duration: 2000ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: loadspinner;
+    -ms-animation-duration: 2000ms;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+    
+    animation-name: loadspinner;
+    animation-duration: 2000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+
+}
+
+@-moz-keyframes loadspinner {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes loadspinner {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes loadspinner {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}

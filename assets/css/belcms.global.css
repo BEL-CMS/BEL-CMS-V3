@@ -1,34 +1,102 @@
-*, ::after, ::before {
-  box-sizing: border-box;
-}
+*, ::after, ::before { box-sizing: border-box; }
+p, span { text-align: justify; }
+/*-------------------------------------------------------------------------------------------------*/
+/*	Custom couleur, de la balise code ou pre
+---------------------------------------------------------------------------------------------------*/
 pre, code {
+	color: #333; white-space: initial; border-radius: 3px; background: #ccc;
+	border-left: 8px solid #1ABC9C; padding: 14px 20px;
+	white-space: initial; margin: 5px 0 20px 0; overflow: auto; font-size: 12px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 100%;
-	padding: 0;
-	margin: 0;
-	overflow: auto;
-	overflow-y: hidden;
-	font-size: 12px;
-	line-height: 20px;
-	background: #efefef;
-	border: 1px solid #777;
-	padding: 10px;
-	color: #333;
-	text-align: left !important;
 }
 @media print {
-	pre {
+	pre, code {
 		overflow-x: auto;
 		white-space: pre-wrap;
 		white-space: -moz-pre-wrap !important;
 		white-space: -pre-wrap;
 		white-space: -o-pre-wrap;
 		word-wrap: break-word;
-		background: #fff;
 	}
 }
-.clear {
+/*-------------------------------------------------------------------------------------------------*/
+/*	Créé un block en dessous avec aucune marge ou padding sert juste à forcer en dessous.
+---------------------------------------------------------------------------------------------------*/
+.clear { clear: both; margin: 0; padding: 0; }
+/*-------------------------------------------------------------------------------------------------*/
+/*	Grid >> 12 Columns - inline & position relative pour la position absolute;
+---------------------------------------------------------------------------------------------------*/
+.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12 {
+	display: inline;
+	float: left;
+	position: relative;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Grid >> 12 Columns.
+---------------------------------------------------------------------------------------------------*/
+.belcms_grid_1 { width:6.333%; }
+.belcms_grid_2 { width:14.667%; }
+.belcms_grid_3 { width:23.0%; }
+.belcms_grid_4 { width:31.333%; }
+.belcms_grid_5 { width:39.667%; }
+.belcms_grid_6 { width:48.0%; }
+.belcms_grid_7 { width:56.333%; }
+.belcms_grid_8 { width:64.667%; }
+.belcms_grid_9 { width:73.0%; }
+.belcms_grid_10 { width:81.333%; }
+.belcms_grid_11 { width:89.667%; }
+.belcms_grid_12 { width:98.0%; }
+.belcms_grid_12:after {
+	content: "";
 	clear: both;
-	margin: 0;
+}
+.belcms_grid_full { width:100%; }
+.belcms_row {
+	width: 1060px;
+	margin: 0 auto;
+	padding: 0 40px;
+	position: relative;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Section de Bel-CMS, toujours utilisé pour uniformiser le site.
+---------------------------------------------------------------------------------------------------*/
+section#belcms_section {
+	display: block;
+	max-width: 100%;
+	overflow: hidden;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Barre du titre de Bel-CMS, toujours utilisé pour uniformiser le site.
+---------------------------------------------------------------------------------------------------*/
+section#belcms_section #belcms_title {
+	display: block;
+	max-width: 100%;
+	flex-wrap: wrap;
+	margin-bottom: 15px;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	titre de la page de Bel-CMS, toujours utilisé pour uniformiser le site.
+---------------------------------------------------------------------------------------------------*/
+section#belcms_section #belcms_title > span {
+	display: block;
+	width: 100%;
 	padding: 0;
+	text-align: center;
+	line-height: 40px;
+	margin: 0;
+	margin-bottom: 15px;
+	background-color: #ccc;
+	color: #212529;
+	border: 1px solid rgba(0,0,0,.125);
+	font-weight: bold;
+	border-radius: 2px;
 }
