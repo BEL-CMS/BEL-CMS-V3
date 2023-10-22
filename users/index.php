@@ -14,6 +14,7 @@ use BelCMS\PDO\BDD as BDD;
 use BelCMS\Core;
 use BelCMS\Requires\Common as Common;
 use BelCMS\Core\Config as BelCMSConfig;
+use BelCMS\Core\Dispatcher as Dispatcher;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -24,23 +25,18 @@ class User
 {
     public function __construct()
     {
-		if (User::isLogged() === true) {
+		if (isset($_SESSION['USER'])) {
 			self::autoUpdateSession();
 		} else {
 			self::autoLogin();
 		}    
-    }
-
-    private function coockies ()
-    {
-    	
     }
 	#########################################
 	# is logged true or false
 	#########################################
 	public static function isLogged () : bool
 	{
-		if ($_SESSION['USER']['HASH_KEY'] !== false AND strlen($_SESSION['USER']['HASH_KEY'] == 32)) {
+		if (!empty($_SESSION['USER']['HASH_KEY'])) {
 			$return = true;
 		} else {
 			$return = false;
@@ -55,14 +51,14 @@ class User
 		if (User::isLogged() === true) {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
-			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
-			$sql->update(
-				array(
-					'last_visit' => date('Y-m-d H:i:s'),
-					'ip' => Common::GetIp(),
-					'expire' => 0,
-				)
-			);
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+			$sql->update(array('ip' => Common::GetIp(),'expire' => 0));
+			unset($sql); 
+			$sql = New BDD();
+			$sql->table('TABLE_USERS_PAGE');
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+			$sql->update(array('namepage' => Dispatcher::name() ,'last_visit' => date('Y-m-d H:i:s')));
+			unset($sql);
 		}
 	}
 	#########################################
@@ -71,17 +67,23 @@ class User
 	private function autoLogin()
 	{
 		// Si la session existe déjà, inutile d'aller plus loin
-		if (User::isLogged() === false) {
+		if (self::isLogged() === false) {
+			// Control si la variable $_COOKIE existe
 			if (
-				isset($_COOKIE['BEL-CMS-HASH_KEY']) AND
-				!empty($_COOKIE['BEL-CMS-HASH_KEY']) AND
-				isset($_COOKIE['BEL-CMS-NAME']) AND
-				!empty($_COOKIE['BEL-CMS-NAME']) AND
-				isset($_COOKIE['BEL-CMS-PASS']) AND
-				!empty($_COOKIE['BEL-CMS-PASS'])
+				isset($_COOKIE['BELCMS_HASH_KEY']) AND
+				!empty($_COOKIE['BELCMS_HASH_KEY']) AND
+				isset($_COOKIE['BELCMS_NAME']) AND
+				!empty($_COOKIE['BELCMS_NAME']) AND
+				isset($_COOKIE['BELCMS_PASS']) AND
+				!empty($_COOKIE['BELCMS_PASS'])
 			) {
-				if (strlen($_COOKIE['BEL-CMS-HASH_KEY']) == 32) {
-					self::login($_COOKIE['BEL-CMS-NAME'], $_COOKIE['BEL-CMS-PASS'], $_COOKIE['BEL-CMS-HASH_KEY']);
+				// Passe en tableaux les valeurs du $_COOKIE
+				$name     = $_COOKIE['BELCMS_NAME'];
+				$hash_key = $_COOKIE['BELCMS_HASH_KEY'];
+				$hash     = $_COOKIE['BELCMS_PASS'];
+				// Verifie le hash_key est bien de 32 caractere
+				if ($hash_key AND strlen($hash_key) == 32) {
+					self::login($name, $hash, $hash_key);
 				}
 			}
 		}
@@ -122,77 +124,82 @@ class User
 
 			$results = $sql->data;
 
-			if ($results && is_array($results) && sizeof($results)) {
-				if ($results['expire'] >= 4) {
+			if ($results && is_object($results)) {
+				if ($results->expire >= 4) {
 					$return['msg']  = constant('ACCOUNT_BLOCKED_REQUEST_NEW_PASS');
-					$return['type'] = constant('ERROR');
+					$return['type'] = 'error';
 					return $return;				
 				}
+				if ($results->valid == 0) {
+					$return['msg']  = constant('VALIDATION_REQUIRED');
+					$return['type'] = 'error';
+				}
 				if ($hash_key AND strlen($hash_key) == 32) {
-					$check_password = $password == $results['passwordhash'] ? true : false;
+					$check_password = $password == $results->password ? true : false;
 				} else {
 					$check_password = false;
 				}
-				if ($results['valid'] == 0) {
-					$return['msg']  = constant('VALIDATION_REQUIRED');
-					$return['type'] = constant('ERROR');
-				}
-				if (password_verify($password, $results['passwordhash']) OR $check_password) {
-					setcookie(
-						'BEL-CMS-HASH_KEY',
-						$results['hash_key'],
-						time()+60*60*24*30*3,
-						"/",
-						$_SERVER['HTTP_HOST'],
-						true,
-						true
-					);
-					setcookie(
-						'BEL-CMS-NAME',
-						$results['username'],
-						time()+60*60*24*30*3,
-						"/",
-						$_SERVER['HTTP_HOST'],
-						true,
-						true
-					);
-					setcookie(
-						'BEL-CMS-PASS',
-						$results['passwordhash'],
-						time()+60*60*24*30*3,
-						"/",
-						$_SERVER['HTTP_HOST'],
-						true,
-						true
-					);
-					$_SESSION['USER']['HASH_KEY'] = $results['hash_key'];
+				if (password_verify($password, $results->password) OR $check_password) {
+					if (
+						!isset($_COOKIE['BELCMS_HASH_KEY']) && 
+						!isset($_COOKIE['BELCMS_NAME']) && 
+						!isset($_COOKIE['BELCMS_PASS'])
+					) {
+						setcookie(
+							'BELCMS_HASH_KEY',
+							$results->hash_key,
+							time()+60*60*24*30*3,
+							"/",
+							$_SERVER['HTTP_HOST'],
+							true,
+							true
+						);
+						setcookie(
+							'BELCMS_NAME',
+							$results->username,
+							time()+60*60*24*30*3,
+							"/",
+							$_SERVER['HTTP_HOST'],
+							true,
+							true
+						);
+						setcookie(
+							'BELCMS_PASS',
+							$results->password,
+							time()+60*60*24*30*3,
+							"/",
+							$_SERVER['HTTP_HOST'],
+							true,
+							true
+						);
+					}
+					$_SESSION['USER']['HASH_KEY'] = self::getInfosUserAll($results->hash_key);
 					$update = New BDD();
 					$update->table('TABLE_USERS');
-					$update->where(array('name'=>'hash_key','value'=> $results['hash_key']));
+					$update->where(array('name'=>'hash_key','value'=> $results->hash_key));
 					$update->update(array('expire'=> 0));
 					$return['msg']  = constant('CONNECTION_SUCCESSFULLY');
-					$return['type'] = constant('SUCCESS');
+					$return['type'] = 'success';
 				} else {
 					// En cas de modification manuel des cookies pour tromper le login
-					self::logout();
 					$return['msg']  = constant('WRONG_USER_PASS');
-					$return['type'] = constant('ERROR');
-					$results['expire']++;
+					$return['type'] = 'error';
+					$results->expire++;
 					$insert = New BDD();
 					$insert->table('TABLE_USERS');
-					$insert->where(array('name'=>'hash_key','value'=> $results['hash_key']));
-					$insert->update(array('expire'=> $results['expire']));
+					$insert->where(array('name'=>'hash_key','value'=> $results->hash_key));
+					$insert->update(array('expire'=> $results->expire));
 				}
 			} else {
 				// En cas de modification manuel des cookies pour tromper le login
 				self::logout();
 				$return['msg']  = constant('NO_USER_WITH_USER_AND_MAIL');
-				$return['type'] = constant('WARNING');
+				$return['type'] = 'warning';
 			}
 		} else {
 			if ($hash_key AND strlen($hash_key) == 32) {
 				$return['msg']  = constant('NAME_OR_PASS_REQUIRED');
-				$return['type'] = constant('ERROR');
+				$return['type'] = 'error';
 			}
 		}
 		return $return;
@@ -209,14 +216,21 @@ class User
 		}
 
 		unset($_SESSION['USER']['HASH_KEY']);
-		setcookie('BEL-CMS-HASH_KEY', '', -1, '/');
-		setcookie('BEL-CMS-NAME', '', -1, '/');
-		setcookie('BEL-CMS-PASS', '', -1, '/');
+		setcookie('BELCMS_HASH_KEY', '', -1, '/');
+		setcookie('BELCMS_NAME', '', -1, '/');
+		setcookie('BELCMS_PASS', '', -1, '/');
 		session_destroy();
 
 		$return['msg']  = constant('SESSION_COOKIES_DELETE');
 		$return['type'] = constant('SUCCESS');
 
+		/* Re cree la _SESSION; */
+		if(!isset($_SESSION)) {
+			session_start();
+		}
+		$_SESSION['NB_REQUEST_SQL']   = 0;
+		$_SESSION['USER']['HASH_KEY'] = false;
+		/* Re cree la _SESSION; */
 		return $return;
 	}
 	#########################################
@@ -233,7 +247,7 @@ class User
 				'name'  => 'hash_key',
 				'value' => $hash_key
 			));
-			$user->fields(array('username','mail', 'ip', 'valid', 'expire', 'token'));
+			$user->fields(array('username','hash_key', 'mail', 'ip', 'valid', 'expire', 'token'));
 			$user->isObject(false);
 			$user->queryOne();
 			if (!empty($user->data)) {
@@ -272,7 +286,18 @@ class User
 				$social->queryOne();
 				$d = array('social' => (object) $social->data);
 				/* Return info du social */
-				$return = (object) array_merge($a, $b, $c, $d);
+				/* Return info de la table user */
+				$user = new BDD();
+				$user->table('TABLE_USERS_PAGE');
+				$user->where(array(
+					'name'  => 'hash_key',
+					'value' => $hash_key
+				));
+				$user->fields(array('namepage', 'last_visit'));
+				$user->isObject(false);
+				$user->queryOne();
+				$e = array('page' => (object) $user->data);
+				$return = (object) array_merge($a, $b, $c, $d, $e);
 				$return->profils->birthday = Common::TransformDate($return->profils->birthday, 'MEDIUM', 'NONE');
 				$return->user->color = User::colorUsername($hash_key);
 			} else {
@@ -329,3 +354,4 @@ class User
 		return $color;
 	}
 }
+new User;

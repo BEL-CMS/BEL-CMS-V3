@@ -18,6 +18,7 @@ endif;
 
 #########################################
 # Notification Alert (red, blue, green, orange, grey)
+# alert error infos success warning
 #########################################
 final class Notification
 {

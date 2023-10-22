@@ -36,23 +36,23 @@ final class Interaction
 		}
 	}
 
-	public function type ($type = 'infos')
+	public function type ($type = null)
 	{
 		switch ($type) {
-			case 'infos':
+			case constant('INFO'):
 				$type = 'infos';
 			break;
-			case 'error':
+			case constant('ERROR'):
 				$type = 'error';
 			break;
-			case 'success':
+			case constant('SUCCESS'):
 				$type = 'success';
 			break;
-			case 'warning':
+			case constant('WARNING'):
 				$type = 'warning';
 			break;
 			default:
-				$type = $type;
+				$type = 'infos';
 			break;
 		}
 

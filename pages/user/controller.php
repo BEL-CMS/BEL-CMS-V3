@@ -10,12 +10,14 @@
  */
 
 namespace BELCMS\Pages\Controller;
+
 use BELCMS\Pages\Pages;
 use BELCMS\User\User as UserInfos;
 use BelCMS\PDO\BDD as BDD;
 use BELCMS\Core\Notification as Notification;
 use BelCMS\Core\Secure as Secure;
 use BelCMS\Requires\Common as Common;
+use BelCMS\Core\Interaction as Interaction;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -24,29 +26,28 @@ endif;
 
 class User extends Pages
 {
-	var $useModels = 'ModelsUser';
+	var $useModels = 'User';
 	#########################################
 	# Index de la page utilisateur
 	#########################################
 	public function index ()
 	{
+		debug($this);
 		if (UserInfos::isLogged() === true) {
-			$dir = constant('DIR_USERS').$_SESSION['USER']['HASH_KEY'].'/';
+			$dir = constant('DIR_UPLOADS').$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
 			if (!is_dir($dir)) {
 			    mkdir($dir, 0777, true);
 			}
 			$fopen  = fopen($dir.'/index.html', 'a+');
 			$fclose = fclose($fopen);
-			$d            = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']);
-			$d['gaming']  = $this->models->getGaming ();
-			$d['gamers']  = $this->models->getTeamUsers ();
 			$d['current'] ='user';
+			$d['user']    = $_SESSION['USER']['HASH_KEY'];
 			$this->set($d);
 			$this->render('index');
 		} else {
 			$this->redirect('User/login&echo', 3);
-			Notification::warning(constant('LOGIN_REQUIRE'));
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
 	#########################################
@@ -63,13 +64,14 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']);
+			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
 			$d['current'] ='avatar';
 			$this->set($d);
 			$this->render('avatar');
 		} else {
 			$this->redirect('User/login', 3);
-			Notification::warning(constant('LOGIN_REQUIRE'));
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
 	#########################################
@@ -79,13 +81,14 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']);
+			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
 			$d['current'] ='security';
 			$this->set($d);
 			$this->render('security');
 		} else {
 			$this->redirect('User/login', 3);
-			Notification::warning(constant('LOGIN_REQUIRE'));
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
 	#########################################
@@ -95,13 +98,14 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']);
+			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
 			$d['current'] ='safety';
 			$this->set($d);
 			$this->render('safety');
 		} else {
 			$this->redirect('User/login', 3);
-			Notification::warning(constant('LOGIN_REQUIRE'));
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
 	#########################################
@@ -111,13 +115,14 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']);
+			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
 			$d['current'] ='social';
 			$this->set($d);
 			$this->render('social');
 		} else {
 			$this->redirect('User/login', 3);
-			Notification::warning(constant('LOGIN_REQUIRE'));
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
 	#########################################
@@ -134,7 +139,7 @@ class User extends Pages
 			}
 		} else {
 			$d = array();
-			$d['user'] = $this->models->getDataUser($_SESSION['USER']['HASH_KEY']);
+			$d['user'] = $this->models->getDataUser($_SESSION['USER']['HASH_KEY']->user->hash_key);
 			$this->set($d);
 			$this->render('index');
 		}
@@ -211,103 +216,42 @@ class User extends Pages
 			$this->redirect('User', 3);
 		}
 	}
-	public function sendSecurelogin ()
-	{
-		if (isset($_REQUEST['umal']) && isset($_REQUEST['passwrd'])) {
-			if (!empty($_REQUEST['umal']) && !empty($_REQUEST['passwrd'])) {
-
-				if (Secure::isMail($_REQUEST['umal']) === false) {
-					$return['text'] = 'Veuillez entrer votre e-mail';
-					$return['type']	= 'warning';
-					$this->error = true;
-					$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
-					$this->redirect('managements', 2);
-					return;
-				}
-
-				$return = array();
-
-				$sql = New BDD();
-				$sql->table('TABLE_USERS');
-				$sql->where(array('name' => 'email', 'value' => $_REQUEST['umal']));
-				$sql->queryOne();
-				$data = $sql->data;
-
-				if (password_verify($_REQUEST['passwordhash'], $data->passwordhash)) {
-					if ($_SESSION['USER']['HASH_KEY'] == $data->hash_key) {
-						$interaction = New Interaction;
-						$interaction->user($_SESSION['USER']['HASH_KEY']);
-						$interaction->type('success');
-						$interaction->title('Accès autorisé');
-						$interaction->text('S\'est connecté au management');
-						$interaction->insert();
-						$_SESSION['LOGIN_MANAGEMENT'] = true;
-						$return['text'] = 'login en cours...';
-						$return['type']	= 'success';
-					} else {
-						$Interaction = New Interaction;
-						$Interaction->user($_SESSION['USER']['HASH_KEY']);
-						$Interaction->type('error');
-						$Interaction->title('Accès non autorisé');
-						$Interaction->text('À tenter de ce connecté avec un autre Hash Key !');
-						$Interaction->insert();
-						$return['text'] = 'Hash_key ne corespond pas au votre ?...';
-						$return['type']	= 'danger';
-					}
-				} else {
-					$Interaction = New Interaction;
-					$Interaction->user($_SESSION['USER']['HASH_KEY']);
-					$Interaction->type('error');
-					$Interaction->title('Accès non autorisé');
-					$Interaction->text('Tentative d\'accès avec un mauvais mot de passe !');
-					$Interaction->insert();
-					$return['text'] = 'Le password n\'est pas le bon !!!';
-					$return['type']	= 'warning';
-				}
-			}
-		}
-		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
-		$this->error('Managements', $return['text'], $return['type']);
-		$this->redirect('managements', 2);
-	}
 	public function sendLogin ()
 	{
 		if (empty($this->data)) {
 			$this->error = true;
-			$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
-			$this->error(ERROR, 'Field Empty', 'error');
+			$this->errorInfos = array('warning', constant('EMPTY_DATA'), constant('MANAGEMENTS'), false);
 		} else {
 			$return = UserInfos::login($this->data['username'], $this->data['password']);
+			$this->error = true;
 			if ($return['type'] == 'error') {
-				Notification::error($return['msg']);
+				$this->errorInfos = array('error', $return['msg'], $return['type'], false);
 				$this->redirect('User/Login&echo', 3);
 			} else if ($return['type'] == 'warning') {
+				$this->errorInfos = array('warning', $return['msg'], $return['type'], false);
 				$this->redirect('User/Login&echo', 3);
-				Notification::warning($return['msg']);
 			} else if ($return['type'] == 'success') {
-				$this->redirect('User/Profil', 3);
-				Notification::success($return['msg']);
+				$this->errorInfos = array('success', $return['msg'], $return['type'], false);
+				$this->redirect('User', 3);
 			} else {
+				$this->errorInfos = array('infos', constant('UNKNOWN_ERROR'), constant('INFO'), false);
 				$this->redirect('User/login&echo', 3);
-				Notification::warning('Erreur inconnu');
 			}
+
 		}
 	}
 
 	private function mailpassword ()
 	{
 		if (empty($this->data)) {
-			$this->error(ERROR, 'Field Empty');
 			$this->error = true;
-			$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
+			$this->errorInfos = array('warning', constant('ERROR_NO_DATA'), constant('ERROR_NO_ID'), false);
 			$this->redirect('user/login', 3);
 		} else {
 			unset($this->data['send']);
 			$return = $this->models->sendEditPassword($this->data);
-			$this->error('Edit mail & password', $return['msg'], $return['type']);
 			$this->error = true;
-			$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
+			$this->errorInfos = array($return['type'], $return['msg'], constant('EDIT_MAIL_PASS'), false);
 			$this->redirect('User', 2);
 		}
 	}
@@ -320,7 +264,7 @@ class User extends Pages
 					echo $this->models->GetInfosUser($usermail, $userpass);
 				}
 			} else {
-				echo json_encode('Error API KEY');
+				echo json_encode(constant('ERROR_API_KEY'));
 			}
 		} else {
 			echo null;
@@ -332,9 +276,8 @@ class User extends Pages
 	public function sendaccount ()
 	{
 		$return = $this->models->sendAccount($this->data);
-		$this->error($return['title'], $return['msg'], $return['type']);
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
 		$this->redirect('User', 2);
 	}
 	#########################################
@@ -343,9 +286,8 @@ class User extends Pages
 	public function sendsecurity ()
 	{
 		$return = $this->models->sendSecurity($this->data);
-		$this->error($return['title'], $return['msg'], $return['type']);
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
 		$this->redirect('User', 2);
 	}
 	#########################################
@@ -354,9 +296,8 @@ class User extends Pages
 	public function avatarsubmit ()
 	{
 		$return = $this->models->avatarSubmit($this->data);
-		$this->error($return['ext'], $return['msg'], $return['type']);
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
 		$this->redirect('User', 2);
 	}
 	#########################################
@@ -365,9 +306,8 @@ class User extends Pages
 	public function newavatar ()
 	{
 		$return = $this->models->sendNewAvatar();
-		$this->error($return['ext'], $return['msg'], $return['type']);
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
 		$this->redirect('User', 2);
 	}
 	#########################################
@@ -376,9 +316,8 @@ class User extends Pages
 	public function submitsocial ()
 	{
 		$return = $this->models->sendSubmitSocial($this->data);
-		$this->error($return['ext'], $return['msg'], $return['type']);
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], constant('MANAGEMENTS'), false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
 		$this->redirect('User', 2);
 	}
 }

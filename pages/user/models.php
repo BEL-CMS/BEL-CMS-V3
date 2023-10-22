@@ -9,6 +9,13 @@
  * @author as Stive - stive@determe.be
  */
 
+namespace Belcms\Pages\Models;
+
+use BelCMS\Core\Secures as Secures;
+use BelCMS\PDO\BDD as BDD;
+use BelCMS\User\User as Users;
+use BelCMS\Requires\Common as Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -20,213 +27,13 @@ final class User
 	# Variable declaration
 	#####################################
 	private $sql;
-	private $structureUser = array(
-		'id',
-		'username',
-		'passwordhash',
-		'email',
-		'avatar',
-		'hash_key',
-		'date_registration',
-		'last_visit',
-		'groups',
-		'main_groups',
-		'valid',
-		'ip',
-		'token',
-		'expire',
-		'god'
-	);
-	private $structureProfils = array(
-		'id',
-		'hash_key',
-		'gender',
-		'public_mail',
-		'websites',
-		'list_ip',
-		'config',
-		'info_text',
-		'birthday',
-		'country',
-		'hight_avatar',
-		'friends'
-	);
-	#####################################
-	# Get data table users
-	#####################################
-	public function getDataUser ($hash_key = false)
-	{
-		if (Users::isLogged() === true) {
-			if ($hash_key and ctype_alnum($hash_key)) {
-
-				$sql = New BDD();
-				$sql->table('TABLE_USERS');
-				$sql->isObject(false);
-				$sql->where(array(
-					'name'  => 'hash_key',
-					'value' => $hash_key
-				));
-				$sql->queryOne();
-				$results = $sql->data;
-
-				if ($results && sizeof($results)) {
-					$sqlP = New BDD();
-					$sqlP->table('TABLE_USERS_PROFILS');
-					$sqlP->isObject(false);
-					$sqlP->where(array(
-						'name'  => 'hash_key',
-						'value' => $hash_key
-					));
-					$sqlP->queryOne();
-					$resultsProfils = $sqlP->data;
-				}
-				$returnMerge = array_merge($results, $resultsProfils);
-				if ($returnMerge && sizeof($returnMerge)) {
-
-					$sqlS = New BDD();
-					$sqlS->table('TABLE_USERS_SOCIAL');
-					$sqlS->isObject(false);
-					$sqlS->where(array(
-						'name'  => 'hash_key',
-						'value' => $hash_key
-					));
-					$sqlS->queryOne();
-					$resultsSocial = $sqlS->data;
-				}
-
-				if (!empty($resultsSocial)) {
-					$returnMerge = array_merge($returnMerge, $resultsSocial);
-				}
-
-				if (!empty($returnMerge)) {
-				
-					foreach ($returnMerge as $k => $v) {
-						if ($k == 'birthday') {
-							$v = Common::transformDate($v, 'SHORT');
-						} else if ($k == 'date_registration' OR $k == 'last_visit') {
-							$v = Common::TransformDate($v, 'SHORT', 'SHORT');
-						}
-						if ($k == 'avatar') {
-							if (empty($v) OR !is_file($v)) {
-								$v = 'assets/images/default_avatar.jpg';
-							}
-						}
-						if ($k == 'friends') {
-							if (empty($v)) {
-								$v = array();
-							} else {
-								$arrayHash = explode('|', $v);
-							}
-						}
-
-						if ($k == 'gender') {
-							$v = strtoupper($v);
-							$v = defined($v) ? constant($v) : $v;
-						}
-
-						if ($k == 'groups') {
-							$v = explode('|', $v);
-							$v = is_array($v) ? $v : (array) $v;
-						}
-
-						if ($k == 'main_groups') {
-							$v = (int) $v;
-						}
-
-						$return[$k] = $v;
-						$directoryAvatar = ROOT.'uploads/users/'.$hash_key;
-
-						if (!file_exists($directoryAvatar)) {
-							if (!mkdir($directoryAvatar, 0777, true)) {
-								throw new Exception('Failed to create directory');
-							} else {
-								$fopen = fopen($directoryAvatar.'/index.html', 'a+');
-								$fclose = fclose($fopen);
-							}
-						}
-					}
-					$return['list_avatar'] = array();
-					$getListAvatar = Common::scanFiles('uploads/users/'.$hash_key.'/', array('gif', 'jpg', 'jpeg', 'png'), true);
-					foreach ($getListAvatar as $valueListAvatar) {
-						$return['list_avatar'][] = $valueListAvatar;
-					}
-				} else {
-					$return = array();
-				}
-
-			} else {
-					$sqlU = New BDD();
-					$sqlU->table('TABLE_USERS');
-					$sqlU->isObject(false);
-					$sqlU->where(array(
-						'name'  => 'hash_key',
-						'value' => $hash_key
-					));
-					$sqlU->queryAll();
-					$results = $this->sqlU->data;
-
-				if ($results && sizeof($results)) {
-					$hashKeyRequest = array();
-
-					$sqlUS = New BDD();
-					$sqlUS->table('TABLE_USERS_PROFILS');
-					$sqlUS->isObject(false);
-					$sqlUS->where(array(
-						'name'  => 'hash_key',
-						'value' => $v['hash_key']
-					));
-					$sqlUS->queryAll();
-					$resultsProfils = $sqlUS->data;
-
-					$arrayProfils   = array();
-
-					foreach ($resultsProfils as $k => $v) {
-						$arrayProfils[$v['hash_key']] = $v;
-					}
-
-					$arraySocial   = array();
-
-					foreach ($resultsSocial as $k => $v) {
-						$arraySocial[$v['hash_key']] = $v;
-						unset($arraySocial[$v['hash_key']]['hash_key'], $arraySocial[$v['hash_key']]['id']);
-					}
-
-					$i = 0;
-					foreach ($results as $k => $v) {
-						if (array_key_exists($v['hash_key'], $arrayProfils)) {
-							$return[$i] = array_merge($results[$k], $arrayProfils[$v['hash_key']]);
-						}
-						if (array_key_exists($v['hash_key'], $arraySocial)) {
-							$return[$i] = array_merge($return[$i], $arraySocial[$v['hash_key']]);
-						} $i++;
-					}
-
-					foreach ($return as $k => $v) {
-						$return[$k]['gender']            = defined($v['gender']) ? constant(strtoupper($v['gender'])) : $v['gender'];
-						$return[$k]['birthday']          = Common::transformDate($return[$k]['birthday']);
-						$return[$k]['date_registration'] = Common::transformDate($return[$k]['date_registration'], true);
-						$return[$k]['last_visit']        = Common::transformDate($return[$k]['last_visit'], true);
-						if (empty($return[$k]['avatar']) or !is_file($return[$k]['avatar'])) {
-							$return[$k]['avatar'] = 'assets/imagery/default_avatar.jpg';
-						}
-						$return[$k]['groups'] = explode('|', $v['groups']);
-						$return[$k]['main_groups'] = (int) $v['main_groups'];
-					}
-
-				}
-			}
-		} else {
-			return false;
-		}
-		return (object) $return;
-	}
 	#####################################
 	# Insert registration
 	#####################################
 	public function sendRegistration (array $data)
 	{
 		if ($data) {
-			$error = null;
+			$error = 0;
 			// Ajout du blacklistage des mail jetables
 			$sql = New BDD();
 			$sql->table('TABLE_MAIL_BLACKLIST');
@@ -245,44 +52,35 @@ final class User
 				$tmpNdd =  explode('.', $tmpMailSplit[1]);
 			}
 
-			foreach ($data as $k => $v) {
-				if (!array_search($k, $this->structureUser)) {
-					if ($k != 'name') {
-						unset($data[$k]);
-					}
-				}
-			}
-
 			if (!isset($_REQUEST['query_register']) or !isset($_SESSION['TMP_QUERY_REGISTER']['OVERALL'])) {
-				$return['msg']  = 'Le code de sécurité est incorrect'; ++$error;
+				$return['msg']  = constant('SECURE_CODE_FAIL'); $error++;
 				$return['type'] = 'warning';
 				return $return;
 			}
-
 			if (empty($data['username']) OR empty($data['email']) OR empty($data['passwordhash'])) {
-				$return['msg']  = 'Les champs nom d\'utilisateur & e-mail & mot de passe doivent être rempli'; ++$error;
+				$return['msg']   = constant('UNKNOW_USER_MAIL_PASS'); $error++;
 				$return['type']  = 'error';
 			} else if (in_array($tmpNdd[0], $arrayBlackList)) {
-				$return['msg']  = 'Les e-mails jetables ne sont pas autorise'; ++$error;
+				$return['msg']   = constant('NO_MAIL_ALLOWED'); $error++;
 				$return['type']  = 'warning';
 			} else if ($_REQUEST['query_register'] != $_SESSION['TMP_QUERY_REGISTER']['OVERALL'])  {
-				$return['msg']  = 'Le code de sécurité est incorrect'; ++$error;
+				$return['msg']   = constant('SECURE_CODE_FAIL'); $error++;
 				$return['type']  = 'warning';
-			} else if (strlen($data['username']) < 4) {
-				$return['msg']  = 'Le nom d\'utilisateur est trop court, minimum 4 caractères'; ++$error;
-				$return['type']  = 'warning';
-			} else if (strlen($data['username']) > 32) {
-				$return['msg']  = 'Le nom d\'utilisateur est trop long, maximum 32 caractères'; ++$error;
+			} else if (strlen($data['username']) < 3) {
+				$return['msg']   = constant('MIN_THREE_CARACTER'); $error++;
 				$return['type']  = 'warning';
 			} else if (strlen($data['passwordhash']) < 6) {
-				$return['msg']  = 'Le mot de passe est trop court, minimum 6 caractères'; ++$error;
+				$return['msg']   = constant('MIN_SIX_CARACTER'); $error++;
+				$return['type']  = 'warning';
+			} else if (strlen($data['username']) > 32) {
+				$return['msg']   = constant('MAX_CARACTER'); $error++;
 				$return['type']  = 'warning';
 			} else if ($data['passwordhash'] != $_POST['passwordrepeat']) {
-				$return['msg']  = 'Le mot de passe et la confirmation ne sont pas identiques'; ++$error;
-				$return['type']  = 'warning';
+				$return['msg']   = constant('PASS_CONFIRM_NOT_SAME'); $error++;
+				$return['type']  = 'info';
 			}
 
-			if ($error === null) {
+			if ($error == 0) {
 
 				$sql = New BDD();
 				$sql->table('TABLE_USERS');
@@ -292,42 +90,46 @@ final class User
 
 				$sql = New BDD();
 				$sql->table('TABLE_USERS');
-				$sql->where(array('name'=>'email','value'=>$data['email']));
+				$sql->where(array('name'=>'mail','value'=>$data['email']));
 				$sql->count();
 				$checkMail = (int) $sql->data;
 
 				if ($returnCheckName >= 1) {
-					$return['msg']  = 'ce Nom / Pseudo est déjà réservé.';
+					$return['msg']  = constant('THIS_NAME_OR_PSEUDO_RESERVED');
 					$return['type']  = 'warning';
 				} elseif ($checkMail >= 1) {
-					$return['msg']  = 'ce courriel est déjà réservé.';
+					$return['msg']  = constant('THIS_MAIL_IS_ALREADY_RESERVED');
 					$return['type']  = 'warning';
 				} else {
 					$hash_key = md5(uniqid(rand(), true));
-					$newDate = new DateTime('now');
-					$currentDate = $newDate->format('Y-m-d H:i:s');
+					$password_hash = password_hash($data['passwordhash'], CRYPT_BLOWFISH);
+
 					$insertUser = array(
 						'id'                => null,
 						'username'          => $data['username'],
-						'passwordhash'      => password_hash($data['passwordhash'], PASSWORD_DEFAULT),
-						'passwordhash'		=> password_hash($data['passwordhash'], PASSWORD_DEFAULT),
-						'email'             => $data['email'],
-						'avatar'            => DIR_ASSET_IMG.'default_avatar.jpg',
 						'hash_key'          => $hash_key,
-						'date_registration' => $currentDate,
-						'last_visit'        => $currentDate,
-						'groups'            => (int) 2,
-						'main_groups'       => (int) 2,
-						'valid'             => (int) 1,
+						'password'          => $password_hash,
+						'mail'              => $data['email'],
 						'ip'                => Common::getIp(),
+						'valid'             => (int) 1,
+						'expire'            => (int) 0,
 						'token'             => '',
 						'expire'            => (int) 0,
 						'god'               => (int) 0
-					);
-
+					);	
 					$insert = New BDD();
 					$insert->table('TABLE_USERS');
 					$insert->insert($insertUser);
+
+					$insertGroups = array(
+						'id'                => null,
+						'hash_key'          => $hash_key,
+						'user_group'        => 2,
+						'user_groups'       => 2
+					);
+					$insertGrp = New BDD();
+					$insertGrp->table('TABLE_USERS_GROUPS');
+					$insertGrp->insert($insertGroups);
 
 					$dataProfils = array(
 						'hash_key'     => $hash_key,
@@ -335,7 +137,7 @@ final class User
 						'public_mail'  => '',
 						'websites'     => '',
 						'list_ip'      => '',
-						'list_avatar'  => '',
+						'avatar'       => constant('AVATAR_DEFAULT'),
 						'config'       => 0,
 						'info_text'    => '',
 						'birthday'     => date('Y-m-d'),
@@ -343,20 +145,23 @@ final class User
 						'hight_avatar' => '',
 						'friends'      => ''
 					);
+					$insertProfils = New BDD();
+					$insertProfils->table('TABLE_USERS_PROFILS');
+					$insertProfils->insert($dataProfils);
 
-					$insert = New BDD();
-					$insert->table('TABLE_USERS_PROFILS');
-					$insert->insert($dataProfils);
+					$insertSocial = New BDD();
+					$insertSocial->table('TABLE_USERS_SOCIAL');
+					$insertSocial->insert(array('hash_key'=> $hash_key));
 
-					$insert = New BDD();
-					$insert->table('TABLE_USERS_SOCIAL');
-					$insert->insert(array('hash_key'=> $hash_key));
+					$insertPage = New BDD();
+					$insertPage->table('TABLE_USERS_PAGE');
+					$insertPage->insert(array('hash_key'=> $hash_key));
 
 					unset($_SESSION['TMP_QUERY_REGISTER']);
 
 					Users::login($data['username'],$data['passwordhash']);
 
-					$return['msg']  = 'Enregistrement en cours...';
+					$return['msg']  = constant('CURRENT_RECORD');
 					$return['type'] = 'success';
 				}
 			}
@@ -416,7 +221,7 @@ final class User
 
 		$sql = New BDD();
 		$sql->table('TABLE_USERS_PROFILS');
-		$sql->where(array('name'=>'hash_key','value'=> $_SESSION['USER']['HASH_KEY']));
+		$sql->where(array('name'=>'hash_key','value'=> $_SESSION['USER']['HASH_KEY']->user->hash_key));
 		$sql->update($insertProfil);
 		$countRowUpdate = $sql->rowCount;
 
@@ -461,7 +266,7 @@ final class User
 
 		$sql = New BDD();
 		$sql->table('TABLE_USERS');
-		$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+		$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 		$sql->queryOne();
 		$results = $sql->data;
 
@@ -504,7 +309,7 @@ final class User
 
 		$sql = New BDD();
 		$sql->table('TABLE_USERS_PROFILS');
-		$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+		$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 		$sql->queryOne();
 		$resultsProfils = $sql->data;
 
@@ -528,20 +333,20 @@ final class User
 			} else {
 				$sql = New BDD();
 				$sql->table('TABLE_USERS_PROFILS');
-				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 				$sql->update(array('public_mail' => $data['public_mail']));
 				$resultsProfils = $sql->data;
 			}
 		} else if (empty($data['public_mail'])) {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS_PROFILS');
-			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 			$sql->update(array('public_mail' => ''));
 		}
 		if ($error && count($insertUser) > 0) {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
-			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 			$sql->update($insertUser);
 			$resultsProfils = $sql->data;
 		}
@@ -559,12 +364,12 @@ final class User
 		if ($data) {
 			$a = array('?ajax', '?jquery', '?echo');
 			$data = str_replace($a, '', $data);
-			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY'].'/';
+			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
 			$checkdir = strpos($data, $dir);
 			if ($checkdir !== false) {
 				$sql = New BDD();
 				$sql->table('TABLE_USERS');
-				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 				$sql->update(array('avatar'=> $data));
 			}
 		}
@@ -583,7 +388,7 @@ final class User
 	public function sendDeleteAvatar ($data = false)
 	{
 		if ($data) {
-			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY'].'/';
+			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
 			$checkdir = strpos($data, $dir);
 			if ($checkdir !== false) {
 				unlink($data);
@@ -837,17 +642,17 @@ final class User
 	public function sendAccount ($data)
 	{
 		if (!empty($data)) {
-			if (Common::hash_key($_SESSION['USER']['HASH_KEY'])) {
+			if (Common::hash_key($_SESSION['USER']['HASH_KEY']->user->hash_key)) {
 				$sql = New BDD();
 				$sql->table('TABLE_USERS');
-				$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
+				$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
 				$sql->queryOne();
 				$dataUser = $sql->data;
 				if (empty($sql->data)) {
 					$return = array('type' => 'warning', 'msg' => 'Erreur de données utilisateur', 'title' => 'Données');
 					return $return;
 				} else {
-					if ($dataUser->hash_key != $_SESSION['USER']['HASH_KEY']) {
+					if ($dataUser->hash_key != $_SESSION['USER']['HASH_KEY']->user->hash_key) {
 						$return = array('type' => 'error', 'msg' => 'La hash key ne vous appartient pas', 'title' => 'Hash Key');
 						// TODO : faire un systeme de prévention 
 						return $return;
@@ -882,7 +687,7 @@ final class User
 						if (!empty($dataInsert)) {
 							$sql = New BDD();
 							$sql->table('TABLE_USERS');
-							$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
+							$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
 							$sql->update($dataInsert);
 						}
 
@@ -893,7 +698,7 @@ final class User
 
 						$sql = New BDD();
 						$sql->table('TABLE_USERS_PROFILS');
-						$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
+						$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
 						$sql->update($dataInsertProfils);
 
 						$return = array('type' => 'success', 'msg' => 'Tout les paramètre, on été enregistré', 'title' => 'Profil');
@@ -917,18 +722,18 @@ final class User
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_USERS');
-		$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
+		$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
 		$sql->queryOne();
 		$results = $sql->data;
 		if (password_verify($data['password_old'], $results->password)) {
 			$insert['password'] = password_hash($data['password_new'], PASSWORD_DEFAULT);
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
-			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
 			$sql->update($insert);
-			setcookie('BEL-CMS-HASH_KEY', $_SESSION['USER']['HASH_KEY'], time()+60*60*24*30*3, '/');
-			setcookie('BEL-CMS-NAME', $results['username'], time()+60*60*24*30*3, '/');
-			setcookie('BEL-CMS-PASS', $insert['password'], time()+60*60*24*30*3, '/');
+			setcookie('BELCMS_HASH_KEY', $_SESSION['USER']['HASH_KEY']->user->hash_key, time()+60*60*24*30*3, '/');
+			setcookie('BELCMS_NAME', $results['username'], time()+60*60*24*30*3, '/');
+			setcookie('BELCMS_PASS', $insert['password'], time()+60*60*24*30*3, '/');
 			$return = array('type' => 'success', 'msg' => 'Le mot de passe a été enregistré', 'title' => 'Mot de passe');
 			return $return;
 		} else {
@@ -942,7 +747,7 @@ final class User
 	public function sendNewAvatar ()
 	{
 		if (!empty($_FILES['avatar'])) {
-			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY'].'/';
+			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
 			$extensions = array('.png', '.gif', '.jpg', '.jpeg');
 			$extension = strrchr($_FILES['avatar']['name'], '.');
 			if (!in_array($extension, $extensions)) {
@@ -974,12 +779,12 @@ final class User
 	{
 		if ($data['select'] == 'select') {
 			if ($data['avatar']) {
-				$ext = new SplFileInfo($data['avatar']);
+				$ext = new \SplFileInfo($data['avatar']);
 				$extensions = array('png', 'gif', 'jpg', 'jpeg');
 				if (in_array($ext->getExtension(), $extensions)) {
 					$sql = New BDD();
 					$sql->table('TABLE_USERS');
-					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 					$sql->update(array('avatar'=> $data['avatar']));
 					$return['msg']  = 'Avatar changer avec succès';
 					$return['type'] = 'success';
@@ -997,14 +802,14 @@ final class User
 		} else if ($data['select'] == 'delete') {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
-			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 			$sql->queryOne();
 			$return->$sql->data;
 			if (!empty($return)) {
 				if ($return->avatar == $data['avatar']) {
 					$sql = New BDD();
 					$sql->table('TABLE_USERS');
-					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']));
+					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 					$sql->insert(array('avatar'=> ''));
 					$sql->update();
 				}

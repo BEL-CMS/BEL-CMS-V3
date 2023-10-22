@@ -27,10 +27,13 @@ $tables = array(
 	'TABLE_DOWNLOADS'           => $DB_PREFIX.'downloads',
 	'TABLE_DOWNLOADS_CAT'       => $DB_PREFIX.'downloads_cat',
 	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
+	'TABLE_INTERACTION'         => $DB_PREFIX.'interaction',
+	'TABLE_MAIL_BLACKLIST'      => $DB_PREFIX.'mails_blacklist',
 	'TABLE_PAGES_ARTICLES'      => $DB_PREFIX.'page_articles',
 	'TABLE_PAGES_ARTICLES_CAT'  => $DB_PREFIX.'page_articles_cat',
 	'TABLE_USERS'               => $DB_PREFIX.'users',
 	'TABLE_USERS_GROUPS'        => $DB_PREFIX.'users_groups',
+	'TABLE_USERS_PAGE'          => $DB_PREFIX.'users_page',
 	'TABLE_USERS_PROFILS'       => $DB_PREFIX.'users_profils',
 	'TABLE_USERS_SOCIAL'        => $DB_PREFIX.'users_social',
 );

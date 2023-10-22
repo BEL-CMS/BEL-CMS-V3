@@ -16,6 +16,8 @@ use BelCMS\User\User as User;
 use BelCMS\Core\Dispatcher as Dispatcher;
 use BelCMS\Templates\Templates as Template;
 use BelCMS\Core\GetHost as GetHost;
+use BelCMS\Core\Notification as Notification;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -46,11 +48,8 @@ final class BelCMS
 
 	public function __construct ()
 	{
-		if (isset($_SESSION['USER']['HASH_KEY']) and strlen($_SESSION['USER']['HASH_KEY']) == 32) {
-			$this->user     = User::getInfosUserAll($_SESSION['USER']['HASH_KEY']);
-			$_SESSION['USER']->$this->user;
-		} else {
-			$this->user     = (object) array();
+		if (isset($_SESSION['USER']['HASH_KEY']) and $_SESSION['USER']['HASH_KEY'] !== false) {
+			$_SESSION['USER']['HASH_KEY'] = User::getInfosUserAll($_SESSION['USER']['HASH_KEY']->user->hash_key);
 		}
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
@@ -64,6 +63,7 @@ final class BelCMS
 		$this->link	  = Dispatcher::page(constant('CMS_DEFAULT_PAGE'));
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
+		new User;
 		if (Dispatcher::isManagement() === true) {
 			echo 'Management';
 		} else if (Dispatcher::isPage(constant('CMS_DEFAULT_PAGE')) === true) {
@@ -84,16 +84,16 @@ final class BelCMS
 						self::error($error_type, $error_text, $error_name, $error_full);
 					}
 					if ($error === false AND empty($newPage->page)) {
-						Notification::error(constant('ERROR_LOADING_PAGE'), 'Page', true);
+						Notification::alert(constant('ERROR_LOADING_PAGE'), constant('WARNING'), true);
 					}
 					$content = ob_get_contents();
 				} else {
-					Notification::error(constant('ERROR_LOADING_INSTANCE').$require, 'Page', true);
-					$buffer = ob_get_contents();
+					Notification::alert(constant('ERROR_LOADING_INSTANCE'), constant('WARNING'), true);
 				}
 			} else {
-				Notification::error(constant('ERROR_LOADING').$dir, 'Page', true);
+				Common::Redirect('error/404.html');
 				$content = ob_get_contents();
+				echo $content;
 			}
 		} else {
 			require constant('DIR_ERROR').'404.html';
@@ -151,8 +151,11 @@ final class BelCMS
 	# Retourn un message d'information de type
 	# error - success - warning - infos
 	#########################################
-	public function error ($type = 'warning', $text = 'inconnu', $title = 'INFO', $full = false)
+	public function error ($type = null, $text = 'inconnu', $title = 'INFO', $full = false)
 	{
+		if ($type == null) {
+			$type = constant('INFO');
+		}
 		ob_start();
 		echo Notification::$type($text, $title, $full);
 		$return =  ob_get_contents();

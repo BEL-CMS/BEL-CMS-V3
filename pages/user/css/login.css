@@ -1,16 +1,15 @@
 /** LOGIN **/
 html {
 	margin: 0;
-	padding: 10% 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	overflow-y: auto;
+	padding-top: 5%;
 }
 body#LoginForm {
-    background-color: #1a232f;
-    background-image: -moz-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
-    background-image: -webkit-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
-    background-image: -o-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
-    background-image: -ms-radial-gradient(center center,circle cover,#273648,#0d1218 100%);
-    background-image: radial-gradient(center center,circle cover,#273648,#0d1218 100%);
-}
+    background-color: #e0e5e9;
 }
 .form-heading {
 	color:#fff; font-size:23px;
@@ -44,6 +43,8 @@ body#LoginForm {
 	border-radius: 2px;
 	margin: 10px auto 30px;
 	padding: 50px 70px 70px 71px;
+	border-radius: 4px;
+	box-shadow: #333;
 }
 .login-form .form-group {
 	margin-bottom:10px;
@@ -86,15 +87,69 @@ body#LoginForm {
  }
 .login-form
 .btn.btn-primary {
-	background: #f0ad4e none repeat scroll 0 0;
-	border-color: #f0ad4e;
-	color: #ffffff;
-	font-size: 14px;
-	width: 100%;
+	border: none;
+	width: auto;
 	height: 50px;
-	line-height: 50px;
-	padding: 0;
+	margin: auto;
+	margin-top: auto;
+	margin-top: 40px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 25px;
+	background: #333;
+	font-size: 15px;
+	color: #fff;
+	vertical-align: middle;
+	-webkit-transform: perspective(1px) translateZ(0);
+	transform: perspective(1px) translateZ(0);
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
 }
+button i {
+	margin-left:10px;
+	-webkit-transform:translateZ(0);
+	transform:translateZ(0)
+  }
+  button:hover i,
+  button:focus i,
+  button:active i {
+	-webkit-animation-name:hvr-icon-wobble-horizontal;
+	animation-name:hvr-icon-wobble-horizontal;
+	-webkit-animation-duration:1s;
+	animation-duration:1s;
+	-webkit-animation-timing-function:ease-in-out;
+	animation-timing-function:ease-in-out;
+	-webkit-animation-iteration-count:1;
+	animation-iteration-count:1
+  }
+  @-webkit-keyframes hvr-icon-wobble-horizontal {
+	16.65% {
+	  -webkit-transform:translateX(6px);
+	  transform:translateX(6px)
+	}
+	33.3% {
+	  -webkit-transform:translateX(-5px);
+	  transform:translateX(-5px)
+	}
+	49.95% {
+	  -webkit-transform:translateX(4px);
+	  transform:translateX(4px)
+	}
+	66.6% {
+	  -webkit-transform:translateX(-2px);
+	  transform:translateX(-2px)
+	}
+	83.25% {
+	  -webkit-transform:translateX(1px);
+	  transform:translateX(1px)
+	}
+	100% {
+	  -webkit-transform:translateX(0);
+	  transform:translateX(0)
+	}
+  }
 .forgot {
 	text-align: left; margin-bottom:30px;
 }

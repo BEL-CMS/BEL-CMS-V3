@@ -29,7 +29,8 @@ class Pages
 				$useModels,
 				$typeMime = 'text/html',
 				$error    = false,
-				$errorInfos;
+				$errorInfos,
+				$data;
 
 	public		$page,
 				$subPage,
@@ -38,13 +39,13 @@ class Pages
 	protected 	$pageName,
 				$subPageName;
 
-	protected 	$data;
-
 	function __construct()
 	{
 		if (isset($this->useModels) and !empty($this->useModels)){
 			self::loadModel($this->useModels);
 		}
+		// Extrait les données mis en variable pour les données à la page HTML.
+		$this->data        = self::get();
 		$this->pageName    = Dispatcher::page();
 		$this->subPageName = Dispatcher::view();
 		$dirLangs = constant('DIR_PAGES').strtolower($this->pageName).DS.'langs'.DS.'lang.'.constant('CMS_WEBSITE_LANG').'.php';
@@ -68,8 +69,6 @@ class Pages
 			$this->errorInfos = array('error', constant('NO_ACCESS_PAGE'), 'warning', true);
 			return false;
 		}
-		// Extrait les données mis en variable pour les données à la page HTML.
-		$this->data = self::get();
 		extract($this->vars);
 		// Démarre la mémoire tampon
 		ob_start();
@@ -133,9 +132,9 @@ class Pages
 			$name = "Belcms\Pages\Models\\".$name;
 			$this->models = new $name();
 		} else {
-			$error_name    = constant('FILE_NO_FOUND_MODELS');
-			$error_text = constant('FILE').' : <br>'.$dir.' '.constant('NOT_FOUND');
-			$this->error = true;
+			$error_name   = constant('FILE_NO_FOUND_MODELS');
+			$error_text   = constant('FILE').' : <br>'.$dir.' '.constant('NOT_FOUND');
+			$this->error  = true;
 			$this->errorInfos = array('error', $error_text, $error_name, $full = true);
 			return false;
 		}
@@ -164,7 +163,14 @@ class Pages
 	#########################################
 	public function get ()
 	{
-		return $_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST : $_GET;
+		$request = $_SERVER['REQUEST_METHOD'] == 'POST' ? 'POST' : 'GET';
+		if ($request == 'POST') {
+			$return = $_POST;
+		} else if ($request == 'GET') {
+			$return = new Dispatcher;
+			$return = $return->link;
+		}
+		return $return;
 	}
 	#########################################
 	# Redirect

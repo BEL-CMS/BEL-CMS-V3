@@ -16,7 +16,6 @@ if(!isset($_SESSION)) {
 	session_start();
 }
 $_SESSION['NB_REQUEST_SQL']   = 0;
-$_SESSION['USER']['HASH_KEY'] = false;
 #########################################
 # Définit comme l'index
 #########################################

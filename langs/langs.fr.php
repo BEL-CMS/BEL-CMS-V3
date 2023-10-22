@@ -36,6 +36,7 @@ $array = array(
 	'WRONG_USER_PASS'                     => 'Mauvaise combinaison de Pseudonyme-email et/ou mot de passe.',
 	'NO_USER_WITH_USER_AND_MAIL'          => 'Aucun utilisateur avec ce nom et/ou mail.',
 	'NAME_OR_PASS_REQUIRED'               => 'Le nom ou le mot de passe est obligatoire.',
+	'MAIL_OR_USERNAME'                    => 'Nom ou e-mail',
 	#####################################
 	# Fichier lang en français - Erreur
 	### ##################################
@@ -382,6 +383,8 @@ $array = array(
 	'NAME_MAIL_PASS'                      => 'Veuillez entrer votre email ou votre nom d\'utilisateur et votre mot de passe',
 	'MAIL_PASS_PRIVATE'                   => 'Veuillez entrer votre email prive lors de l\'inscription et votre mot de passe',
 	'NAME_MAIL_TOKEN'                     => 'Veuillez entrer votre email ou votre nom d\'utilisateur et votre token envoyé par e-mail.',
+	'TOKEN'                               => 'Token envoyé normalement par mail',  
+	'PRIVATE_MAIL'                        => 'Entrer votre mail d\'enregistrement',
 	'RECOVERING_MY_PASS'                  => 'Récupération de mon mot de passe',
 	'RECOVERY'                            => 'Récupération',
 	'INFO_REGISTRATION'                   => 'Veuillez saisir toutes les informations pour vous inscrire',
@@ -394,7 +397,7 @@ $array = array(
 	'EMAIL_USER_BAN'                      => 'L\'email renseigne est invalide.',
 	'IMPOSSIBLE_TO_BAN_YOURSELF'          => 'Impossible de se bannir soi-même.',
 	'EMAIL_USER'                          => 'E-mail renseigné',   
-	'NO_TEXT_DEFINED'                     => 'Le texte n\'est pas definit',      
+	'NO_TEXT_DEFINED'                     => 'Le texte n\'est pas definit',
 	#####################################
 	# WIDGETS
 	# ###################################
