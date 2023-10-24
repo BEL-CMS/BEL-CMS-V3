@@ -9,12 +9,17 @@
  * @author as Stive - stive@determe.be
  */
 
+namespace Belcms\Pages\Models;
+use BelCMS\Core\Dispatcher as Dispatcher;
+use BelCMS\Core\Secure as Secure;
+use BelCMS\PDO\BDD as BDD;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-final class ModelsMembers
+final class Members
 {
 	public function GetUsers ($where = false)
 	{
@@ -71,7 +76,7 @@ final class ModelsMembers
 	{
 		if ($hash_key !== false && ctype_alnum($hash_key)) {
 			$sql = New BDD;
-			$sql->table(TABLE_USERS_PROFILS);
+			$sql->table(constant('TABLE_USERS_PROFILS'));
 			$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']['hash_key']);
 			$sql->where($where);
 			$sql->queryOne();
@@ -86,7 +91,7 @@ final class ModelsMembers
 					$friends[] = $hash_key;
 					$implode   = implode('|', $friends);
 					$sql = New BDD;
-					$sql->table(TABLE_USERS_PROFILS);
+					$sql->table(constant('TABLE_USERS_PROFILS'));
 					$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']['hash_key']);
 					$sql->where($where);
 					$update['friends'] = $implode;
@@ -146,7 +151,7 @@ final class ModelsMembers
 			if (!empty($data)) {
 				$data->main_groups = explode('|', $data->main_groups);
 				if (empty($data->avatar) OR !is_file($data->avatar)) {
-					$data->avatar = 'assets/images/default_avatar.jpg';
+					$data->avatar = 'assets/img/default_avatar.jpg';
 				}
 				$return = $data;
 			}

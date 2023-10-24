@@ -222,7 +222,7 @@ class User
 		session_destroy();
 
 		$return['msg']  = constant('SESSION_COOKIES_DELETE');
-		$return['type'] = constant('SUCCESS');
+		$return['type'] = 'success';
 
 		/* Re cree la _SESSION; */
 		if(!isset($_SESSION)) {
@@ -270,7 +270,7 @@ class User
 					'name'  => 'hash_key',
 					'value' => $hash_key
 				));
-				$profils->fields(array('gender','public_mail','websites','list_ip','avatar','config','info_text','birthday','country','hight_avatar','friends'));
+				$profils->fields(array('gender','public_mail','websites','list_ip','avatar','config','info_text','birthday','country','hight_avatar','friends', 'date_registration'));
 				$profils->isObject(false);
 				$profils->queryOne();
 				$c = array('profils' => (object) $profils->data);
@@ -281,7 +281,7 @@ class User
 					'name'  => 'hash_key',
 					'value' => $hash_key
 				));
-				$social->fields(array('Facebook','youtube','whatsapp','instagram','messenger','tiktok','snapchat','telegram','pinterest','x_twitter','reddit','linkedIn','skype','viber','teams_ms','discord','twitch'));
+				$social->fields(array('facebook','youtube','whatsapp','instagram','messenger','tiktok','snapchat','telegram','pinterest','x_twitter','reddit','linkedIn','skype','viber','teams_ms','discord','twitch'));
 				$social->isObject(false);
 				$social->queryOne();
 				$d = array('social' => (object) $social->data);
@@ -298,7 +298,6 @@ class User
 				$user->queryOne();
 				$e = array('page' => (object) $user->data);
 				$return = (object) array_merge($a, $b, $c, $d, $e);
-				$return->profils->birthday = Common::TransformDate($return->profils->birthday, 'MEDIUM', 'NONE');
 				$return->user->color = User::colorUsername($hash_key);
 			} else {
 				$return = false;

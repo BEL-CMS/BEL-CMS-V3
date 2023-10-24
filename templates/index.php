@@ -10,13 +10,13 @@
 */
 
 namespace BelCMS\Templates;
+use BelCMS\Core\Dispatcher as Dispatcher;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Requires\Common as Common;
 
 class Templates
 {
 	public	$configTPL;
-
 
 	public function __construct($var = null)
 	{
@@ -26,6 +26,7 @@ class Templates
 		$var->css           = self::cascadingStyleSheets($var->link);
 		$var->javaScript    = self::javaScript($var->link);
 		$var->tags          = self::getTagsTPL();
+		$var->fullwide      = self::getFullWide();
 		if (is_file($fileLoadTpl)) {
 			require $fileLoadTpl;
 		} else {
@@ -51,6 +52,23 @@ class Templates
 			$return = $sql->data->value;
 		}
 		return $return;
+	}
+	#########################################
+	# Récupère les page en fullwide
+	#########################################
+	protected function getFullWide ()
+	{
+		$page = explode(',', constant('CMS_TPL_FULL'));
+		foreach ($page as $k => $v) {
+			$return[$k] = trim($v);
+		}
+
+		if (in_array(strtolower(Dispatcher::page()), $return)) {
+			return true;
+		}
+		if (in_array(strtolower(Dispatcher::view()), $return)) {
+			return true;
+		}
 	}
 	#########################################
 	# Récupère le nom du template si pas
@@ -91,8 +109,11 @@ class Templates
 			$files[] = constant('DIR_TPL').constant('CMS_TPL_WEBSITE.DS').'custom/custom.css?';
 		}
 
-		if (is_file(ROOT.'pages'.DS.strtolower($var).DS.'css'.DS.'styles.css')) {
-			$files[] = 'pages'.DS.strtolower($var).DS.'css'.DS.'styles.css';
+		$dirPage = constant('DIR_PAGES').strtolower($var).DS.'css'.DS.'styles.css';
+		$dirWeb  = 'pages'.DS.strtolower($var).DS.'css'.DS.'styles.css';
+
+		if (is_file($dirPage)) {
+			$files[] = $dirWeb;
 		}
 
 		foreach ($files as $v) {
@@ -121,6 +142,13 @@ class Templates
 		}
 		/* FILE GENERAL BEL-CMS */
 		$files[] = 'assets/plugins/belcms.core.js';
+
+		$dirPage = constant('DIR_PAGES').strtolower($var).DS.'js'.DS.'javascripts.js';
+		$dirWeb  = 'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js';
+
+		if (is_file($dirPage)) {
+			$files[] = $dirWeb;
+		}
 
 		if (is_file(ROOT.'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js')) {
 			$files[] = 'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js';

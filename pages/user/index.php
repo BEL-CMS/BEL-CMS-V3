@@ -24,6 +24,7 @@ if (UserInfos::isLogged() === true):
 	$genderF        = strtoupper($user->profils->gender) == strtoupper(constant('FEMALE')) ? 'selected' : '';
 	$genderU        = strtoupper($user->profils->gender) == strtoupper(constant('UNISEXUAL')) ? 'selected' : '';
 	require_once 'nav.php';
+	$birthday = Common::DatetimeReverse($user->profils->birthday);
 ?>
 
 	<div id="belcms_section_user_main">
@@ -42,7 +43,7 @@ if (UserInfos::isLogged() === true):
 					</div>
 					<div>
 						<h3 class="belcms_h3_input_lf">Votre anniversaire :</h3>
-						<input id="birthday" placeholder="Anniversaire" class="bel_cms_input" type="date" name="birthday" value="<?=$user->profils->birthday?>">
+						<input id="birthday" placeholder="Anniversaire" class="bel_cms_input" type="date" name="birthday" value="<?=$birthday?>">
 					</div>
 					<div>
 						<h3 class="belcms_h3_input_lf">Votre pays :</h3>
@@ -65,7 +66,7 @@ if (UserInfos::isLogged() === true):
 					</div>
 					<div>
 						<h3 class="belcms_h3_input_lf">Votre Site-Web :</h3>
-						<input placeholder="Site-Web" class="bel_cms_input" name="websites" type="text" value="<?$user->profils->websites?>" pattern="https?://.+">
+						<input placeholder="Site-Web" class="bel_cms_input" name="websites" type="text" value="<?=$user->profils->websites?>" pattern="https?://.+">
 					</div>
 					<button type="submit" class="belcms_btn"><?=constant('CONFIRM')?></button>
 				</form>

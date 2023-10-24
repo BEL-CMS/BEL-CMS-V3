@@ -11,6 +11,7 @@
 
 namespace Belcms\Pages\Models;
 
+use BelCMS\Core\Secure as Secure;
 use BelCMS\Core\Secures as Secures;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\User\User as Users;
@@ -183,8 +184,9 @@ final class User
 		} else {
 			$insertProfil['websites'] = $data['websites'];
 		}
+		require ROOT.DS.'pages'.DS.'user'.DS.'country.php';
 		if ($error && !empty($data['country'])) {
-			if (in_array($data['country'], Common::contryList())) {
+			if (in_array($data['country'], contryList())) {
 				$insertProfil['country'] = $data['country'];
 			}
 		}
@@ -202,7 +204,7 @@ final class User
 		}
 
 		if (!empty($_FILES['hight_avatar'])) {
-			$dir = 'uploads/'.$_SESSION['USER']['HASH_KEY'].'/';
+			$dir = 'uploads'.DS.'users'.$_SESSION['USER']['HASH_KEY']->user->hash_key.DS;
 			$extensions = array('.png', '.gif', '.jpg', '.jpeg');
 			$extension = strrchr($_FILES['hight_avatar']['name'], '.');
 			if (!in_array($extension, $extensions)) {
@@ -289,7 +291,7 @@ final class User
 			}
 		}
 
-		if ($error && $data['email'] != $results->email) {
+		if ($error && $data['email'] != $results->mail) {
 
 			if (!empty($data['email'])) {
 				$tmpMailSplit = explode('@', $data['email']);
@@ -368,7 +370,7 @@ final class User
 			$checkdir = strpos($data, $dir);
 			if ($checkdir !== false) {
 				$sql = New BDD();
-				$sql->table('TABLE_USERS');
+				$sql->table('TABLE_USERS_PROFILS');
 				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
 				$sql->update(array('avatar'=> $data));
 			}
@@ -388,7 +390,7 @@ final class User
 	public function sendDeleteAvatar ($data = false)
 	{
 		if ($data) {
-			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
+			$dir = 'uploads'.DS.'users'.DS.$_SESSION['USER']['HASH_KEY']->user->hash_key.DS;
 			$checkdir = strpos($data, $dir);
 			if ($checkdir !== false) {
 				unlink($data);
@@ -494,7 +496,6 @@ final class User
 						// Reset du token
 						$sql = New BDD();
 						$sql->table('TABLE_USERS');
-						$sql->where(array('name'=>'token','value'=>$token));
 						$sql->where(array('name' => $type,'value'=> $data['value']));
 						$sql->update(array('token'=>''));
 						self::checkToken($data['value']);
@@ -524,10 +525,10 @@ final class User
 							$sql->update(array('password'=>$password,'token'=>''));
 
 							$contentMail = '';
-							$contentMail .= '<p>Votre mot de passe  : <strong>' . $generatePass . '</strong></p>';
+							$contentMail .= $generatePass;
 							$mail = array(
-								'name'     => CMS_WEBSITE_NAME,
-								'mail'     => CMS_MAIL_WEBSITE,
+								'name'     => constant('CMS_WEBSITE_NAME'),
+								'mail'     => constant('CMS_MAIL_WEBSITE'),
 								'subject'  => 'Demande de nouveau mot de passe',
 								'content'  => self::contentMail('Mot de passe', $contentMail),
 								'sendMail' => $results['email']
@@ -556,72 +557,42 @@ final class User
 	#####################################
 	public static function contentMail($title, $content)
 	{
-		$return = '	<html>
+		$return = '	<!doctype html>
+					<html>
+						<meta charset="utf-8">
+						<style type="text/css" data-hse-inline-css="true">
+							body, html {font-family: Helvetica, Arial, sans-serif;background: #dbe5ea;margin: 0;margin: 0;padding: 0;border: none;outline: none;list-style: none; }
+							#main {background: #FFF;padding-bottom: 60px; }
+							#main > h1 {margin: 0;padding: 0;font-size: 16px;line-height: 50px;background-color: #ffffff;border-radius: 4px 4px 0px 0px;text-align: center; }
+							#corp {background: #126de5;text-align: center;color: #FFF;line-height: 65px; }
+							#corp > div,
+							#corp > div > img {margin: 0; padding: 0;line-height: normal; }
+							#token {text-align: center;padding: 20px 0; }
+							#token > span {display: inline-block;background: #ebf5fa;margin: auto;line-height: 60px;padding: 0 20px; }
+							#link {background-color: #ffffff;padding-left: 24px;padding-right: 24px;padding-top: 8px;padding-bottom: 8px;						text-align: center; }
+							#link > a {display: inline-block;background: #0ec06e;color: #FFF;padding: 15px 20px;margin: auto;text-decoration: none;}
+							#infos {display: block;background: #FFF;text-align: center;}
+							#infos > span {display: inline-block;background: #242b3d;color: #FFF;padding: 5px 15px;margin: 15px auto;}
+							#copyright {text-align: center;font-size: 11px;margin-bottom: 50px;}
+							.clear {clear: both;}
+						</style>
 						<body>
-							<div>
-								<table align="center" style="background:#efefef;width:90%;border: 1px solid #6f6e70; margin:0 auto;" border="0" cellspacing="0" cellpadding="0">
-									<tr style="background:#28a1db;color:#FFFFFF;text-align:center;font-size:16px;line-height: 30px;">
-										<td><strong>'.$title.'</strong></td>
-									</tr>
-									<tr style="margin-top:5px;margin-bottom:5px;"><td>
-										<table align="center" style="width:90%; line-height:24px; padding:5px; margin:15px auto;" border="0" cellspacing="0" cellpadding="0">
-											<tr style="color:#28a1db"><td>'.$content.'</td></tr>
-										</table>
-									</td></tr>
-									<tr style="margin-top:5px;margin-bottom:5px;"><td>
-										<table align="center" style="width:85%; line-height:24px; padding:5px; border-radius:3px; margin:15px auto;border:1px solid #DADADA" border="0" cellspacing="0" cellpadding="0">
-											<tr>
-												<td style="text-align: center;"><strong>Ip:</strong></td>
-												<td>'.Common::getIp().'</td>
-												<td><strong>Heure:</strong></td>
-												<td>'.date('d-m-Y H:i:s').'</td>
-											</tr>
-										</table>
-									</td></tr>
-									<tr style="background:#6f6e70;text-align:center;border-top:1px solid #ccc; font-size:16px;line-height: 30px"></tr>
-								</table>
+							<div id="main">
+								<h1>'.$title.'</h1>
+								<div id="corp">
+									<div><img src=" data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAZlBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+Vn2moAAAAIXRSTlMA9APwcWsX/GUp947VyU3OWCUSBtp1RAyR27e1iHAZvLsH6T7vAAABSUlEQVRo3u3Y626DMAwF4ISQptyh0NLdd97/Jfdn2obZIIpdqZP8PUBPRRLHjlFKKaWUUhsOffU4uTK46b3qD0bYyTdYaPxJ8s9XFiv2+mpkZLnFr+w5MwKKDn/qBsPWWmxwrWE6BmwKR+bvYxcroQ3YFRhfaXCI4JJXOusQpUndrWdEyhPPr0Ukl1aaKkR7TqpvFtHsnBDwAkL6MDRYqfNiHIu8BsP3EoMqffa5fX0pENCDKC/my6XkB1QgvPnB8wOesFRni0NeswMetk9rzg5wWCrIPccOADEuA8ZbB8z3/4n2Fvn+t+nOQfsHpeJWxW6nXA/jzCzXYhcOCPErE4T4pQ9CvG0BId54geC1jrEBVMFofkGIt+8gxAcQEOIjFAjxIRCE+BgLQnwQByH+lABC/DEEROxzTghueruS55yoAKWUUkoptfIBQWw+kbVEMGQAAAAASUVORK5CYII="></div>
+									<p>Récupération de mot de passe</p>
+								</div>
+								<div id="token">
+									<span>'.$content.'</span>
+								</div>
+								<div id="link"><a href="https://bel-cms.dev?token=21241545465">Lien automatique</a></div>
+								<div id="infos"><span>Attention, le Token est valide uniquement pendant 1h00</span></div>
+								<div class="clear"></div>
+								<div id="copyright"><p>Template mail by <a href="https://bel-cms.dev">Bel-CMS</a></p>
 							</div>
 						</body>
-					</html> ';
-		return $return;
-	}
-	public function GetInfosUser ($usermail = null, $userpass = null)
-	{
-		$return = false;
-
-		if ($usermail !== null && $userpass !== null) {
-			if (Secure::IsMail($usermail) === false) {
-				return false;
-			}
-			if (Secure::isString($userpass) === false) {
-				return false;
-			}
-
-			$sql = New BDD();
-			$sql->table('TABLE_USERS');
-			$sql->where(
-				array(
-					'name'  => 'email',
-					'value' => $usermail
-				)
-			);
-			$sql->queryOne();
-			$results = $sql->data;
-
-			if ($sql->rowCount == 1) {
-				if (password_verify($userpass, $results->password)) {
-					$json = (object) array();
-					$json->getBrowserType = 'Android';
-					$json->hash_key = $results->hash_key;
-					self::addLastVisit($results->hash_key);
-					new Visitors($json);
-					$return = $results;
-				}
-			} else {
-				return false;
-			}
-		}
-
+					</html>';
 		return $return;
 	}
 	#########################################
@@ -671,16 +642,16 @@ final class User
 							}
 						}
 
-						if ($data['mail'] != $dataUser->email) {
+						if ($data['mail'] != $dataUser->mail) {
 							$sql = New BDD();
 							$sql->table('TABLE_USERS');
-							$sql->where(array('name' => 'email', 'value' => $data['mail']));
+							$sql->where(array('name' => 'mail', 'value' => $data['mail']));
 							$sql->count();
 							if ($sql->data == 1) {
 								$return = array('type' => 'error', 'msg' => 'Cette email priver est déjà utilisé', 'title' => 'Email');
 								return $return;	
 							} else {
-								$dataInsert['email'] = $data['mail'];
+								$dataInsert['mail'] = $data['mail'];
 							}
 						}
 
@@ -777,6 +748,7 @@ final class User
 	#########################################
 	public function avatarSubmit ($data)
 	{
+		$return = null;
 		if ($data['select'] == 'select') {
 			if ($data['avatar']) {
 				$ext = new \SplFileInfo($data['avatar']);

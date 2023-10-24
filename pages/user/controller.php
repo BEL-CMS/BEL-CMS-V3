@@ -32,9 +32,8 @@ class User extends Pages
 	#########################################
 	public function index ()
 	{
-		debug($this);
 		if (UserInfos::isLogged() === true) {
-			$dir = constant('DIR_UPLOADS').$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
+			$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
 			if (!is_dir($dir)) {
 			    mkdir($dir, 0777, true);
 			}
@@ -64,7 +63,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
+			$d['user']    = $_SESSION['USER']['HASH_KEY'];
 			$d['current'] ='avatar';
 			$this->set($d);
 			$this->render('avatar');
@@ -81,7 +80,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
+			$d['user']    = $_SESSION['USER']['HASH_KEY'];
 			$d['current'] ='security';
 			$this->set($d);
 			$this->render('security');
@@ -98,7 +97,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
+			$d['user']    = $_SESSION['USER']['HASH_KEY'];
 			$d['current'] ='safety';
 			$this->set($d);
 			$this->render('safety');
@@ -115,7 +114,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $this->models->getDataUser ($_SESSION['USER']['HASH_KEY']->user->hash_key);
+			$d['user']    = $_SESSION['USER']['HASH_KEY'];
 			$d['current'] ='social';
 			$this->set($d);
 			$this->render('social');
@@ -139,7 +138,7 @@ class User extends Pages
 			}
 		} else {
 			$d = array();
-			$d['user'] = $this->models->getDataUser($_SESSION['USER']['HASH_KEY']->user->hash_key);
+			$d['user'] = $_SESSION['USER']['HASH_KEY'];
 			$this->set($d);
 			$this->render('index');
 		}
@@ -180,7 +179,7 @@ class User extends Pages
 		$return = UserInfos::logout();
 		$this->error = true;
 		$this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);
-		$this->redirect('user', 3);
+		$this->redirect('User', 3);
 	}
 	public function lostpassword ()
 	{

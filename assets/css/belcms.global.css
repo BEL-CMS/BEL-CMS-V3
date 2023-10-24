@@ -24,6 +24,70 @@ pre, code {
 	}
 }
 /*-------------------------------------------------------------------------------------------------*/
+/*	class des <a> ou <button>
+---------------------------------------------------------------------------------------------------*/
+.belcms_btn {
+	display: inline-block;
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 20px;
+	padding: 5px 15px;
+	line-height: 30px;
+	cursor: pointer;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	background 
+---------------------------------------------------------------------------------------------------*/
+.belcms_bg_white {
+	background-color: #FFF;
+}
+.belcms_bg_black {
+	background-color: #000;
+	color: #FFF;
+}
+.belcms_bg_blue {
+	background-color: #0D6EFD;
+	color: #FFF;
+}
+.belcms_bg_red {
+	background-color: #E9363F;
+	color: #FFF;
+}
+.belcms_bg_green {
+	background-color: #90FA44;
+	color: #FFF;
+}
+.belcms_bg_yellow {
+	background-color: #F4F702;
+	color: #FFF;
+}
+.belcms_bg_grey {
+	background-color: #686569;
+	color: #FFF;
+}
+.belcms_bg_grey_w {
+	background-color: #E4E5E7;
+	color: #FFF;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	margin et padding
+---------------------------------------------------------------------------------------------------*/
+.belcms_pb_5 { padding-bottom: 5px; }
+.belcms_pt_5 { padding-top: 5px; }
+.belcms_pl_5 { padding-left: 5px; }
+.belcms_pr_5 { padding-right: 5px; }
+.belcms_pb_10 { padding-bottom: 10px; }
+.belcms_pt_10 { padding-top: 10px; }
+.belcms_pl_10 { padding-left: 10px; }
+.belcms_pr_10 { padding-right: 10px;}
+.belcms_pb_5 { padding: 5px; }
+.belcms_pb_10 { padding: 10px; }
+.belcms_pb_15 { padding: 15px; }
+/*-------------------------------------------------------------------------------------------------*/
+/*	section, toute les pages du C.M.S, commence avec une section
+---------------------------------------------------------------------------------------------------*/
+section { width: 100%; }
+/*-------------------------------------------------------------------------------------------------*/
 /*	Créé un block en dessous avec aucune marge ou padding sert juste à forcer en dessous.
 ---------------------------------------------------------------------------------------------------*/
 .clear { clear: both; margin: 0; padding: 0; }
@@ -99,4 +163,82 @@ section#belcms_section #belcms_title > span {
 	border: 1px solid rgba(0,0,0,.125);
 	font-weight: bold;
 	border-radius: 2px;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	input select, toujours utilisé pour uniformiser le site. a surcharger par vos theme ou boostrap si vous l'utilisé
+---------------------------------------------------------------------------------------------------*/
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"] {
+	padding: 5 15px;
+	margin-bottom: 5px;
+	box-sizing: border-box;
+	border: 1px solid;
+	line-height: 30px;
+	height: 30px;
+	width: 100%;
+}
+input[disabled],
+select[disabled],
+textarea[disabled],
+input[readonly],
+select[readonly],
+textarea[readonly] {
+	cursor: not-allowed;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Alert en haut de page, comme message bien envoyé ou bien enregistrer etc
+---------------------------------------------------------------------------------------------------*/
+#siteloader,
+#alrt_bel_cms {
+	background: rgba(0, 0, 0, 0.8);
+	text-align: center;
+	position: fixed;
+	border-bottom: 2px;
+	border-color: #21a9ec;
+	width: 100%;
+	display: block;
+	z-index: 99999;
+	line-height: 35px;
+	color: rgba(255, 255, 255, .95);
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset, 0 1px 2px rgba(0, 0, 0, 0.1);
+	color: rgba(255, 255, 255, .95);
+	font-size: 12px;
+	transition: background-color 0.2s ease 0s;
+	vertical-align: middle;
+	top: -35px;
+}
+#alrt_bel_cms.danger {
+	background-color: #db3325;
+	background-image: linear-gradient(rgba(219, 51, 37, 0), rgba(1, 0, 0, 0.1));
+	border-color: rgba(0, 0, 0, 0.05) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15);
+	color: white;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+}
+#alrt_bel_cms.warning {
+	background-color: #f5a732;
+	background-image: linear-gradient(rgba(245, 167, 50, 0), rgba(38, 24, 2, 0.1));
+	border-color: rgba(0, 0, 0, 0.05) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15);
+	color: white;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+}
+#alrt_bel_cms.success {
+	background-color: #7eb216;
+	background-image: linear-gradient(rgba(126, 178, 22, 0), rgba(0, 0, 0, 0.1));
+	border-color: rgba(0, 0, 0, 0.05) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15);
+	color: white;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
 }

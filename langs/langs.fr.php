@@ -18,7 +18,7 @@ $array = array(
 	#####################################
 	# Langue - DEFAUT
 	#####################################
-	'DEFAULT_AVATAR'                      => 'assets/images/default_avatar.jpg',
+	'DEFAULT_AVATAR'                      => 'assets/img/default_avatar.jpg',
 	#####################################
 	# Langue Français - COMMUN
 	#####################################

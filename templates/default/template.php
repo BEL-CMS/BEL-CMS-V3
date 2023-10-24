@@ -1,6 +1,3 @@
-<?php
-//debug($var);
-?>
 <!DOCTYPE html>
 <!--[if IE 7 ]><html class="ie7" lang="fr"> <![endif]-->
 <!--[if IE 8 ]><html class="ie8" lang="fr"> <![endif]-->
@@ -94,6 +91,19 @@
 			include 'templates/default/breadcrumb.php';
 			?>
 			<div class="row row-fluid clearfix mbf">
+				<?php
+				if ($var->fullwide === true):
+				?>
+				<div class="">
+					<div class="def-block">
+				<?php
+						echo $var->page;
+				?>
+					</div>
+				</div>
+				<?php
+				else:
+				?>
 				<div class="span8 posts">
 					<div class="def-block">
 						<?php
@@ -102,7 +112,10 @@
 						?>
 					</div>
 				</div>
-
+				<?php
+				endif;
+				if ($var->fullwide !== true):
+				?>
 				<div class="span4 sidebar">
 					<div class="def-block widget">
 						<h4> NewsLetters </h4><span class="liner"></span>
@@ -135,6 +148,9 @@
 					</div>
 
 				</div>
+				<?php
+				endif;
+				?>
 			</div>
 		</div>
 

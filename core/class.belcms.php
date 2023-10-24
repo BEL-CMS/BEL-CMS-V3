@@ -42,7 +42,8 @@ final class BelCMS
 	public		$host,
 				$tags,
 				$css,
-				$javaScript;
+				$javaScript,
+				$fullwide;
 
 	private 	$user;
 

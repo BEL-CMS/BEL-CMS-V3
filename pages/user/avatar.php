@@ -8,12 +8,13 @@
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+use BELCMS\User\User as UserInfos;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-if (Users::isLogged() === true):
+if (UserInfos::isLogged() === true):
 	$list = array();
 	$path = "uploads/users/".$user->hash_key."/";
 	if($dossier = opendir($path))
@@ -42,7 +43,7 @@ if (Users::isLogged() === true):
 			<div class="belcms_card">
 				<div class="belcms_title">Avatar actuel</div>
 				<div id="belcms_section_user_main_right_avatar">
-					<img src="<?=$user->avatar?>">
+					<img src="<?=$user->profils->avatar?>">
 					<hr>
 					<div class="belcms_title">Avatar actuel</div>
 					<form action="user/newavatar" method="post" enctype="multipart/form-data">
@@ -56,7 +57,7 @@ if (Users::isLogged() === true):
 							</div>
 						</div>
 						<hr>
-						<button type="submit" class="belcms_btn belcms_btn_blue">Ajouter</button>
+						<button type="submit" class="belcms_btn belcms_btn_blue"><?=constant('ADD');?></button>
 					</form>
 				</div>
 			</div>

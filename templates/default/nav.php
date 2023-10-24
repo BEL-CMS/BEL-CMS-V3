@@ -10,5 +10,6 @@
         </li>
         <li><a href="Forum">Forum<span class="sub">Message</span></a></li>
         <li><a href="Downloads">Téléchargements</a></li>
+        <li><a href="User">Centre<span class="sub">Utilisateur</span></a>
     </ul>
 </nav>

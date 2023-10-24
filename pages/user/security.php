@@ -9,11 +9,13 @@
  * @author as Stive - stive@determe.be
  */
 
+ use BELCMS\User\User as UserInfos;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-if (Users::isLogged() === true):
+if (UserInfos::isLogged() === true):
 	require_once 'nav.php';
 ?>
 	<div id="belcms_section_user_security">
@@ -33,7 +35,7 @@ if (Users::isLogged() === true):
 						<a type="button" class="belcms_btn belcms_btn_blue getNewPass">Générateur</a>
 					</div>
 					<div class="belcms_form_group_submit">
-						<button type="submit" class="belcms_btn">Enregistrer</button>
+						<button type="submit">Enregistrer</button>
 					</div>
 				</form>
 			</div>
