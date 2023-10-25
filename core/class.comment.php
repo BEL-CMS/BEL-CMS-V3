@@ -10,6 +10,7 @@
  */
 namespace BelCMS\Core;
 use BelCMS\PDO\BDD as BDD;
+use BELCMS\User\User as UserInfos;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -91,11 +92,14 @@ final class Comment
 			$html .= '<div class="belcms_comments_com">'.$v->comment.'</div>';
 			$html .= '</li>';
 		}
-			$html .= '</ul><div id="bel_cms_comment_more">Lire la suite</div>';
-		if (isset($_SESSION['USER']['HASH_KEY'])) {
-			$links = $this->links[0].'/'.$this->links[1].'/';
-			if (isset($this->links[3]) and !empty($this->links[3])) {
-				$links .= $this->links[3];
+			$html .= '</ul>
+			';
+		if (UserInfos::isLogged() === true) {
+			$dispatcher = new Dispatcher();
+			$dispatcher->link;
+			$links = $dispatcher->link[0].'/'.$dispatcher->link[1].'/';
+			if (isset($dispatcher->link[3]) and !empty($dispatcher->link[3])) {
+				$links .= $dispatcher->link[3];
 			}
 			if ($_SESSION['USER']['HASH_KEY'] !== false) {
 				$html .= '<form action="Comments/Send" method="post" enctype="multipart/form-data"><input name="url" type="hidden" value="'.$links.'"><textarea name="text"></textarea><button type="submit" class="btn btn-primary">Envoyer</button></form>';

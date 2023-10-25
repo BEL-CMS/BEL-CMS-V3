@@ -19,6 +19,7 @@ $array = array(
 	# Langue - DEFAUT
 	#####################################
 	'DEFAULT_AVATAR'                      => 'assets/img/default_avatar.jpg',
+	'DEFAULT_COLOR_USERNAME'              => '#000',
 	#####################################
 	# Langue Français - COMMUN
 	#####################################
@@ -37,6 +38,15 @@ $array = array(
 	'NO_USER_WITH_USER_AND_MAIL'          => 'Aucun utilisateur avec ce nom et/ou mail.',
 	'NAME_OR_PASS_REQUIRED'               => 'Le nom ou le mot de passe est obligatoire.',
 	'MAIL_OR_USERNAME'                    => 'Nom ou e-mail',
+	'YOUR_MESSAGE'                        => 'Votre Message...',
+	'LOGIN_ID'                            => 'Connexion identifiant',
+	#####################################
+	# Langue Français - ROOT\WIDGETS
+	#####################################
+	'SURVEY'                              => 'Sondage',
+	'SURVEYS'                             => 'Sondages',
+	'SEE_THE_LIST_OF_SURVEYS'             => 'Voir la liste des sondages',
+	'NO_SURVEY_IN_PROGRESS'               => 'Aucun sondage en cours...',
 	#####################################
 	# Fichier lang en français - Erreur
 	### ##################################
@@ -54,7 +64,6 @@ $array = array(
 	'NO_ACCESS_GROUP_WIDGET'              => 'Votre groupe d\'accès ne vous permet pas d\'accéder à ce widget',
 	'NO_ACCESS_PAGE'                      => 'Erreur lors d\'acces a la page',
 	'NO_DATA_AVAILABLE'                   => 'Aucune donnée disponible',
-	'DEFAULT_AVATAR'                      => 'assets/images/default_avatar.jpg',
 	'COPYLEFT'                            => '<a id="bel_cms_copyleft" href="https://bel-cms.dev" title="BEL-CMS">Powered by Bel-CMS</a>',
 	'PUBLISH'                             => 'Publier',
 	'YOUR_COMMENT'                        => 'Votre commentaire',
@@ -215,6 +224,7 @@ $array = array(
 	'PLEASE_ENTER_YOUR_MAIL'              => 'Veuillez entrer votre e-mail',
 	'UNKNOWN'                             => 'Inconnu',
 	'INVALID_ID'                          => 'ID non valide',
+	'MOBILE'                              => 'Mobile',
 	#####################################
 	# UPLOAD
 	#####################################

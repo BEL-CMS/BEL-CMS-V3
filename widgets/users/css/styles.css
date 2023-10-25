@@ -1,0 +1,45 @@
+#bel_cms_widget_users {
+	display: block;
+}
+	.bel_cms_widget_users {
+		display: block;
+		margin-bottom: 25px;
+		text-align: center;
+	}
+		.bel_cms_widget_users > img {
+			max-width: 100%;
+		}
+	#bel_cms_widget_users nav {
+		display: block;
+		text-align: center;
+	}
+		#bel_cms_widget_users nav ul {
+			display: block;
+			margin: 0; padding: 0;
+			list-style: none;
+		}
+			#bel_cms_widget_users nav ul li {
+				display: inline-block;
+				-webkit-border-radius: 50%;
+				   -moz-border-radius: 50%;
+				        border-radius: 50%;
+				overflow: hidden;
+				background: rgba(0, 0, 0, .3);
+				width: 32px;
+				height: 32px;
+				text-align: center;
+			}
+				#bel_cms_widget_users nav ul li a {
+					display: block;
+					width: 100%;
+					text-decoration: none;
+					line-height: 32px;
+					font-size: 13px;
+				}
+				#bel_cms_widget_users nav ul li a:hover {
+					background: rgba(0, 0, 0, .15);
+				}
+#bel_cms_widget_users form > div {
+	margin: 20px auto;
+	text-align: center;
+}

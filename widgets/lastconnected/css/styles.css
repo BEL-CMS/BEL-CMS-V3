@@ -1,0 +1,41 @@
+section#bel_cms_widgets_lastconnected {
+	display: block;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+	#bel_cms_widgets_lastconnected ul {
+		display: block;
+		margin: 0; padding: 0;
+		list-style: none;
+	}
+		#bel_cms_widgets_lastconnected ul > li {
+			display: table;
+			border-bottom: 1px solid rgba(0, 0, 0, .1);
+			width: 100%;
+			height: 40px;
+		}
+			#bel_cms_widgets_lastconnected ul > li > img {
+				display: block;
+				float: left;
+				width: 40px;
+				height: 40px;
+				padding: 5px;
+				border-radius: 3px;
+			}
+			#bel_cms_widgets_lastconnected ul > li > span {
+				display: block;
+				float: left;
+				padding-left: 5px;
+			}
+				#bel_cms_widgets_lastconnected ul > li > span > p {
+					line-height: 15px;
+					padding: 0; margin: 0;
+				}
+				#bel_cms_widgets_lastconnected ul > li > span > p:first-child {
+					font-weight: bold;
+					margin-top: 5px;
+				}
+				#bel_cms_widgets_lastconnected ul > li > span > p:last-child {
+					font-size: 11px;
+					margin-bottom: 5px;
+				}

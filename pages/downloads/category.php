@@ -16,7 +16,7 @@ endif;
 
 ?>
 <div id="belcms_section_downloads_main">
-	<span class="bel-cms-pages_title"><?=DOWNLOADS;?> - <?=$name?></span>
+	<span class="bel-cms-pages_title"><?=constant('DOWNLOADS');?> - <?=$name?></span>
 	<div id="belcms_section_downloads_category">
 		<?php
 		if (count($data) != 0) {

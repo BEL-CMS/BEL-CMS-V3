@@ -20,6 +20,7 @@ class Templates
 
 	public function __construct($var = null)
 	{
+		debug($var);
 		$this->configTPL    = $var;
 		$fileLoadTpl        = constant('DIR_TPL').self::getNameTpl().DS.'template.php';
 		$fileLoadTplDefault = constant('DIR_TPL').'default'.DS.'template.php';

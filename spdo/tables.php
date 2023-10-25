@@ -29,13 +29,22 @@ $tables = array(
 	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
 	'TABLE_INTERACTION'         => $DB_PREFIX.'interaction',
 	'TABLE_MAIL_BLACKLIST'      => $DB_PREFIX.'mails_blacklist',
+	'TABLE_NEWSLETTER'          => $DB_PREFIX.'newsletter',
+	'TABLE_NEWSLETTE_SEND'      => $DB_PREFIX.'newsletter_send',
+	'TABLE_NEWSLETTER_TPL'      => $DB_PREFIX.'newsletter_tpl',
 	'TABLE_PAGES_ARTICLES'      => $DB_PREFIX.'page_articles',
 	'TABLE_PAGES_ARTICLES_CAT'  => $DB_PREFIX.'page_articles_cat',
+	'TABLE_SHOUTBOX'            => $DB_PREFIX.'page_shoutbox',
+	'TABLE_SURVEY'              => $DB_PREFIX.'page_survey',
+	'TABLE_SURVEY_QUEST'        => $DB_PREFIX.'page_survey_quest',
+	'TABLE_SURVEY_AUTHOR'       => $DB_PREFIX.'page_survey_author',
 	'TABLE_USERS'               => $DB_PREFIX.'users',
 	'TABLE_USERS_GROUPS'        => $DB_PREFIX.'users_groups',
 	'TABLE_USERS_PAGE'          => $DB_PREFIX.'users_page',
 	'TABLE_USERS_PROFILS'       => $DB_PREFIX.'users_profils',
 	'TABLE_USERS_SOCIAL'        => $DB_PREFIX.'users_social',
+	'TABLE_VISITORS'            => $DB_PREFIX.'visitors',
+	'TABLE_WIDGETS'             => $DB_PREFIX.'widgets',
 );
 foreach ($tables as $name => $value) {
 	define($name, $value); unset($tables);

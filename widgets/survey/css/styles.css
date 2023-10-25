@@ -1,0 +1,22 @@
+						#bel_cms_widgets_survey_name {
+	display: block;
+	font-size: 14px;
+	text-align: center;
+}
+#bel_cms_widgets_survey ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#bel_cms_widgets_survey ul li {
+	display: block;
+	margin-bottom: 1px dashed;
+}
+#bel_cms_widgets_survey ul li span {
+	float: right;
+}
+
+#bel_cms_widgets_survey a {
+	display: block;
+	text-align: center;
+}					

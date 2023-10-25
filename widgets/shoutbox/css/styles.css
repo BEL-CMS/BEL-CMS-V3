@@ -1,0 +1,113 @@
+#bel_cms_widgets_shoutbox {
+	display: block;
+	overflow: hidden;
+	margin-bottom: 15px;
+}
+#bel_cms_widgets_shoutbox_form {
+}
+#bel_cms_widgets_shoutbox_msg {
+	position: relative;
+	margin: 0;
+	padding: 0 15px;
+	max-height: 300px;
+	overflow-y: scroll;
+}
+#bel_cms_widgets_shoutbox_msg li {
+	float: left;
+	list-style: none;
+	position: relative;
+	width: 100%;
+	padding-top: 15px !important;,
+}
+#bel_cms_widgets_shoutbox_msg li.left {
+	padding-left: 75px;
+	padding-right: 15px
+}
+#bel_cms_widgets_shoutbox_msg li.right {
+	padding-right: 90px
+}
+#bel_cms_widgets_shoutbox_msg li.right .avatar {
+	right: 15px;
+	left: auto
+}
+#bel_cms_widgets_shoutbox_msg li.right .message_wrap .arrow {
+	right: -12px;
+	left: auto;
+	background-position: 0 -213px;
+	height: 15px;
+	width: 12px
+}
+#bel_cms_widgets_shoutbox_msg li.by_myself .message_wrap {
+	border: 1px solid #b3cdf8
+}
+#bel_cms_widgets_shoutbox_msg li.by_myself .message_wrap .info a.name {
+	color: #4a8cf7
+}
+#bel_cms_widgets_shoutbox_msg li a.avatar {
+	position: absolute;
+	left: 0;
+}
+#bel_cms_widgets_shoutbox_msg li a.avatar img {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	width: 55px !important;
+	height: 55px !important;
+}
+#bel_cms_widgets_shoutbox_msg li .message_wrap {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	position: relative;
+	border: 1px solid #e9e9e9;
+	padding: 10px;
+	border: 1px solid #cbcbcb;
+	margin-bottom: 20px;
+	float: left;
+	background: #fefefe;
+	-webkit-box-shadow: rgba(0,0,0,0.1) 0 1px 0px;
+	-moz-box-shadow: rgba(0,0,0,0.1) 0 1px 0px;
+	box-shadow: rgba(0,0,0,0.1) 0 1px 0px;
+}
+#bel_cms_widgets_shoutbox_msg li .message_wrap .arrow {
+	background-position: 0 -228px;
+	height: 15px;
+	width: 12px;
+	height: 15px;
+	width: 12px;
+	position: absolute;
+	left: -12px;
+	top: 13px
+}
+#bel_cms_widgets_shoutbox_msg li .message_wrap .info {
+	float: left;
+	width: 100%;
+	border-bottom: 1px solid #fff;
+	line-height: 23px
+}
+#bel_cms_widgets_shoutbox_msg li .message_wrap .info .name {
+	float: left;
+	font-weight: bold;
+	color: #483734
+}
+#bel_cms_widgets_shoutbox_msg li .message_wrap .info .time {
+	float: left;
+	font-size: 11px;
+	margin-left: 6px
+}
+#bel_cms_widgets_shoutbox_msg li .message_wrap .text {
+	float: left;
+	width: 100%;
+	border-top: 1px solid #cfcfcf;
+	padding-top: 5px
+}
+
+#bel_cms_widgets_shoutbox_msg .dropdown-menu  li{ width:100%; font-size:11px;}
+
+.widget-list ul li, #bel_cms_widgets_shoutbox_msg li .message_wrap {
+	width: 100% !important;
+}
+
+.bel-cms-widgets {
+	margin-bottom: 15px;
+}

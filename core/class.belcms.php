@@ -14,6 +14,7 @@ use BelCMS\Config\Config as Config;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\User\User as User;
 use BelCMS\Core\Dispatcher as Dispatcher;
+use BelCMS\Widgets\Widgets as Widgets;
 use BelCMS\Templates\Templates as Template;
 use BelCMS\Core\GetHost as GetHost;
 use BelCMS\Core\Notification as Notification;
@@ -34,7 +35,7 @@ final class BelCMS
 	public		$typeMime;
 
 	public 		$page,
-				$widget,
+				$widgets = array(),
 				$template;
 
 	public		$langs = 'fr';
@@ -54,8 +55,10 @@ final class BelCMS
 		}
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
+		$this->widgets  = self::getWidgets();
 		$this->host     = GetHost::getBaseUrl();
 		$this->template = self::template ();
+		//debug($this->page);
 	}
 
 	private function page ()
@@ -106,6 +109,48 @@ final class BelCMS
 		}
 
 		return $content;
+	}
+
+	private function getWidgets ()
+	{
+		$page    = Dispatcher::page(constant('CMS_DEFAULT_PAGE'));
+		$listWidgetsActive = self::getWidgetsActive ();
+		foreach ($listWidgetsActive as $key => $value) {
+			switch ($value->pos) {
+				case 'top':
+					$widget = new Widgets ($value->name, 'top');
+					$this->widgets[$value->pos] = $widget->render();
+				break;
+				case 'right':
+					$widget = new Widgets ($value->name, 'right');
+					$this->widgets[$value->pos] = $widget->render();
+				break;
+				case 'bottom':
+					$widget = new Widgets ($value->name, 'bottom');
+					$this->widgets[$value->pos] = $widget->render();
+				break;
+				case 'left':
+					$widget = new Widgets ($value->name, 'left');
+					$this->widgets[$value->pos] = $widget->render();
+				break;
+			}
+		}
+	}
+	private function getWidgetsActive ()
+	{
+		$return = '';
+		$sql = new BDD;
+		$sql->table('TABLE_WIDGETS');
+		$sql->where(array(
+			'name'  => 'active',
+			'value' => 1
+		));
+		$sql->orderby(array('name' => 'orderby', 'value' => 'ASC'));
+		$sql->queryAll();
+		if (!empty($sql->data)) {
+			$return = $sql->data;
+		}
+		return $return;	
 	}
 
 	private function template ()

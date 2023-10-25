@@ -46,8 +46,10 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.secures.php',
 	ROOT.DS.'core'.DS.'class.config.php',
 	ROOT.DS.'core'.DS.'class.interaction.php',
+	ROOT.DS.'core'.DS.'class.visitors.php',
 	ROOT.DS.'users'.DS.'index.php',
 	ROOT.DS.'pages'.DS.'index.php',
+	ROOT.DS.'widgets'.DS.'index.php',
 	ROOT.DS.'templates'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.belcms.php',
 );
