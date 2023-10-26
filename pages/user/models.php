@@ -613,17 +613,17 @@ final class User
 	public function sendAccount ($data)
 	{
 		if (!empty($data)) {
-			if (Common::hash_key($_SESSION['USER']['HASH_KEY']->user->hash_key)) {
+			if (Common::hash_key($_SESSION['USER']->user->hash_key)) {
 				$sql = New BDD();
 				$sql->table('TABLE_USERS');
-				$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+				$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 				$sql->queryOne();
 				$dataUser = $sql->data;
 				if (empty($sql->data)) {
 					$return = array('type' => 'warning', 'msg' => 'Erreur de données utilisateur', 'title' => 'Données');
 					return $return;
 				} else {
-					if ($dataUser->hash_key != $_SESSION['USER']['HASH_KEY']->user->hash_key) {
+					if ($dataUser->hash_key != $_SESSION['USER']->user->hash_key) {
 						$return = array('type' => 'error', 'msg' => 'La hash key ne vous appartient pas', 'title' => 'Hash Key');
 						// TODO : faire un systeme de prévention 
 						return $return;
@@ -658,7 +658,7 @@ final class User
 						if (!empty($dataInsert)) {
 							$sql = New BDD();
 							$sql->table('TABLE_USERS');
-							$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+							$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 							$sql->update($dataInsert);
 						}
 
@@ -669,7 +669,7 @@ final class User
 
 						$sql = New BDD();
 						$sql->table('TABLE_USERS_PROFILS');
-						$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+						$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 						$sql->update($dataInsertProfils);
 
 						$return = array('type' => 'success', 'msg' => 'Tout les paramètre, on été enregistré', 'title' => 'Profil');
@@ -693,16 +693,16 @@ final class User
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_USERS');
-		$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+		$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 		$sql->queryOne();
 		$results = $sql->data;
 		if (password_verify($data['password_old'], $results->password)) {
 			$insert['password'] = password_hash($data['password_new'], PASSWORD_DEFAULT);
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
-			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 			$sql->update($insert);
-			setcookie('BELCMS_HASH_KEY', $_SESSION['USER']['HASH_KEY']->user->hash_key, time()+60*60*24*30*3, '/');
+			setcookie('BELCMS_HASH_KEY', $_SESSION['USER']->user->hash_key, time()+60*60*24*30*3, '/');
 			setcookie('BELCMS_NAME', $results['username'], time()+60*60*24*30*3, '/');
 			setcookie('BELCMS_PASS', $insert['password'], time()+60*60*24*30*3, '/');
 			$return = array('type' => 'success', 'msg' => 'Le mot de passe a été enregistré', 'title' => 'Mot de passe');
@@ -718,7 +718,7 @@ final class User
 	public function sendNewAvatar ()
 	{
 		if (!empty($_FILES['avatar'])) {
-			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
+			$dir = 'uploads/users/'.$_SESSION['USER']->user->hash_key.'/';
 			$extensions = array('.png', '.gif', '.jpg', '.jpeg');
 			$extension = strrchr($_FILES['avatar']['name'], '.');
 			if (!in_array($extension, $extensions)) {
@@ -756,7 +756,7 @@ final class User
 				if (in_array($ext->getExtension(), $extensions)) {
 					$sql = New BDD();
 					$sql->table('TABLE_USERS');
-					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
+					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 					$sql->update(array('avatar'=> $data['avatar']));
 					$return['msg']  = 'Avatar changer avec succès';
 					$return['type'] = 'success';
@@ -774,19 +774,19 @@ final class User
 		} else if ($data['select'] == 'delete') {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
-			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
+			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 			$sql->queryOne();
 			$return->$sql->data;
 			if (!empty($return)) {
 				if ($return->avatar == $data['avatar']) {
 					$sql = New BDD();
 					$sql->table('TABLE_USERS');
-					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
+					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 					$sql->insert(array('avatar'=> ''));
 					$sql->update();
 				}
 			}
-			$link = DIR_UPLOADS;
+			$link = constant('DIR_UPLOADS');
 			$link .= $data['avatar'];
 			// @ = fix erreur Windows localhost
 			@unlink($link);
@@ -804,9 +804,21 @@ final class User
 	{
 		$update['facebook']   = empty($data['facebook'])   ? '' : Secure::isString($data['facebook']);
 		$update['linkedin']   = empty($data['linkedin'])   ? '' : Secure::isString($data['linkedin']);
-		$update['twitter']    = empty($data['twitter'])    ? '' : Secure::isString($data['twitter']);
+		$update['x_twitter']  = empty($data['x_twitter'])  ? '' : Secure::isString($data['x_twitter']);
 		$update['discord']    = empty($data['discord'])    ? '' : Secure::isString($data['discord']);
 		$update['pinterest']  = empty($data['pinterest'])  ? '' : Secure::isString($data['pinterest']);
+		$update['youtube']    = empty($data['youtube'])    ? '' : Secure::isString($data['youtube']);
+		$update['whatsapp']   = empty($data['whatsapp'])   ? '' : Secure::isString($data['whatsapp']);
+		$update['instagram']  = empty($data['instagram'])  ? '' : Secure::isString($data['instagram']);
+		$update['messenger']  = empty($data['messenger'])  ? '' : Secure::isString($data['messenger']);
+		$update['viber']      = empty($data['viber'])      ? '' : Secure::isString($data['viber']);
+		$update['twitch']     = empty($data['twitch'])     ? '' : Secure::isString($data['twitch']);
+		$update['teams_ms']   = empty($data['teams_ms'])   ? '' : Secure::isString($data['teams_ms']);
+		$update['tiktok']     = empty($data['tiktok'])     ? '' : Secure::isString($data['tiktok']);
+		$update['snapchat']   = empty($data['snapchat'])   ? '' : Secure::isString($data['snapchat']);
+		$update['telegram']   = empty($data['telegram'])   ? '' : Secure::isString($data['telegram']);
+		$update['reddit']     = empty($data['reddit'])     ? '' : Secure::isString($data['reddit']);
+		$update['skype']      = empty($data['skype'])      ? '' : Secure::isString($data['skype']);
 
 		if (!empty($data)) {
 			$sql = New BDD();

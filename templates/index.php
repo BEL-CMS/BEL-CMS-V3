@@ -20,7 +20,6 @@ class Templates
 
 	public function __construct($var = null)
 	{
-		debug($var);
 		$this->configTPL    = $var;
 		$fileLoadTpl        = constant('DIR_TPL').self::getNameTpl().DS.'template.php';
 		$fileLoadTplDefault = constant('DIR_TPL').'default'.DS.'template.php';
@@ -59,7 +58,7 @@ class Templates
 	#########################################
 	protected function getFullWide ()
 	{
-		$page = explode(',', constant('CMS_TPL_FULL'));
+		$page = explode(',', $_SESSION['CONFIG_CMS']['CMS_TPL_FULL']);
 		foreach ($page as $k => $v) {
 			$return[$k] = trim($v);
 		}
@@ -92,6 +91,46 @@ class Templates
 		}
 		return $return;
 	}
+	private function getCssWidgets ()
+	{
+		$return = array();
+		$a      = array();
+		$b      = array();
+
+		$sql = new BDD;
+		$sql->table('TABLE_WIDGETS');
+		$sql->where(array(
+			'name'  => 'active',
+			'value' => 1
+		));
+		$sql->orderby(array('name' => 'orderby', 'value' => 'ASC'));
+		$sql->queryAll();
+		if (!empty($sql->data)) {
+			foreach ($sql->data as $k => $v) {
+				if (empty($v->page)) {
+					$b[$k] = $v;
+				} else {
+					$a = explode('|', $v->pages);
+					if (empty($v->page)) {
+						if (!in_array($this->configTPL->link, $a)) {
+							$b[$k] = $v;
+						}	
+					}
+				}
+			}
+			foreach ($b as $k => $v) {
+				if ($v->groups_access == 0 or in_array(1, $_SESSION['USER']->groups->all_groups)) {
+					$return[$k] = $v;
+				} else {
+					$a = explode('|', $v->groups_access);
+					if (in_array($_SESSION['USER']->groups->all_groups, $a)) {
+						$return[$k] = $v;
+					}
+				}
+			}
+		}
+		return $return;
+	}
 	#########################################
 	# Gestions des styles (css)
 	#########################################
@@ -106,15 +145,27 @@ class Templates
 		/* FONTAWASOME 6.4.2 ALL */
 		$files[] = 'assets/plugins/fontawesome-6.4.2/css/all.min.css';
 		/* custom css template */
-		if (is_file(constant('DIR_TPL').constant('CMS_TPL_WEBSITE').DS.'custom/custom.css')) {
-			$files[] = constant('DIR_TPL').constant('CMS_TPL_WEBSITE.DS').'custom/custom.css?';
+		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/custom.css')) {
+			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/custom.css?';
 		}
-
+		/* pages css */
 		$dirPage = constant('DIR_PAGES').strtolower($var).DS.'css'.DS.'styles.css';
-		$dirWeb  = 'pages'.DS.strtolower($var).DS.'css'.DS.'styles.css';
-
+		$dirWeb  = 'pages/'.strtolower($var).'/css/styles.css';
 		if (is_file($dirPage)) {
 			$files[] = $dirWeb;
+		}
+		/* widgets css */
+		foreach (self::getCssWidgets() as $v) {
+			/* widgets css default */
+			$dirPage = constant('DIR_WIDGETS').strtolower($v->name).DS.'css'.DS.'styles.css';
+			if (is_file($dirPage)) {
+				$files[] = 'widgets/'.strtolower($v->name).'/css/styles.css';
+			}
+			/* widgets css default */
+			$dirWidgets = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/'.strtolower($v->name).'.css';
+			if (is_file($dirWidgets)) {
+				$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/'.strtolower($v->name).'.css';
+			}
 		}
 
 		foreach ($files as $v) {
@@ -138,17 +189,28 @@ class Templates
 		/* FONTAWASOME 6.4.2 ALL */
 		$files[] = 'assets/plugins/fontawesome-6.4.2/js/all.min.js';
 		/* custom css template */
-		if (is_file(constant('DIR_TPL').constant('CMS_TPL_WEBSITE').DS.'custom'.DS.'custom.js')) {
-			$files[] = constant('DIR_TPL').constant('CMS_TPL_WEBSITE').DS.'custom'.DS.'custom.js';
+		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js')) {
+			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom'.DS.'custom.js';
 		}
 		/* FILE GENERAL BEL-CMS */
 		$files[] = 'assets/plugins/belcms.core.js';
-
+		/* pages js */
 		$dirPage = constant('DIR_PAGES').strtolower($var).DS.'js'.DS.'javascripts.js';
-		$dirWeb  = 'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js';
-
 		if (is_file($dirPage)) {
-			$files[] = $dirWeb;
+			$files[] = 'pages/'.strtolower($var).'/js/javascripts.js';
+		}
+		/* Widgets js */
+		foreach (self::getCssWidgets() as $v) {
+			/* widgets js default */
+			$dirPage = constant('DIR_WIDGETS').strtolower($v->name).DS.'js'.DS.'javascripts.js';
+			if (is_file($dirPage)) {
+				$files[] = 'widgets/'.strtolower($v->name).'/js/javascripts.js';
+			}
+			/* widgets css default */
+			$dirWidgets = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/'.strtolower($v->name).'.js';
+			if (is_file($dirWidgets)) {
+				$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/'.strtolower($v->name).'.js';
+			}
 		}
 
 		if (is_file(ROOT.'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js')) {

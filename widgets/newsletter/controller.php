@@ -22,5 +22,6 @@ class Newsletter extends Newsletters
 	public function render()
 	{
 		$d['count'] = self::NbUser();
+		return $d;
 	}
 }

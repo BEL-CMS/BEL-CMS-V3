@@ -10,7 +10,7 @@
 */
 
 namespace BelCMS\Core;
-use BelCMS\Config\Config as Config;
+use BelCMS\Core\Debug as debug;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\User\User as User;
 use BelCMS\Core\Dispatcher as Dispatcher;
@@ -46,31 +46,28 @@ final class BelCMS
 				$javaScript,
 				$fullwide;
 
-	private 	$user;
-
 	public function __construct ()
 	{
-		if (isset($_SESSION['USER']['HASH_KEY']) and $_SESSION['USER']['HASH_KEY'] !== false) {
-			$_SESSION['USER']['HASH_KEY'] = User::getInfosUserAll($_SESSION['USER']['HASH_KEY']->user->hash_key);
-		}
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
 		$this->widgets  = self::getWidgets();
 		$this->host     = GetHost::getBaseUrl();
 		$this->template = self::template ();
-		//debug($this->page);
 	}
-
+	##################################################
+	# Récupère la page uniquement sans le template
+	# contenue brut texte mis dans la variable $this->page
+	##################################################
 	private function page ()
 	{
 		ob_start();
-		$this->link	  = Dispatcher::page(constant('CMS_DEFAULT_PAGE'));
+		$this->link	  = Dispatcher::page($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']);
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
 		new User;
 		if (Dispatcher::isManagement() === true) {
 			echo 'Management';
-		} else if (Dispatcher::isPage(constant('CMS_DEFAULT_PAGE')) === true) {
+		} else if (Dispatcher::isPage($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']) === true) {
 			$dir = constant('DIR_PAGES').$this->link.DS.'controller.php';
 			if (is_file($dir)) {
 				require_once $dir;
@@ -110,35 +107,48 @@ final class BelCMS
 
 		return $content;
 	}
-
+	##################################################
+	# Récupère la widgets mis dans la variable.
+	# $this->widgets[x][nom] = array();
+	##################################################
 	private function getWidgets ()
 	{
-		$page    = Dispatcher::page(constant('CMS_DEFAULT_PAGE'));
+		$return  = array();
+		$page    = Dispatcher::page($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']);
 		$listWidgetsActive = self::getWidgetsActive ();
 		foreach ($listWidgetsActive as $key => $value) {
 			switch ($value->pos) {
 				case 'top':
-					$widget = new Widgets ($value->name, 'top');
-					$this->widgets[$value->pos] = $widget->render();
+					$widget = new Widgets ($value, 'top');
+					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
 				break;
 				case 'right':
-					$widget = new Widgets ($value->name, 'right');
-					$this->widgets[$value->pos] = $widget->render();
+					$widget = new Widgets ($value, 'right');
+					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
 				break;
 				case 'bottom':
-					$widget = new Widgets ($value->name, 'bottom');
-					$this->widgets[$value->pos] = $widget->render();
+					$widget = new Widgets ($value, 'bottom');
+					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
 				break;
 				case 'left':
-					$widget = new Widgets ($value->name, 'left');
-					$this->widgets[$value->pos] = $widget->render();
+					$widget = new Widgets ($value, 'left');
+					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
 				break;
 			}
 		}
+		return $return;
 	}
+	##################################################
+	# Récupère la widgets actif
+	# ne récupère pas les widgets dont les groupes
+	# ne correspond pas au votre (sauf 0 ou admin nv1)
+	##################################################
 	private function getWidgetsActive ()
 	{
-		$return = '';
+		$return = array();
+		$a      = array();
+		$b      = array();
+
 		$sql = new BDD;
 		$sql->table('TABLE_WIDGETS');
 		$sql->where(array(
@@ -148,11 +158,36 @@ final class BelCMS
 		$sql->orderby(array('name' => 'orderby', 'value' => 'ASC'));
 		$sql->queryAll();
 		if (!empty($sql->data)) {
-			$return = $sql->data;
+			foreach ($sql->data as $k => $v) {
+				if (empty($v->page)) {
+					$b[$k] = $v;
+				} else {
+					$a = explode('|', $v->pages);
+					if (empty($v->page)) {
+						if (!in_array($this->link, $a)) {
+							$b[$k] = $v;
+						}	
+					}
+				}
+			}
+			foreach ($b as $k => $v) {
+				if ($v->groups_access == 0 or in_array(1, $_SESSION['USER']->groups->all_groups)) {
+					$return[$k] = $v;
+				} else {
+					$a = explode('|', $v->groups_access);
+					if (in_array($_SESSION['USER']->groups->all_groups, $a)) {
+						$return[$k] = $v;
+					}
+				}
+			}
 		}
 		return $return;	
 	}
-
+	##################################################
+	# Récupère le template et intefres toute,
+	# les variable $this (c'est-a-dire) 
+	# page / widgets / lien / user
+	##################################################
 	private function template ()
 	{
 		ob_start();
@@ -163,23 +198,33 @@ final class BelCMS
 		}
 		return $content;
 	}
-
-	private function management ()
+	##################################################
+	# Administration
+	##################################################
+	private function managements ()
 	{
 		
 	}
-
+	##################################################
+	# Récupère le typeMime passé text ou html ou json
+	# <!> Sûrement a effacé dans le futur vu qu'il
+	# est gerer par le lien ex:
+	# https://lien/page/id/?json = encode en json
+	# https://lien/page/id/?text = sans rien juste la page en pur text
+	# https://lien/page/id/?echo = la page complete sans le template
+	##################################################
 	public function typeMime ()
 	{
 		$typeMime = Dispatcher::header();
 		return $typeMime;
 	}
-
-	private function config ()
-	{
-
-	}
-
+	##################################################
+	# Récupère le language utilisé:
+	# <!> pour l'instant, il n'a que le FR, mais facilement
+	# possible de mettre toutes les langues proposées,
+	# il suffit de reglé dans l'admin ENG pour integrer:
+	# dans tout les dossier lang.eng.php etc...
+	##################################################
 	public function langs ()
 	{
 		if (defined('LANGS')) {
@@ -192,7 +237,6 @@ final class BelCMS
 		}
 
 	}
-
 	#########################################
 	# Retourn un message d'information de type
 	# error - success - warning - infos

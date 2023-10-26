@@ -15,7 +15,9 @@ ini_set('default_charset', 'utf-8');
 if(!isset($_SESSION)) {
 	session_start();
 }
-$_SESSION['NB_REQUEST_SQL']   = 0;
+$_SESSION['CMS_DEBUG'] = true; /* a mettre en false pour un site en ligne */
+$_SESSION['CONFIG_CMS'] = array();
+$_SESSION['NB_REQUEST_SQL'] = 0;
 #########################################
 # Définit comme l'index
 #########################################

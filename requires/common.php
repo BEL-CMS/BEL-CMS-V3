@@ -313,13 +313,13 @@ final class Common
 			return date('Y-m-d');
 		}
 
-		if (constant('CMS_WEBSITE_LANG') == constant('FRENCH')) {
+		if ($_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'] == constant('FRENCH')) {
 			$lg = 'fr_FR';
-		} else if (constant('CMS_WEBSITE_LANG') == constant('ENGLISH')) {
+		} else if ($_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'] == constant('ENGLISH')) {
 			$lg = 'en_US';
-		} else if (constant('CMS_WEBSITE_LANG') == constant('NETHERLANDS')) {
+		} else if ($_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'] == constant('NETHERLANDS')) {
 			$lg = 'nl_NL';
-		} else if (constant('CMS_WEBSITE_LANG') == constant('DEUTCH')) {
+		} else if ($_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'] == constant('DEUTCH')) {
 			$lg = 'de_DE';
 		}
 

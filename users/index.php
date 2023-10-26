@@ -36,7 +36,7 @@ class User
 	#########################################
 	public static function isLogged () : bool
 	{
-		if (!empty($_SESSION['USER']['HASH_KEY'])) {
+		if (!empty($_SESSION['USER'])) {
 			$return = true;
 		} else {
 			$return = false;
@@ -51,12 +51,12 @@ class User
 		if (User::isLogged() === true) {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
-			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 			$sql->update(array('ip' => Common::GetIp(),'expire' => 0));
 			unset($sql); 
 			$sql = New BDD();
 			$sql->table('TABLE_USERS_PAGE');
-			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key));
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 			$sql->update(array('namepage' => Dispatcher::name() ,'last_visit' => date('Y-m-d H:i:s')));
 			unset($sql);
 		}
@@ -173,7 +173,7 @@ class User
 							true
 						);
 					}
-					$_SESSION['USER']['HASH_KEY'] = self::getInfosUserAll($results->hash_key);
+					$_SESSION['USER'] = self::getInfosUserAll($results->hash_key);
 					$update = New BDD();
 					$update->table('TABLE_USERS');
 					$update->where(array('name'=>'hash_key','value'=> $results->hash_key));
@@ -299,6 +299,13 @@ class User
 				$e = array('page' => (object) $user->data);
 				$return = (object) array_merge($a, $b, $c, $d, $e);
 				$return->user->color = User::colorUsername($hash_key);
+				$return->groups->all_groups[] = (int) $return->groups->user_group;
+				$groups  = explode("|", $return->groups->user_groups);
+				foreach ($groups as $k => $v) {
+					if (!in_array($v, $return->groups->all_groups)) {
+						$return->groups->all_groups[] = (int) $v;
+					}
+				}
 			} else {
 				$return = false;
 			}

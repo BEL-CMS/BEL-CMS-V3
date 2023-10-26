@@ -11,22 +11,22 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<!-- Seo Meta -->
-		<meta name="description" content="Default template by https://bel-cms.dev">
-		<meta name="keywords" content="template, cms, bel-cms, css3, html5">
+	<meta name="description" content="Default template by https://bel-cms.dev">
+	<meta name="keywords" content="template, cms, bel-cms, css3, html5">
 	<!-- Styles -->
-		<?=$var->css;?>
-		<link rel="stylesheet" type="text/css" href="templates/default/bootstrap/css/bootstrap.min.css" media="screen">
-		<link rel="stylesheet" type="text/css" href="templates/default/bootstrap/css/bootstrap-responsive.min.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="templates/default/styles/icons/icons.css" media="screen">
-		<link rel="stylesheet" type="text/css" href="templates/default/style.css" id="dark" media="screen">
-		<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Oswald'>
+	<?=$var->css;?>
+	<link rel="stylesheet" type="text/css" href="templates/default/bootstrap/css/bootstrap.min.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="templates/default/bootstrap/css/bootstrap-responsive.min.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="templates/default/styles/icons/icons.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="templates/default/style.css" id="dark" media="screen">
+	<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Oswald'>
 	<!-- Favicon -->
-		<link rel="shortcut icon" href="templates/default/images/favicon.ico">
-		<link rel="apple-touch-icon" href="templates/default/images/apple-touch-icon.png">
+	<link rel="shortcut icon" href="templates/default/images/favicon.ico">
+	<link rel="apple-touch-icon" href="templates/default/images/apple-touch-icon.png">
 	<!--[if IE]>
-		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EmulateIE8; IE=EDGE">
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<link rel="stylesheet" type="text/css" href="styles/icons/font-awesome-ie7.min.css">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EmulateIE8; IE=EDGE">
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/icons/font-awesome-ie7.min.css">
 	<![endif]-->
 </head>
 <body id="fluidGridSystem">
@@ -117,6 +117,11 @@
 				if ($var->fullwide !== true):
 				?>
 				<div class="span4 sidebar">
+					<?php
+					foreach ($var->widgets['left'] as $widget):
+						echo $widget;
+					endforeach;
+					?>
 					<div class="def-block widget">
 						<h4> NewsLetters </h4><span class="liner"></span>
 						<div class="widget-content">

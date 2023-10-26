@@ -17,23 +17,25 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class ConnectedUsers
+class Users
 {
 	public function getUsers($limit = 5)
 	{
 		$return = null;
 
 		$sql = New BDD();
-		$sql->table('TABLE_USERS');
+		$sql->table('TABLE_USERS_PAGE');
 		$sql->orderby(array(array('name' => 'last_visit', 'type' => 'DESC')));
-		$sql->fields(array('username', 'avatar', 'last_visit'));
+		$sql->fields(array('hash_key', 'namepage', 'last_visit'));
 		$sql->limit($limit);
 		$sql->queryAll();
 		if (!empty($sql->data)) {
 			$return = $sql->data;
+			/*
 			foreach ($return as $k => $v) {
 				$return[$k]->avatar = is_file($v->avatar) ? $v->avatar : 'assets/img/default_avatar.jpg';
 			}
+			*/
 		}
 		return $return;
 

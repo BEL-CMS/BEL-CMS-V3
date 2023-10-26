@@ -24,10 +24,17 @@ final class Config
 {
 	public function __construct()
 	{
-		foreach (self::getConfigBDD() as $v) {
-			if (!defined(mb_strtoupper($v->name))) {
-				define($v->name, $v->value);
+		try {
+			foreach (self::getConfigBDD() as $v) {
+				if ($v->name == 'CMS_TPL_WEBSITE') {
+					if ($v->value == null) {
+						$v->value = 'default';
+					}
+				}
+				$_SESSION['CONFIG_CMS'][$v->name] = $v->value;
 			}
+		} catch (\Throwable $e) {
+			var_dump($e);
 		}
 	}
 
@@ -42,10 +49,9 @@ final class Config
 		unset($sql);
 		return $return;
 	}
-
 	public static function langs (): array
 	{
 		return constant('LANGS');
 	}
 }
-new Config;
+new \BelCMS\Config\Config();

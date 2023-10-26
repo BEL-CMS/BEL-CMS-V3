@@ -19,10 +19,9 @@ endif;
 
 class Users extends ModelsUsers
 {
-	public function index()
+	public function render()
 	{
-		$d['user'] = $this->models->getInfosUser();
-		$this->set($d);
-		$this->render('index');
+		$set[] = array();
+		return $set;
 	}
 }

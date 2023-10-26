@@ -48,7 +48,7 @@ class Pages
 		$this->data        = self::get();
 		$this->pageName    = Dispatcher::page();
 		$this->subPageName = Dispatcher::view();
-		$dirLangs = constant('DIR_PAGES').strtolower($this->pageName).DS.'langs'.DS.'lang.'.constant('CMS_WEBSITE_LANG').'.php';
+		$dirLangs = constant('DIR_PAGES').strtolower($this->pageName).DS.'langs'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php';
 		require $dirLangs;
 	}
 	#########################################

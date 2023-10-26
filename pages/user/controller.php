@@ -33,14 +33,14 @@ class User extends Pages
 	public function index ()
 	{
 		if (UserInfos::isLogged() === true) {
-			$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
+			$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']->user->hash_key.'/';
 			if (!is_dir($dir)) {
 			    mkdir($dir, 0777, true);
 			}
 			$fopen  = fopen($dir.'/index.html', 'a+');
 			$fclose = fclose($fopen);
 			$d['current'] ='user';
-			$d['user']    = $_SESSION['USER']['HASH_KEY'];
+			$d['user']    = $_SESSION['USER'];
 			$this->set($d);
 			$this->render('index');
 		} else {
@@ -63,7 +63,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $_SESSION['USER']['HASH_KEY'];
+			$d['user']    = $_SESSION['USER'];
 			$d['current'] ='avatar';
 			$this->set($d);
 			$this->render('avatar');
@@ -80,7 +80,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $_SESSION['USER']['HASH_KEY'];
+			$d['user']    = $_SESSION['USER'];
 			$d['current'] ='security';
 			$this->set($d);
 			$this->render('security');
@@ -97,7 +97,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $_SESSION['USER']['HASH_KEY'];
+			$d['user']    = $_SESSION['USER'];
 			$d['current'] ='safety';
 			$this->set($d);
 			$this->render('safety');
@@ -114,7 +114,7 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === true) {
 			$d = array();
-			$d['user']    = $_SESSION['USER']['HASH_KEY'];
+			$d['user']    = $_SESSION['USER'];
 			$d['current'] ='social';
 			$this->set($d);
 			$this->render('social');
@@ -138,7 +138,7 @@ class User extends Pages
 			}
 		} else {
 			$d = array();
-			$d['user'] = $_SESSION['USER']['HASH_KEY'];
+			$d['user'] = $_SESSION['USER'];
 			$this->set($d);
 			$this->render('index');
 		}

@@ -20,14 +20,5 @@ endif;
 
 class Users
 {
-	public function getInfosUser ()
-	{
-		$return = null;
 
-		if (User::isLogged()) {
-			$return = User::
-		}
-
-		return $return;
-	}
 }

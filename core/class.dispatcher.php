@@ -110,7 +110,7 @@ final class Dispatcher
 		$return = false;
 
 		if ($pages == null) {
-			$page = constant('CMS_DEFAULT_PAGE');
+			$page = $_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE'];
 		}
 		if (!empty($page)) {
 			if (Common::ExistsPage($page) === true) {
@@ -173,8 +173,7 @@ final class Dispatcher
 	#########################################
 	public static function header () : string
 	{
-		$page = constant('CMS_DEFAULT_PAGE');
-		//debug($page);
+		$page = $_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE'];
 		if (isset($_GET['text'])) {
 			$return = 'text/plain';
 		} else if (isset($_GET['json']) or isset($_GET['jquery'])) {

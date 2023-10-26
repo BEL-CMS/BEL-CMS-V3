@@ -16,10 +16,11 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 if (User::isLogged()):
+	$data = $_SESSION['USER'];
 ?>
 <section id="bel_cms_widget_users">
 	<div class="bel_cms_widget_users">
-		<img src="<?=$user->avatar;?>" alt="avatar_<?=$user->username;?>">
+		<img src="<?=$data->profils->avatar;?>" alt="avatar_<?=$data->user->username;?>">
 	</div>
 	<nav>
 		<ul>

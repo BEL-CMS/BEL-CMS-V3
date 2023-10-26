@@ -24,24 +24,6 @@ final class Config
 			$access_groups,
 			$access_admin;
 
-	function __construct ()
-	{
-		$return = array();
-
-		$sql = New BDD;
-		$sql->table('TABLE_CONFIG');
-		$sql->fields(array('name', 'value'));
-		$sql->queryAll();
-		$config = $sql->data;
-		unset($sql);
-
-		foreach ($config as $v) {
-			$return[mb_strtoupper($v->name)] = (string) $v->value;
-		}
-
-		Common::Constant($return);
-	}
-
 	public static function GetConfigPage ($page = null)
 	{
 		$return = null;

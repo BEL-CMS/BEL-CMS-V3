@@ -21,6 +21,7 @@ class Shoutbox extends modelsShoutbox
 {
 	public function render()
 	{
-		return self::getMsg();
+		$set['var'] = self::getMsg();
+		return $set;
 	}
 }
