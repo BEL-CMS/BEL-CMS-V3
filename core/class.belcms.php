@@ -114,26 +114,40 @@ final class BelCMS
 	private function getWidgets ()
 	{
 		$return  = array();
-		$page    = Dispatcher::page($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']);
 		$listWidgetsActive = self::getWidgetsActive ();
 		foreach ($listWidgetsActive as $key => $value) {
 			switch ($value->pos) {
 				case 'top':
 					$widget = new Widgets ($value, 'top');
-					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+					if (!empty($widget)) {
+						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+					} else {
+						$return[$value->pos][] = '';
+					}
 				break;
 				case 'right':
 					$widget = new Widgets ($value, 'right');
-					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+					if (!empty($widget)) {
+						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+					} else {
+						$return[$value->pos][] = '';
+					}
 				break;
 				case 'bottom':
 					$widget = new Widgets ($value, 'bottom');
-					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+					if (!empty($widget)) {
+						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+					} else {
+						$return[$value->pos][] = '';
+					}
 				break;
 				case 'left':
 					$widget = new Widgets ($value, 'left');
-					$return[$value->pos][$value->name] = $widget->getBoxGlobal();
-				break;
+					if (!empty($widget)) {
+						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+					} else {
+						$return[$value->pos][] = '';
+					}				break;
 			}
 		}
 		return $return;

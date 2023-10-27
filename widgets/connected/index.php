@@ -10,8 +10,6 @@
  */
 
 use BelCMS\Core\Visitors as Visitors;
-use BelCMS\User\User as Users;
-use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');

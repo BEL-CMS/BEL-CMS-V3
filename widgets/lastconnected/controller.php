@@ -10,20 +10,26 @@
  */
 
 namespace Belcms\Widgets\Controller;
-use Belcms\Widgets\Models\Users as Users;
+use Belcms\Widgets\Models\lastConnected\Models as modelsUsers;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class LastConnected extends Users
+class LastConnected
 {
-	var $nbLast = 5;
+	var $nbLast = 5,
+		$models;
+
+	public function __construct($models)
+	{
+		$this->models = $models;
+	}
 
 	public function render()
 	{
-		$var['user'] = self::getUsers($this->nbLast);
-		return $var;
+		$array['var'] = $this->models->getUsers($this->nbLast);
+		return $array;
 	}
 }

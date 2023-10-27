@@ -56,10 +56,6 @@ function error_handler($t, $m, $f, $l, $e = true)
 		ob_end_clean();
 	}
 	echo $e;
-	if ($c == "Fatal Error") {
-		var_dump(debug_backtrace_string());
-		echo str_pad('', 100, '-',STR_PAD_RIGHT).PHP_EOL;
-	}
 }
 function debug_backtrace_string() {
 	foreach(debug_backtrace() as $node) {
@@ -68,7 +64,6 @@ function debug_backtrace_string() {
 } 
 function error_exceptions($e)
 {
-	var_dump(debug_backtrace_string());
 	error_handler (E_USER_ERROR, $e->getMessage(), $e->getFile(), $e->getLine(), $e);
 }
 function error_fatal()

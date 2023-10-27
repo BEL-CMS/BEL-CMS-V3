@@ -824,13 +824,8 @@ final class Common
 		}
 		return $text;
 	}
-}
-function cesure_href($d) {
-	return '<a href="' . $d[1] . '" title="' . $d[1] . '" >[Lien]</a>';
-}
-function fixUrl ($d) {
-	return strtr($d, array('?' => '%3F'));
-}
-function defixUrl ($d) {
-	return strtr($d, array('%3F' => '?'));
+	public function cesureHref($d) 
+	{
+		return '<a href="' . $d[1] . '" title="' . $d[1] . '" >[Lien]</a>';
+	}
 }

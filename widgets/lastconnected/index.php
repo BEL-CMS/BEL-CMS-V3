@@ -9,25 +9,41 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common as Common;
+use BelCMS\User\User as User;
+use BelCMS\Core\Config as Groups;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-if ($last !== null):
+
+if ($var !== null):
+	$groups = Groups::getGroups();
 ?>
 <div id="bel_cms_widgets_lastconnected" class="widget">
 	<ul>
 	<?php
-	foreach ($last as $k => $v):
+	foreach ($var as $k => $v):
+		if (User::ifUserExist($v->hash_key)):
+		$infosUser = User::getInfosUserAll($v->hash_key);
+			foreach ($groups as $key => $value) {
+				if ($value['id'] == $infosUser->groups->user_group) {
+					$group = $key;
+				}
+			}
 		?>
-		<li>
-			<img data-toggle="tooltip" title="<?=$v->username?>" src="<?=$v->avatar?>" alt="avatar_<?=$v->username?>" style="max-width: 50px; max-height: 50px;">
-			<span>
-				<p style="color: <?=Users::colorUsername(null,$v->username)?>"><?=$v->username;?></p>
-				<p><?=Common::transformDate($v->last_visit, 'MEDIUM', 'SHORT') ?></p>
-			</span>
-		</li>
-	<?php
+			<li>
+				<img title="<?=$infosUser->user->username?>" src="<?=$infosUser->profils->avatar?>" alt="avatar_<?=$infosUser->user->username?>" style="max-width: 50px; max-height: 50px;">
+				<span>
+					<p>
+						<span data-tooltip="<?=$group;?>" data-position="right" class="right" style="color: <?=$infosUser->user->color;?>"><?=$infosUser->user->username;?></span>
+					</p>
+					<p><?=Common::transformDate($infosUser->page->last_visit, 'MEDIUM', 'SHORT') ?></p>
+				</span>
+			</li>
+		<?php
+		endif;
 	endforeach;
 	?>
 	</ul>

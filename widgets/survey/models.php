@@ -9,7 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace Belcms\Widgets\Models;
+namespace Belcms\Widgets\Models\Survey;
 use BelCMS\PDO\BDD as BDD;
 
 if (!defined('CHECK_INDEX')):
@@ -22,7 +22,7 @@ endif;
 #->	id, name, date
 #	TABLE_SURVEY_AUTHOR
 #->	id, idvote, author, date
-class Survey
+class Models
 {
 	public function getLastSurvey ()
 	{

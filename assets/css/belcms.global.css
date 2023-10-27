@@ -35,6 +35,9 @@ pre, code {
 	line-height: 30px;
 	cursor: pointer;
 }
+[data-tooltip] {
+	cursor: pointer;
+}
 /*-------------------------------------------------------------------------------------------------*/
 /*	background 
 ---------------------------------------------------------------------------------------------------*/
@@ -218,7 +221,6 @@ textarea[readonly] {
 	color: rgba(255, 255, 255, .95);
 	font-size: 12px;
 	transition: background-color 0.2s ease 0s;
-	vertical-align: middle;
 	top: -35px;
 }
 #alrt_bel_cms.danger {
@@ -241,4 +243,136 @@ textarea[readonly] {
 	border-color: rgba(0, 0, 0, 0.05) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15);
 	color: white;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	tooltip
+---------------------------------------------------------------------------------------------------*/
+[data-tooltip].top {
+	&:before,
+	&:after {
+		transform: translateY(10px);
+	}
+	
+	&:hover:after,
+	&:hover:before {
+		transform: translateY(0px);
+	}
+}
+[data-tooltip].right {
+	&:before,
+	&:after {
+		transform: translateX(0px);
+	}
+	
+	&:hover:after,
+	&:hover:before {
+		transform: translateX(10px);
+	}
+}
+[data-tooltip].bottom {
+	&:before,
+	&:after {
+		transform: translateY(-10px);
+	}
+	
+	&:hover:after,
+	&:hover:before {
+		transform: translateY(0px);
+	}
+}
+[data-tooltip].left {
+	&:before,
+	&:after {
+		transform: translateX(0px);
+	}
+	
+	&:hover:after,
+	&:hover:before {
+		transform: translateX(-10px);
+	}
+}
+[data-tooltip] {
+	position: relative;
+	&:after,
+	&:before {
+		position: absolute;
+		visibility: hidden;
+		opacity: 0;
+		transition: transform 200ms ease, opacity 200ms;
+		box-shadow: 0 0 10px rgba(black,0.3);
+		z-index: 99;
+	}
+	&:before {
+		content: attr(data-tooltip);
+		background: #000;
+		color: #fff;
+		font-size: 10px;
+		font-weight: bold;
+		padding: 10px 15px;
+		border-radius: 5px;
+		white-space: nowrap;
+		text-decoration: none;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+	&:after {
+		width: 0;
+		height: 0;
+		border: 6px solid transparent;
+		content: '';
+	}
+	&:hover:after,
+	&:hover:before {
+		visibility: visible;
+		opacity: 0.85;
+		transform: translateY(0px);
+	}
+}
+[data-tooltip][data-position="top"]:before {
+	bottom: 100%;
+	left: -130%;
+	margin-bottom: 10px;
+}
+[data-tooltip][data-position="top"]:after {
+	border-top-color: #000;
+	border-bottom: none;
+	bottom: 101%;
+	left: calc(50% - 6px);
+	margin-bottom: 4px;
+}
+[data-tooltip][data-position="left"]:before {
+	top: -12%;
+	right: 100%;
+	margin-right: 10px;
+}
+[data-tooltip][data-position="left"]:after {
+	border-left-color: #000;
+	border-right: none;
+	top: calc(50% - 3px);
+	right: 100%;
+	margin-top: -6px;
+	margin-right: 4px;
+}
+[data-tooltip][data-position="right"]:before {
+	top: -5%;
+	left: 100%;
+	margin-left: 10px;
+}
+[data-tooltip][data-position="right"]:after {
+	border-right-color: #000;
+	border-left: none;
+	top: calc(50% - 6px);
+	left: calc(100% + 4px);
+}
+[data-tooltip][data-position="bottom"]:before {
+	top: 100%;
+	left: -130%;
+	margin-top: 10px;
+}
+[data-tooltip][data-position="bottom"]:after {
+	border-bottom-color: #000;
+	border-top: none;
+	top: 100%;
+	left: 5px;
+	margin-top: 4px;
 }

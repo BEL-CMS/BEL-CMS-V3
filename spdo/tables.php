@@ -26,6 +26,7 @@ $tables = array(
 	'TABLE_CONFIG_TPL'          => $DB_PREFIX.'config_tpl',
 	'TABLE_DOWNLOADS'           => $DB_PREFIX.'downloads',
 	'TABLE_DOWNLOADS_CAT'       => $DB_PREFIX.'downloads_cat',
+	'TABLE_EMOTICONES'          => $DB_PREFIX.'emoticones',
 	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
 	'TABLE_INTERACTION'         => $DB_PREFIX.'interaction',
 	'TABLE_MAIL_BLACKLIST'      => $DB_PREFIX.'mails_blacklist',

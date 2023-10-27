@@ -111,6 +111,13 @@
 						echo $var->page;
 						?>
 					</div>
+					<?php
+					if (!empty($var->widgets['bottom'])):
+						foreach ($var->widgets['bottom'] as $widget):
+							echo $widget;
+						endforeach;
+					endif;
+					?>
 				</div>
 				<?php
 				endif;
@@ -118,9 +125,11 @@
 				?>
 				<div class="span4 sidebar">
 					<?php
-					foreach ($var->widgets['left'] as $widget):
-						echo $widget;
-					endforeach;
+					if (!empty($var->widgets['left'])):
+						foreach ($var->widgets['left'] as $widget):
+							echo $widget;
+						endforeach;
+					endif;
 					?>
 					<div class="def-block widget">
 						<h4> NewsLetters </h4><span class="liner"></span>

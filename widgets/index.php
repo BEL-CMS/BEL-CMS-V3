@@ -14,8 +14,6 @@ use BelCMS\PDO\BDD as BDD;
 
 class Widgets
 {
-	var 		$vars = array();
-
 	public      $render,
 				$models;
 
@@ -28,29 +26,21 @@ class Widgets
 		$this->name  = $var->name;
 		$this->title = $var->title;
 		$this->pos   = $var->pos;
-		$this->render = self::render ();
 	}
-
-	#########################################
-	# Assemble les variable passé par,
-	# le controller en $this-set(array());
-	#########################################
-	public function set ($d)
-	{
-		$this->vars = array_merge($this->vars,$d);
-	}
-
 	public function render ()
 	{
 		ob_start();
 
-		self::getModels ();
-		$get = self::getController();
-		$var = $get->render();
-		extract($var);
+		$set = self::getController();
+		$get = $set->render();
+		extract($get);
 		$render = constant('DIR_WIDGETS').strtolower($this->name).DS.'index.php';
 
-		include $render;
+		if (is_file($render)) {
+			include $render;
+		} else {
+			debug($render);
+		}
 
 		$content = ob_get_contents ();
 
@@ -58,14 +48,14 @@ class Widgets
 			ob_end_clean();
 		}
 
-		return $content;
+		echo $content;
 	}
 
 	public function getBoxGlobal ()
 	{
 		ob_start();
 		echo self::getTopBox();
-		echo self::getBoxContent();
+		echo self::getBoxContent(self::render());
 		echo self::getBottomBox();
 		$content = ob_get_contents ();
 		if (ob_get_length() != 0) {
@@ -134,11 +124,15 @@ class Widgets
 		if ($this->name != null) {
 			$controller = ucfirst($this->name);
 			$file = constant('DIR_WIDGETS').strtolower($this->name).DS.'controller.php';
-			if (is_file($file)) {
-				require $file;
-				$nameController = 'Belcms\Widgets\Controller\\'.$controller;
-				$var = new $nameController();
-				return $var;
+			try {
+				if (is_file($file)) {
+					require $file;
+					$nameController = 'Belcms\Widgets\Controller\\'.$controller;
+					$var = new $nameController(self::getModels());
+					return $var;
+				}
+			} catch (\Throwable $e) {
+				var_dump($e);
 			}
 		}
 	}
@@ -150,6 +144,9 @@ class Widgets
 			try {
 				if (is_file($file)) {
 					require $file;
+					$nameModels = 'Belcms\Widgets\Models\\'.ucfirst($this->name).'\Models';
+					$var = new $nameModels();
+					return $var;
 				}
 			} catch (\Throwable $e) {
 				var_dump($e);

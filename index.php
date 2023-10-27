@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
 */
 ini_set('default_charset', 'utf-8');
+date_default_timezone_set('Europe/Brussels');
 #########################################
 # Demarre une $_SESSION
 #########################################

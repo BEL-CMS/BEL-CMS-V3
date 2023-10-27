@@ -9,7 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace Belcms\Widgets\Models;
+namespace Belcms\Widgets\Models\Connected;
 use BelCMS\PDO\BDD as BDD;
 
 if (!defined('CHECK_INDEX')):
@@ -17,7 +17,7 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Connected
+class Models
 {
 	protected function GetGroups ()
 	{

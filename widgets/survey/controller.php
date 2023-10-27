@@ -10,21 +10,27 @@
  */
 
 namespace Belcms\Widgets\Controller;
-use Belcms\Widgets\Models\Survey as WidgetsSurvey;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Survey extends WidgetsSurvey
+class Survey
 {
-	public function render ()
-	{	
-		$set['data']  = self::getLastSurvey();
+	var $models;
+
+	public function __construct($models)
+	{
+		$this->models = $models;
+	}
+
+	public function render()
+	{
+		$set['data']  = $this->models->getLastSurvey();
 		if (!empty($set['data'])) {
-			$set['count'] = self::countVote($set['data']->id);
-			$set['vote']  = self::getNumberVote($set['data']->id);
+			$set['count'] = $this->models->countVote($set['data']->id);
+			$set['vote']  = $this->models->getNumberVote($set['data']->id);
 		}
 		return $set;
 	}

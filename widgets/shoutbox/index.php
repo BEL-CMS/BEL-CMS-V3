@@ -47,7 +47,6 @@ endif;
 						$msg = ' ' . $v->msg;
 						$msg = preg_replace("#([\t\r\n ])(www|ftp)\.(([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^ \"\n\r\t<]*)?)#i", '\1<a href="http://\2.\3" onclick="window.open(this.href); return false;">\2.\3</a>', $msg);
 						$msg = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $msg);
-						$msg = preg_replace_callback('`((https?|ftp)://\S+)`', 'cesure_href',$msg);
 						?>
 						<li class="<?=$left_right?>" id="id_<?=$v->id?>">
 							<a data-toggle="tooltip" title="<?=$username?>" href="Members/View/<?=$username?>" class="avatar">

@@ -356,8 +356,30 @@ class User
 				$color = "#000000";
 			}
 		}
-
 		return $color;
+	}
+	#########################################
+	# Verifie si l'utilisateur existe
+	#########################################
+	public static function ifUserExist ($hash_key = null)
+	{
+		$return = false;
+
+		if ($hash_key !== null && strlen($hash_key) == 32) {
+			$sql = New BDD();
+			$sql->table('TABLE_USERS');
+			$sql->where(array(
+				'name'  => 'hash_key',
+				'value' => $hash_key
+			));
+			$sql->count();
+			$return = $sql->data;
+			if (!empty($return)) {
+				$return = true;
+			}
+		}
+
+		return $return;
 	}
 }
 new User;
