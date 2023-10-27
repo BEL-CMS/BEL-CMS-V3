@@ -36,6 +36,7 @@ $tables = array(
 	'TABLE_PAGES_ARTICLES'      => $DB_PREFIX.'page_articles',
 	'TABLE_PAGES_ARTICLES_CAT'  => $DB_PREFIX.'page_articles_cat',
 	'TABLE_SHOUTBOX'            => $DB_PREFIX.'page_shoutbox',
+	'TABLE_PAGE_STATS'          => $DB_PREFIX.'page_stats',
 	'TABLE_SURVEY'              => $DB_PREFIX.'page_survey',
 	'TABLE_SURVEY_QUEST'        => $DB_PREFIX.'page_survey_quest',
 	'TABLE_SURVEY_AUTHOR'       => $DB_PREFIX.'page_survey_author',

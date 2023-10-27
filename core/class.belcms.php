@@ -11,6 +11,7 @@
 
 namespace BelCMS\Core;
 use BelCMS\Core\Debug as debug;
+use BelCMS\Core\Visitors as Visitors;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\User\User as User;
 use BelCMS\Core\Dispatcher as Dispatcher;
@@ -48,6 +49,7 @@ final class BelCMS
 
 	public function __construct ()
 	{
+		new Visitors;
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
 		$this->widgets  = self::getWidgets();
@@ -83,6 +85,8 @@ final class BelCMS
 						$error_name = $newPage->errorInfos[2];
 						$error_full = $newPage->errorInfos[3];
 						self::error($error_type, $error_text, $error_name, $error_full);
+					} else {
+						self::statsPages();
 					}
 					if ($error === false AND empty($newPage->page)) {
 						Notification::alert(constant('ERROR_LOADING_PAGE'), constant('WARNING'), true);
@@ -106,6 +110,30 @@ final class BelCMS
 		}
 
 		return $content;
+	}
+	##################################################
+	# Statistique par page, incrémentation.
+	##################################################
+	private function statsPages ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_PAGE_STATS');
+		$sql->where(array(
+			'name' => 'page',
+			'value' => $this->link
+
+		));
+		$sql->queryOne();
+		if (!empty($sql->data)) {
+			$update['nb_view'] = $sql->data->nb_view +1;
+			$insert = new BDD;
+			$insert->table('TABLE_PAGE_STATS');
+			$insert->where(array(
+				'name' => 'page',
+				'value' => $this->link
+			));
+			$insert->update($update);
+		}
 	}
 	##################################################
 	# Récupère la widgets mis dans la variable.
