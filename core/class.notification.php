@@ -104,11 +104,12 @@ final class Notification
 				$bg = 'background-color: rgba(102, 97, 90, 1) !important;';
 			break;
 		}
+		$title =  (!empty($title) and $title != 1) ? $title : 'Alert !';
 		$render  = '<section style="border: 1px solid rgba(209, 207, 207, 1);background:rgba(248, 248, 248, 1);margin: 15px  auto;width:100%;overflow:hidden;">'.PHP_EOL;
 		$render .= '<header style="display: block;width:100%;padding:15px;overflow:hidden;color:rgba(255, 255, 255, 0.95);min-height:auto !important;'.$bg.'">'.PHP_EOL;
 		$render .= '<span style="display:block;float:left;margin-left:15px;line-height:24px;font-size:16px;font-weight: bold;">'.$title.'</span>'.PHP_EOL;
 		$render .= '</header>'.PHP_EOL;
-		$render .= '<div style="margin:15px;padding: 15px;text-align: justify;border: 1px solid rgba(209, 207, 207, 1);background-color:rgba(244, 242, 242, 1);font-weight:13px;color:var(--gray-dark);">'.PHP_EOL;
+		$render .= '<div style="margin:15px;padding: 15px;text-align: justify;border: 1px solid rgba(209, 207, 207, 1);background-color:rgba(244, 242, 242, 1);font-weight:13px;color:gray;">'.PHP_EOL;
 		$render .= $text;
 		$render .= '</div>'.PHP_EOL;
 		$render .= '</section>'.PHP_EOL;

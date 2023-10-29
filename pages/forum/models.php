@@ -9,15 +9,19 @@
  * @author as Stive - stive@determe.be
  */
 
+namespace Belcms\Pages\Models;
+use BelCMS\PDO\BDD as BDD;
+use BelCMS\Requires\Common as Common;
+use BelCMS\User\User as User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-###  TABLE_NEWSLETTER
 ###  TABLE_FORUM_POST
 ###  TABLE_FORUM_POSTS
 ###  TABLE_FORUM_THREADS
-final class ModelsForum
+final class Forum
 {
 	#####################################
 	# Récupère les noms des forums
@@ -49,10 +53,10 @@ final class ModelsForum
 						$access = true;
 						break;
 					} else {
-						if (Users::getInfosUser($_SESSION['USER']['HASH_KEY']) !== false) {
+						if (User::getInfosUserAll($_SESSION['USER']->user->hash_key) !== false) {
 							$v_access = explode('|', $v_access);
 							foreach ($v_access as $key_access => $value_access) {
-								if (in_array($value_access, Users::getGroups($_SESSION['USER']['HASH_KEY']))) {
+								if (in_array($value_access, $_SESSION['USER']->groups->all_groups)) {
 									$access = true;
 									break;
 								}
@@ -284,10 +288,10 @@ final class ModelsForum
 		$text = $data['content'];
 		$update->update(array('content' => $text));
 		if ($update->rowCount == 1) {
-			$return['msg']  = EDIT_SUCCESS;
+			$return['msg']  = constant('EDIT_SUCCESS');
 			$return['type'] = 'success';
 		} else {
-			$return['msg']  = EDIT_FALSE;
+			$return['msg']  = constant('EDIT_FALSE');
 			$return['type'] = 'error';
 		}
 		return $return;	
@@ -306,10 +310,10 @@ final class ModelsForum
 		$text = $data['content'];
 		$update->update(array('content' => $text));
 		if ($update->rowCount == 1) {
-			$return['msg']  = EDIT_SUCCESS;
+			$return['msg']  = constant('EDIT_SUCCESS');
 			$return['type'] = 'success';
 		} else {
-			$return['msg']  = EDIT_FALSE;
+			$return['msg']  = constant('EDIT_FALSE');
 			$return['type'] = 'error';
 		}
 		return $return;
@@ -323,34 +327,33 @@ final class ModelsForum
 		if ($id && $id_supp) {
 			$id_supp = (int) $id_supp;
 			// Récupère le 1er message du post //
-			$this->sql = New BDD();
-			$this->sql->table('TABLE_FORUM_POST');
-			$this->sql->where(array('name' => 'id', 'value' => $id_supp));
-			$this->sql->limit(1);
-			$this->sql->queryAll();
-			$firstPost = $this->sql->data;
-			unset($this->sql);
+			$sql = New BDD();
+			$sql->table('TABLE_FORUM_POST');
+			$sql->where(array('name' => 'id', 'value' => $id_supp));
+			$sql->limit(1);
+			$sql->queryAll();
+			$firstPost = $sql->data;
+			unset($sql);
 			// Récupère les reponses du post //
-			$this->sql = New BDD();
-			$this->sql->table('TABLE_FORUM_POSTS');
-			$this->sql->where(array('name' => 'id_post', 'value' => $id_supp));
-			$this->sql->orderby(array(array('name' => 'date_post', 'type' => 'ASC')));
-			$this->sql->queryAll();
-			$posts = $this->sql->data;
+			$sql = New BDD();
+			$sql->table('TABLE_FORUM_POSTS');
+			$sql->where(array('name' => 'id_post', 'value' => $id_supp));
+			$sql->orderby(array(array('name' => 'date_post', 'type' => 'ASC')));
+			$sql->queryAll();
+			$posts = $sql->data;
 			// Assemble les deux tableaux
 			$return = array_merge($firstPost, $posts);
 			foreach ($return as $k => $v) {
-				$authorId = $v->author;
-				$author   = Users::getInfosUser($authorId);
+				$author = User::getInfosUserAll($v->author);
 				// Fait corrépondre leurs ID avec leur username
-				$return[$k]->author       = Users::hashkeyToUsernameAvatar($authorId);
+				$return[$k]->author       = $author->user->username;
 				// Fait corrépondre leurs ID avec leur avatar
-				$return[$k]->avatar       = Users::hashkeyToUsernameAvatar($authorId, 'avatar');
+				$return[$k]->avatar       = $author->profils->avatar;
 				// Fait corrépondre leurs ID avec leur date d'inscription
 				$return[$k]->registration = (isset($author->date_registration)) ? Common::TransformDate($author->date_registration) : '';
-				$return[$k]->group        = self::getGroup($author[$authorId]->main_groups);
-				$return[$k]->authorId     = $authorId;
-				$return[$k]->countPost    = self::nbUserForum($authorId);
+				$return[$k]->group        = $author->groups->user_group;
+				$return[$k]->authorId     = $v->author;
+				$return[$k]->countPost    = self::nbUserForum($v->author);
 				// Récupère les options et les transformer en Booleen
 				// Les like sont transoformer en (int)
 				$options = explode('|', $v->options);
@@ -365,23 +368,6 @@ final class ModelsForum
 				$return[$k]->options = $options;
 			}
 		}
-		return $return;
-	}
-
-	private function getGroup ($id)
-	{
-		$return = (object) array();
-
-		$sql = New BDD;
-		$sql->table('TABLE_GROUPS');
-		$sql->fields(array('id', 'name', 'id_group', 'color', 'image'));
-		$where = array(
-			'name'  => 'id_group',
-			'value' => (int) $id
-		);
-		$sql->where($where);
-		$sql->queryOne();
-		$return = $sql->data;
 		return $return;
 	}
 	#####################################
@@ -437,10 +423,10 @@ final class ModelsForum
 			$update->update(array('options' => $options));
 			# verifie si c'est bien inserer
 			if ($update->rowCount == 1) {
-				$return['msg']  = LOCK_SUCCESS;
+				$return['msg']  = constant('LOCK_SUCCESS');
 				$return['type'] = 'success';
 			} else {
-				$return['msg']  = ERROR_LOCK_BDD;
+				$return['msg']  = constant('ERROR_LOCK_BDD');
 				$return['type'] = 'error';
 			}
 			# return le resulat
@@ -473,10 +459,10 @@ final class ModelsForum
 			$update->update(array('options' => $options));
 			# verifie si c'est bien inserer
 			if ($update->rowCount == 1) {
-				$return['msg']  = UNLOCK_SUCCESS;
+				$return['msg']  = constant('UNLOCK_SUCCESS');
 				$return['type'] = 'success';
 			} else {
-				$return['msg']  = ERROR_UNLOCK_BDD;
+				$return['msg']  = constant('ERROR_UNLOCK_BDD');
 				$return['type'] = 'error';
 			}
 			# return le resulat
@@ -504,10 +490,10 @@ final class ModelsForum
 			$del->delete();
 			# verifie si c'est bien supprimer
 			if ($true == 1) {
-				$return['msg']  = DEL_POST_SUCCESS;
+				$return['msg']  = constant('DEL_POST_SUCCESS');
 				$return['type'] = 'success';
 			} else {
-				$return['msg']  = DEL_POST_ERROR;
+				$return['msg']  = constant('DEL_POST_ERROR');
 				$return['type'] = 'error';
 			}
 			# return le resulat
@@ -519,20 +505,20 @@ final class ModelsForum
 	#####################################
 	public function SubmitPost($data)
 	{
-		if (Users::getInfosUser($_SESSION['USER']['HASH_KEY']) === false) {
-			$return['msg']  = ERROR_LOGIN;
+		if (User::getInfosUserAll($_SESSION['USER']->user->hash_key) === false) {
+			$return['msg']  = constant('ERROR_LOGIN');
 			$return['type'] = 'warning';
 			return $return;
 		}
 
 		if (!isset($_SESSION['REPLYPOST'])) {
-			$return['msg']  = ERROR_ID;
+			$return['msg']  = constant('ERROR_ID');
 			$return['type'] = 'warning';
 			return $return;
 		}
 
 		if ($_SESSION['REPLYPOST'] != $data['id']) {
-			$return['msg']  = ERROR_ID;
+			$return['msg']  = constant('ERROR_ID');
 			$return['type'] = 'warning';
 			return $return;
 		} else {
@@ -540,10 +526,10 @@ final class ModelsForum
 		}
 
 		$upload = Common::Upload('file', 'forum');
-		if ($upload == UPLOAD_FILE_SUCCESS) {
+		if ($upload == constant('UPLOAD_FILE_SUCCESS')) {
 			$insert['attachment'] = 'uploads/forum/'.Common::FormatName($_FILES['file']['name']);
 			$upload = '<br>'.$upload;
-		} else if ($upload == UPLOAD_NONE) {
+		} else if ($upload == constant('UPLOAD_NONE')) {
 			$insert['attachment'] = '';
 			$upload = '';
 		} else {
@@ -561,11 +547,11 @@ final class ModelsForum
 		$BDD->insert($insert);
 
 		if ($BDD->rowCount == 1) {
-			self::addPlusPost($BDD->insert['id_post']);
+			self::addPlusPost($insert['id_post']);
 			$return['msg']  = 'Enregistrement de la réponse en cours...'.$upload;
 			$return['type'] = 'success';
 		} else {
-			$return['msg']  = ERROR_BDD;
+			$return['msg']  = constant('ERROR_BDD');
 			$return['type'] = 'danger';
 		}
 
@@ -577,14 +563,14 @@ final class ModelsForum
 	public function SubmitThread($id, $data)
 	{
 		# teste si utilisateur est connecté
-		if (Users::getInfosUser($_SESSION['USER']['HASH_KEY']) === false) {
-			$return['msg']  = ERROR_LOGIN;
+		if (User::isLogged($_SESSION['USER']->user->hash_key) === false) {
+			$return['msg']  = constant('ERROR_LOGIN');
 			$return['type'] = 'info';
 			return $return;
 		}
 		# check ID du forum
 		if ($_SESSION['NEWTHREADS'] != $id) {
-			$return['msg']  = ERROR_ID;
+			$return['msg']  = constant('ERROR_ID');
 			$return['type'] = 'warning';
 			return $return;
 		} else {
@@ -593,7 +579,7 @@ final class ModelsForum
 		# les données à inserer
 		$insert['id']         = NULL;
 		$insert['id_threads'] = (int) $id;
-		$insert['title']      = strip_tags(fixUrl($data['title']));
+		$insert['title']      = Common::MakeConstant($data['title']);
 		$insert['author']     = $_SESSION['USER']['HASH_KEY'];
 		$insert['options']    = 'lock=0|like=0|report=0|pin=0|view=0|post=0';
 		$insert['date_post']  = date("Y-m-d H:i:s");
@@ -611,7 +597,7 @@ final class ModelsForum
 			$return['msg']  = 'Enregistrement du nouveau post en cours...';
 			$return['type'] = 'success';
 		} else {
-			$return['msg']  = ERROR_BDD;
+			$return['msg']  = constant('ERROR_BDD');
 			$return['type'] = 'error';
 		}
 		# return le resulat

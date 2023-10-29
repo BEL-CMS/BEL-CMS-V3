@@ -11,8 +11,6 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
-use BelCMS\Core;
-use BelCMS\Core\Config as Config;
 use BelCMS\Core\Secures;
 
 if (!defined('CHECK_INDEX')):
@@ -29,16 +27,22 @@ class Downloads extends Pages
 		// Déclaration des variables.
 		$get['data'] = array();
 		$data = (object) array();
+		$i    = 0;
 		// Récupère-les données des catégories.
 		$data = $this->models->getCat();
 		// Tableau, liste les catégories et supprime ceux que l'utilisateur n'a pas accès.
 		foreach ($data as $a => $b) {
+			$i++;
 			if (Secures::isAcess($b->groups) == false) {
-				unset($c['data'][$a]);
+				unset($data[$a]);
 			} else {
-				$get['data'][$a]->name = $b->name;
-				$get['data'][$a]->id   = $b->id;
-				$get['data'][$a]->dl   = $this->models->getDls($b->id);
+				$get['data'][$i] = (object) array();
+				$get['data'][$i]->id     = $b->id;
+				$get['data'][$i]->name   = $b->name;
+				$get['data'][$i]->banner = $b->banner;
+				$get['data'][$i]->ico    = $b->ico;
+				$get['data'][$i]->description = $b->description;
+				$get['data'][$i]->dl = $this->models->getDls($b->id);
 			}
 		}
 		// Si le tableau est vide, affiche une attention.
@@ -47,16 +51,16 @@ class Downloads extends Pages
 			$this->errorInfos = array('warning', constant('NO_DATA_AVAILABLE'), constant('INFO'), false);
 		} else {
 			$this->set($get);
-			$this->render('index');			
+			$this->render('index');
 		}
 	}
 
-	public function category ($id = null)
+	public function category ()
 	{
-		$a = $this->models->getCat($id);
+		$a = $this->models->getCat($this->data[2]);
 		$c['name'] = $a->name;
 		if (Secures::isAcess($a->groups) == true) {
-			$c['data'] = $this->models->getDls($id);
+			$c['data'] = $this->models->getDls($this->data[2]);
 		} else {
 			$c['data'] = array();
 		}
@@ -64,16 +68,16 @@ class Downloads extends Pages
 		$this->render('category');
 	}
 
-	public function detail ($id = null)
+	public function detail ()
 	{
-		$c['data'] = current($this->models->getDlsDetail($id));
+		$c['data'] = current($this->models->getDlsDetail($this->data[2]));
 		if (empty($c['data'])) {
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('INVALID_ID'), constant('INFO'), false);
 		} else {
-			$this->models->NewView($id);
+			$this->models->NewView($this->data[2]);
 			$this->set($c);
-			$this->render('detail');			
+			$this->render('detail');
 		}
 	}
 

@@ -12,7 +12,7 @@
 namespace BelCMS\Core;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Requires\Common as Common;
-use BelCMS\User as Users;
+use BelCMS\User\User as Users;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -34,12 +34,12 @@ final class Secures
 				if (in_array(0, $bdd[$page]->access_groups)) {
 					return true;
 				} else {
-					if ($_SESSION['USER']['HASH_KEY']) {
+					if ($_SESSION['USER']->user->hash_key) {
 						foreach ($bdd[$page]->access_groups as $k => $v) {
 							$user = self::accessSqlUser();
-							$user = $user[$_SESSION['USER']['HASH_KEY']];
+							$user = $user[$_SESSION['USER']->user->hash_key];
 							$access = $user->access ? $user->access : array(0);
-							if (isset($_SESSION['USER']['HASH_KEY']) && strlen($_SESSION['USER']['HASH_KEY']) == 32) {
+							if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
 								if (in_array(1, $access)) {
 									return true;
 									break;
@@ -75,7 +75,7 @@ final class Secures
 					foreach ($bdd[$page]->access_admin as $k => $v) {
 						$user = self::accessSqlUser();
 						$access = $user->access;
-						if (isset($_SESSION['USER']['HASH_KEY']) && strlen($_SESSION['USER']['HASH_KEY']) == 32) {
+						if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
 							if (in_array(1, $access)) {
 								return true;
 								break;
@@ -108,9 +108,9 @@ final class Secures
 			} else {
 				foreach ($bdd[$Widget]->groups_access as $k => $v) {
 					$user   = self::accessSqlUser();
-					$user   = $user[$_SESSION['USER']['HASH_KEY']];
+					$user   = $user[$_SESSION['USER']->user->hash_key];
 					$access = $user->access;
-					if (isset($_SESSION['USER']['HASH_KEY']) && strlen($_SESSION['USER']['HASH_KEY']) == 32) {
+					if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
 						if (in_array($v, $access)) {
 							return true;
 							break;
@@ -205,26 +205,27 @@ final class Secures
 	# Accès uniquement aux groupes et au 
 	# groupe principal (assemblé) 
 	# securisé par le hash_key
+	# * A delete groupe repris dans la $_SESSION['USER']
 	#########################################
 	public static function accessSqlUser () : object
 	{
 		$return = (object) array();
 
-		if (isset($_SESSION['USER']['HASH_KEY']) and strlen($_SESSION['USER']['HASH_KEY']) == 32) {
+		if (isset($_SESSION['USER']->user->hash_key) and strlen($_SESSION['USER']->user->hash_key) == 32) {
 			$sql = New BDD();
-			$sql->table('TABLE_USERS');
-			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
-			$sql->fields(array('hash_key', 'groups', 'main_groups'));
+			$sql->table('TABLE_USERS_GROUPS');
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
+			$sql->fields(array('hash_key', 'user_group', 'user_groups'));
 			$sql->isObject(true);
 			$sql->queryOne();
 			if (empty($sql->data)) {
 				$return = false;
 			} else {
 				$return->groups      = array(0 => $sql->data->groups);
-				$return->main_groups = explode('|', $sql->data->main_groups);
-				$return->access      = array_merge($return->groups, $return->main_groups);
+				$return->main_groups = explode('|', $sql->data->user_group);
+				$return->access      = array_merge($return->groups, $return->user_group);
 				$return->access      = array_unique($return->access);
-				unset($return->groups, $return->main_groups);
+				unset($return->groups, $return->user_group);
 			}
 		}
 
@@ -265,5 +266,19 @@ final class Secures
 		if (in_array(0, $g)) {
 			return (bool) true;
 		}
+
+		if (Users::isLogged()) {
+			// Accès à tout au groupe n°1 (Admin)
+			if (in_array(1, $_SESSION['USER']->groups->all_groups)) {
+				return true;
+			} else {
+				if (in_array($data, $_SESSION['USER']->groups->all_groups)) {
+					return true;
+				}
+			}
+		} else {
+			return (bool) false;
+		}
+		return $return;
 	}
 }

@@ -9,6 +9,10 @@
  * @author as Stive - stive@determe.be
  */
 
+namespace Belcms\Pages\Controller;
+use Belcms\Pages\Pages;
+use BelCMS\Requires\Common as Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -16,14 +20,15 @@ endif;
 
 class Forum extends Pages
 {
-	var $models = 'ModelsForum';
+	var $useModels = 'Forum';
 
 	public function index ()
 	{
 		$data['forum'] = $this->models->getForum();
 
 		if (empty($data['forum'])) {
-			$this->error('Forum', 'Aucun Forum enregistrée en base de donnée.', 'warning');
+			$this->error = true;
+			$this->errorInfos = array('warning', 'Aucun Forum enregistrée en base de donnée.', constant('INFO'), false);
 			return false;
 		}
 
@@ -53,8 +58,7 @@ class Forum extends Pages
 	{
 		$data['id']      = (int) $id;
 		$data['threads'] = $this->models->GetThreadsPost($data['id']);
-		$groupUser       = Users::getGroups($_SESSION['USER']['HASH_KEY']);
-		//$current         = current($data['threads']);
+		$groupUser       = $_SESSION['USER']->groups->all_groups;
 		$access          = false;
 		$secure          = $this->models->securityPost((int) $data['id']);
 
@@ -72,20 +76,7 @@ class Forum extends Pages
 				}
 			}
 		}
-/*
-##### Consomme trop de resource #####
-		if ($access === false and isset($_SESSION['USER']['HASH_KEY'])) {
-			$this->error('Forum', 'Tentative accès non autorisé, un administrateur à été prévenue.', 'error');
-			$Interaction = New Interaction;
-			$Interaction->user($_SESSION['USER']['HASH_KEY']);
-			$Interaction->title('Accès non autorisé');
-			$Interaction->type('error');
-			$Interaction->text('Accès non autorisé de '.Users::hashkeyToUsernameAvatar($_SESSION['USER']['HASH_KEY']).' à la page Forum: threads');
-			$Interaction->insert();
-			$this->redirect(true, 2);
-			return false;
-		}
-*/
+
 		foreach ($data['threads'] as $k => $v) {
 			$data['threads'][$k]->options = Common::transformOpt($v->options);
 			$last = $this->models->getLastPostsForum($v->id);
@@ -113,7 +104,8 @@ class Forum extends Pages
 	public function post ($name = '', $id = '')
 	{
 		if (empty($name)) {
-			$this->error('Forum', 'Page manquante...', 'error');
+			$this->error = true;
+			$this->errorInfos = array('error', 'Page manquante...', 'Forum', false);
 			$this->redirect('Forum', 3);
 			return;
 		}
@@ -125,7 +117,8 @@ class Forum extends Pages
 		$this->models->addView($id);
 		$d['post'] = $this->models->GetPosts($name, $id);
 		if (count($d['post']) == 0) {
-			$this->error(get_class($this), 'Page manquante...', 'error');
+			$this->error = true;
+			$this->errorInfos = array('error', 'Page manquante...', 'Forum', false);
 			return;
 		} else {
 			$this->set($d);
@@ -137,18 +130,20 @@ class Forum extends Pages
 	{
 		$forum = $this->models->sendEditPost($_POST);
 		$this->redirect('Forum/allMsg?management&page=true', 2);
-		$this->error(get_class($this), $forum["msg"], $forum["type"]);
+		$this->error = true;
+		$this->errorInfos = array($forum["type"], $forum["msg"], 'Forum', false);
 	}
 
 	public function EditPost ($id = null)
 	{
 		$id     = Common::SecureRequest($id);
 		$d['d'] = $this->models->editpost($id);
-		if (Users::isSuperAdmin($_SESSION['USER']['HASH_KEY']) or $d['d']->author == $_SESSION['USER']['HASH_KEY']) {
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $d['d']->author == $_SESSION['USER']['HASH_KEY']) {
 			$this->set($d);
-			$this->render('editpost');			
+			$this->render('editpost');
 		} else {
-			$this->error(FORUM, NO_ACCESS_POST, 'error');
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
 		}
 	}
 
@@ -156,39 +151,44 @@ class Forum extends Pages
 	{
 		$id     = Common::SecureRequest($id);
 		$d['d'] = $this->models->editpostprimary($id);
-		if (Users::isSuperAdmin($_SESSION['USER']['HASH_KEY']) or $d['d']->author == $_SESSION['USER']['HASH_KEY']) {
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $d['d']->author == $_SESSION['USER']['HASH_KEY']) {
 			$this->set($d);
 			$this->render('editpostprimary');			
 		} else {
-			$this->error(FORUM, NO_ACCESS_POST, 'error');
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
 		}
 	}
 
 	public function SendEditPost ()
 	{
-		if (Users::isSuperAdmin($_SESSION['USER']['HASH_KEY']) or $_POST['author'] == $_SESSION['USER']['HASH_KEY']) {
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $_POST['author'] == $_SESSION['USER']['HASH_KEY']) {
 		$return = $this->models->sendEditPost($_POST);
-		$this->error (get_class($this), $return['msg'], $return['type']);
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
 		} else {
-			$this->error(FORUM, NO_ACCESS_POST, 'error');
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
 		}
 		$this->redirect('Forum', 2);
 	}
 
 	public function SendEditPostPrimary ()
 	{
-		if (Users::isSuperAdmin($_SESSION['USER']['HASH_KEY']) or $_POST['author'] == $_SESSION['USER']['HASH_KEY']) {
-		$return = $this->models->SendEditPostPrimary($_POST);
-		$this->error (get_class($this), $return['msg'], $return['type']);
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $_POST['author'] == $_SESSION['USER']['HASH_KEY']) {
+			$return = $this->models->SendEditPostPrimary($_POST);
+			$this->error = true;
+			$this->errorInfos = array('error', $return['msg'], 'Forum', false);
 		} else {
-			$this->error(FORUM, NO_ACCESS_POST, 'error');
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
 		}
 		$this->redirect('Forum', 2);	
 	}
 
 	private function accessLock ($id)
 	{
-		$groupUser = Users::getGroups($_SESSION['USER']['HASH_KEY']);
+		$groupUser = $_SESSION['USER']->groups->all_groups;
 
 		if (in_array('1', $groupUser)) {
 			return true;
@@ -209,9 +209,11 @@ class Forum extends Pages
 	{
 			if (self::accessLock($id)) {
 				$return = $this->models->lock($id);
-				$this->error (get_class($this), $return['msg'], $return['type']);
+				$this->error = true;
+				$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
 			} else {
-				$this->error (get_class($this), NO_CLOSE_POST, 'error');
+				$this->error = true;
+				$this->errorInfos = array('error', constant('NO_CLOSE_POST'), 'Forum', false);
 			}
 			$this->redirect('Forum', 2);
 	}
@@ -220,9 +222,11 @@ class Forum extends Pages
 	{
 			if (self::accessLock($id)) {
 				$return = $this->models->unlock($id);
-				$this->error (get_class($this), $return['msg'], $return['type']);
+				$this->error = true;
+				$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
 			} else {
-				$this->error (get_class($this), NO_ACCESS_POST, 'error');
+				$this->error = true;
+				$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
 			}
 			$this->redirect('Forum', 2);
 	}
@@ -231,9 +235,11 @@ class Forum extends Pages
 	{
 		if (self::accessLock($id)) {
 			$return = $this->models->delpost($id);
-			$this->error (get_class($this), $return['msg'], $return['type']);
+			$this->error = true;
+			$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
 		} else {
-			$this->error (get_class($this), NO_ACCESS_POST, 'error');
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
 		}
 		$this->redirect('Forum', 2);
 	}
@@ -255,16 +261,18 @@ class Forum extends Pages
 
 	private function NewPostThread ($data)
 	{
-		$insert = $this->models->SubmitThread($data['id'], $data);
-		$this->error (get_class($this), $insert['msg'], $insert['type']);
+		$return = $this->models->SubmitThread($data['id'], $data);
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
 		$this->redirect('Forum', 2);
 	}
 
 	private function SubmitReply ($data)
 	{
 		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : 'Forum';
-		$insert  = $this->models->SubmitPost($data);
-		$this->error (get_class($this), $insert['msg'], $insert['type']);
+		$return  = $this->models->SubmitPost($data);
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
 		$this->redirect('Forum', 2);
 	}
 }

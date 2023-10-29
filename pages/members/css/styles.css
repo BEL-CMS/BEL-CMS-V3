@@ -1,13 +1,10 @@
 #belcms_section_members_main {
-	display: block;
 	max-width: 100%;
 	overflow: hidden;
-	color: #212529;
 	position: relative;
-	display: flex;
-	flex-wrap: wrap;
 	margin-bottom: 15px;
 }
+
 .belcms_section_members_detail_infos {
 	width: 100%;
 	display: block;

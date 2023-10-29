@@ -43,14 +43,14 @@ function error_handler($t, $m, $f, $l, $e = true)
 		break;
 	}
 	$e  = '<pre>'.PHP_EOL;
-	$e .= str_pad('', 100, '-',STR_PAD_RIGHT).PHP_EOL;
-	$e .= str_pad('Date Time', 20, ' ',STR_PAD_RIGHT) .date("H:i:s").PHP_EOL;
-	$e .= str_pad('Error Type', 20, ' ',STR_PAD_RIGHT) .$c.PHP_EOL;
-	$e .= str_pad('Error Message', 20, ' ',STR_PAD_RIGHT) .$m.PHP_EOL;
-	$e .= str_pad('Error Ligne', 20, ' ',STR_PAD_RIGHT) .$l.PHP_EOL;
-	$e .= str_pad('Error File', 20, ' ',STR_PAD_RIGHT) .$f.PHP_EOL;
-	$e .= str_pad('PHP version', 20, ' ',STR_PAD_RIGHT) .PHP_OS.PHP_EOL;
-	$e .= str_pad('', 100, '-',STR_PAD_RIGHT).PHP_EOL;
+	$e .= str_pad('', 100, '-',STR_PAD_RIGHT).'<br>';
+	$e .= str_pad('Date Time', 20, ' ',STR_PAD_RIGHT) .date("H:i:s").'<br>';
+	$e .= str_pad('Error Type', 20, ' ',STR_PAD_RIGHT) .$c.'<br>';
+	$e .= str_pad('Error Message', 20, ' ',STR_PAD_RIGHT) .$m.'<br>';
+	$e .= str_pad('Error Ligne', 20, ' ',STR_PAD_RIGHT) .$l.'<br>';
+	$e .= str_pad('Error File', 20, ' ',STR_PAD_RIGHT) .$f.'<br>';
+	$e .= str_pad('PHP version', 20, ' ',STR_PAD_RIGHT) .PHP_OS.'<br>';
+	$e .= str_pad('', 100, '-',STR_PAD_RIGHT).'<br>';
 	$e .= '</pre>'.PHP_EOL;
 	if (ob_get_length() != 0) {
 		ob_end_clean();

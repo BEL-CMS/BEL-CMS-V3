@@ -1,0 +1,15 @@
+#bel_cms_team .card-footer ul {
+	list-style: none;
+	display: flex;
+	margin: 0; padding: 0;
+}
+	#bel_cms_team .card-footer ul li {
+		display: flex;
+	}
+		#bel_cms_team .card-footer ul li a {
+			margin: 0 10px;
+		}
+			#bel_cms_team .card-footer ul li img {
+				width: 35px;
+				height: 35px;
+			}

@@ -67,7 +67,7 @@ class Widgets
 	private function getTopBox ()
 	{
 		ob_start();
-		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.'title.php';
+		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.title.php';
 		if (is_file($custom)) {
 			include $custom;
 		} else {
@@ -86,7 +86,7 @@ class Widgets
 	private function getBottomBox ()
 	{
 		ob_start();
-		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.'bottom.php';
+		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.bottom.php';
 		if (is_file($custom)) {
 			include $custom;
 		} else {
@@ -102,7 +102,7 @@ class Widgets
 	private function getBoxContent ($render = null)
 	{
 		ob_start();
-		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.'content.php';
+		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.content.php';
 		if (is_file($custom)) {
 			include $custom;
 		} else {

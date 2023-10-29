@@ -19,12 +19,18 @@ endif;
 
 Common::constant(array(
 	#####################################
-	# Fichier lang en français - Users
+	# Fichier lang en français - Téléchargements
 	#####################################
-	'DOWNLOAD'    => 'Téléchargement',
-	'DOWNLOADS'   => 'Téléchargements',
-	'CAT'         => 'Catégorie',
-	'SIZE'        => 'Taille',
-	'DOWNLOADING' => 'Téléchargement en cours',
-	'NO_DL'       => 'Aucun téléchargement ?',
+	'DOWNLOAD'         => 'Téléchargement',
+	'DOWNLOADS'        => 'Téléchargements',
+	'CAT'              => 'Catégorie',
+	'SIZE'             => 'Taille',
+	'DOWNLOADING'      => 'Téléchargement en cours',
+	'NO_DL'            => 'Aucun téléchargement ?',
+	'HASH_MD5'         => 'Hash MD5',
+	'DOWNLOAD_COUNTER' => 'Compteur DL',
+	'COUNTER_SEEN'     => 'Compteur vu',
+	'MIME_TYPE'        => 'Type Mime',
+	'RELEASE_DATE'     => 'Date de parution',
+	'UPLOADER'         => 'Mise en ligne par',
 ));

@@ -52,7 +52,6 @@ final class Members
 			$return[$k]->profils = $sql->data;
 			unset($sql);
 		}
-
 		return $return;
 	}
 
@@ -77,7 +76,7 @@ final class Members
 		if ($hash_key !== false && ctype_alnum($hash_key)) {
 			$sql = New BDD;
 			$sql->table(constant('TABLE_USERS_PROFILS'));
-			$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']['hash_key']);
+			$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key);
 			$sql->where($where);
 			$sql->queryOne();
 			$count  = $sql->rowCount;
@@ -92,7 +91,7 @@ final class Members
 					$implode   = implode('|', $friends);
 					$sql = New BDD;
 					$sql->table(constant('TABLE_USERS_PROFILS'));
-					$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']['hash_key']);
+					$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key);
 					$sql->where($where);
 					$update['friends'] = $implode;
 					$sql->update($update);

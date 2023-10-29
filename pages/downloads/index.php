@@ -9,14 +9,15 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\User\User as User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-
 ?>
 <div id="belcms_section_downloads_main">
-	<span class="bel-cms-pages_title"><?=DOWNLOADS;?></span>
+	<span class="bel-cms-pages_title"><?=constant('DOWNLOADS')?></span>
 	<div id="belcms_section_downloads_cat">
 		<ul id="belcms_section_downloads_nav">
 			<?php
@@ -37,6 +38,7 @@ endif;
 					if (!is_file($value->screen)) {
 						$value->screen = '/pages/downloads/no_image.png';
 					}
+					$infosUser = User::getInfosUserAll($value->uploader);
 				?>
 				<li class="belcms_section_downloads_nav_ul_li">
 					<div class="belcms_section_downloads_nav_ul_left">
@@ -44,7 +46,11 @@ endif;
 					</div>
 					<div class="belcms_section_downloads_nav_ul_right">
 						<a href="downloads/detail/<?=$value->id;?>"><?=$value->name;?></a>
-						<span><i><a href="" style="color: <?=Users::colorUsername($value->uploader);?> !important;">Par <?=Users::getUserName($value->uploader);?></a></i></span>
+						<span>Par : 
+							<a href="Members/View/<?=$infosUser->user->username;?>">
+								<i style="color: <?=$infosUser->user->color;?> "><?=$infosUser->user->username;?></i>
+							</a>
+						</span>
 						<span>Cat : <i><?=$v->name;?></i></span>
 						<a class="belcms_section_downloads_nav_ul_right_dl belcms_btn belcms_bg_blue" href="downloads/detail/<?=$value->id;?>">Voir</a>
 					</div>
@@ -58,4 +64,3 @@ endif;
 		</ul>
 	</div>
 </div>
-<?php

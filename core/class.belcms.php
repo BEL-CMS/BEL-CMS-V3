@@ -147,35 +147,21 @@ final class BelCMS
 			switch ($value->pos) {
 				case 'top':
 					$widget = new Widgets ($value, 'top');
-					if (!empty($widget)) {
-						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
-					} else {
-						$return[$value->pos][] = '';
-					}
 				break;
 				case 'right':
 					$widget = new Widgets ($value, 'right');
-					if (!empty($widget)) {
-						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
-					} else {
-						$return[$value->pos][] = '';
-					}
 				break;
 				case 'bottom':
 					$widget = new Widgets ($value, 'bottom');
-					if (!empty($widget)) {
-						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
-					} else {
-						$return[$value->pos][] = '';
-					}
 				break;
 				case 'left':
 					$widget = new Widgets ($value, 'left');
-					if (!empty($widget)) {
-						$return[$value->pos][$value->name] = $widget->getBoxGlobal();
-					} else {
-						$return[$value->pos][] = '';
-					}				break;
+				break;
+			}
+			if (!empty($widget)) {
+				$return[$value->pos][$value->name] = $widget->getBoxGlobal();
+			} else {
+				$return[$value->pos][] = '';
 			}
 		}
 		return $return;
@@ -208,7 +194,7 @@ final class BelCMS
 					if (empty($v->page)) {
 						if (!in_array($this->link, $a)) {
 							$b[$k] = $v;
-						}	
+						}
 					}
 				}
 			}

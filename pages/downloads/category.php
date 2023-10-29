@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Notification as Notification;
+use BelCMS\Requires\Common as Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -24,7 +27,7 @@ endif;
 		<ul id="belcms_section_downloads_nav_ul">
 			<?php
 			foreach ($data as $a => $b):
-				if (!is_file($b->screen->download)):
+				if (empty($b->screen->download) or !is_file($b->screen->download)):
 					$b->screen = '/pages/downloads/no_image.png';
 				endif;
 				?>

@@ -11,7 +11,9 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
-use BelCMS\Core\Config as Config;
+use BelCMS\Core\Notification as Notification;
+use BelCMS\Core\Secures as Secures;
+use BelCMS\User\User as User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -20,11 +22,11 @@ endif;
 
 class Members extends Pages
 {
-	var $models = 'Members';
+	var $useModels = 'Members';
 
 	public function index ()
 	{
-		$set['pagination'] = $this->pagination(10, get_class($this), TABLE_USERS);
+		$set['pagination'] = $this->pagination(10, get_class($this), constant('TABLE_USERS'));
 		$set['members'] = $this->models->GetUsers();
 		$this->set($set);
 		$this->render('index');
@@ -44,14 +46,15 @@ class Members extends Pages
 
 	public function AddFriend ($id)
 	{
-		$user = Users::getInfosUser($id, true);
-		if ($user['username'] == DELETE) {
-			Notification::error(UNKNOW_MEMBER, FRIEND);
+		$user = User::getInfosUserAll($id);
+		$user = $user->username;
+		if ($user['username'] == constant('DELETE')) {
+			Notification::error(constant('UNKNOW_MEMBER'), constant('FRIEND'));
 		} else {
 			if ($this->models->addFriendSQL ($user['hash_key'] == null)) {
-				Notification::warning(ADD_FRIEND_ERROR, FRIEND);
+				Notification::warning(constant('ADD_FRIEND_ERROR, FRIEND'));
 			} else {
-				Notification::success(ADD_FRIEND_SUCCESS, FRIEND);
+				Notification::success(constant('ADD_FRIEND_SUCCESS, FRIEND'));
 			}
 			$this->redirect(true, 2);
 		}

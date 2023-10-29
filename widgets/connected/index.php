@@ -10,6 +10,7 @@
  */
 
 use BelCMS\Core\Visitors as Visitors;
+use BelCMS\User\User as User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -36,15 +37,14 @@ endif;
 				$i = 0;
 				$visitor = null;
 				foreach (Visitors::getVisitorConnected()->data as $k => $v):
-					/*
-					if (Users::getInfosUserAll($v->visitor_user)) {
-						$visitor = Users::getInfosUserAll($v->visitor_user);
+					if (User::getInfosUserAll($v->visitor_user)) {
+						$visitor = User::getInfosUserAll($v->visitor_user)->user->username;
 					} else {
 						$visitor = constant('VISITOR');
-					}*/
+					}
 					?>
 					<li>
-						<span></span>
+						<span><?=$visitor;?></span>
 						<span><?=$v->visitor_page?></span>
 					</li>
 					<?php

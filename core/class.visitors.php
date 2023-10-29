@@ -54,12 +54,12 @@ final class Visitors
 			$this->visitedUser = $json->hash_key;
 		} else {
 			if (Users::isLogged() === true) {
-				$this->visitedUser = $_SESSION['USER']['HASH_KEY']->user->hash_key;
+				$this->visitedUser = $_SESSION['USER']->user->hash_key;
 			} else {
 				if (preg_match('/([bB]ot|[sS]pider|[yY]ahoo|[gG]oggle)/i', $_SERVER["HTTP_USER_AGENT"] )) {
 					$this->visitedUser = $_SERVER["HTTP_USER_AGENT"];
 				} else {
-					$this->visitedUser = Users::isLogged() === true ? $_SESSION['USER']['HASH_KEY']->user->hash_key : constant('VISITOR');
+					$this->visitedUser = Users::isLogged() === true ? $_SESSION['USER']->user->hash_key : constant('VISITOR');
 				}
 			}
 		}
