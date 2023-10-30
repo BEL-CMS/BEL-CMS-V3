@@ -121,11 +121,25 @@ section { width: 100%; overflow: hidden; display: block; }
 /*-------------------------------------------------------------------------------------------------*/
 /*	Créé un block en dessous avec aucune marge ou padding sert juste à forcer en dessous.
 ---------------------------------------------------------------------------------------------------*/
+.align_left {
+	text-align: left;
+	float: left;
+}
+.align_right {
+	text-align: right;
+	float: right;
+}
+.align_center {
+	text-align: center;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Créé un block en dessous avec aucune marge ou padding sert juste à forcer en dessous.
+---------------------------------------------------------------------------------------------------*/
 .clear { clear: both; margin: 0; padding: 0; }
 /*-------------------------------------------------------------------------------------------------*/
 /*	Grid >> 12 Columns - inline & position relative pour la position absolute;
 ---------------------------------------------------------------------------------------------------*/
-.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12 {
+.belcms_grid_1, .belcms_grid_2, .belcms_grid_3, .belcms_grid_4, .belcms_grid_5, .belcms_grid_6, .belcms_grid_7, .belcms_grid_8, .belcms_grid_9, .belcms_grid_10, .belcms_grid_11, .belcms_grid_12 {
 	display: inline;
 	float: left;
 	position: relative;
@@ -334,14 +348,12 @@ textarea[readonly] {
 		content: attr(data-tooltip);
 		background: #000;
 		color: #fff;
-		font-size: 10px;
-		font-weight: bold;
-		padding: 10px 15px;
-		border-radius: 5px;
+		font-size: 11px;
+		padding: 0 10px;
+		line-height: 20px;
+		border-radius: 4px;
 		white-space: nowrap;
 		text-decoration: none;
-		text-transform: uppercase;
-		letter-spacing: 1px;
 	}
 	&:after {
 		width: 0;
@@ -408,5 +420,5 @@ textarea[readonly] {
 /*	Table (div) custom css
 ---------------------------------------------------------------------------------------------------*/
 .bel_cms_index_table {
-
+	width: 100%;
 }

@@ -26,7 +26,7 @@ class Members extends Pages
 
 	public function index ()
 	{
-		$set['pagination'] = $this->pagination(10, get_class($this), constant('TABLE_USERS'));
+		$set['pagination'] = $this->pagination(9, get_class($this), constant('TABLE_USERS'));
 		$set['members'] = $this->models->GetUsers();
 		$this->set($set);
 		$this->render('index');

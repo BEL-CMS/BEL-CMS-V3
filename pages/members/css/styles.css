@@ -4,6 +4,75 @@
 	position: relative;
 	margin-bottom: 15px;
 }
+.belcms_section_members_main_users {
+	display: block;
+	background-color: rgba(0,0,0,.3);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+	border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
+	margin-bottom: 1.25rem;
+}
+.belcms_section_members_main_users_h4 {
+	display: block !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	font-size: small !important;
+	border: none !important;
+	margin: 5px auto !important;
+	font-weight: 400 !important;
+	padding: 1.25rem;
+}
+.belcms_section_members_main_avatar {
+	padding: 1.25rem;
+}
+.belcms_section_members_main_avatar > img {
+	background: #b3c2d2;
+	border-radius: 50%;
+	position: relative;
+	height: 50px;
+	width: 50px;
+	display: block;
+	margin: auto;
+}
+.bel_cms_section_members_main_ul {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 1.25rem;
+}
+.bel_cms_section_members_main_ul li {
+	background-color: rgba(0,0,0,.5);
+	display: inline-block;
+	border-radius: .25rem;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	margin: 3px auto;
+}
+.bel_cms_section_members_main_ul li.active {
+	background-color: rgba(242, 242, 242, 0.8);
+	color: rgba(0,0,0,.8);
+}
+.bel_cms_section_members_main_ul li a {
+	padding: 5px;
+}
+.bel_cms_section_members_main_contact {
+	display: block;
+	width: 100%;
+	height: 35px;
+	background-color: rgba(0,0,0,.5);
+	color: rgba(242, 242, 242, 0.8);
+	padding: 0 15px;
+	text-align: center;
+}
+.bel_cms_section_members_main_contact a{
+	line-height: 30px;
+}
+
+
+
+
+
 
 .belcms_section_members_detail_infos {
 	width: 100%;

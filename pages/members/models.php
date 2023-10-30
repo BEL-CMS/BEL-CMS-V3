@@ -13,6 +13,7 @@ namespace Belcms\Pages\Models;
 use BelCMS\Core\Dispatcher as Dispatcher;
 use BelCMS\Core\Secure as Secure;
 use BelCMS\PDO\BDD as BDD;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -23,7 +24,7 @@ final class Members
 {
 	public function GetUsers ($where = false)
 	{
-		$nbpp = (int) 10;
+		$nbpp = (int) 9;
 
 		$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
 
@@ -34,23 +35,11 @@ final class Members
 		$sql->orderby(array(array('name' => 'username', 'type' => 'ASC')));
 		$sql->limit(array(0 => $page, 1 => $nbpp), true);
 		$sql->queryAll();
-		$return = $sql->data;
+		$returnSql = $sql->data;
 		unset($sql);
 
-		foreach ($return as $k => $v) {
-			$sql = New BDD();
-			$sql->table('TABLE_USERS_PROFILS');
-			$where = 	array(
-							'name'  => 'hash_key',
-							'value' => $v->hash_key
-						);
-			$sql->where($where);
-			$sql->queryOne();
-			if (Secure::isUrl($sql->data->websites) === false) {
-				$sql->data->websites = null;
-			}
-			$return[$k]->profils = $sql->data;
-			unset($sql);
+		foreach ($returnSql as $k => $v) {
+			$return[$k] = User::getInfosUserAll($v->hash_key);
 		}
 		return $return;
 	}
