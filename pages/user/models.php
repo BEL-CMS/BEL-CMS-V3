@@ -243,7 +243,7 @@ final class User
 		$update->table('TABLE_USERS_SOCIAL');
 		$update->where(array(
 			'name'  => 'hash_key',
-			'value' => $_SESSION['USER']['HASH_KEY']
+			'value' => $_SESSION['USER']['HASH_KEY']->user->hash_key
 		));
 		$update->update($data);
 		$returnSql = $update->data;
@@ -705,10 +705,10 @@ final class User
 			setcookie('BELCMS_HASH_KEY', $_SESSION['USER']->user->hash_key, time()+60*60*24*30*3, '/');
 			setcookie('BELCMS_NAME', $results['username'], time()+60*60*24*30*3, '/');
 			setcookie('BELCMS_PASS', $insert['password'], time()+60*60*24*30*3, '/');
-			$return = array('type' => 'success', 'msg' => 'Le mot de passe a été enregistré', 'title' => 'Mot de passe');
+			$return = array('type' => 'success', 'msg' => constant('SEND_PASS_IS_OK'), 'title' => constant('PASSWORD'));
 			return $return;
 		} else {
-			$return = array('type' => 'error', 'msg' => 'L\'ancien mot de passe de conrespond pas', 'title' => 'Mot de passe');
+			$return = array('type' => 'error', 'msg' => constant('OLD_PASS_FALSE'), 'title' => constant('PASSWORD'));
 			return $return;
 		}
 	}
@@ -761,6 +761,8 @@ final class User
 					$return['msg']  = 'Avatar changer avec succès';
 					$return['type'] = 'success';
 					$return['ext']  = 'Avatar';
+					/* update $_SESSION */
+					$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 				} else {
 					$return['msg']  = 'mavaise extention de l\'avatar';
 					$return['type'] = 'warning';
@@ -772,6 +774,7 @@ final class User
 				$return['ext']  = 'Avatar';
 			}
 		} else if ($data['select'] == 'delete') {
+			$return = (object) array();
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
 			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
@@ -802,34 +805,21 @@ final class User
 	#########################################
 	public function sendSubmitSocial ($data)
 	{
-		$update['facebook']   = empty($data['facebook'])   ? '' : Secure::isString($data['facebook']);
-		$update['linkedin']   = empty($data['linkedin'])   ? '' : Secure::isString($data['linkedin']);
-		$update['x_twitter']  = empty($data['x_twitter'])  ? '' : Secure::isString($data['x_twitter']);
-		$update['discord']    = empty($data['discord'])    ? '' : Secure::isString($data['discord']);
-		$update['pinterest']  = empty($data['pinterest'])  ? '' : Secure::isString($data['pinterest']);
-		$update['youtube']    = empty($data['youtube'])    ? '' : Secure::isString($data['youtube']);
-		$update['whatsapp']   = empty($data['whatsapp'])   ? '' : Secure::isString($data['whatsapp']);
-		$update['instagram']  = empty($data['instagram'])  ? '' : Secure::isString($data['instagram']);
-		$update['messenger']  = empty($data['messenger'])  ? '' : Secure::isString($data['messenger']);
-		$update['viber']      = empty($data['viber'])      ? '' : Secure::isString($data['viber']);
-		$update['twitch']     = empty($data['twitch'])     ? '' : Secure::isString($data['twitch']);
-		$update['teams_ms']   = empty($data['teams_ms'])   ? '' : Secure::isString($data['teams_ms']);
-		$update['tiktok']     = empty($data['tiktok'])     ? '' : Secure::isString($data['tiktok']);
-		$update['snapchat']   = empty($data['snapchat'])   ? '' : Secure::isString($data['snapchat']);
-		$update['telegram']   = empty($data['telegram'])   ? '' : Secure::isString($data['telegram']);
-		$update['reddit']     = empty($data['reddit'])     ? '' : Secure::isString($data['reddit']);
-		$update['skype']      = empty($data['skype'])      ? '' : Secure::isString($data['skype']);
+		foreach ($data as $k => $v) {
+			$update[$k] = empty($data[$k]) ? '' : Secure::isString($data[$k]);
+		}
 
-		if (!empty($data)) {
+		if (!empty($update)) {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS_SOCIAL');
 			$sql->update($update);
-
-			$return['msg']  = 'Liens sociaux modifier avec succès';
+			$return['msg']  = constant('MODIFY_SOCIAL_SUCCESS');
 			$return['type'] = 'success';
 			$return['ext']  = 'Liens';
+			/* update $_SESSION */
+			$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 		} else {
-			$return['msg']  = 'Erreur aucune données';
+			$return['msg']  = constant('ERROR_UPDATE_BDD');
 			$return['type'] = 'warning';
 			$return['ext']  = 'Liens';
 		}

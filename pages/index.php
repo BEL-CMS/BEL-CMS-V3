@@ -230,9 +230,8 @@ class Pages
 	#########################################
 	function pagination ($nbpp = '5', $page = null, $table = null, $where = false)
 	{
-		$management  = defined('MANAGEMENT') ? '?management&' : '?';
 		$current     = (int) Dispatcher::RequestPages();
-		$page_url    = $page.$management;
+		$page_url    = $page;
 		$total       = self::paginationCount($nbpp, $table, $where);
 		$adjacents   = 1;
 		$current     = ($current == 0 ? 1 : $current);

@@ -1,0 +1,501 @@
+/* Calendar */
+.quick-events .events-calendar {
+	-webkit-box-shadow: 0px 5px 20px 0px rgba(69, 67, 96, 0.1);
+    box-shadow: 0px 5px 20px 0px rgba(69, 67, 96, 0.1);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    background: #fff;
+}
+.quick-events .events-calendar .calendar-header {
+	padding: 20px;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+.quick-events .events-calendar .calendar-header .current-date {
+	float: left;
+	margin: 0;
+	font-size: 24px;
+	line-height: 1.2;
+	font-weight: 700;
+}
+.quick-events .events-calendar .calendar-header .current-date span {
+	color: #f21e4e;
+	margin-left: 3px;
+}
+.quick-events .events-calendar .calendar-header .nav-time {
+	float: right;
+}
+.quick-events .events-calendar .calendar-header .nav-time .btn-change-date {
+	border: 1px solid #f21e4e;
+	-webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-left: 10px;
+	padding: 5px 10px;
+    background: #f21e4e;
+    color: #fff;
+	cursor: pointer;
+	font-size: 15px;
+}
+.quick-events .events-calendar .calendar-header .nav-time .btn-change-date:first-child {
+	margin-left: 0;
+}
+.quick-events .events-calendar .calendar-header .nav-time .btn-change-date:hover {
+	background: #fff;
+	border: 1px solid #f21e4e;
+	color: #f21e4e;
+}
+.quick-events .events-calendar .calendar-header .nav-time .btn-change-date#current {
+	font-size: 15px;
+}
+.quick-events .events-calendar .calendar-table {
+	width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: collapse;
+}
+.quick-events .events-calendar .calendar-table tr th, 
+.quick-events .events-calendar .calendar-table tr td {
+	padding: 12px;
+	vertical-align: top;
+	border-top: 1px solid #dee2e6;
+	border-right: 1px solid #dee2e6;
+
+}
+.quick-events .events-calendar .calendar-table tr th:last-child,
+.quick-events .events-calendar .calendar-table tr td:last-child {
+	border-right: none;
+}
+.quick-events .events-calendar .calendar-table tr th {
+	text-align: center;
+	/* background: #f5f5f5; */
+	font-size: 15px;
+}
+.quick-events .events-calendar .calendar-table .calendar-day {
+	width: 14.2%;
+	height: 70px;
+	padding: 6px 12px 14px 12px;
+	text-align: right;
+	line-height: 20px;
+	position: relative;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .day-num {
+	font-size: 15px;
+	height: 22px;
+	line-height: 22px;
+	display: inline-block;
+}
+.quick-events .events-calendar .calendar-table .calendar-day.weekend .day-num {
+	color: #f21e4e;
+}
+.quick-events .events-calendar .calendar-table .calendar-day.today {
+	padding-right: 6px;
+}
+.quick-events .events-calendar .calendar-table .calendar-day.today .day-num {
+	color: #fff;
+    background: #f21e4e;
+    border-radius: 100%;
+    width: 22px; 
+    font-size: 13px;
+    text-align: center;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title {
+	color: #ffffff;
+	background: #567BD2;
+	font-size: 11px;
+	margin-top: 6px;
+	text-align: left;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+	line-height: 20px;
+	padding: 0 10px;
+	cursor: pointer;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.hidden-title {
+	opacity: 0;
+    visibility: hidden;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title span {
+	color: #ffffff;
+	font-size: 11px;
+	line-height: 20px;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.no-name {
+	opacity: 0;
+	visibility: hidden;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.color-1 {
+	background: #ffd15c;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.color-2 {
+	background: #f21e4e;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.color-3 {
+	background: #6c6ce5;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.color-4 {
+	background: #1da1f3;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.color-5 {
+	background: #be31a1;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.first-day {
+	margin-right: -13px;
+	-moz-border-radius-topright: 0;
+    -webkit-border-top-right-radius: 0;
+    border-top-right-radius: 0;
+	-moz-border-radius-bottomright: 0;
+    -webkit-border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.middle-day {
+	margin-left: -13px;
+	margin-right: -13px;
+	-webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.middle-day span {
+	opacity: 0;
+	margin-right: 14px;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.last-day {
+	margin-left: -13px;
+	-moz-border-radius-topleft: 0;
+    -webkit-border-top-left-radius: 0;
+    border-top-left-radius: 0;
+	-moz-border-radius-bottomleft: 0;
+    -webkit-border-bottom-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.quick-events .events-calendar .calendar-table .calendar-day .event-title.last-day span {
+	opacity: 0;	
+}
+
+/* Compact Calendar */
+.quick-events .events-calendar.compact .calendar-header {
+	position: relative;
+}
+.quick-events .events-calendar.compact .calendar-header .current-date {
+	float: none;
+	font-size: 18px;
+	line-height: 20px;
+	text-align:center;
+}
+.quick-events .events-calendar.compact .calendar-header .nav-time {
+	float: none;
+	position: absolute;
+	left: 15px; 
+	top: 50%;
+ 	transform: translateY(-50%);
+}
+.quick-events .events-calendar.compact .calendar-header .nav-time.right {
+	left: auto;
+	right: 15px;
+}
+.quick-events .events-calendar.compact .calendar-header .nav-time .btn-change-date {
+	margin-left: 6px;
+	line-height: 30px;
+}
+.quick-events .events-calendar.compact .calendar-header .nav-time .btn-change-date:first-child {
+	margin-left: 0;
+}
+.quick-events .events-calendar.compact .calendar-table tr th {
+	font-size: 14px;
+	padding: 6px;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day {
+	text-align: center;
+	height: 36px;
+    padding: 10px 0;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day.today {
+	background: #f5f5f5;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day .day-num {
+	height: auto;
+	line-height: normal;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day.today .day-num {
+	background: none;
+	color: inherit;
+	border-radius: 0;
+    width: auto;
+    font-size: 15px;
+    padding-top: 0;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day .event-mark {
+	width: 10px;
+	height: 10px;
+	border-radius: 100%;
+	background: #ffd15c;
+	margin: 5px auto;
+	cursor: pointer;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day .event-mark.color-1 {
+	background: #ffd15c;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day .event-mark.color-2 {
+	background: #f21e4e;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day .event-mark.color-3 {
+	background: #6c6ce5;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day .event-mark.color-4 {
+	background: #1da1f3;
+}
+.quick-events .events-calendar.compact .calendar-table .calendar-day .event-mark.color-5 {
+	background: #be31a1;
+}
+
+/* Events List */
+.quick-events .events-list .event-item {
+	-webkit-box-shadow: 0px 5px 20px 0px rgba(69, 67, 96, 0.1);
+    box-shadow: 0px 5px 20px 0px rgba(69, 67, 96, 0.1);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    padding: 20px;
+    background: #fff;
+    margin-bottom: 30px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+.quick-events .events-list.compact .event-item,
+.quick-events .events-list.grid .event-item {
+	padding: 0;
+}
+.quick-events .events-list .event-item .event-image {
+	-ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+    cursor: pointer;
+}
+.quick-events .events-list.compact .event-item .event-image,
+.quick-events .events-list.grid .event-item .event-image {
+	-ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.quick-events .events-list .event-item .event-image img {
+	width: 100%;
+    border-radius: 10px;
+}
+.quick-events .events-list.compact .event-item .event-image img,
+.quick-events .events-list.grid .event-item .event-image img {
+	border-radius: 0;
+}
+.quick-events .events-list .event-item .event-info {
+	-ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+.quick-events .events-list.compact .event-item .event-info,
+.quick-events .events-list.grid .event-item .event-info {
+	-ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 20px;
+}
+.quick-events .events-list .event-item .event-info .event-title {
+	font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #454360;
+    margin-top: -3px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+.quick-events .events-list .event-item .event-info .event-meta {
+	font-size: 14px;
+	line-height: 20px;
+    color: #8b88b1;
+    margin-bottom: 5px;
+}
+.quick-events .events-list .event-item .event-info .event-meta > div {
+	margin-bottom: 3px;
+}
+.quick-events .events-list .event-item .event-info .event-meta i {
+	margin-right: 8px;
+}
+.quick-events .events-list .event-item .event-info .event-intro {
+	font-size: 15px;
+    line-height: 22px;
+}
+
+/* Events Grid */
+.quick-events .events-list.grid {
+	display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.quick-events .events-list.grid .event-item-wrap {
+	-ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+
+/* Popup */
+.my-mfp-zoom-in.mfp-bg {
+	background: #000;
+	opacity: 0;
+    -webkit-transition: opacity 0.3s ease-out;
+    -moz-transition: opacity 0.3s ease-out;
+    -o-transition: opacity 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
+}
+.my-mfp-zoom-in.mfp-bg.mfp-ready {
+	opacity: 0.8;
+}
+.my-mfp-zoom-in.mfp-bg.mfp-removing {
+	opacity: 0;
+}
+.my-mfp-zoom-in .zoom-anim-dialog {
+	opacity: 0;
+	-webkit-transition: all 0.2s ease-in-out; 
+	-moz-transition: all 0.2s ease-in-out; 
+	-o-transition: all 0.2s ease-in-out; 
+	transition: all 0.2s ease-in-out; 
+	-webkit-transform: scale(0.8); 
+	-moz-transform: scale(0.8); 
+	-ms-transform: scale(0.8); 
+	-o-transform: scale(0.8); 
+	transform: scale(0.8); 
+	background: #fff;
+	max-width: 500px;
+	height: 650px;
+	overflow-y: auto;
+    margin: 0 auto;
+    -webkit-box-shadow: 0px 5px 20px 0px rgba(69, 67, 96, 0.1);
+    box-shadow: 0px 5px 20px 0px rgba(69, 67, 96, 0.1);
+}
+.my-mfp-zoom-in.mfp-ready .zoom-anim-dialog {
+	opacity: 1;
+	-webkit-transform: scale(1); 
+	-moz-transform: scale(1); 
+	-ms-transform: scale(1); 
+	-o-transform: scale(1); 
+	transform: scale(1); 
+}
+.my-mfp-zoom-in.mfp-removing .zoom-anim-dialog {
+	-webkit-transform: scale(0.8); 
+	-moz-transform: scale(0.8); 
+	-ms-transform: scale(0.8); 
+	-o-transform: scale(0.8); 
+	transform: scale(0.8); 
+	opacity: 0;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .mfp-close {
+	color: #fff;
+    opacity: 1;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item {
+	border-bottom: 1px solid #f2f2f2;
+	margin-bottom: 40px;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-image img {
+	width: 100%;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-info {
+	padding: 20px;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-info .event-title {
+	font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #454360;
+    margin-top: -3px;
+    margin-bottom: 10px;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-info .event-meta {
+	font-size: 14px;
+	line-height: 20px;
+    color: #8b88b1;
+    margin-bottom: 8px;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-info .event-meta > div {
+	margin-bottom: 3px;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-info .event-meta i {
+	margin-right: 10px;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-info .event-intro {
+	font-size: 15px;
+    line-height: 22px;
+}
+.my-mfp-zoom-in .zoom-anim-dialog .event-item .event-info .event-intro p {
+	margin-bottom: 10px;
+}
+
+/* Responsive */
+@media screen and (max-width: 991px) {
+	/* Events list */
+	.quick-events .events-list .event-item .event-image {
+		-ms-flex: 0 0 40%;
+	    flex: 0 0 40%;
+	    max-width: 40%;
+	}
+	.quick-events .events-list .event-item .event-info {
+	    -ms-flex: 0 0 60%;
+	    flex: 0 0 60%;
+	    max-width: 60%;
+	}
+
+	/* Events grid */
+	.quick-events .events-list.grid .event-item-wrap {
+	    -ms-flex: 0 0 50%;
+	    flex: 0 0 50%;
+	    max-width: 50%;
+	}
+}
+@media screen and (max-width: 767px) {
+	/* Events list */
+	.quick-events .events-list .event-item {
+		padding: 0;
+	}
+	.quick-events .events-list .event-item .event-image {
+		-ms-flex: 0 0 100%;
+	    flex: 0 0 100%;
+	    max-width: 100%;
+	}
+	.quick-events .events-list .event-item .event-image img {
+		border-radius: 0;
+	}
+	.quick-events .events-list .event-item .event-info {
+	    -ms-flex: 0 0 100%;
+	    flex: 0 0 100%;
+	    max-width: 100%;
+	    padding: 20px;
+	}
+
+	/* Events grid */
+	.quick-events .events-list.grid .event-item-wrap {
+	    -ms-flex: 0 0 100%;
+	    flex: 0 0 100%;
+	    max-width: 100%;
+	}
+}
+@media screen and (max-width: 414px) {
+	/* Compact Calendar */
+	.quick-events .events-calendar.compact .calendar-header .current-date {
+		font-size: 14px;
+	}
+}

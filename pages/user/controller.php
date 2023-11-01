@@ -131,24 +131,12 @@ class User extends Pages
 	{
 		if (UserInfos::isLogged() === false) {
 			self::queryRegister();
-			if (isset($_REQUEST['echo'])) {
-				$this->render('login');
-			} else {
-				$this->render('login');
-			}
+			$this->render('login');
 		} else {
 			$d = array();
 			$d['user'] = $_SESSION['USER'];
 			$this->set($d);
 			$this->render('index');
-		}
-	}
-	public function loginSecure ()
-	{
-		if (isset($_REQUEST['echo'])) {
-			if (UserInfos::isLogged() === false) {
-				$this->redirect('user/login&echo', 0);
-			}
 		}
 	}
 	#########################################

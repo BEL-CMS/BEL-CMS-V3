@@ -47,6 +47,9 @@ Common::constant(array(
 	'CURRENT_RECORD'               => 'Enregistrement en cours,...',
 	'THIS_NAME_OR_PSEUDO_RESERVED' => 'Ce nom d\'utilisateur est déjà réservé.',
 	'THIS_MAIL_IS_ALREADY_RESERVED'=> 'Ce courriel est déjà réservé.',
+	'MODIFY_SOCIAL_SUCCESS'        => 'Liens sociaux modifier avec succès',
+	'SEND_PASS_IS_OK'              => 'Le mot de passe a été enregistré',
+	'OLD_PASS_FALSE'               => 'L\'ancien mot de passe de conrespond pas',
 	#####################################
 	# Fichier lang en français - Admin
 	#####################################
