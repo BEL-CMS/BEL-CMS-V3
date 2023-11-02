@@ -6,12 +6,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="/managements/assets/css/app.min.css" rel="stylesheet" type="text/css">
 	<link href="/managements/assets/css/icons.min.css" rel="stylesheet" type="text/css">
+	<link href="/assets/plugins/DataTables-1.13.06/jquery.dataTables.min" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="/managements/assets/css/magnific-popup.css">
 	<link rel="stylesheet" href="/managements/assets/css/quick-events.css">
 	<script src="/assets/js/jQuery/jquery-3.7.1.min.js"></script>
+	<script src="/assets/plugins/tinymce/tinymce.min.js" type="text/javascript"></script>
+	<script src="/assets/js/belcms.core.js"></script>
 	<script src="/managements/assets/js/config.js"></script>
+	<script type="text/javascript">
+		document.onreadystatechange = function() {
+			if (document.readyState != "complete") {
+				document.querySelector("body").style.visibility = "hidden";
+				document.querySelector("#loading").style.visibility = "visible";
+			}  else  {
+				document.querySelector("#loading").style.display = "none";
+				document.querySelector("body").style.visibility = "visible";
+			}
+		};
+	</script>
 </head>
 <body>
+	<div id="loading">
+		<div><img src="/assets/images/loader_7.gif"><p><?=constant('DOWNLOADS_IS_PROGRESS');?></p></div>
+	</div>
 	<div class="flex wrapper">
 		<div class="app-menu">
 			<a href="Dashboard?admin" class="logo-box">
@@ -251,10 +268,11 @@
             
 		</div>
 	</div>
+	<script src="/assets/plugins/DataTables-1.13.06/datatables.min.js"></script>
+	<script src="/managements/assets/js/datatables.fr.js"></script>
 	<script src="/managements/assets/libs/simplebar/simplebar.min.js"></script>
 	<script src="/managements/assets/libs/feather-icons/feather.min.js"></script>
 	<script src="/managements/assets/libs/@frostui/tailwindcss/frostui.js"></script>
 	<script src="/managements/assets/js/app.js"></script>
-    <script src="/managements/assets/js/pages/dashboard.min.js"></script>
 	</body>
 </html>

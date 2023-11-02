@@ -113,6 +113,7 @@ final class Managements
 		#####################################
 		# End
 		#####################################
+		$this->page = strtolower($this->page);
 		# requete page
 		if (isset($_REQUEST['option']) and !empty($_REQUEST['option'])) {
 			switch ($_REQUEST['option']) {

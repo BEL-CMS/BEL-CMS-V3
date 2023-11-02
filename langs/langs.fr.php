@@ -41,6 +41,26 @@ $array = array(
 	'YOUR_MESSAGE'                        => 'Votre Message...',
 	'LOGIN_ID'                            => 'Connexion identifiant',
 	#####################################
+	# Fichier lang en français - Social
+	#####################################
+	'FACEBOOK'                            => 'Facebook',
+	'YOUTUBE'                             => 'YouTube',
+	'WHATSAPP'                            => 'Whatsapp',
+	'INSTAGRAM'                           => 'Instagram',
+	'MESSENGER'                           => 'Messenger (Meta)',
+	'TIKTOK'                              => 'TikTok',
+	'SNAPCHAT'                            => 'SnapChat',
+	'TELEGRAM'                            => 'Telegram',
+	'PINTEREST'                           => 'Pinterest',
+	'X_TWITTER'                           => '(X) Twitter',
+	'REDDIT'                              => 'Reddit',
+	'LINKEDIN'                            => 'LinkedIn',
+	'SKYPE'                               => 'Skype',
+	'VIBER'                               => 'Viber',
+	'TEAMS_MS'                            => 'Teams ms',
+	'DISCORD'                             => 'Discord',
+	'TWITCH'                              => 'Twitch',
+	#####################################
 	# Langue Français - ROOT\WIDGETS
 	#####################################
 	'SURVEY'                              => 'Sondage',
@@ -62,7 +82,6 @@ $array = array(
 	"NO_ACCESS_WIDGET"                    => 'Le widgets demandée est actuellement clos',
 	'NO_ACCESS_GROUP_PAGE'                => 'Votre groupe d\'accès ne vous permet pas d\'accéder à cette page',
 	'NO_ACCESS_GROUP_WIDGET'              => 'Votre groupe d\'accès ne vous permet pas d\'accéder à ce widget',
-	'NO_ACCESS_PAGE'                      => 'Erreur lors d\'acces a la page',
 	'NO_DATA_AVAILABLE'                   => 'Aucune donnée disponible',
 	'COPYLEFT'                            => '<a id="bel_cms_copyleft" href="https://bel-cms.dev" title="BEL-CMS">Powered by Bel-CMS</a>',
 	'PUBLISH'                             => 'Publier',

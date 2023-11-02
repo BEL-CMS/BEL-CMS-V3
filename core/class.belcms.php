@@ -19,6 +19,7 @@ use BelCMS\Widgets\Widgets as Widgets;
 use BelCMS\Templates\Templates as Template;
 use BelCMS\Core\GetHost as GetHost;
 use BelCMS\Core\Notification as Notification;
+use Belcms\Managements\Managements;
 use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
@@ -67,9 +68,8 @@ final class BelCMS
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
 		new User;
-		if (Dispatcher::isManagement() === true) {
-			echo 'Management';
-		} else if (Dispatcher::isPage($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']) === true) {
+		$dir = constant('DIR_ADMIN').$this->link.DS.'controller.php';
+		if (Dispatcher::isPage($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']) === true) {
 			$dir = constant('DIR_PAGES').$this->link.DS.'controller.php';
 			if (is_file($dir)) {
 				require_once $dir;
@@ -94,6 +94,7 @@ final class BelCMS
 					$content = ob_get_contents();
 				} else {
 					Notification::alert(constant('ERROR_LOADING_INSTANCE'), constant('WARNING'), true);
+					$content = ob_get_contents();
 				}
 			} else {
 				Common::Redirect('error/404.html');
@@ -212,7 +213,7 @@ final class BelCMS
 		return $return;	
 	}
 	##################################################
-	# Récupère le template et intefres toute,
+	# Récupérer le template et intégrer toute
 	# les variable $this (c'est-a-dire) 
 	# page / widgets / lien / user
 	##################################################
@@ -225,13 +226,6 @@ final class BelCMS
 			ob_end_clean();
 		}
 		return $content;
-	}
-	##################################################
-	# Administration
-	##################################################
-	private function managements ()
-	{
-		
 	}
 	##################################################
 	# Récupère le typeMime passé text ou html ou json

@@ -158,26 +158,24 @@ class AdminPages
 		if (!empty($menu)):
 			$title = defined(strtoupper(get_class($this))) ? constant(strtoupper(get_class($this))) : get_class($this);
 		?>
-
-		<div class="card mt-3">
+		<div class="card mt-3 mb-4">
 			<div class="card-header">
-				<h3 style="padding: 0;margin: 0;" class="card-title">Menu Principal : <?=$title;?></h3>
+				<h3 class="card-title">Menu Principal : <?=$title;?></h3>
 		  	</div>
-		  	<div class="card-body">
+		  	<div class="flex flex-wrap items-center gap-3 p-4">
 				<?php
-				foreach ($menu as $k => $v) {
-					foreach ($v as $key => $value) {
-						if (empty($value['color'])) {
+				foreach ($menu as $k => $v):
+					foreach ($v as $key => $value):
+						if (empty($value['color'])):
 							$value['color'] = '';
-						}
+						endif;
 					?>
-				<a class="btn btn-app <?=$value['color']?>" href="<?=$value['href']?>">
-					<i class="<?=$value['icon']?>"></i>
-					<?=$key?>
-				</a>
+					<a href="<?=$value['href']?>" class="btn text-sm font-medium <?=$value['color']?>">
+						<i class="<?=$value['icon']?> me-3"></i><?=$key?>
+					</a>
 					<?php
-					}
-				}
+					endforeach;
+				endforeach;
 				?>
 			</div>
 		</div>
@@ -281,8 +279,8 @@ class AdminPages
 			}
 		}
 
-		if (is_file(constant('MANAGEMENTS').DS.'lang'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php')) {
-			require constant('MANAGEMENTS').DS.'lang'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php';
+		if (is_file(ROOT.DS.'managements'.DS.'langs'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php')) {
+			require ROOT.DS.'managements'.DS.'langs'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php';
 		}
 	}
 	#########################################
@@ -291,17 +289,8 @@ class AdminPages
 	function error ($title, $msg, $type)
 	{
 		ob_start();
-		?>
-		<div id="page-content">
-			<ul class="breadcrumb breadcrumb-top">
-				<li>Index</li>
-			</ul>
-			<?php
-			Notification::$type($msg, $title);
-			$this->render = ob_get_contents();
-			?>
-		</div>
-		<?php
+		Notification::$type($msg, $title);
+		$this->render = ob_get_contents();
 		ob_end_clean();
 	}
 	#########################################

@@ -18,15 +18,15 @@ class Articles extends AdminPages
 {
 	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true;
-	var $models = 'ModelsArticles';
+	var $bdd    = 'ModelsArticles';
 
 	public function index ()
 	{
 		$data['data'] = $this->models->getAllArticles();
 		$this->set($data);
-		$menu[] = array(HOME   => array('href'=>'/Articles?management&option=pages','icon'=>'fa fa-home'));
-		$menu[] = array(ADD    => array('href'=>'/articles/add?management&option=pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CONFIG => array('href'=>'Articles/parameter?management&option=pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'Articles?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'Articles/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'/Articles/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('index', $menu);
 	}
 
@@ -34,9 +34,9 @@ class Articles extends AdminPages
 	{
 		$data['data'] = $this->models->getArticles($id);
 		$this->set($data);
-		$menu[] = array(HOME   => array('href'=>'articles?management&option=pages','icon'=>'fa fa-home'));
-		$menu[] = array(ADD    => array('href'=>'articles/add?management&option=pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CONFIG => array('href'=>'Articles/parameter?management&option=pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'/Articles?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'/Articles/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'/Articles/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('edit', $menu);
 	}
 
@@ -52,9 +52,9 @@ class Articles extends AdminPages
 		$data['groups'] = BelCMSConfig::getGroups();
 		$data['config'] = BelCMSConfig::GetConfigPage(get_class($this));
 		$this->set($data);
-		$menu[] = array(HOME   => array('href'=>'articles?management&option=pages','icon'=>'fa fa-home'));
-		$menu[] = array(ADD    => array('href'=>'articles/add?management&option=pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CONFIG => array('href'=>'Articles/parameter?management&option=pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'/Articles?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'/Articles/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'/Articles/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('parameter', $menu);
 	}
 
@@ -67,9 +67,9 @@ class Articles extends AdminPages
 
 	public function add ()
 	{
-		$menu[] = array(HOME   => array('href'=>'articles?management&option=pages','icon'=>'fa fa-home'));
-		$menu[] = array(ADD    => array('href'=>'articles/add?management&option=pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CONFIG => array('href'=>'articles/parameter?management&option=pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'/Articles?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'/Articles/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'/Articles/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('new',$menu);
 	}
 
@@ -77,7 +77,7 @@ class Articles extends AdminPages
 	{
 		$return = $this->models->sendnew($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('articles?management&option=pages', 2);
+		$this->redirect('/articles?management&option=pages', 2);
 	}
 
 	public function del ($id)

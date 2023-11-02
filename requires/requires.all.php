@@ -50,6 +50,7 @@ $files = array (
 	ROOT.DS.'users'.DS.'index.php',
 	ROOT.DS.'pages'.DS.'index.php',
 	ROOT.DS.'widgets'.DS.'index.php',
+	ROOT.DS.'managements'.DS.'index.php',
 	ROOT.DS.'templates'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.belcms.php',
 );

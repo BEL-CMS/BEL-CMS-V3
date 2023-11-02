@@ -30,7 +30,7 @@ final class Interaction
 
 	public function user ($hash_key = null) {
 		if (Users::isLogged() === true) {
-			$this->user = $_SESSION['USER']['HASH_KEY'];
+			$this->user = $_SESSION['USER']->user->hash_key;
 		} else {
 			$this->user = Common::GetIp();
 		}
