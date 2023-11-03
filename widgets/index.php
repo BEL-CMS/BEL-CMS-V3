@@ -34,6 +34,7 @@ class Widgets
 		$set = self::getController();
 		$get = $set->render();
 		extract($get);
+	
 		$render = constant('DIR_WIDGETS').strtolower($this->name).DS.'index.php';
 
 		if (is_file($render)) {
@@ -48,7 +49,7 @@ class Widgets
 			ob_end_clean();
 		}
 
-		echo $content;
+		return $content;
 	}
 
 	public function getBoxGlobal ()
@@ -110,7 +111,7 @@ class Widgets
 			$boxContent = '<div id="'.$id.'';
 			$boxContent .= $render;
 			$boxContent .= '</div>';
-			include $custom;
+			echo $boxContent;
 		}
 		$content = ob_get_contents ();
 		if (ob_get_length() != 0) {

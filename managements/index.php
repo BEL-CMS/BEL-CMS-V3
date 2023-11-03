@@ -29,7 +29,8 @@ final class Managements
 			$view,
 			$link;
 
-	public  $render;
+	public  $render,
+			$data;
 
 	private $controller;
 

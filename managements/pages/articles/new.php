@@ -22,7 +22,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 				<h4><?=constant('NEW');?> <?=constant('ARTICLE');?></h4>
 			</div>
 			<div class="p-6">
-				<form action="articles/sendnew?management&option=pages" method="post">
+				<form action="/articles/sendnew?management&option=pages" method="post">
 					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
 						<div class="col-sm-12">
@@ -36,20 +36,19 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 						</div>
 					</div>
 					<div>
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TEXT');?></label>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TEXT')?></label>
 						<div class="col-sm-12">
 							<textarea class="bel_cms_textarea_full" name="content"></textarea>
 						</div>
-					</div>
 					<div>
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2" for="checkbox"><?=constant('COMPLEMENT');?></label>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('COMPLEMENT');?></label>
 						<div class="col-sm-12">
 							<textarea class="bel_cms_textarea_full" name="additionalcontent"></textarea>
 						</div>
 					</div>
 					<div>
 						<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
-							<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> <?=constant('SAVE');?></button>
+							<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i> <?=constant('SAVE');?></button>
 						</div>
 					</div>
 				</form>

@@ -9,9 +9,9 @@
 	<link href="/assets/plugins/DataTables-1.13.06/jquery.dataTables.min" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="/managements/assets/css/magnific-popup.css">
 	<link rel="stylesheet" href="/managements/assets/css/quick-events.css">
+	<link rel="stylesheet" href="/assets/plugins/tinymce/skins/ui/tinymce-5/skin.min.css">
 	<script src="/assets/js/jQuery/jquery-3.7.1.min.js"></script>
-	<script src="/assets/plugins/tinymce/tinymce.min.js" type="text/javascript"></script>
-	<script src="/assets/js/belcms.core.js"></script>
+	<script src="/assets/plugins/tinymce/tinymce.min.js"></script>
 	<script src="/managements/assets/js/config.js"></script>
 	<script type="text/javascript">
 		document.onreadystatechange = function() {
@@ -268,11 +268,14 @@
             
 		</div>
 	</div>
+	  
+	<script src="/assets/plugins/tinymce/tinymce.min.js"></script>
 	<script src="/assets/plugins/DataTables-1.13.06/datatables.min.js"></script>
 	<script src="/managements/assets/js/datatables.fr.js"></script>
 	<script src="/managements/assets/libs/simplebar/simplebar.min.js"></script>
 	<script src="/managements/assets/libs/feather-icons/feather.min.js"></script>
 	<script src="/managements/assets/libs/@frostui/tailwindcss/frostui.js"></script>
+	<script src="/assets/js/belcms.core.js"></script>
 	<script src="/managements/assets/js/app.js"></script>
 	</body>
 </html>

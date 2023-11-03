@@ -19,11 +19,11 @@ endif;
 
 class Comments extends Pages
 {
-	var $models = 'Comments';
+	var $useModels = 'Comments';
 
 	public function send ()
 	{
-		if (isset($_SESSION['USER']['HASH_KEY']) and strlen($_SESSION['USER']['HASH_KEY']) == 32) {
+		if (isset($_SESSION['USER']->user->hash_key) and strlen($_SESSION['USER']->user->hash_key) == 32) {
 			if (empty($_POST['text'])) {
 				$this->error = true;
 				$this->errorInfos = array('error', constant('COMMENT_EMPTY'), 'Commentaires', false);

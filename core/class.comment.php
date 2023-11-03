@@ -101,7 +101,7 @@ final class Comment
 			if (isset($dispatcher->link[3]) and !empty($dispatcher->link[3])) {
 				$links .= $dispatcher->link[3];
 			}
-			if ($_SESSION['USER']['HASH_KEY'] !== false) {
+			if ($_SESSION['USER']->user->hash_key !== false) {
 				$html .= '<form action="Comments/Send" method="post" enctype="multipart/form-data"><input name="url" type="hidden" value="'.$links.'"><textarea name="text"></textarea><button type="submit" class="btn btn-primary">Envoyer</button></form>';
 			}
 		}

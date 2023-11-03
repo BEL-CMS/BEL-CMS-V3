@@ -39,4 +39,5 @@ Common::constant(array(
 	'LIST_OF_ARTICLES'        => 'Liste des articles',
 	'CREATION_DATE'           => 'Date de création',
 	'NEW'                     => 'Nouveau',
+	'READMORE_ADMIN'          => 'La suite de l\'article',
 ));

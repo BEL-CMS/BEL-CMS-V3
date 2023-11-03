@@ -14,60 +14,62 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
+
 $tags = null;
-$c = count($data->tags);
-foreach ($data->tags as $k => $v) {
-	$v = str_replace(' ','',$v);
-	if ($c != $k+1) {
-		$tags.= $v. ', ';
-	} else {
-		$tags.= $v;
+$c    = null;
+if ($data->tags != null) {
+	foreach ($data->tags as $k => $v) {
+		$v = str_replace(' ','',$v);
+		if ($c != $k+1) {
+			$tags.= $v. ', ';
+		} else {
+			$tags.= $v;
+		}
 	}
 }
 ?>
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title"><?=EDITING;?> <?=ARTICLE?></h3>
-		<div class="card-tools">
-			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-				<i class="fas fa-minus"></i>
-			</button>
+<div class="flex flex-col gap-6">
+	<div class="grid lg:grid-cols-1 gap-6">
+		<div class="card">
+			<div class="card-header">
+				<h4><?=constant('EDITING');?> <?=constant('ARTICLE');?></h4>
+			</div>
+			<div class="p-6">
+				<form action="/articles/sendedit?management&option=pages" method="post" class="form-horizontal form-bordered">
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?> :</label>
+						<div class="col-sm-12">
+							<input name="name" type="text" class="form-input" value="<?=$data->name?>">
+						</div>
+					</div>
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TAGS');?> :</label>
+						<div class="col-sm-12">
+							<input name="tags" placeholder="( séparer par des => , )" value="<?=$tags?>" type="text" value="" data-role="tagsinput" class="form-input">
+						</div>
+					</div>
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TEXT');?> :</label>
+						<div class="mt-2 mb-2">
+							<textarea class="bel_cms_textarea_full" name="content"><?=$data->content?></textarea>
+						</div>
+					</div>
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('READMORE_ADMIN');?></label>
+						<div class="col-sm-12 mt-2 mb-2">
+							<textarea class="bel_cms_textarea_full" name="additionalcontent"><?=$data->additionalcontent?></textarea>
+						</div>
+					</div>
+					<div>
+						<div>
+							<input type="hidden" name="author" value="<?=$data->author?>">
+							<input type="hidden" name="id" value="<?=$data->id?>">
+							<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i> <?=constant('SAVE')?></button>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
-	</div>
-	<div class="card-body">
-		<form action="/articles/sendedit?management&option=pages" method="post" class="form-horizontal form-bordered">
-			<div class="form-group">
-				<label class="col-sm-12 control-label" for="checkbox"><?=NAME?> :</label>
-				<div class="col-sm-12">
-					<input name="name" type="text" class="form-control" value="<?=$data->name?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-12 control-label" for="checkbox"><?=TAGS;?> :</label>
-				<div class="col-sm-12">
-					<input name="tags" placeholder="( séparer par des => , )" value="<?=$tags?>" type="text" value="" data-role="tagsinput" class="form-control">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-12 control-label" for="checkbox"><?=TEXT?> :</label>
-				<div class="col-sm-12">
-					<textarea class="bel_cms_textarea_full" name="content"><?=$data->content?></textarea>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-12 control-label" for="checkbox"><?=READMORE;?>...</label>
-				<div class="col-sm-12">
-					<textarea class="bel_cms_textarea_full" name="additionalcontent"><?=$data->additionalcontent?></textarea>
-				</div>
-			</div>
-			<div class="form-group form-actions">
-				<div class="col-sm-12 col-sm-offset-3">
-					<input type="hidden" name="author" value="<?=$data->author?>">
-					<input type="hidden" name="id" value="<?=$data->id?>">
-					<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> <?=SAVE?></button>
-				</div>
-			</div>
-		</form>
 	</div>
 </div>
 <?php

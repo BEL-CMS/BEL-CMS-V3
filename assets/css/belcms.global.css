@@ -422,3 +422,147 @@ textarea[readonly] {
 .bel_cms_index_table {
 	width: 100%;
 }
+/*-------------------------------------------------------------------------------------------------*/
+/*	Notification
+---------------------------------------------------------------------------------------------------*/
+.belcms_notification {
+	border: 1px solid rgba(209, 207, 207, 1);
+	background: rgba(248, 248, 248, 1);
+	margin: 15px auto;
+	width: 100%;
+	overflow: hidden;
+}
+.belcms_notification_header {
+	display: block;
+	width: 100%;
+	padding: 15px;
+	overflow: hidden;
+	color: rgba(255, 255, 255, 0.95);
+	min-height: auto !important;
+}
+.belcms_notification > .error {
+	background-color: rgba(223, 83, 73, .8);
+}
+.belcms_notification > .success {
+	background-color: rgba(106, 189, 110, .8);
+}
+.belcms_notification > .warning {
+	background-color: rgba(255, 170, 43, .8);
+}
+.belcms_notification > .  {
+	background-color: rgba(42, 167, 246, .8);
+}
+.belcms_notification i {
+	display: block;
+	float: left;
+	font-size: 24px;
+}
+.belcms_notification span {
+	display: block;
+	float: left;
+	margin-left: 15px;
+	line-height: 24px;
+	font-size: 16px;
+	font-weight: bold;
+}
+.belcms_notification .belcms_notification_msg {
+	margin: 15px;
+	padding: 15px;
+	text-align: justify;
+	border: 1px solid rgba(209, 207, 207, 1);
+	background-color: rgba(244, 242, 242, 1);
+	font-weight: 13px;
+	color: var(--gray-dark);
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Commentaires styles
+---------------------------------------------------------------------------------------------------*/
+nav#bel_cms_comment {
+	background: rgba(255, 255, 255, 1);
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+	nav#bel_cms_comment ul {
+		list-style: none;
+		padding: 0;
+		border-top: 1px solid #e6ecf5;
+		border-bottom: 1px solid #e6ecf5;
+		margin: 25px -25px 0;
+		padding-left: 35px;
+	}
+		nav#bel_cms_comment ul li.bel_cms_comment_item {
+			padding: 25px;
+			border-bottom: 1px solid #e6ecf5;
+			position: relative;
+			border-left: 1px solid #e6ecf5;
+		}
+
+		nav#bel_cms_comment ul li::before {
+			content: "";
+			position: absolute;
+			width: 9px;
+			height: 9px;
+			top: 40px;
+			left: -5px;
+			background-color: #fafbfd;
+			border-radius: 100%;
+			border: 1px solid #c2c5d9;
+		}
+		nav#bel_cms_comment ul li.bel_cms_comment_item:last-child {
+			border-bottom: none;
+		}
+			.bel_cms_comment_author {
+				margin-bottom: 20px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+				.bel_cms_comment_author a {
+					display: inline-block;
+					vertical-align: top;
+				}
+				.bel_cms_comment_author img {
+					width: 26px;
+					height: 26px;
+					border-radius: 100%;
+					overflow: hidden;
+					margin-right: 12px;	
+					margin-top: -25px
+				}
+			.bel_cms_comment_date {
+				display: inline-block;
+			}
+				.bel_cms_comment_date a {
+					display: block;
+					text-decoration: none;
+				}
+#bel_cms_comment_more {
+	text-align: center;
+	padding: 15px 0;
+	font-size: 12px;
+	color: #515365;
+	display: block;
+	font-weight: 700;
+	margin: 0 auto;
+	border-bottom: 1px solid #e6ecf5;
+}
+#bel_cms_comment_textarea {
+	padding: 25px;
+	border-bottom: 1px solid #e6ecf5;
+}
+#bel_cms_comment textarea {
+	display: block;
+	min-height: 60px;
+	height: 60px;
+	border: 1px solid #e6ecf5;
+	border-radius: .25rem;
+	width: 100%;
+	padding: 5px;
+	margin: 20px 20px 0;
+	width: calc(100% - 40px);
+}
+#bel_cms_comment button {
+	margin: 20px;
+	float: right;
+}

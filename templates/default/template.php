@@ -96,9 +96,9 @@
 				?>
 				<div class="">
 					<div class="def-block">
-				<?php
-						echo $var->page;
-				?>
+						<?php
+							echo $var->page;
+						?>
 					</div>
 				</div>
 				<?php
@@ -107,8 +107,8 @@
 				<div class="span8 posts">
 					<div class="def-block">
 						<?php
-						/* Les pages se trouvent ici Articles, downloads, etc...*/
-						echo $var->page;
+							/* Les pages se trouvent ici Articles, downloads, etc...*/
+							echo $var->page;
 						?>
 					</div>
 					<?php

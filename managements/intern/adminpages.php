@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Dispatcher;
 use BelCMS\Core\Notification;
 
 if (!defined('CHECK_INDEX')):
@@ -24,11 +25,14 @@ class AdminPages
 
 	public 	$render = null,
 			$bdd,
-			$models;
+			$models,
+			$data;
 
 	function __construct()
 	{
 		self::loadLang();
+
+		$this->data = self::get();
 
 		if ($this->active === false) {
 			self::pageOff();
@@ -304,6 +308,21 @@ class AdminPages
 		if ($b == true) {
 			die();
 		}
+	}
+	#########################################
+	# Récupère les données passées par
+	# un formulaire ou un lien.
+	#########################################
+	public function get ()
+	{
+		$request = $_SERVER['REQUEST_METHOD'] == 'POST' ? 'POST' : 'GET';
+		if ($request == 'POST') {
+			$return = $_POST;
+		} else if ($request == 'GET') {
+			$return = new Dispatcher;
+			$return = $return->link;
+		}
+		return $return;
 	}
 	#########################################
 	# Redirection

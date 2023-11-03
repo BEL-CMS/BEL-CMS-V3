@@ -40,6 +40,7 @@ $array = array(
 	'MAIL_OR_USERNAME'                    => 'Nom ou e-mail',
 	'YOUR_MESSAGE'                        => 'Votre Message...',
 	'LOGIN_ID'                            => 'Connexion identifiant',
+	'MEMBER_DELETE'                       => 'Membre supprimé',
 	#####################################
 	# Fichier lang en français - Social
 	#####################################

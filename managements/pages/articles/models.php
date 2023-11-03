@@ -11,6 +11,7 @@
 
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -65,9 +66,14 @@ final class ModelsArticles
 				} else {
 					$sql->data->tags = explode(',', $sql->data->tags);
 				}
-				$author = $sql->data->author;
-				$sql->data->username = Users::hashkeyToUsernameAvatar($author);
-				$sql->data->avatar   = Users::hashkeyToUsernameAvatar($author, 'avatar');
+				$author =  User::getInfosUserAll($sql->data->author);
+				if ($author == false) {
+					$sql->data->username = constant('MEMBER_DELETE');
+					$sql->data->avatar   = constant('DEFAULT_AVATAR');
+				} else {
+					$sql->data->username = $author->user->username;
+					$sql->data->avatar   = $author->profils->avatar;					
+				}
 			} else {
 				$sql->data = null;
 			}
@@ -81,14 +87,14 @@ final class ModelsArticles
 			if (empty($data['name'])) {
 				$return = array(
 					'type' => 'error',
-					'text' => ADD_BLOG_EMPTY
+					'text' => constant('ADD_BLOG_EMPTY')
 				);
 				return $return;
 			}
 			if (empty($data['content'])) {
 				$return = array(
 					'type' => 'error',
-					'text' => ADD_BLOG_EMPTY_CONTENT
+					'text' => constant('ADD_BLOG_EMPTY_CONTENT')
 				);
 				return $return;
 			}
@@ -97,8 +103,8 @@ final class ModelsArticles
 			$edit['name']              = Common::VarSecure($data['name'], ''); // autorise que du texte
 			$edit['content']           = Common::VarSecure($data['content'], 'html'); // autorise que les balises HTML
 			$edit['additionalcontent'] = Common::VarSecure($data['additionalcontent'], 'html'); // autorise que les balises HTML
-			$edit['author']            = strlen($data['author']) == 32 ? $data['author'] : $_SESSION['USER']['HASH_KEY'];
-			$edit['authoredit']        = $_SESSION['USER']['HASH_KEY'];
+			$edit['author']            = strlen($data['author']) == 32 ? $data['author'] : $_SESSION['USER']->user->hash_key;
+			$edit['authoredit']        = $_SESSION['USER']->user->hash_key;
 			$edit['tags']              = Common::VarSecure($data['tags'], ''); // autorise que du texte
 			$edit['tags']              = str_replace(' ', '', $edit['tags']);
 			$edit['cat']               = ''; // à implanter
@@ -174,7 +180,7 @@ final class ModelsArticles
 			$send['name']              = Common::VarSecure($data['name'], ''); // autorise que du texte
 			$send['content']           = Common::VarSecure($data['content'], 'html'); // autorise que les balises HTML
 			$send['additionalcontent'] = Common::VarSecure($data['additionalcontent'], 'html'); // autorise que les balises HTML
-			$send['author']            = $_SESSION['USER']['HASH_KEY'];
+			$send['author']            = $_SESSION['USER']->user->hash_key;
 			$send['authoredit']        = null;
 			$send['tags']              = Common::VarSecure($data['tags'], ''); // autorise que du texte
 			$send['tags']              = str_replace(' ', '', $send['tags']);
@@ -240,18 +246,18 @@ final class ModelsArticles
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_BLOG_PARAM_SUCCESS
+					'text' => constant('EDIT_BLOG_PARAM_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_BLOG_PARAM_ERROR
+					'text' => constant('EDIT_BLOG_PARAM_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -271,18 +277,18 @@ final class ModelsArticles
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_BLOG_SUCCESS
+					'text' => constant('DEL_BLOG_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_BLOG_ERROR
+					'text' => constant('DEL_BLOG_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
