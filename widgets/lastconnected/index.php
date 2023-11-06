@@ -27,11 +27,12 @@ if ($var !== null):
 	foreach ($var as $k => $v):
 		if (User::ifUserExist($v->hash_key)):
 		$infosUser = User::getInfosUserAll($v->hash_key);
-			foreach ($groups as $key => $value) {
-				if ($value['id'] == $infosUser->groups->user_group) {
-					$group = $key;
-				}
+		foreach ($groups as $key => $value) {
+			if ($value['id'] == $infosUser->groups->user_group) {
+				$group = $key;
 			}
+		}
+		$infosUser->profils->avatar = is_file($infosUser->profils->avatar) ? $infosUser->profils->avatar :  constant('DEFAULT_AVATAR');
 		?>
 			<li>
 				<img title="<?=$infosUser->user->username?>" src="<?=$infosUser->profils->avatar?>" alt="avatar_<?=$infosUser->user->username?>" style="max-width: 50px; max-height: 50px;">

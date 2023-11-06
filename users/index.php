@@ -215,7 +215,7 @@ class User
 			unset($_SESSION['LOGIN_MANAGEMENT']);
 		}
 
-		unset($_SESSION['USER']['HASH_KEY']);
+		unset($_SESSION['USER']);
 		setcookie('BELCMS_HASH_KEY', '', -1, '/');
 		setcookie('BELCMS_NAME', '', -1, '/');
 		setcookie('BELCMS_PASS', '', -1, '/');

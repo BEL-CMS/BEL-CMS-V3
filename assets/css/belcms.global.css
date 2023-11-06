@@ -132,6 +132,14 @@ section { width: 100%; overflow: hidden; display: block; }
 .align_center {
 	text-align: center;
 }
+.belcms_h3_input_lf {
+	text-align: left !important;
+	margin-bottom: 5px;
+}
+.belcms_h3_input_rt {
+	text-align: right !important;
+	margin-bottom: 5px;
+}
 /*-------------------------------------------------------------------------------------------------*/
 /*	Créé un block en dessous avec aucune marge ou padding sert juste à forcer en dessous.
 ---------------------------------------------------------------------------------------------------*/
@@ -213,6 +221,7 @@ section#belcms_section #belcms_title > span {
 /*	input select, toujours utilisé pour uniformiser le site. a surcharger par vos theme ou boostrap si vous l'utilisé
 ---------------------------------------------------------------------------------------------------*/
 textarea,
+select,
 input[type="text"],
 input[type="password"],
 input[type="datetime"],
@@ -234,6 +243,7 @@ input[type="color"] {
 	line-height: 30px;
 	height: 30px;
 	width: 100%;
+	padding-left: 5px !important;
 }
 input[disabled],
 select[disabled],

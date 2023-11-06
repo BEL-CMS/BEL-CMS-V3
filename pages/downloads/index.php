@@ -52,8 +52,8 @@ endif;
 							</a>
 						</span>
 						<span>Cat : <i><?=$v->name;?></i></span>
-						<a class="belcms_section_downloads_nav_ul_right_dl belcms_btn belcms_bg_blue" href="downloads/detail/<?=$value->id;?>">Voir</a>
 					</div>
+					<a class="belcms_section_downloads_nav_ul_right_dl belcms_btn belcms_bg_blue" href="downloads/detail/<?=$value->id;?>">Voir</a>
 				</li>
 				<?php
 				endforeach;

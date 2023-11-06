@@ -42,16 +42,21 @@ function error_handler($t, $m, $f, $l, $e = true)
 			$c = "Unknow Error";
 		break;
 	}
-	$e  = '<pre>'.PHP_EOL;
+	$e  = '<!DOCTYPE HTML>'.PHP_EOL;
+	$e  = '<html lang="fr">'.PHP_EOL;
+	$e  = '<head>'.PHP_EOL;
+	$e  = '<body>'.PHP_EOL;
+	$e  = '<pre style="z-index:1;">'.PHP_EOL;
 	$e .= str_pad('', 100, '-',STR_PAD_RIGHT).'<br>';
 	$e .= str_pad('Date Time', 20, ' ',STR_PAD_RIGHT) .date("H:i:s").'<br>';
 	$e .= str_pad('Error Type', 20, ' ',STR_PAD_RIGHT) .$c.'<br>';
 	$e .= str_pad('Error Message', 20, ' ',STR_PAD_RIGHT) .$m.'<br>';
 	$e .= str_pad('Error Ligne', 20, ' ',STR_PAD_RIGHT) .$l.'<br>';
 	$e .= str_pad('Error File', 20, ' ',STR_PAD_RIGHT) .$f.'<br>';
-	$e .= str_pad('PHP version', 20, ' ',STR_PAD_RIGHT) .PHP_OS.'<br>';
+	$e .= str_pad('Système', 20, ' ',STR_PAD_RIGHT) .PHP_OS.'<br>';
 	$e .= str_pad('', 100, '-',STR_PAD_RIGHT).'<br>';
 	$e .= '</pre>'.PHP_EOL;
+	$e .= '</body><html>'.PHP_EOL;
 	if (ob_get_length() != 0) {
 		ob_end_clean();
 	}

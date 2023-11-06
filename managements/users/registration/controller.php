@@ -9,6 +9,8 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -18,7 +20,7 @@ class Registration extends AdminPages
 {
 	var $admin     = true; // Admin suprême uniquement (Groupe 1);
 	var $active    = true;
-	var $models    = 'ModelsUsers';
+	var $bdd       = 'ModelsUsers';
 
 	public function index ()
 	{
@@ -39,7 +41,7 @@ class Registration extends AdminPages
 	public function del ($id)
 	{
 		if (Common::hash_key($id)) {
-			if ($id == $_SESSION['USER']['HASH_KEY']) {
+			if ($id == $_SESSION['USER']->user->hash_key) {
 				$this->error(get_class($this), 'Vous ne pouvez pas vous efacer vous même', 'error');
 				return;
 			}

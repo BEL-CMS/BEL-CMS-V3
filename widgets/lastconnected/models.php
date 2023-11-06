@@ -31,11 +31,6 @@ class Models
 		$sql->queryAll();
 		if (!empty($sql->data)) {
 			$return = $sql->data;
-			/*
-			foreach ($return as $k => $v) {
-				$return[$k]->avatar = is_file($v->avatar) ? $v->avatar : 'assets/img/default_avatar.jpg';
-			}
-			*/
 		}
 		return $return;
 

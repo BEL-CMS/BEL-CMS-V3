@@ -68,9 +68,8 @@ final class BelCMS
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
 		new User;
-		$dir = constant('DIR_ADMIN').$this->link.DS.'controller.php';
 		if (Dispatcher::isPage($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']) === true) {
-			$dir = constant('DIR_PAGES').$this->link.DS.'controller.php';
+			$dir = constant('DIR_PAGES').strtolower($this->link).DS.'controller.php';
 			if (is_file($dir)) {
 				require_once $dir;
 				$require = "Belcms\Pages\Controller\\".$require;

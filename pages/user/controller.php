@@ -68,7 +68,7 @@ class User extends Pages
 			$this->set($d);
 			$this->render('avatar');
 		} else {
-			$this->redirect('User/login', 3);
+			$this->redirect('User/login&echo', 3);
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
@@ -85,7 +85,7 @@ class User extends Pages
 			$this->set($d);
 			$this->render('security');
 		} else {
-			$this->redirect('User/login', 3);
+			$this->redirect('User/login&echo', 3);
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
@@ -102,7 +102,7 @@ class User extends Pages
 			$this->set($d);
 			$this->render('safety');
 		} else {
-			$this->redirect('User/login', 3);
+			$this->redirect('User/login&echo', 3);
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
@@ -119,7 +119,7 @@ class User extends Pages
 			$this->set($d);
 			$this->render('social');
 		} else {
-			$this->redirect('User/login', 3);
+			$this->redirect('User/login&echo', 3);
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}

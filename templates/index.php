@@ -146,25 +146,19 @@ class Templates
 		$files[] = 'assets/plugins/fontawesome-6.4.2/css/all.min.css';
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/custom.css')) {
-			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/custom.css?';
+			$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/custom.css?';
 		}
 		/* pages css */
 		$dirPage = constant('DIR_PAGES').strtolower($var).DS.'css'.DS.'styles.css';
-		$dirWeb  = 'pages/'.strtolower($var).'/css/styles.css';
 		if (is_file($dirPage)) {
-			$files[] = $dirWeb;
+			$files[] = 'pages/'.strtolower($var).'/css/styles.css';
 		}
 		/* widgets css */
 		foreach (self::getCssWidgets() as $v) {
 			/* widgets css default */
-			$dirPage = constant('DIR_WIDGETS').strtolower($v->name).DS.'css'.DS.'styles.css';
-			if (is_file($dirPage)) {
-				$files[] = 'widgets/'.strtolower($v->name).'/css/styles.css';
-			}
-			/* widgets css default */
-			$dirWidgets = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/'.strtolower($v->name).'.css';
+			$dirWidgets = constant('DIR_WIDGETS').strtolower($v->name).DS.'css'.DS.'styles.css';
 			if (is_file($dirWidgets)) {
-				$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/'.strtolower($v->name).'.css';
+				$files[] = 'widgets/'.strtolower($v->name).'/css/styles.css';
 			}
 		}
 
@@ -190,31 +184,22 @@ class Templates
 		$files[] = 'assets/plugins/fontawesome-6.4.2/js/all.min.js';
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js')) {
-			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom'.DS.'custom.js';
+			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js';
 		}
 		/* FILE GENERAL BEL-CMS */
-		$files[] = 'assets/plugins/belcms.core.js';
+		$files[] = 'assets/plugins/js/belcms.core.js';
 		/* pages js */
-		$dirPage = constant('DIR_PAGES').strtolower($var).DS.'js'.DS.'javascripts.js';
+		$dirPage = constant('DIR_TPL').strtolower($var).DS.'js'.DS.'javascripts.js';
 		if (is_file($dirPage)) {
-			$files[] = 'pages/'.strtolower($var).'/js/javascripts.js';
+			$files[] = $dirPage;
 		}
 		/* Widgets js */
 		foreach (self::getCssWidgets() as $v) {
 			/* widgets js default */
-			$dirPage = constant('DIR_WIDGETS').strtolower($v->name).DS.'js'.DS.'javascripts.js';
-			if (is_file($dirPage)) {
-				$files[] = 'widgets/'.strtolower($v->name).'/js/javascripts.js';
-			}
-			/* widgets css default */
-			$dirWidgets = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/'.strtolower($v->name).'.js';
+			$dirWidgets = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.strtolower($v->name).'.js';
 			if (is_file($dirWidgets)) {
-				$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/'.strtolower($v->name).'.js';
+				$files[] = ROOT.DS.'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/'.strtolower($v->name).'.js';
 			}
-		}
-
-		if (is_file(ROOT.'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js')) {
-			$files[] = 'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js';
 		}
 
 		foreach ($files as $v) {

@@ -65,6 +65,7 @@
 	margin-bottom: 5px;
 }
 .belcms_section_downloads_nav_ul_li {
+	position: relative;
 	background-color: rgba(0,0,0,.03);
 	display: flex;
 	flex-wrap: wrap;
@@ -87,9 +88,8 @@
 	width: 70%;
 	max-height: 75px;
 	overflow: hidden;
-	flex: 0 0 87%;
+	flex: 0 0 75%;
 	padding: 5px 10px;
-	position: relative;
 }
 .belcms_section_downloads_nav_ul_right span {
 	display: block;
@@ -114,13 +114,14 @@
 .belcms_section_downloads_nav_ul_right_dl {
 	display: block;
 	float: right;
-	padding: 5px 15px;
+	padding: 5px 10px !important;
 	text-align: center;
-	border-radius: 3px;
+	border-radius: 5px;
 	position: absolute;
 	right: 5px;
 	bottom: 5px;
 	border: 1px solid rgba(0,0,0,.03);
+	line-height: 20px !important;
 }
 .belcms_section_downloads_nav_ul_right_dl:hover {
 	border-color: rgba(0, 0, 0, 0.135);
