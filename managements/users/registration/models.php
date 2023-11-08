@@ -10,6 +10,7 @@
  */
 
 use BelCMS\PDO\BDD;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -29,11 +30,12 @@ final class ModelsUsers
 	{
 		$sql = New BDD;
 		$sql->table('TABLE_USERS');
-		if ($id != null && is_numeric($id)) {
-			$sql->where(array('name' => 'id', 'value' => $id));
-		}
 		$sql->queryAll();
-		$return = $sql->data;
+		$data = $sql->data;
+
+		foreach ($sql->data as $key => $value) {
+			$return[$value->id] = User::getInfosUserAll($value->hash_key);
+		}
 
 		return $return;
 	}

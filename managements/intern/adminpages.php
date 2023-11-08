@@ -11,6 +11,7 @@
 
 use BelCMS\Core\Dispatcher;
 use BelCMS\Core\Notification;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -26,7 +27,8 @@ class AdminPages
 	public 	$render = null,
 			$bdd,
 			$models,
-			$data;
+			$data,
+			$id;
 
 	function __construct()
 	{
@@ -286,6 +288,18 @@ class AdminPages
 		if (is_file(ROOT.DS.'managements'.DS.'langs'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php')) {
 			require ROOT.DS.'managements'.DS.'langs'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php';
 		}
+	
+		self::getLangs();
+	}
+	#########################################
+	# récupère tout les fichiers de lang et les inclus
+	#########################################
+	private function getLangs ()
+	{
+		$scan = Common::ScanFiles(constant('DIR_ADMIN').'langs');
+		foreach ($scan as $k => $v) {
+			require_once constant('DIR_ADMIN').'langs'.DS.$v;
+		}
 	}
 	#########################################
 	# Retourne erreur ou le texte defini
@@ -318,9 +332,11 @@ class AdminPages
 		$request = $_SERVER['REQUEST_METHOD'] == 'POST' ? 'POST' : 'GET';
 		if ($request == 'POST') {
 			$return = $_POST;
+			$this->id = null;
 		} else if ($request == 'GET') {
 			$return = new Dispatcher;
 			$return = $return->link;
+			$this->id = $return[2];
 		}
 		return $return;
 	}

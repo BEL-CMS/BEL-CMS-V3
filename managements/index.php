@@ -42,7 +42,7 @@ final class Managements
 		$this->link = Dispatcher::link();
 		$this->page = Dispatcher::page();
 		$this->view = Dispatcher::view();
-
+		
 		self::getLangs();
 
 		if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
@@ -438,16 +438,6 @@ final class Managements
 		return $scan;
 	}
 	#########################################
-	# récupère tout les fichiers de lang et les inclus
-	#########################################
-	private function getLangs ()
-	{
-		$scan = Common::ScanFiles(constant('DIR_ADMIN').'langs');
-		foreach ($scan as $k => $v) {
-			require_once constant('DIR_ADMIN').'langs'.DS.$v;
-		}
-	}
-	#########################################
 	# Autorisation des pages
 	#########################################
 	private function security ()
@@ -518,5 +508,15 @@ final class Managements
 			}
 		}
 		return $return;
+	}
+	#########################################
+	# récupère tout les fichiers de lang et les inclus
+	#########################################
+	private function getLangs ()
+	{
+		$scan = Common::ScanFiles(constant('DIR_ADMIN').'langs');
+		foreach ($scan as $k => $v) {
+			require_once constant('DIR_ADMIN').'langs'.DS.$v;
+		}
 	}
 }

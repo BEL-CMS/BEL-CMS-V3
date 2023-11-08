@@ -22,5 +22,6 @@ Common::constant(array(
 	#####################################
 	'ADDED_AN_ARTICLE' => 'Ajouté un article',
 	'ADD_DOWNLOADS'    => 'Ajouté un téléchargement',
-	'CONFIRM_DELETE'   => 'Confirmer la suppression : '
+	'CONFIRM_DELETE'   => 'Confirmer la suppression : ',
+	'DEL_CONFIRM'      => 'Confirmer la suppression',
 ));

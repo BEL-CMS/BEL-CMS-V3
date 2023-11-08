@@ -31,9 +31,9 @@ class Registration extends AdminPages
 
 	public function edit ($id)
 	{
-		$data['user']   = current($this->models->getAllUsers($id));
-		$data['profil'] = current($this->models->getAllUsersProfils($id));
-		$data['social'] = current($this->models->getAllUsersSocial($id));
+		$data['user']   = current($this->models->getAllUsers($this->id));
+		$data['profil'] = current($this->models->getAllUsersProfils($this->id));
+		$data['social'] = current($this->models->getAllUsersSocial($this->id));
 		$this->set($data);
 		$this->render('edition');
 	}

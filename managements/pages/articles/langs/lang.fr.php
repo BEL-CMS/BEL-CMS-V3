@@ -35,7 +35,6 @@ Common::constant(array(
 	'DEL_BLOG_ERROR'          => 'Erreur durant la suppression de l\'article',
 	'ADD_BLOG_EMPTY'          => 'Le nom ne peux-être vide',
 	'ADD_BLOG_EMPTY_CONTENT'  => 'Le contenue ne peux-être vide',
-	'DEL_CONFIRM'             => 'Confirmer la suppression',
 	'LIST_OF_ARTICLES'        => 'Liste des articles',
 	'CREATION_DATE'           => 'Date de création',
 	'NEW'                     => 'Nouveau',
