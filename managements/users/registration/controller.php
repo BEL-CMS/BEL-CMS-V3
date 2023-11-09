@@ -10,6 +10,7 @@
  */
 
 use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -29,11 +30,9 @@ class Registration extends AdminPages
 		$this->render('index');
 	}
 
-	public function edit ($id)
+	public function edit ()
 	{
-		$data['user']   = current($this->models->getAllUsers($this->id));
-		$data['profil'] = current($this->models->getAllUsersProfils($this->id));
-		$data['social'] = current($this->models->getAllUsersSocial($this->id));
+		$data['user'] = User::getInfosUserAll($this->id);
 		$this->set($data);
 		$this->render('edition');
 	}
@@ -50,41 +49,36 @@ class Registration extends AdminPages
 
 	public function sendPrivate ($id = null)
 	{
-		if ($id !== null && is_numeric($id)) {
-			$_POST['id'] = (int) $id;
-			$return = $this->models->sendPrivate($_POST);
-			$this->error(get_class($this), $return['text'], $return['type']);
-		} else {
-			$this->error(get_class($this), 'No is valid', 'error');
-		}
-		$this->redirect('/registration?&users&management', 2);
+		$return = $this->models->sendPrivate($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('registration/?management&option=users', 2);
 	}
 
 	public function sendMainGroup ()
 	{
 		$return = $this->models->sendMainGroup($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/registration?&users&management', 2);
+		$this->redirect('registration/?management&option=users', 2);
 	}
 
 	public function sendSecondGroup ()
 	{
 		$return = $this->models->sendSecondGroup($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/registration?&users&management', 2);
+		$this->redirect('registration/?management&option=users', 2);
 	}
 
 	public function sendSocial ()
 	{
 		$return = $this->models->sendSocial($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/registration?&users&management', 2);
+		$this->redirect('registration/?management&option=users', 2);
 	}
 
 	public function sendInfoPublic ()
 	{
 		$return = $this->models->sendInfoPublic($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/registration?&users&management', 2);
+		$this->redirect('registration/?management&option=users', 2);
 	}
 }

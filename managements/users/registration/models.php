@@ -11,6 +11,7 @@
 
 use BelCMS\PDO\BDD;
 use BelCMS\User\User;
+use BelCMS\Core\Secure;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -69,40 +70,40 @@ final class ModelsUsers
 		$sql = New BDD;
 		$sql->table('TABLE_USERS');
 		$sql->where(array('name' => 'hash_key', 'value' => $data['hash_key']));
-		$insert['email'] = Secure::isMail($data['email']);
-		$sql->insert($insert);
-		$sql->update();
+		$insert['mail'] = Secure::isMail($data['mail']);
+		$sql->update($insert);
 		$return = array('type' => 'success', 'text' => 'le e-mail privé à été changé', 'title' => 'Paramètre privé');
 		return $return;
 	}
 
 	public function sendMainGroup ($data = null)
 	{
-		$update['main_groups'] = (int) $data['main'];
+		$update['user_group'] = (int) $data['main'];
 		$sql = New BDD;
-		$sql->table('TABLE_USERS');
+		$sql->table('TABLE_USERS_GROUPS');
 		$sql->where(array('name' => 'hash_key', 'value' => $data['hash_key']));
-		$sql->insert($update);
-		$sql->update();
+		$sql->update($update);
 		$return = array('type' => 'success', 'text' => 'le groupe principal à été changer', 'title' => 'Groupe primaire');
 		return $return;
 	}
 
 	public function sendSecondGroup ($data = null)
 	{
-		$update['groups'] = null;
+		$update['user_groups'] = null;
 		if (!empty($data)) {
 			foreach ($data['second'] as $key => $value) {
-				$update['groups'] .= $value.'|';
+				$update['user_groups'] .= $value.'|';
 			}
 		}
-		$update['groups'] .= 2; // membres obligatoire
+
+		if (!strpos($update['user_groups'], 2)) {
+			$update['user_groups'] .= 2; // membres obligatoire
+		}
 
 		$sql = New BDD;
-		$sql->table('TABLE_USERS');
+		$sql->table('TABLE_USERS_GROUPS');
 		$sql->where(array('name' => 'hash_key', 'value' => $data['hash_key']));
-		$sql->insert($update);
-		$sql->update();
+		$sql->update($update);
 		$return = array('type' => 'success', 'text' => 'les groupes secondaire ont été changer', 'title' => 'Groupe seconaire');
 		return $return;
 	}
@@ -112,9 +113,8 @@ final class ModelsUsers
 		if ($data != null) {
 			$update = New BDD();
 			$update->table('TABLE_USERS_SOCIAL');
-			$update->insert($data);
 			$update->where(array('name' => 'hash_key', 'value' => $data['hash_key']));
-			$update->update();
+			$update->update($data);
 			$returnSql = $update->data;
 			$resultsCount = $returnSql;
 
@@ -136,9 +136,8 @@ final class ModelsUsers
 		if ($data && is_array($data)) {
 			$update = New BDD();
 			$update->table('TABLE_USERS_PROFILS');
-			$update->insert($data);
 			$update->where(array('name' => 'hash_key', 'value' => $data['hash_key']));
-			$update->update();
+			$update->update($data);
 			$returnSql = $update->data;
 			$resultsCount = $returnSql;
 

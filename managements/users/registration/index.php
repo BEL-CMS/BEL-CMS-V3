@@ -46,7 +46,7 @@ endif;
 								<td><?=$v->page->last_visit;?></td>
 								<td><?=$v->profils->date_registration;?></td>
 								<td>
-									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/registration/edit/<?=$k?>?management&option=users'">
+									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/registration/edit/<?=$v->user->hash_key?>?management&option=users'">
 										<i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
 									<?php
 									if ($k != 1 and $v->user->hash_key == $_SESSION['USER']->user->hash_key):
