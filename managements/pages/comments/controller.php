@@ -16,13 +16,12 @@ endif;
 
 class Comments extends AdminPages
 {
-	var $admin  = true; // Admin suprême uniquement (Groupe 1);
+	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true;
-	var $models = 'ModelsComments';
+	var $bdd    = 'ModelsComments';
 
 	public function index ()
 	{
-
 		$var = $this->models->getAllComments();
 		if (!empty($var)):
 			$data['comments'] = $var;

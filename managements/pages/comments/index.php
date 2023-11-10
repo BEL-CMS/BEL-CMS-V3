@@ -9,70 +9,85 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\User\User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title"><?=COMMENTS;?></h3>
-	</div>
-	<div class="card-body">
-		<table class="table DataTableBelCMS">
-			<thead>
-				<tr>
-					<th><?=ID;?></th>
-					<th><?=PAGE;?></th>
-					<th><?=SUB_PAGE;?></th>
-					<th><?=PSEUDO;?></th>
-					<th><?=DATE;?></th>
-					<th><?=OPTIONS;?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				if (!empty($comments)):
-					foreach ($comments as $k => $v):
-					?>
-					<tr>
-						<td><?=$v->id;?></td>
-						<td><?=$v->page;?></td>
-						<td><?=$v->page_sub;?></td>
-						<td><?=Users::hashkeyToUsernameAvatar($v->hash_key)?></td>
-						<td><?=$v->date_com;?></td>
-						<td>
-							<a href="/comments/edit/<?=$v->id?>?management&option=pages" class="btn btn btn-primary btn-sm mb-1"><?=EDIT;?></a>
-							<a href="#" data-toggle="modal" data-target="#modal_<?=$v->id?>" class="btn btn btn-danger btn-sm mb-1"><?=DELETE;?></a>
-							<div class="modal fade" id="modal_<?=$v->id?>" tabindex="-1" role="dialog" aria-labelledby="DownloadsModalLabel">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-										<h4 class="modal-title" id="DownloadsModalLabel"><?=$v->page?></h4>
-										</div>
-										<div class="modal-body"><?=CONFIRM_DELETE;?> <?=$v->page?></div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal"><?=CLOSE;?></button>
-											<button onclick="window.location.href='/comments/del/<?=$v->id?>?management&option=pages'" type="button" class="btn btn-primary"><?=DELETE;?></button>
+<div class="flex flex-col gap-6">
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title"><?=constant('COMMENTS');?></h4>
+			</div>
+		</div>
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
+						<thead class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">#<?=constant('ID');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('PAGE');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('SUB_PAGE');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('PSEUDO');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('DATE');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php
+						if (!empty($comments)):
+							foreach ($comments as $k => $v):
+								$user = User::getInfosUserAll($v->hash_key);
+							?>
+							<tr>
+								<td><?=$v->id;?></td>
+								<td><?=$v->page;?></td>
+								<td><?=$v->page_sub;?></td>
+								<td><?=$user->user->username;?></td>
+								<td><?=$v->date_com;?></td>
+								<td>
+									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/comments/edit/<?=$v->id?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
+									<button type="button" data-fc-target="delete-modal_<?=$v->id?>" data-fc-type="modal" class="btn bg-danger btn-sm text-white"><i class="mgc_close_line text-base me-4"></i><?=constant('DELETE');?></button>
+									<div id="delete-modal_<?=$v->id?>" class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden"> 
+										<div class="fc-modal-open:opacity-100 duration-500 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto flex flex-col bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
+											<div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
+												<h3 class="font-medium text-gray-800 dark:text-white text-lg"><?=$user->user->username?></h3>
+												<button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
+														data-fc-dismiss type="button">
+													<span class="material-symbols-rounded">close</span>
+												</button>
+											</div>
+											<div class="px-4 py-8 overflow-y-auto">
+												<p class="text-gray-800 dark:text-gray-200">
+													<?=constant('DEL_CONFIRM');?> <?=constant('OF2');?> <?=constant('COMMENT');?> : <?=$v->id?>
+												</p>
+											</div>
+											<div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
+												<button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button"><?=constant('CLOSE');?></button>
+												<a class="btn bg-primary text-white" onclick="window.location.href='/comments/del/<?=$v->id?>?management&option=pages'"><?=constant('DELETE');?></a>
+											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<?php	
-					endforeach;
-				else:
-					?>
-					<tr>
-						<td>Aucune données en BDD</td>
-					</tr>
-					<?php
-				endif;
-					?>
-				</tbody>
-			</tbody>
-		</table>
+								</td>
+							</tr>
+							<?php	
+							endforeach;
+						else:
+							?>
+							<tr>
+								<td>Aucune données en BDD</td>
+							</tr>
+							<?php
+						endif;
+							?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

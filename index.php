@@ -22,7 +22,11 @@ date_default_timezone_set('Europe/Brussels');
 if(!isset($_SESSION)) {
 	session_start();
 }
-$_SESSION['TIME_START']     = explode(' ', microtime())[0] + explode(' ', microtime())[1];
+function getmicrotime(){
+	list($usec, $sec) = explode(" ",microtime());
+	return ((float)$usec + (float)$sec);
+}
+$_SESSION['TIME_START']     = getmicrotime();
 $_SESSION['CMS_DEBUG']      = true; /* a mettre en false pour un site en ligne */
 $_SESSION['CONFIG_CMS']     = array();
 $_SESSION['NB_REQUEST_SQL'] = 0;
