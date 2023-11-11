@@ -202,6 +202,10 @@ class Templates
 			}
 		}
 
+		if (is_file(ROOT.DS.'pages'.DS.strtolower($var).DS.'js'.DS.'javascripts.js')) {
+			$files[] = 'pages/'.strtolower($var).'/js/javascripts.js';
+		}
+
 		foreach ($files as $v) {
 			$return .= '	<script type="text/javascript" src="'.$v.'"></script>'.PHP_EOL;
 		}

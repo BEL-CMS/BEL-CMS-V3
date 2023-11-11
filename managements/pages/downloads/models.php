@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -92,23 +95,22 @@ final class ModelsDownloads
 			$sql = New BDD();
 			$sql->table('TABLE_DOWNLOADS_CAT');
 			$sql->insert($send);
-			$sql->insert();
 			// SQL RETURN NB INSERT
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_NEWCAT_SUCCESS
+					'text' => constant('SEND_NEWCAT_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_NEWCAT_ERROR
+					'text' => constant('SEND_NEWCAT_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 

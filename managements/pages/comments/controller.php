@@ -32,9 +32,9 @@ class Comments extends AdminPages
 		$this->render('index');
 	}
 
-	public function edit ($id)
+	public function edit ()
 	{
-		$data['comments'] = $this->models->getComment($id);
+		$data['comments'] = $this->models->getComment($this->id);
 		$this->set($data);
 		$this->render('edit');
 	}

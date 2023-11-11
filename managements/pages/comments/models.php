@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
 use BelCMS\PDO\BDD;
 
 if (!defined('CHECK_INDEX')):
@@ -63,18 +64,18 @@ final class ModelsComments
 			if ($sql->rowCount == 1):
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_EDIT_SUCCESS
+					'text' => constant('SEND_EDIT_SUCCESS')
 				);
 			else:
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_EDIT_ERROR
+					'text' => constant('SEND_EDIT_ERROR')
 				);
 			endif;
 		else:
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_ID
+				'text' => constant('ERROR_ID')
 			);			
 		endif;
 		return $return;
@@ -96,18 +97,18 @@ final class ModelsComments
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_SUCCESS
+					'text' => constant('DEL_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_ERROR
+					'text' => constant('DEL_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
