@@ -134,12 +134,12 @@ final class ModelsDownloads
 		if ($sql->rowCount == 1) {
 			$return = array(
 				'type' => 'success',
-				'text' => SEND_EDITCAT_SUCCESS
+				'text' => constant('SEND_EDITCAT_SUCCESS')
 			);
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => SEND_EDIT_ERROR
+				'text' => constant('SEND_EDIT_ERROR')
 			);
 		}
 
@@ -160,18 +160,18 @@ final class ModelsDownloads
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_CAT_SUCCESS
+					'text' => constant('DEL_CAT_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_CAT_ERROR
+					'text' => constant('DEL_CAT_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -180,8 +180,11 @@ final class ModelsDownloads
 	public function sendparameter($data = null)
 	{
 		if ($data !== false) {
+			$data['MAX_DL']       = (int) $data['MAX_DL'];
+			$opt                  = array('MAX_DL' => $data['MAX_DL']);
 			$data['admin']        = isset($data['admin']) ? $data['admin'] : array(1);
 			$data['groups']       = isset($data['groups']) ? $data['groups'] : array(1);
+			$upd['config']        = Common::transformOpt($opt, true);
 			$upd['active']        = isset($data['active']) ? 1 : 0;
 			$upd['access_admin']  = implode("|", $data['admin']);
 			$upd['access_groups'] = implode("|", $data['groups']);
@@ -189,26 +192,45 @@ final class ModelsDownloads
 			$sql = New BDD();
 			$sql->table('TABLE_PAGES_CONFIG');
 			$sql->where(array('name' => 'name', 'value' => 'downloads'));
-			$sql->insert($upd);
-			$sql->update();
+			$sql->update($upd);
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_DL_PARAM_SUCCESS
+					'text' => constant('EDIT_DL_PARAM_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_DL_PARAM_ERROR
+					'text' => constant('EDIT_DL_PARAM_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
+	}
+
+	public function sendedit ($data)
+	{
+		$update['name']        = Common::SecureRequest($data['name']);
+		$update['description'] = Common::VarSecure($data['description'], 'html');
+		$update['idcat']       = (int) $data['idcat'];
+		$id['id']              = (int) $data['id'];
+
+		$sql = New BDD();
+		$sql->table('TABLE_DOWNLOADS');
+		$sql->where(array('name' => 'id', 'value' => $id['id']));
+		$sql->update($update);
+
+		$return = array(
+			'type' => 'success',
+			'text' => constant('EDIT_FILE_SUCCESS')
+		);
+		return $return;
+
 	}
 
 	public function sendadd ($data)
@@ -217,7 +239,7 @@ final class ModelsDownloads
 		$insert['description'] = Common::VarSecure($data['description'], 'html');
 		$insert['idcat']       = (int) $data['idcat'];
 		$insert['size']        = filesize($_FILES['download']['tmp_name']);
-		$insert['uploader']    = $_SESSION['USER']['HASH_KEY'];
+		$insert['uploader']    = $_SESSION['USER']->user->hash_key;
 		$insert['ext']         = substr($_FILES['download']['name'], -3);
 		$insert['view']        = 0;
 		$insert['dls']         = 0;
@@ -225,8 +247,8 @@ final class ModelsDownloads
 
 		if (isset($_FILES['screen'])) {
 			$screen = Common::Upload('screen', 'uploads/downloads'.DS.'screen', array('.png', '.gif', '.jpg', '.jpeg'));
-			if ($screen = UPLOAD_FILE_SUCCESS) {
-				$insert['screen'] = 'uploads'.DS.'uploads/downloads'.DS.'screen'.DS.$_FILES['screen']['name'];
+			if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
+				$insert['screen'] = 'uploads/downloads/screen/'.$_FILES['screen']['name'];
 			}
 		} else {
 			$insert['screen'] = '';
@@ -252,7 +274,7 @@ final class ModelsDownloads
 					'.rtf',
 					'.bz2'
 				));
-				$insert['download'] = 'uploads'.DS.'downloads'.DS.$_FILES['download']['name'];
+				$insert['download'] = 'uploads/downloads/'.$_FILES['download']['name'];
 		endif;
 
 		$sql = New BDD();
@@ -262,7 +284,7 @@ final class ModelsDownloads
 
 		$return = array(
 			'type' => 'success',
-			'text' => ADD_FILE_SUCCESS
+			'text' => constant('ADD_FILE_SUCCESS')
 		);
 		return $return;
  	}
@@ -281,18 +303,18 @@ final class ModelsDownloads
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_FILE_SUCCESS
+					'text' => constant('DEL_FILE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_FILE_ERROR
+					'text' => constant('DEL_FILE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;

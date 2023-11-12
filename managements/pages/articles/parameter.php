@@ -42,7 +42,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 
 			<div class="card">
 				<div class="card-header">
-					<h4>Accès aux Administrateurs</h4>
+					<h4><?=constant('ACCESS_TO_ADMIN');?></h4>
 				</div>
 				<div class="p-6">
 					<?php
@@ -64,7 +64,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 
 			<div class="card">
 				<div class="card-header">
-					<h4>Accès aux groupes</h4>
+					<h4><?=constant('ACCESS_TO_GROUPS');?></h4>
 				</div>
 				<div class="p-6">
 					<?php
@@ -85,7 +85,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 					?>
 				</div>
 			</div>
-			<button type="submit" class="btn bg-primary text-white">Enregister</button>
+			<button type="submit" class="btn bg-primary text-white"><?=constant('TO_REGISTER');?></button>
 		</div>
 	</div>
 </form>

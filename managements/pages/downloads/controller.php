@@ -55,7 +55,7 @@ class Downloads extends AdminPages
 		$countCat = count($cat);
 		if ($countCat == 0):
 			$this->error(get_class($this), 'Une catégorie est obligatoire', 'warning');
-			$this->redirect('/downloads/addcat?management&pages', 2);
+			$this->redirect('/downloads?management&option=pages', 2);
 
 		else:
 			$d['data'] = $this->models->getDL($this->id);
@@ -65,11 +65,18 @@ class Downloads extends AdminPages
 		endif;
 	}
 
+	public function sendedit ()
+	{
+		$return = $this->models->sendedit ($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('/downloads?management&option=pages', 2);
+	}
+
 	public function sendadd ()
 	{
 		$return = $this->models->sendadd ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/downloads?management&pages', 2);
+		$this->redirect('/downloads?management&option=pages', 2);
 	}
 
 	public function del ($id)
@@ -77,7 +84,7 @@ class Downloads extends AdminPages
 		$id = (int) $this->id;
 		$return = $this->models->del($id);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/downloads?management&pages', 2);
+		$this->redirect('/downloads?management&option=pages', 2);
 	}
 
 	public function cat ()
@@ -145,7 +152,7 @@ class Downloads extends AdminPages
 	{
 		$return = $this->models->sendparameter($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/downloads?management&pages', 2);
+		$this->redirect('/downloads?management&option=pages', 2);
 	}
 
 }

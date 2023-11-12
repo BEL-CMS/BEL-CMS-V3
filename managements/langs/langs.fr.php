@@ -24,4 +24,7 @@ Common::constant(array(
 	'ADD_DOWNLOADS'    => 'Ajouté un téléchargement',
 	'CONFIRM_DELETE'   => 'Confirmer la suppression : ',
 	'DEL_CONFIRM'      => 'Confirmer la suppression',
+	'ACCESS_TO_ADMIN'  => 'Accès aux administrateurs',
+	'ACCESS_TO_GROUPS' => 'Accès aux groupes',
+	'TO_REGISTER'      => 'Enregistrer',
 ));

@@ -39,6 +39,11 @@ endif;
 		$vr     = empty($a->social->viber)     ? '' : 'class="active"';
 		$tms    = empty($a->social->teams_ms)  ? '' : 'class="active"';
 		$tc     = empty($a->social->twitch)    ? '' : 'class="active"';
+		if (file_exists($avatar)) {
+			$avatar = $avatar;
+		} else {
+			$avatar = constant('DEFAULT_AVATAR');
+		}
 	?>
 	<div class="belcms_grid_4">
 		<div class="belcms_section_members_main_users">

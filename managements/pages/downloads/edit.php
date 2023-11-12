@@ -9,53 +9,61 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12">
+<form action="/downloads/sendedit?management&option=pages" method="post">
+	<div class="flex flex-col gap-6">
 		<div class="card">
 			<div class="card-header">
-				<div class="card-title"><?=DOWNLOADS?> - Catégories - Edition</div>
+				<div class="flex justify-between items-center">
+					<h4 class="card-title"><?=constant('DOWNLOADS');?></h4>
+				</div>
 			</div>
-			<div class="card_body">
-				<form action="/downloads/sendadd?management&pages" enctype="multipart/form-data" method="post" class="form-horizontal">
-					<div style="margin-bottom: 0 !important;" class="card-alert alert alert-primary mb-0"><?=NAME?></div>
-					<div class="card-body">
-						<input name="name" type="text" class="form-control" id="input-Default" required="required" value="<?=$data->name?>">
+			<div class="p-6">
+				<div class="overflow-x-auto">
+				<div class="mt-2 mb-2">
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
+						<input name="name" type="text" class="form-input" value="<?=$data->name?>" required="required">
 					</div>
-					<div style="margin-bottom: 0 !important;" class="card-alert alert alert-primary mb-0"><?=TEXT?></div>
-					<div class="card-body">
+					<div class="mt-2 mb-2">
+					<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TEXT');?></label>
 						<textarea class="bel_cms_textarea_full" name="description"><?=$data->description?></textarea>
 					</div>
-					<div style="margin-bottom: 0 !important;" class="card-alert alert alert-primary mb-0"><?=CATEGORY?></div>
-					<div class="card-body">
-						<select name="idcat" class="select2_single form-control">
+					<div class="mt-2 mb-2">
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('CATEGORY');?></label>
+						<select name="idcat" class="form-select">
 						<?php
 						foreach ($cat as $a => $b):
 							$checked = $b->id == $data->idcat ? 'checked="checked"' : '';
-							?>
+						?>
 							<option value="<?=$b->id?>" <?=$checked?>><?=$b->name?></option>
-							<?php
-						endforeach;
+						<?php
+							endforeach;
 						?>
 						</select>
 					</div>
-					<div style="margin-bottom: 0 !important;" class="card-alert alert alert-primary mb-0">Fichier (<?=Common::ConvertSize(Common::GetMaximumFileUploadSize())?> max)</div>
-					<div class="card-body">
-						<p><a href="/<?=$data->download?>"><?=$data->download?></a></p>
+					<div class="mt-2 mb-2">
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('DOWNLOAD');?></label>
+						<input value="<?=$data->download?>" type="text" class="form-input" disabled>
 					</div>
-					<div style="margin-bottom: 0 !important;" class="card-alert alert alert-primary mb-0">Image</div>
-					<div class="card-body">
+					<div class="mt-2 mb-2">
+					<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('SCREEN');?></label>
+						<input value="<?=$data->screen?>" type="text" class="form-input" disabled>
+					</div>
+					<div class="mt-2 mb-2">
 						<p><img src="/<?=$data->screen?>" alt='no_screen' style="max-width: 100px;max-height: 100px;"></p>
 					</div>
-					<div class="card-footer">
-						<button type="submit" class="btn btn-primary"><?=EDIT?></button>
-					</div>
-				</form>
+				</div>
+			</div>
+			<div class="text-gray-800 text-sm font-medium inline-block mt-2 p-2">
+				<input type="hidden" name="id" value="<?=$data->id;?>">
+				<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i><?=constant('EDIT')?></button>
 			</div>
 		</div>
 	</div>
-</div>
+</form>
