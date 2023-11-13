@@ -13,103 +13,79 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
-?>
-<form action="/Forum/sendparameter?management&page=true" method="post" class="form-horizontal">
-	<div class="row">
-		<div class="col-md-2">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Forum : Câtégorie</h3>
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
+	?>
+	<form action="forum/sendparameter?management&option=pages" method="post">
+		<div class="flex flex-col gap-6">
+			<div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+				<div class="card">
+					<div class="card-header">
+						<h4><?=constant('FORUM_ACTIVE');?></h4>
 					</div>
-				</div>
-			</div>
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group">
-						<div class="icheck-primary d-inline"></div>
-						<input data-bootstrap-switch value="1" type="checkbox" <?=$config->active == 1 ? 'checked' : ''?> name="active">
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
-				<div class="form-group">
-					<label for="input-NB_BLOG" class="col-sm-12 control-label"><?=NB_MSG_FORUM?></label>
-					<div class="col-sm-12">
-						<input id="input-NB_BLOG" name="NB_MSG_FORUM" type="number" class="form-control" type="number" value="<?=$config->config['NB_MSG_FORUM']?>" min="1" max="16">
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-5">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Accès aux Administrateurs</h3>
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
-					</div>
-				</div>
-				<div class="card-body">
-					<?php
-					foreach ($groups as $k => $v):
-						$checked = in_array($v['id'], $config->access_admin) ? 'checked' : '';
-						$checked = $v['id'] == 1 ? 'checked readonly' : $checked;
-					?>
-					<div class="form-group">
-						<div class="icheck-primary d-inline">
-							<input class="col-4" data-bootstrap-switch id="<?=$v['id']?>" name="admin[]" value="<?=$v['id']?>" type="checkbox" style="vertical-align: -moz-middle-with-baseline;" <?=$checked?>>
-							<label class="col-8 control-label" for="<?=$v['id']?>"><?=$k?></label>
+					<div class="p-6">
+						<div>
+							<div class="flex items-center opacity-60">
+								<input class="form-switch" <?=$config->active == 1 ? 'checked' : ''?> name="active" type="checkbox" value="1" role="switch" id="active">
+								<label class="ms-1.5" for="active"><?=constant('FORUM_ACTIVE');?></label>
+							</div>
+							<div>
+								<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2" for="<?=constant('NB_POST')?>">
+								<?=constant('NB_POST')?></label>
+								<input id="input-NB_POST" name="NB_MSG_FORUM" type="number" class="form-control" type="number" value="<?=$config->config['NB_MSG_FORUM']?>" min="1" max="16">
+							</div>
 						</div>
 					</div>
-					<?php
-					endforeach;
-					?>
 				</div>
-			</div>
-		</div>
-		<div class="col-md-5">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Accès aux groupes</h3>
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
+	
+				<div class="card">
+					<div class="card-header">
+						<h4><?=constant('ACCESS_TO_ADMIN');?></h4>
 					</div>
-				</div>
-				<div class="card-body">
-				<?php
-				$visitor = constant('VISITORS');
-				$groups->$visitor = 0;
-				foreach ($groups as $k => $v):
-					$checked = in_array($v['id'], $config->access_groups) ? 'checked' : '';
-					$checked = $v['id'] == 1 ? 'checked readonly' : $checked;
-					?>
-					<div class="form-group">
-						<div class="icheck-primary d-inline">
-							<input class="col-8" data-bootstrap-switch name="groups[]" value="<?=$v['id']?>" type="checkbox" <?=$checked?>>
-							<label class="col-4 control-label" for="<?=$v['id']?>"><?=$k?></label>
+					<div class="p-6">
+						<?php
+						foreach ($groups as $k => $v):
+							$checked = in_array($v['id'], $config->access_admin) ? 'checked' : '';
+							$checked = $v['id'] == 1 ? 'checked readonly' : $checked;
+						?>
+						<div class="mt-2 mb-2">
+							<div class="flex items-center">
+								<input id="<?=$v['id']?>" value="<?=$v['id']?>" type="checkbox" name="admin[]" class="form-switch square text-success" <?=$checked?>>
+								<label for="<?=$v['id']?>" class="ms-2"><?=$k?></label>
+							</div>
 						</div>
+						<?php
+						endforeach;
+						?>
 					</div>
-					<?php
-				endforeach;
-				?>
+				</div>
+	
+				<div class="card">
+					<div class="card-header">
+						<h4><?=constant('ACCESS_TO_GROUPS');?></h4>
+					</div>
+					<div class="p-6">
+						<?php
+						$visitor = constant('VISITORS');
+						$groups->$visitor['id'] = 0;
+						foreach ($groups as $k => $v):
+							$checked = in_array($v['id'], $config->access_groups) ? 'checked' : '';
+							$checked = $v['id'] == 1 ? 'checked readonly' : $checked;
+							?>
+							<div class="mt-2 mb-2">
+								<div class="flex items-center">
+									<input id="<?=$v['id']?>" value="<?=$v['id']?>" type="checkbox" name="groups[]" class="form-switch square text-success" <?=$checked?>>
+									<label for="<?=$v['id']?>" class="ms-2"><?=$k?></label>
+								</div>
+							</div>
+							<?php
+						endforeach;
+						?>
+					</div>
+				</div>
+				<button type="submit" class="btn bg-primary text-white"><?=constant('TO_REGISTER');?></button>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="form-group form-actions">
-			<div class="col-sm-12 col-sm-offset-3">
-				<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> <?=SAVE?></button>
-			</div>
-		</div>	
-	</div>
-</form>
-<?php
+	</form>
+	<?php
 endif;

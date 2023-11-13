@@ -9,6 +9,10 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Config;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -92,7 +96,7 @@ final class ModelsForum
 			$insert['orderby']  = (int) $data['orderby'];
 			$insert['icon']     = Common::VarSecure($data['icon'], '');
 			$insert['id_forum'] = (int) $data['id_forum'];
-			$insert['options']  = 'lock=0';
+			$insert['options']  = 'lock==0';
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_FORUM_THREADS');
@@ -102,18 +106,18 @@ final class ModelsForum
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => NEW_THREADS_SUCCESS
+					'text' => constant('NEW_THREADS_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'alert',
-					'text' => NEW_THREADS_ERROR
+					'text' => constant('NEW_THREADS_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'alert',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -136,7 +140,7 @@ final class ModelsForum
 			if (empty($edit['title'])) {
 				$return = array(
 					'type' => 'success',
-					'text' => ERROR_TITLE_EMPTY
+					'text' => constant('ERROR_TITLE_EMPTY')
 				);
 			} else {
 				// SQL EDIT
@@ -144,25 +148,24 @@ final class ModelsForum
 				$sql = New BDD();
 				$sql->table('TABLE_FORUM_THREADS');
 				$sql->where($where);
-				$sql->insert($edit);
-				$sql->update();
+				$sql->update($edit);
 				// SQL RETURN NB INSERT
 				if ($sql->rowCount == 1) {
 					$return = array(
 						'type' => 'success',
-						'text' => EDIT_THREADS_SUCCESS
+						'text' => constant('EDIT_THREADS_SUCCESS')
 					);
 				} else {
 					$return = array(
 						'type' => 'alert',
-						'text' => EDIT_THREADS_ERROR
+						'text' => constant('EDIT_THREADS_ERROR')
 					);
 				}
 			}
 		} else {
 			$return = array(
 				'type' => 'alert',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -183,18 +186,18 @@ final class ModelsForum
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_THREADS_SUCCESS
+					'text' => constant('DEL_THREADS_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'alert',
-					'text' => DEL_THREADS_ERROR
+					'text' => constant('DEL_THREADS_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'alert',
-				'text' => ERROR_ID_EMPTY_INT
+				'text' => constant('ERROR_ID_EMPTY_INT')
 			);
 		}
 		return $return;
@@ -219,18 +222,18 @@ final class ModelsForum
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => NEW_CAT_SUCCESS
+					'text' => constant('NEW_CAT_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'alert',
-					'text' => NEW_CAT_ERROR
+					'text' => constant('NEW_CAT_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'alert',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -251,18 +254,18 @@ final class ModelsForum
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_CAT_SUCCESS
+					'text' => constant('DEL_CAT_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'alert',
-					'text' => DEL_CAT_ERROR
+					'text' => constant('DEL_CAT_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'alert',
-				'text' => ERROR_ID_EMPTY_INT
+				'text' => constant('ERROR_ID_EMPTY_INT')
 			);
 		}
 		return $return;
@@ -284,24 +287,23 @@ final class ModelsForum
 			$sql = New BDD();
 			$sql->table('TABLE_FORUM');
 			$sql->where($where);
-			$sql->insert($edit);
-			$sql->update();
+			$sql->update($edit);
 			// SQL RETURN NB INSERT
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_CAT_SUCCESS
+					'text' => constant('EDIT_CAT_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_CAT_ERROR
+					'text' => constant('EDIT_CAT_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_ID_EMPTY_INT
+				'text' => constant('ERROR_ID_EMPTY_INT')
 			);
 		}
 		return $return;
@@ -309,7 +311,7 @@ final class ModelsForum
 
 	public function SecureCat($id)
 	{
-		$userGroups = Users::getGroups($_SESSION['USER']['HASH_KEY']);
+		$userGroups = $_SESSION['USER']->groups->all_groups;
 		if (in_array(1, $userGroups)) {
 			return true;
 		}
@@ -320,7 +322,7 @@ final class ModelsForum
 		$sql->queryOne();
 		if ($sql->data) {
 			$sql->data->access_admin  = explode('|', $sql->data->access_admin);
-			$myGroup = Users::getGroups($_SESSION['USER']['HASH_KEY']);
+			$myGroup = $_SESSION['USER']->groups->all_groups;
 			foreach ($sql->data->access_admin as $k => $v) {
 				if (in_array($v, $myGroup)) {
 					return true;
@@ -369,10 +371,10 @@ final class ModelsForum
 		$update->insert(array('content' => $options));
 		$update->update();
 		if ($update->rowCount == 1) {
-			$return['msg']  = EDIT_SUCCESS;
+			$return['msg']  = constant('EDIT_SUCCESS');
 			$return['type'] = 'success';
 		} else {
-			$return['msg']  = EDIT_FALSE;
+			$return['msg']  = constant('EDIT_FALSE');
 			$return['type'] = 'error';
 		}
 		return $return;	
@@ -393,18 +395,18 @@ final class ModelsForum
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => SUPP_SUCCESS
+					'text' => constant('SUPP_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'alert',
-					'text' => SUPP_FALSE
+					'text' => constant('SUPP_FALSE')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'alert',
-				'text' => ERROR_ID_EMPTY_INT
+				'text' => constant('ERROR_ID_EMPTY_INT')
 			);
 		}
 		return $return;
@@ -425,23 +427,22 @@ final class ModelsForum
 			$sql = New BDD();
 			$sql->table('TABLE_PAGES_CONFIG');
 			$sql->where(array('name' => 'name', 'value' => 'forum'));
-			$sql->insert($upd);
-			$sql->update();
+			$sql->update($upd);
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_FORUM_PARAM_SUCCESS
+					'text' => constant('EDIT_FORUM_PARAM_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_FORUM_PARAM_ERROR
+					'text' => constant('EDIT_FORUM_PARAM_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;

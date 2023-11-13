@@ -41,4 +41,5 @@ Common::constant(array(
 	'DOWNLOAD_ACTIVE'       => 'Téléchargement actif',
 	'DOWNLOAD_PAGE_ACTIVE'  => 'Activer la page téléchargements',
 	'NB_DL'                 => 'Nombre de téléchargement',
+	
 ));

@@ -14,103 +14,78 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<form action="/Forum/send?management&pages" method="post">
-	<div class="row">
-		<div class="col-md-4">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Ajouter une Catégories</h3>
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
-					</div>
+<form action="Forum/send?management&option=pages" method="post">
+	<div class="grid lg:grid-cols-3 gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title"><?=constant('ADD');?> - <?=constant('CAT');?></h4>
 				</div>
-				<div class="card-body">
-					<div class="form-group">
-						<label for="input-title" class="control-label"><?=TITLE?></label>
-						<input name="title" placeholder="Titre de la catégorie" type="text" class="form-control" id="input-title" required="required">
+			</div>
+			<div class="p-6">
+				<div class="overflow-x-auto">
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TITLE')?></label>
+						<input name="title" placeholder="Titre de la catégorie" type="text" class="form-input" required="required">
 					</div>
-					<div class="form-group">
-						<label for="input-subtitle" class="control-label"><?=SUBTITLE?></label>
-						<input name="subtitle" placeholder="Sous-titre de la catégorie" type="text" class="form-control" id="input-subtitle">
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('SUBTITLE')?></label>
+						<input name="subtitle" placeholder="Sous-titre de la catégorie" type="text" class="form-input">
 					</div>
-					<div class="form-group">
-						<label for="input-orderby" class="control-label"><?=ORDER?></label>
-						<input name="orderby" placeholder="1" min="1" type="number" class="form-control" id="input-orderby">
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('ORDER')?></label>
+						<input name="orderby" placeholder="1" min="1" type="number" class="form-input">
 					</div>
-					<div class="form-group">
-						<div class="icheck-primary d-inline"></div>
-						<input data-bootstrap-switch value="1" type="checkbox" name="activate">
-					</div>
+					<div class="flex items-center mt-2 mb-2">
+                        <input type="checkbox" value="1" name="activate" id="subcat" class="form-switch text-secondary" checked="checked">
+                        <label for="subcat" class="ms-1.5"><?=constant('FORUM_SUB_CAT_ACTIVE');?></label>
+                    </div>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Accès aux Administrateurs</h3>
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
+		<div class="card">
+			<div class="card-header">
+				<h4><?=constant('ACCESS_TO_ADMIN');?></h4>
+			</div>
+			<div class="p-6">
+				<?php
+				foreach ($groups as $k => $v):
+					$checked = $v['id'] == 1 ? 'checked readonly' : $checked;
+				?>
+				<div class="mt-2 mb-2">
+					<div class="flex items-center">
+						<input id="<?=$v['id']?>" value="<?=$v['id']?>" type="checkbox" name="admin[]" class="form-switch square text-success" <?=$checked?>>
+						<label for="<?=$v['id']?>" class="ms-2"><?=$k?></label>
 					</div>
 				</div>
-				<div class="card-body">
-					<?php
-					foreach ($groups as $k => $v):
-						$checked = $v['id'] == 1 ? 'checked readonly' : '';
-					?>
-					<div class="form-group">
-						<div class="icheck-primary d-inline">
-							<input data-bootstrap-switch id="<?=$v['id']?>" name="access_admin[]" value="<?=$v['id']?>" type="checkbox" <?=$checked?>>
-							<label class="control-label" for="<?=$v['id']?>"><?=$k?></label>
-						</div>
-					</div>
-					<?php
-					endforeach;
-					?>
-				</div>
+				<?php
+				endforeach;
+				?>
 			</div>
 		</div>
-		<div class="col-md-4">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Accès aux groupes</h3>
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
-					</div>
-				</div>
-				<div class="card-body">
+		<div class="card">
+			<div class="card-header">
+				<h4><?=constant('ACCESS_TO_GROUPS');?></h4>
+			</div>
+			<div class="p-6">
 				<?php
 				$visitor = constant('VISITORS');
-				$groups->$visitor = 0;
+				$groups->$visitor['id'] = 0;
 				foreach ($groups as $k => $v):
-					$checked = $v['id'] == 1 ? 'checked readonly' : '';
+					$checked = $v['id'] == 1 ? 'checked readonly' : $checked;
 					?>
-					<div class="form-group">
-						<div class="icheck-primary d-inline">
-							<input data-bootstrap-switch name="access_groups[]" value="<?=$v['id']?>" type="checkbox" <?=$checked?>>
-							<label control-label" for="<?=$v['id']?>"><?=$k?></label>
+					<div class="mt-2 mb-2">
+						<div class="flex items-center">
+							<input id="<?=$v['id']?>" value="<?=$v['id']?>" type="checkbox" name="groups[]" class="form-switch square text-success" <?=$checked?>>
+							<label for="<?=$v['id']?>" class="ms-2"><?=$k?></label>
 						</div>
 					</div>
 					<?php
 				endforeach;
 				?>
-				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="form-group form-actions">
-					<div class="col-sm-9 col-sm-offset-3">
-						<input type="hidden" name="send" value="addcat">
-						<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> <?=SAVE?></button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<input type="hidden" name="send" value="addcat">
+		<button type="submit" class="btn bg-primary text-white"><?=constant('SAVE');?></button>
 	</div>
 </form>
