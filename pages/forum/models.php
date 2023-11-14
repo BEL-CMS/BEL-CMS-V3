@@ -71,7 +71,6 @@ final class Forum
 			}
 		}
 
-
 		return $return;
 	}
 	#####################################
@@ -152,7 +151,7 @@ final class Forum
 		$return = $sql->data;
 		return $return;
 	}
-	public function CountPosts ()
+	public function CountPosts ($id)
 	{
 		$id = (int) $id;
 		$sql = New BDD();
@@ -287,7 +286,7 @@ final class Forum
 		$update->where($where);
 		$text = $data['content'];
 		$update->update(array('content' => $text));
-		if ($update->rowCount == 1) {
+		if ($update->rowCount == true) {
 			$return['msg']  = constant('EDIT_SUCCESS');
 			$return['type'] = 'success';
 		} else {
@@ -309,7 +308,7 @@ final class Forum
 		$update->where($where);
 		$text = $data['content'];
 		$update->update(array('content' => $text));
-		if ($update->rowCount == 1) {
+		if ($update->rowCount == true) {
 			$return['msg']  = constant('EDIT_SUCCESS');
 			$return['type'] = 'success';
 		} else {
@@ -350,22 +349,10 @@ final class Forum
 				// Fait corrépondre leurs ID avec leur avatar
 				$return[$k]->avatar       = $author->profils->avatar;
 				// Fait corrépondre leurs ID avec leur date d'inscription
-				$return[$k]->registration = (isset($author->date_registration)) ? Common::TransformDate($author->date_registration) : '';
+				$return[$k]->registration = $author->profils->date_registration;
 				$return[$k]->group        = $author->groups->user_group;
 				$return[$k]->authorId     = $v->author;
 				$return[$k]->countPost    = self::nbUserForum($v->author);
-				// Récupère les options et les transformer en Booleen
-				// Les like sont transoformer en (int)
-				$options = explode('|', $v->options);
-				foreach ($options as $k_opt => $v_opt) {
-					$tmp_opt = explode('=', $v_opt);
-					$options[$tmp_opt[0]] = $tmp_opt[1] == 1 ? true : false;
-					if (isset($options['like'])) {
-						$options['like'] = $options['like'] == false ? (int) 0 : $options['like'];
-					}
-					unset($options[$k_opt], $tmp_opt);
-				}
-				$return[$k]->options = $options;
 			}
 		}
 		return $return;
@@ -386,14 +373,11 @@ final class Forum
 			$data = $get->data;
 
 			if ($get->rowCount != 0) {
-				$options = Common::transformOpt($data->options);
-				$options['view'] = (int) $options['view'] + 1;
-				$options = Common::transformOpt($options, true);
-
+				$data->viewpost++;
 				$update = New BDD();
 				$update->table('TABLE_FORUM_POST');
 				$update->where($where);
-				$update->update(array('options' => $options));
+				$update->update(array('viewpost' =>$data->viewpost));
 			}
 		}
 	}
@@ -405,24 +389,12 @@ final class Forum
 		if ($id) {
 			$id = Common::SecureRequest($id);
 			$where = array('name' => 'id', 'value' => $id);
-			# recupere le post
-			$get = New BDD();
-			$get->table('TABLE_FORUM_POST');
-			$get->where($where);
-			$get->queryOne();
-			$data = $get->data;
-
-			$options = Common::transformOpt($data->options);
-			$options['lock'] = (int) 1;
-			$options = Common::transformOpt($options, true);
-
-			# update le post
 			$update = New BDD;
 			$update->table('TABLE_FORUM_POST');
 			$update->where($where);
-			$update->update(array('options' => $options));
+			$update->update(array('lockpost' => 1));
 			# verifie si c'est bien inserer
-			if ($update->rowCount == 1) {
+			if ($update->rowCount === true) {
 				$return['msg']  = constant('LOCK_SUCCESS');
 				$return['type'] = 'success';
 			} else {
@@ -439,26 +411,14 @@ final class Forum
 	public function unlock ($id = false)
 	{
 		if ($id) {
-			$id = (int) $id;
 			$where = array('name' => 'id', 'value' => $id);
-			# recupere le post
-			$get = New BDD();
-			$get->table('TABLE_FORUM_POST');
-			$get->where($where);
-			$get->queryOne();
-			$data = $get->data;
-
-			$options = Common::transformOpt($data->options);
-			$options['lock'] = (int) 0;
-			$options = Common::transformOpt($options, true);
-
 			# update le post
 			$update = New BDD;
 			$update->table('TABLE_FORUM_POST');
 			$update->where($where);
-			$update->update(array('options' => $options));
+			$update->update(array('lockpost' => 0));
 			# verifie si c'est bien inserer
-			if ($update->rowCount == 1) {
+			if ($update->rowCount === true) {
 				$return['msg']  = constant('UNLOCK_SUCCESS');
 				$return['type'] = 'success';
 			} else {
@@ -489,7 +449,7 @@ final class Forum
 			$del->where($where);
 			$del->delete();
 			# verifie si c'est bien supprimer
-			if ($true == 1) {
+			if ($del->rowCount === true) {
 				$return['msg']  = constant('DEL_POST_SUCCESS');
 				$return['type'] = 'success';
 			} else {
@@ -539,14 +499,13 @@ final class Forum
 
 		$insert['content'] = Common::VarSecure($data['info_text']);
 		$insert['id_post'] = (int) $data['id'];
-		$insert['author']  = $_SESSION['USER']['HASH_KEY'];
-		$insert['options'] = 'like=0|report=0';
+		$insert['author']  = $_SESSION['USER']->user->hash_key;
 
 		$BDD = New BDD();
 		$BDD->table('TABLE_FORUM_POSTS');
 		$BDD->insert($insert);
 
-		if ($BDD->rowCount == 1) {
+		if ($BDD->rowCount == true) {
 			self::addPlusPost($insert['id_post']);
 			$return['msg']  = 'Enregistrement de la réponse en cours...'.$upload;
 			$return['type'] = 'success';
@@ -580,8 +539,7 @@ final class Forum
 		$insert['id']         = NULL;
 		$insert['id_threads'] = (int) $id;
 		$insert['title']      = Common::MakeConstant($data['title']);
-		$insert['author']     = $_SESSION['USER']['HASH_KEY'];
-		$insert['options']    = 'lock=0|like=0|report=0|pin=0|view=0|post=0';
+		$insert['author']     = $_SESSION['USER']->user->hash_key;
 		$insert['date_post']  = date("Y-m-d H:i:s");
 		$insert['attachment'] = '';
 		$insert['content']    = Common::VarSecure(trim($data['content']));
@@ -593,7 +551,7 @@ final class Forum
 		$sql->table('TABLE_FORUM_POST');
 		$sql->insert($insert);
 		# verifie si c'est bien inserer
-		if ($sql->rowCount == 1) {
+		if ($sql->rowCount == true) {
 			$return['msg']  = 'Enregistrement du nouveau post en cours...';
 			$return['type'] = 'success';
 		} else {
@@ -618,14 +576,12 @@ final class Forum
 			$get->queryOne();
 			$data = $get->data;
 
-			$options = Common::transformOpt($data->options);
-			$options['post'] = (int) $options['post'] + 1;
-			$options = Common::transformOpt($options, true);
+			$data->viewpost++;
 
 			$update = New BDD();
 			$update->table('TABLE_FORUM_POST');
 			$update->where($where);
-			$update->update(array('options' => $options));
+			$update->update(array('viewpost' => $data->viewpost));
 
 		}
 	}

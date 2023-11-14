@@ -179,7 +179,7 @@ class Templates
 		/* jQuery 3.7.1 */
 		$files[] = 'assets/js/jQuery/jquery-3.7.1.min.js';
 		/* Tinymce */
-		$files[] = 'assets/js/tinymce/tinymce.min.js';
+		$files[] = 'assets/plugins/tinymce/tinymce.min.js';
 		/* FONTAWASOME 6.4.2 ALL */
 		$files[] = 'assets/plugins/fontawesome-6.4.2/js/all.min.js';
 		/* custom css template */
@@ -187,7 +187,7 @@ class Templates
 			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js';
 		}
 		/* FILE GENERAL BEL-CMS */
-		$files[] = 'assets/plugins/js/belcms.core.js';
+		$files[] = 'assets/js/belcms.core.js';
 		/* pages js */
 		$dirPage = constant('DIR_TPL').strtolower($var).DS.'js'.DS.'javascripts.js';
 		if (is_file($dirPage)) {

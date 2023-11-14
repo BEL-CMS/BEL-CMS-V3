@@ -10,7 +10,7 @@
  */
 
 use BelCMS\Requires\Common;
-
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -20,6 +20,9 @@ endif;
 <section id="belcms_forum">
 	<?php
 	foreach ($forum as $value):
+		if (isset($value->last->date_post)) {
+			$value->last->date_post = Common::TransformDate($value->last->date_post, 'MEDIUM', 'NONE');
+		}
 	?>
 	<div class="belcms_forum_main_cat">
 		<div class="belcms_forum_main_cat_title">
@@ -27,11 +30,22 @@ endif;
 		</div>
 		<?php
 		foreach ($value->category as $cat):
+			if (isset($cat->last->date_post)) {
+				$cat->last->date_post = Common::TransformDate($cat->last->date_post, 'MEDIUM', 'NONE');
+			}
+			if (isset($cat->last->author)) {
+				$avatar = User::getInfosUserAll($cat->last->author)->profils->avatar;
+				if (!is_file($avatar)) {
+					$avatar = constant('DEFAULT_AVATAR');
+				}
+			} else {
+				$avatar = constant('DEFAULT_AVATAR');
+			}
 		?>
 		<div class="belcms_forum_main_cat_block">
 			<div class="belcms_forum_main_cat_ico"><i class="<?=$cat->icon;?>"></i></div>
 			<div class="belcms_forum_main_cat_subtitle">
-				<h3><a href="Forum/Threads/<?=Common::MakeConstant($cat->title)?>/<?=$cat->id?>"><?=$cat->title?></a></h3>
+				<h3><a href="Forum/Threads/<?=Common::MakeConstant($cat->title)?>?id=<?=$cat->id?>"><?=$cat->title?></a></h3>
 				<div><?=$value->subtitle;?></div>
 			</div>
 			<div class="belcms_forum_main_cat_subject">
@@ -43,11 +57,11 @@ endif;
 				<div><?=$cat->count;?></div>
 			</div>
 			<div class="belcms_forum_main_cat_avatar">
-				<img src="assets/img/default_avatar.jpg" alt="avatar">
+				<img src="<?=$avatar;?>" alt="avatar">
 			</div>
 			<div class="belcms_forum_main_cat_last">
-				<div>Offre d'emploi Technicien-ne</div>
-				<div>3 Novembre 2023 SARL</div>
+				<div><?=Common::truncate($cat->last->title, 15);?></div>
+				<div><?=Common::truncate($cat->last->date_post, 15);?></div>
 			</div>
 		</div>
 		<?php

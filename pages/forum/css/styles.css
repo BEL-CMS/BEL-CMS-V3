@@ -98,18 +98,25 @@ section#belcms_forum {
 	width: 85px;
 	padding: 15px;
 }
+.belcms_forum_main_cat_last_post {
+	flex-direction: row;
+	width: 200px;
+	padding: 15px;
+	text-align: right;
+}
 .belcms_forum_main_cat_last div,
 .belcms_forum_main_cat_message div,
 .belcms_forum_main_cat_subject div {
 	line-height: 12px;
+	text-align: center;
 }
 .belcms_forum_main_cat_avatar {
 	text-align: center;
 	padding: 7px 0;
 }
 .belcms_forum_main_cat_avatar img {
-	height: 40px;
-	width: 40px;
+	max-height: 50px;
+	width: 50px;
 }
 .belcms_forum_main_cat_last {
 	padding: 15px;
@@ -137,6 +144,9 @@ section#belcms_forum {
 	text-align: center;
 	font-weight: bold;
 }
+.redpost {
+	background-color: #f9cccc !important;
+}
 
 @media only screen and (max-width: 500px) {
 	.belcms_forum_main_cat_avatar {
@@ -158,6 +168,26 @@ section#belcms_forum {
 		display: none;
 	}
 }
+#forum_new {
+	display: flow-root;
+	padding: 15px;
+	width: 100%;
+	margin: 15px 0;
+	line-height: 40px;
+  
+}
+#forum_new h4 {
+	display: block;
+	float: left;
+}
+#forum_new a {
+	display: block;
+	float: right;
+}
+
+
+
+
 #belcms_main {
 }
 #belcms_main .table,

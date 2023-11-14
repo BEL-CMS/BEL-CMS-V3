@@ -17,18 +17,15 @@ endif;
 <section id="bel_cms_forum_newthread">
 	<form action="Forum/Send" method="post" enctype="multipart/form-data">
 		<div class="card">
-			<div class="card-header">
-				<h3><?=NEW_THREAD?></h3>
-			</div>
 			<div class="card-body">
 				<div class="form-group row">
-					<label for="thread" class="col-2 col-form-label"><?=TITLE_POST?></label>
+					<label for="thread" class="col-2 col-form-label"><?=constant('TITLE_POST');?></label>
 					<div class="col-10">
-						<input type="text" required="required" name="title" class="form-control" id="thread" placeholder="<?=ADD_A_TITLE?>">
+						<input type="text" required="required" name="title" class="form-control" id="thread" placeholder="<?=constant('ADD_A_TITLE');?>">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="messagepost" class="col-2 col-form-label"><?=MESSAGE?></label>
+					<label for="messagepost" class="col-2 col-form-label"><?=constant('MESSAGE');?></label>
 					<div class="col-10">
 						<textarea class="bel_cms_textarea_simple" name="content" id="messagepost"></textarea>
 					</div>
@@ -36,8 +33,8 @@ endif;
 			</div>
 			<div class="card-footer">
 				<input type="hidden" name="send" value="NewThread">
-				<input type="hidden" name="id" value="<?=$_SESSION['NEWTHREADS']?>">
-				<input type="submit" class="btn btn-primary btn-lg btn-rounded btn-shadow" value="<?=SUBMIT_THREAD?>">
+				<input type="hidden" name="id" value="<?=$_GET['id'];?>">
+				<input type="submit" class="belcms_btn belcms_bg_black" value="<?=constant('SUBMIT_THREAD');?>">
 			</div>
 		</div>
 	</form>

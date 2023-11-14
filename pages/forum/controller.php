@@ -54,9 +54,9 @@ class Forum extends Pages
 		$this->render('main');
 	}
 
-	public function threads ($title, $id)
+	public function threads ()
 	{
-		$data['id']      = (int) $id;
+		$data['id']      = (int) $this->id;
 		$data['threads'] = $this->models->GetThreadsPost($data['id']);
 		$groupUser       = $_SESSION['USER']->groups->all_groups;
 		$access          = false;
@@ -78,7 +78,6 @@ class Forum extends Pages
 		}
 
 		foreach ($data['threads'] as $k => $v) {
-			$data['threads'][$k]->options = Common::transformOpt($v->options);
 			$last = $this->models->getLastPostsForum($v->id);
 			if (empty($last)) {
 				$data['threads'][$k]->last = $this->models->getLastPostsOriginForum($v->id, $v->id_threads);
@@ -101,21 +100,21 @@ class Forum extends Pages
 		$this->render('threads');
 	}
 
-	public function post ($name = '', $id = '')
+	public function post ()
 	{
-		if (empty($name)) {
+		if (empty($this->subPageName)) {
 			$this->error = true;
 			$this->errorInfos = array('error', 'Page manquante...', 'Forum', false);
 			$this->redirect('Forum', 3);
 			return;
 		}
 		$d = array();
-		$id = (int) $id;
+		$id = (int) $this->id;
 		$_SESSION['REPLYPOST']   = $id;
 		$_SESSION['FORUM']       = uniqid('forum_');
 		$_SESSION['FORUM_CHECK'] = $_SESSION['FORUM'];
 		$this->models->addView($id);
-		$d['post'] = $this->models->GetPosts($name, $id);
+		$d['post'] = $this->models->GetPosts($this->subPageName, $id);
 		if (count($d['post']) == 0) {
 			$this->error = true;
 			$this->errorInfos = array('error', 'Page manquante...', 'Forum', false);
@@ -134,11 +133,11 @@ class Forum extends Pages
 		$this->errorInfos = array($forum["type"], $forum["msg"], 'Forum', false);
 	}
 
-	public function EditPost ($id = null)
+	public function EditPost ()
 	{
-		$id     = Common::SecureRequest($id);
+		$id     = Common::SecureRequest($this->id);
 		$d['d'] = $this->models->editpost($id);
-		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $d['d']->author == $_SESSION['USER']['HASH_KEY']) {
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $d['d']->author == $_SESSION['USER']->user->hash_key) {
 			$this->set($d);
 			$this->render('editpost');
 		} else {
@@ -147,11 +146,11 @@ class Forum extends Pages
 		}
 	}
 
-	public function EditPostPrimary ($id = null)
+	public function EditPostPrimary ()
 	{
-		$id     = Common::SecureRequest($id);
+		$id     = Common::SecureRequest($this->id);
 		$d['d'] = $this->models->editpostprimary($id);
-		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $d['d']->author == $_SESSION['USER']['HASH_KEY']) {
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $d['d']->author == $_SESSION['USER']->user->hash_key) {
 			$this->set($d);
 			$this->render('editpostprimary');			
 		} else {
@@ -162,7 +161,7 @@ class Forum extends Pages
 
 	public function SendEditPost ()
 	{
-		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $_POST['author'] == $_SESSION['USER']['HASH_KEY']) {
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $_POST['author'] == $_SESSION['USER']->user->hash_key) {
 		$return = $this->models->sendEditPost($_POST);
 		$this->error = true;
 		$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
@@ -175,7 +174,7 @@ class Forum extends Pages
 
 	public function SendEditPostPrimary ()
 	{
-		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $_POST['author'] == $_SESSION['USER']['HASH_KEY']) {
+		if (in_array(1, $_SESSION['USER']->groups->all_groups) or $_POST['author'] == $_SESSION['USER']->user->hash_key) {
 			$return = $this->models->SendEditPostPrimary($_POST);
 			$this->error = true;
 			$this->errorInfos = array('error', $return['msg'], 'Forum', false);
@@ -205,34 +204,37 @@ class Forum extends Pages
 		return $access;
 	}
 
-	public function lockpost ($id)
+	public function lockpost ()
 	{
-			if (self::accessLock($id)) {
-				$return = $this->models->lock($id);
-				$this->error = true;
-				$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
-			} else {
-				$this->error = true;
-				$this->errorInfos = array('error', constant('NO_CLOSE_POST'), 'Forum', false);
-			}
-			$this->redirect('Forum', 2);
+		$id = (int) $this->id;
+		if (self::accessLock($id)) {
+			$return = $this->models->lock($id);
+			$this->error = true;
+			$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
+		} else {
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_CLOSE_POST'), 'Forum', false);
+		}
+		$this->redirect($_SERVER['HTTP_REFERER'], 2);
 	}
 
-	public function unlockpost ($id)
+	public function unlockpost ()
 	{
-			if (self::accessLock($id)) {
-				$return = $this->models->unlock($id);
-				$this->error = true;
-				$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
-			} else {
-				$this->error = true;
-				$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
-			}
-			$this->redirect('Forum', 2);
+		$id = (int) $this->id;
+		if (self::accessLock($id)) {
+			$return = $this->models->unlock($id);
+			$this->error = true;
+			$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
+		} else {
+			$this->error = true;
+			$this->errorInfos = array('error', constant('NO_ACCESS_POST'), 'Forum', false);
+		}
+		$this->redirect($_SERVER['HTTP_REFERER'], 2);
 	}
 
 	public function delpost ($id)
 	{
+		$id = (int) $this->id;
 		if (self::accessLock($id)) {
 			$return = $this->models->delpost($id);
 			$this->error = true;
@@ -244,9 +246,10 @@ class Forum extends Pages
 		$this->redirect('Forum', 2);
 	}
 
-	public function NewThread ($name)
+	public function NewThread ()
 	{
-		$_SESSION['NEWTHREADS'] = $name;
+		$id = (int) $this->id;
+		$_SESSION['NEWTHREADS'] = $id;
 		$this->render('newthread');
 	}
 
@@ -273,6 +276,6 @@ class Forum extends Pages
 		$return  = $this->models->SubmitPost($data);
 		$this->error = true;
 		$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
-		$this->redirect('Forum', 2);
+		$this->redirect($referer, 2);
 	}
 }

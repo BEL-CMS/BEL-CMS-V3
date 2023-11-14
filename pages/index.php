@@ -34,6 +34,7 @@ class Pages
 
 	public		$page,
 				$subPage,
+				$id,
 				$models;
 
 	protected 	$pageName,
@@ -48,6 +49,7 @@ class Pages
 		$this->data        = self::get();
 		$this->pageName    = Dispatcher::page();
 		$this->subPageName = Dispatcher::view();
+		$this->id          = isset($_GET['id']) ? $_GET['id'] : 0 ;
 		$dirLangs = constant('DIR_PAGES').strtolower($this->pageName).DS.'langs'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php';
 		require $dirLangs;
 	}

@@ -201,8 +201,7 @@ final class BDD
 
 		$data = (count($data) == 0) ? null : $data;
 		try {
-			$this->cnx->execute($data);
-			self::rowCount();
+			$this->rowCount = $this->cnx->execute($data);
 			$_SESSION['NB_REQUEST_SQL']++;
 			$this->lastId = self::lastId();
 			$return = true;
@@ -411,13 +410,6 @@ final class BDD
 	private function secureField ($data)
 	{
 		return ':'.$data;
-	}
-	#########################################
-	# Count line
-	#########################################
-	public function rowCount ()
-	{
-		$this->rowCount = $this->cnx->rowCount();
 	}
 	#########################################
 	# Test table if exists
