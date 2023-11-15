@@ -30,7 +30,8 @@ class Forum extends AdminPages
 		$menu[] = array(constant('HOME') => array('href'=>'Forum?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD') => array('href'=>'Forum/AddForum?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 		$menu[] = array(constant('CAT') => array('href'=>'Forum/category?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
-		$menu[] = array(constant('ALL_MSG') => array('href'=>'Forum/allMsg?management&option=pages','icon'=>'mgc_chat_1_line', 'color' => 'bg-info text-white'));
+		$menu[] = array(constant('ALL_MSG_POST') => array('href'=>'Forum/allMsg?management&option=pages','icon'=>'mgc_chat_1_line', 'color' => 'text-warning bg-warning/25'));
+		$menu[] = array(constant('ALL_MSG_REP') => array('href'=>'Forum/allMsg?management&option=pages','icon'=>'mgc_chat_1_line', 'color' => 'bg-info text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'Forum/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('index', $menu);
 	}
@@ -41,7 +42,6 @@ class Forum extends AdminPages
 		$this->set($data);
 		$menu[] = array(constant('HOME') => array('href'=>'Forum?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD_CAT') => array('href'=>'Forum/addcategory?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
-		$menu[] = array(constant('ALL_MSG') => array('href'=>'Forum/allMsg?management&option=pages','icon'=>'mgc_chat_1_line', 'color' => 'bg-info text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'Forum/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('category', $menu);
 	}
@@ -51,11 +51,16 @@ class Forum extends AdminPages
 		$data['data'] = $this->models->GettAllPosts();
 		$this->set($data);
 		$menu[] = array(constant('HOME') => array('href'=>'Forum?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
-		$menu[] = array(constant('ADD') => array('href'=>'Forum/AddForum?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
-		$menu[] = array(constant('CAT') => array('href'=>'Forum/category?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
-		$menu[] = array(constant('ALL_MSG') => array('href'=>'Forum/allMsg?management&option=pages','icon'=>'mgc_chat_1_line', 'color' => 'bg-info text-white'));
-		$menu[] = array(constant('CONFIG') => array('href'=>'Forum/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+		$menu[] = array(constant('ALL_MSG_REP') => array('href'=>'Forum/allMsgpost?management&option=pages','icon'=>'mgc_chat_1_line', 'color' => 'bg-info text-white'));
 		$this->render('allmsg', $menu);
+	}
+
+	public function allMsgpost ()
+	{
+		$menu[] = array(constant('HOME') => array('href'=>'Forum?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$data['data'] = $this->models->GettAllPostsMsg();
+		$this->set($data);
+		$this->render('allmsgpost', $menu);
 	}
 
 	public function editmessage ()
@@ -66,6 +71,21 @@ class Forum extends AdminPages
 		$this->render('editmessage');
 	}
 
+	public function editmessagepost ()
+	{	
+		$id = $this->id;
+		$data['data'] = $this->models->GetEditPostMsg($id);
+		$this->set($data);
+		$this->render('editMessagepost');
+	}
+
+	public function sendeditMessagepost ()
+	{	
+		$forum = $this->models->sendEditPostMsg($_POST);
+		$this->redirect('Forum/allMsgpost?management&option=pages', 2);
+		$this->error(get_class($this), $forum["msg"], $forum["type"]);
+	}
+
 	public function sendeditmessage ()
 	{
 		$forum = $this->models->sendEditPost($_POST);
@@ -74,6 +94,14 @@ class Forum extends AdminPages
 	}
 
 	public function delMessage ()
+	{
+		$id = $this->id;
+		$forum = $this->models->sendDelSujet($id);
+		$this->redirect('Forum/allMsg?management&option=pages', 2);
+		$this->error(get_class($this), $forum["text"], $forum["type"]);
+	}
+
+	public function delMessagepost()
 	{
 		$id = $this->id;
 		$forum = $this->models->sendDelPost($id);

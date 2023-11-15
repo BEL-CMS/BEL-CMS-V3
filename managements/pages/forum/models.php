@@ -340,9 +340,16 @@ final class ModelsForum
 		$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
 		$sql->queryAll();
 		$return = $sql->data;
-		foreach ($return as $key => $value) {
-			$return[$key]->options = Common::transformOpt($value->options);
-		}
+		return $return;
+	}
+
+	public function GettAllPostsMsg ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_FORUM_POST');
+		$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+		$sql->queryAll();
+		$return = $sql->data;
 		return $return;
 	}
 
@@ -351,6 +358,17 @@ final class ModelsForum
 		$id  = Common::SecureRequest($id);
 		$sql = New BDD();
 		$sql->table('TABLE_FORUM_POSTS');
+		$sql->where(array('name' => 'id', 'value' => $id));
+		$sql->queryOne();
+		$return = $sql->data;
+		return $return;
+	}
+
+	public function GetEditPostMsg ($id)
+	{
+		$id  = Common::SecureRequest($id);
+		$sql = New BDD();
+		$sql->table('TABLE_FORUM_POST');
 		$sql->where(array('name' => 'id', 'value' => $id));
 		$sql->queryOne();
 		$return = $sql->data;
@@ -368,9 +386,8 @@ final class ModelsForum
 		);
 		$update->where($where);
 		$options = $data['info_text'];
-		$update->insert(array('content' => $options));
-		$update->update();
-		if ($update->rowCount == 1) {
+		$update->update(array('content' => $options));
+		if ($update->rowCount == true) {
 			$return['msg']  = constant('EDIT_SUCCESS');
 			$return['type'] = 'success';
 		} else {
@@ -378,6 +395,60 @@ final class ModelsForum
 			$return['type'] = 'error';
 		}
 		return $return;	
+	}
+
+	public function sendEditPostMsg ($d)
+	{
+		$data['info_text'] = Common::VarSecure($d['info_text']);
+		$update = New BDD();
+		$update->table('TABLE_FORUM_POST');
+		$where = array(
+			'name'  => 'id',
+			'value' => Common::SecureRequest($d['id'])
+		);
+		$update->where($where);
+		$options = $data['info_text'];
+		$update->update(array('content' => $options));
+		if ($update->rowCount == true) {
+			$return['msg']  = constant('EDIT_SUCCESS');
+			$return['type'] = 'success';
+		} else {
+			$return['msg']  = constant('EDIT_FALSE');
+			$return['type'] = 'error';
+		}
+		return $return;	
+	}
+
+	public function sendDelSujet ($id)
+	{
+		if ($id !== false) {
+			// Secure ID
+			$id = (int) $id;
+			// SQL DELETE
+			$where = array('name' => 'id','value' => $id);
+			$sql = New BDD();
+			$sql->table('TABLE_FORUM_POSTS');
+			$sql->where($where);
+			$sql->delete();
+			// SQL RETURN NB INSERT
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('SUPP_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'alert',
+					'text' => constant('SUPP_FALSE')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'alert',
+				'text' => constant('ERROR_ID_EMPTY_INT')
+			);
+		}
+		return $return;
 	}
 
 	public function sendDelPost ($id)
@@ -388,7 +459,7 @@ final class ModelsForum
 			// SQL DELETE
 			$where = array('name' => 'id','value' => $id);
 			$sql = New BDD();
-			$sql->table('TABLE_FORUM_POSTS');
+			$sql->table('TABLE_FORUM_POST');
 			$sql->where($where);
 			$sql->delete();
 			// SQL RETURN NB INSERT

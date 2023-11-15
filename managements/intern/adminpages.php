@@ -336,7 +336,11 @@ class AdminPages
 		} else if ($request == 'GET') {
 			$return = new Dispatcher;
 			$return = $return->link;
-			$this->id = $return[2];
+			if (isset($return[2])) {
+				$this->id = $return[2];
+			} else {
+				$this->id = null;
+			}
 		}
 		return $return;
 	}

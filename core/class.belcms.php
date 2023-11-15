@@ -256,7 +256,6 @@ final class BelCMS
 				require_once constant('DIR_LANGS').'langs'.DS.$this->langs.'.php';
 			}
 		}
-
 	}
 	#########################################
 	# Retourn un message d'information de type

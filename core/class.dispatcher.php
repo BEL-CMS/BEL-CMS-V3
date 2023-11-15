@@ -95,7 +95,7 @@ final class Dispatcher
 	#########################################
 	public static function id () : int
 	{
-		$return = null;
+		$return = 0;
 		$dispatcher = new Dispatcher;
 		if (isset($dispatcher->link[3]) AND !empty($dispatcher->link[3])) {
 			$return = Secure::isInt($dispatcher->link[3]);

@@ -10,6 +10,7 @@
  */
 namespace BelCMS\Core;
 use BelCMS\PDO\BDD as BDD;
+use BelCMS\Requires\Common;
 use BELCMS\User\User as UserInfos;
 
 if (!defined('CHECK_INDEX')):
@@ -25,12 +26,18 @@ final class Comment
 
 	private function getMessage ()
 	{
+		$dispatcher = new Dispatcher();
+		$dispatcher->link;
+		$dispatcher->link[0] = Common::VarSecure($dispatcher->link[0]);
+		$dispatcher->link[1] = Common::VarSecure($dispatcher->link[1]);
+		$dispatcher->link[3] = (int) $dispatcher->link[3];
+
 		$sql = New BDD();
 		$sql->table('TABLE_COMMENTS');
-		$where[] = array('name' => 'page', 'value' => $this->page);
-		$where[] = array('name' => 'page_sub', 'value' => $this->view);
-		if (isset($this->id) and !empty($this->id)) {
-			$where[] = array('name' => 'page_id', 'value' => $this->id);
+		$where[] = array('name' => 'page', 'value' => $dispatcher->link[0]);
+		$where[] = array('name' => 'page_sub', 'value' => $dispatcher->link[1]);
+		if (isset($dispatcher->link[3]) and !empty($dispatcher->link[3])) {
+			$where[] = array('name' => 'page_id', 'value' => $dispatcher->link[3]);
 		}
 		$sql->where($where);
 		$sql->queryAll();
@@ -45,28 +52,14 @@ final class Comment
 	private function getDataUser ($hash_key = null)
 	{
 		if ($hash_key AND strlen($hash_key) == 32) {
-			$sql = New BDD();
-			$sql->table('TABLE_USERS');
-			$sql->where(array('name' => 'hash_key', 'value' => $hash_key));
-			$sql->fields(array('username', 'avatar'));
-			$sql->queryOne();
-			$data = $sql->data;
-			if ($sql->rowCount == 1) {
-				if (empty($data->username)) {
-					$data->username = constant('UNLISTED');
-				}
-				if (empty($data->avatar) and !is_file($data->avatar)) {
-					$data->avatar = constant('AVATAR_DEFAULT');
-				}
-				$return = $data;
+			$user = UserInfos::getInfosUserAll($hash_key);
+			if ($user) {
+				$return['username'] = $user->user->username;
+				$return['avatar']   = is_file($user->profils->avatar) ? $user->profils->avatar : constant('DEFAULT_AVATAR');
 			} else {
-				$return['username'] = 'Non répertorié';
-				$return['avatar'] = constant('AVATAR_DEFAULT');;
-				$return = (object) $return;
+				$return['username'] = constant('MEMBER_DELETE');
+				$return['avatar']   = constant('DEFAULT_AVATAR');
 			}
-		} else {
-			$return['username'] = 'Non répertorié';
-			$return['avatar'] = constant('AVATAR_DEFAULT');
 			$return = (object) $return;
 		}
 		return $return;
@@ -102,7 +95,7 @@ final class Comment
 				$links .= $dispatcher->link[3];
 			}
 			if ($_SESSION['USER']->user->hash_key !== false) {
-				$html .= '<form action="Comments/Send" method="post" enctype="multipart/form-data"><input name="url" type="hidden" value="'.$links.'"><textarea name="text"></textarea><button type="submit" class="btn btn-primary">Envoyer</button></form>';
+				$html .= '<form action="Comments/Send" method="post" enctype="multipart/form-data"><input name="url" type="hidden" value="'.$links.'"><textarea name="text"></textarea><button type="submit" class="belcms_btn belcms_bg_black">Envoyer</button></form>';
 			}
 		}
 		$html .= '</nav>';

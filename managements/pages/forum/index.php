@@ -51,7 +51,7 @@ endif;
 								<?php
 							}
 						?>
-								<td class="td-actions">
+								<td>
 									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/Forum/EditForum/<?=$v->id?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
 									<button type="button" data-fc-target="delete-modal_<?=$v->id?>" data-fc-type="modal" class="btn bg-danger btn-sm text-white"><i class="mgc_close_line text-base me-4"></i><?=constant('DELETE');?></button>
 									<div id="delete-modal_<?=$v->id?>" class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden"> 

@@ -1,5 +1,6 @@
 <?php
 
+use BelCMS\Core\GetHost;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
 

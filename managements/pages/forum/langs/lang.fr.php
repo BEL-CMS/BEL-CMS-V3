@@ -55,4 +55,9 @@ Common::constant(array(
 	'FORUM_SUB_CAT_ACTIVE'     => 'Activer la sous-catégorie',
 	'FORUM_ACTIVE'             => 'Forum actif',
 	'NB_POST'                  => 'Nombre de message',
+	'POST'                     => 'Poste',
+	'MSG'                      => 'Message',
+	'CONTENT'                  => 'Contenue',
+	'ALL_MSG_POST'             => 'Tout les sujets',
+	'ALL_MSG_REP'              => 'Toute les postes',
 ));

@@ -812,18 +812,20 @@ final class Common
 			fclose($fp);
 		}
 	}
-	public static function truncate($text, $chars = 25) {
-		if (strlen($text) <= $chars) {
-			return $text;
+
+	public static function truncate ($string, $length = 25, $append="&hellip;")
+	{
+		$string = trim($string);
+	  
+		if (strlen($string) > $length) {
+		  $string = wordwrap($string, $length);
+		  $string = explode("\n", $string, 2);
+		  $string = $string[0] . $append;
 		}
-		$text = $text." ";
-		$text = substr($text,0,$chars);
-		$text = substr($text,0,strrpos($text,' '));
-		if (strlen($text) < $chars) {
-			$text = $text."...";
-		}
-		return $text;
+	  
+		return $string;
 	}
+
 	public function cesureHref($d) 
 	{
 		return '<a href="' . $d[1] . '" title="' . $d[1] . '" >[Lien]</a>';
