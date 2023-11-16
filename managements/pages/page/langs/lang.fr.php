@@ -9,6 +9,8 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -26,4 +28,11 @@ Common::constant(array(
 	'DEL_SUBPAGE_SUCCESS'     => 'Suppression de la sous-page effectué avec succès',
 	'DEL_SUBPAGE_ERROR'       => 'Erreur lors de la suppression de la page',
 	'DEL_PAGE_SUCCESS'        => 'Suppression de la pageet sous page effectué avec succès',
+	'PAGE_NUMBER' 			  => 'Numéro de la page',
+	'DATE_OF_PUBLISH'         => 'Date de publication',
+	'DEL_ALL'                 => 'Tout effacer',
+	'CODE_HTML'               => 'Code HTML',
+	'NAME_PAGE'               => 'Nom de la page',
+	'PRIO'                    => '<!> Si du code est utilisé, il sera prioritaire !',
+	'CONFIRM_DEL'             => 'Confirmer la suppression de la page :',
 ));

@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Config;
+use BelCMS\Core\Secures;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -18,7 +21,7 @@ class Page extends AdminPages
 {
 	var $admin  = true; // Admin suprême uniquement (Groupe 1);
 	var $active = true;
-	var $models = 'ModelsPage';
+	var $bdd = 'ModelsPage';
 
 	public function index ()
 	{
@@ -29,34 +32,37 @@ class Page extends AdminPages
 			}
 		}
 		$this->set($set);
-		$menu[] = array('Accueil'=> array('href'=>'/page?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array('Configuration'=> array('href'=>'/page/parameter?management&pages','icon'=>'fa fa-cubes'));
-		$menu[] = array(ADD=> array('href'=>'/page/add?management&pages','icon'=>'fa fa-plus'));
+		$menu[] = array(constant('HOME') => array('href'=>'page?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'page/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'page/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('index', $menu);
 	}
 
-	public function getpage ($id = false)
+	public function getpage ()
 	{
+		$id = (int) $this->id;
+		$menu[] = array(constant('HOME') => array('href'=>'page?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'page/addsubpage/'.$id.'/?management&option=pages', 'icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('DEL_ALL') => array('href'=>'page/deleteAll/'.$id.'/?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$set['data'] = $this->models->getPagecontent($id);
 		$set['name'] = $this->models->getPage($id)->name;
 		$set['id']   = (int) $id;
  		$this->set($set);
-		$this->render('page');
+		$this->render('page', $menu);
 	}
 
 	public function add ()
 	{
-		$data['groups'] = BelCMSConfig::getGroups();
+		$data['groups'] = Config::getGroups();
 		$this->set($data);
 		$this->render('addpage');
 	}
 
-	public function edit ($id)
+	public function edit ()
 	{
-		$id = (int) $id;
-		$set['groups'] = BelCMSConfig::getGroups();
+		$id = (int) $this->id;
+		$set['groups'] = Config::getGroups();
 		$set['data']   = $this->models->getPage($id);
-		$this->set($set);
 		$menu[] = array('Accueil'=> array('href'=>'/page?management&pages','icon'=>'fa fa-home'));
 		$menu[] = array('Configuration'=> array('href'=>'page/parameter?management&pages','icon'=>'fa fa-cubes'));
 		$this->render('edit', $menu);
@@ -66,11 +72,11 @@ class Page extends AdminPages
 	{
 		if (empty($_POST['name'])) {
 			$this->error(get_class($this), 'Aucun nom', 'error');
-			$this->redirect('page?management&page', 2);
+			$this->redirect('page?management&option=pages', 2);
 		} else {
 			$return = $this->models->addNewPage($_POST);
 			$this->error(get_class($this), $return['text'], $return['type']);
-			$this->redirect('page?management&pages', 2);			
+			$this->redirect('page?management&option=pages', 2);			
 		}
 	}
 
@@ -78,11 +84,12 @@ class Page extends AdminPages
 	{
 		$return = $this->models->sendedit ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('page?management&pages', 2);
+		$this->redirect('page?management&option=pages', 2);
 	}
 
-	public function addsubpage ($id)
+	public function addsubpage ()
 	{
+		$id = (int) $this->id;
 		$set['data'] = $this->models->getPage($id);
 		$this->set($set);
 		$this->render('subpage');
@@ -92,12 +99,12 @@ class Page extends AdminPages
 	{
 		$return = $this->models->sendnewsub ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('page?management&pages', 2);
+		$this->redirect('page?management&option=pages', 2);
 	}
 
-	public function subpageedit ($id)
+	public function subpageedit ()
 	{
-		$id = (int) $id;
+		$id = (int) $this->id;
 		$set['data'] = $this->models->getPagecontentId($id);
 		$this->set($set);
 		$this->render('subpageedit');
@@ -107,29 +114,29 @@ class Page extends AdminPages
 	{	
 		$return = $this->models->sendeditsub ($_POST);		
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('page?management&pages', 2);
+		$this->redirect('page?management&option=pages', 2);
 	}
 
-	public function delsubpage ($id = false)
+	public function delsubpage ()
 	{
-		$id = (int) $id;
+		$id = (int) $this->id;
 		$return = $this->models->deletesub($id);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('page?management&pages', 2);
+		$this->redirect('page?management&option=pages', 2);
 	}
 
-	public function deleteAll ($id)
+	public function deleteAll ()
 	{
-		$id  = (int) $id;
+		$id = (int) $this->id;
 		$return = $this->models->deleteAll($id);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('page?management&pages', 2);
+		$this->redirect('page?management&option=pages', 2);
 	}
 
 	public function parameter ()
 	{
-		$data['groups'] = BelCMSConfig::getGroups();
-		$data['config'] = BelCMSConfig::GetConfigPage(get_class($this));
+		$data['groups'] = Config::getGroups();
+		$data['config'] = Config::GetConfigPage(get_class($this));
 		$this->set($data);
 		$this->render('parameter');
 	}
@@ -138,6 +145,6 @@ class Page extends AdminPages
 	{
 		$return = $this->models->sendparameter($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('Page?management&page=true', 2);
+		$this->redirect('page?management&option=pages', 2);
 	}
 }

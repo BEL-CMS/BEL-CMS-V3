@@ -9,85 +9,71 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<div class="x_panel">
-	<div class="x_title">
-		<h2>Menu Page</h2>
-		<div class="clearfix"></div>
-	</div>
-	<div class="x_content">
-		<a href="/page?management&pages" class="btn btn-app">
-			<i class="fa fas fa-home"></i> Accueil
-		</a>
-		<a href="/page/deleteAll/<?=$id?>?management&pages" class="btn btn-app">
-			<i class="fa fas fa-eraser "></i> <?=DELETE?> Tout !
-		</a>
-		<a href="/page/addsubpage/<?=$id?>?management&pages" class="btn btn-app">
-			<i class="fa fas fa-plus"></i> <?=ADD?>
-		</a>
-	</div>
-</div>
-
-<div class="col-md-12">
-	<div class="panel panel-white">
-		<div class="panel-body">
-		   <div class="table-responsive">
-			<table class="table table-striped jambo_table bulk_action">
-				<thead>
-					<tr>
-						<th># ID</th>
-						<th>Nom</th>
-						<th>Page N°</th>
-						<th>Date de publication</th>
-						<th>Options</th>
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<th># ID</th>
-						<th>Nom</th>
-						<th>Page N°</th>
-						<th>Date de publication</th>
-						<th>Options</th>
-					</tr>
-				</tfoot>
-				<tbody>
-					<?php
-					foreach ($data as $k => $v):
-						?>
-						<tr>
-							<td><?=$v->id?></td>
-							<td><?=$v->name?></td>
-							<td><?=$v->pagenumber?></td>
-							<td><?=Common::TransformDate($v->publish, 'LONG', 'SHORT')?></td>
-							<td>
-								<a href="/page/subpageedit/<?=$v->id?>?management&pages>"><i class="fas fa-pen"></i></a> - 
-								<a href="#" data-toggle="modal" data-target="#modal_<?=$v->id?>"><i class="fas fa-trash-alt"></i></a>
-								<div class="modal fade" id="modal_<?=$v->id?>" tabindex="-1" role="dialog">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-											<h4 class="modal-title"><?=$v->name?></h4>
+<div class="flex flex-col gap-6">
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title"><?=constant('PAGES');?></h4>
+			</div>
+		</div>
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
+						<thead class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('ID');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('PAGE_NUMBER');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('DATE_OF_PUBLISH');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php
+						foreach ($data as $k => $v):
+							?>
+							<tr>
+								<td><?=$v->id?></td>
+								<td><?=$v->name?></td>
+								<td><?=$v->pagenumber?></td>
+								<td><?=Common::TransformDate($v->publish, 'LONG', 'SHORT')?></td>
+								<td>
+									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/page/subpageedit/<?=$v->id?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
+									<button type="button" data-fc-target="delete-modal_<?=$v->id?>" data-fc-type="modal" class="btn bg-danger btn-sm text-white"><i class="mgc_close_line text-base me-4"></i><?=constant('DELETE');?></button>
+									<div id="delete-modal_<?=$v->id?>" class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden"> 
+										<div class="fc-modal-open:opacity-100 duration-500 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto flex flex-col bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
+											<div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
+												<h3 class="font-medium text-gray-800 dark:text-white text-lg">Page</h3>
+												<button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
+														data-fc-dismiss type="button">
+													<span class="material-symbols-rounded">close</span>
+												</button>
 											</div>
-											<div class="modal-body">Confirmer la suppression de la page : <?=$v->name?></div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-												<button onclick="window.location.href='/page/delsubpage/<?=$v->id?>?management&pages'" type="button" class="btn btn-primary">Supprimer</button>
+											<div class="px-4 py-8 overflow-y-auto">
+												<p class="text-gray-800 dark:text-gray-200">
+													<?=constant('CONFIRM_DEL');?> <?=$v->name?>
+												</p>
+											</div>
+											<div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
+												<button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button"><?=constant('CLOSE');?></button>
+												<a class="btn bg-primary text-white" onclick="window.location.href='/page/delsubpage/<?=$v->id?>?management&option=pages'"><?=constant('DELETE');?></a>
 											</div>
 										</div>
 									</div>
-								</div>
-							</td>
-						</tr>
-						<?php
-					endforeach;
-					?>
-				</tbody>
+								</td>
+							</tr>
+							<?php
+						endforeach;
+						?>
+					</tbody>
 			   </table>  
 			</div>
 		</div>

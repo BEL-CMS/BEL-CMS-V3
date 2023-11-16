@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -154,29 +157,28 @@ final class ModelsPage
 				$edit['groups'] = 0;
 			} else {
 				$edit['groups'] = implode('|', $data['groups']);
-			}			// SQL UPDATE
+			}
 			$sql = New BDD();
 			$sql->table('TABLE_PAGE');
 			$id = Common::SecureRequest($data['id']);
 			$sql->where(array('name' => 'id', 'value' => $id));
-			$sql->insert($edit);
-			$sql->update();
+			$sql->update($edit);
 			// SQL RETURN NB UPDATE
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_PAGE_SUCCESS
+					'text' => constant('EDIT_PAGE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_PAGE_ERROR
+					'text' => constant('EDIT_PAGE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -188,12 +190,12 @@ final class ModelsPage
 			$id = (int) $data['id'];
 			$count = self::countPages($id) + 1;
 			// SECURE DATA
-			if (isset($data['wysiwyg']) && $data['wysiwyg'] == 1) {
-				$send['content'] = Common::VarSecure($data['content'], 'html'); // autorise que les balises HTML
+			if (!empty($data['content_pur'])) {
+				$edit['content'] = Common::VarSecure($data['content_pur'], 'html');
 			} else {
-				$send['content'] = Common::VarSecure($data['content_pur'], 'html'); // autorise que les balises HTML
+				$edit['content'] = Common::VarSecure($data['content'], 'html');
 			}
-			$send['name']       = Common::VarSecure($data['name'], ''); // autorise que du texte
+			$send['name']       = Common::VarSecure($data['name'], '');
 			$send['pagenumber'] = $count;
 			$send['number']     = $id;
 			// SQL INSERT
@@ -205,18 +207,18 @@ final class ModelsPage
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_PAGE_SUCCESS
+					'text' => constant('SEND_PAGE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_PAGE_ERROR
+					'text' => constant('SEND_PAGE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -225,10 +227,10 @@ final class ModelsPage
 	public function sendeditsub ($data = false)
 	{
 		if (is_array($data)) {
-			if (isset($data['wysiwyg']) && $data['wysiwyg'] == 1) {
-				$edit['content'] = Common::VarSecure($data['content'], 'html'); // autorise que les balises HTML
+			if (!empty($data['content_pur'])) {
+				$edit['content'] = Common::VarSecure($data['content_pur'], 'html');
 			} else {
-				$edit['content'] = Common::VarSecure($data['content_pur'], 'html'); // autorise que les balises HTML
+				$edit['content'] = Common::VarSecure($data['content'], 'html');
 			}
 			// SECURE DATA
 			$edit['name']    = Common::VarSecure($data['name'], ''); // autorise que du texte
@@ -236,24 +238,23 @@ final class ModelsPage
 			$sql->table('TABLE_PAGE_CONTENT');
 			$id = Common::SecureRequest($data['id']);
 			$sql->where(array('name' => 'id', 'value' => $id));
-			$sql->insert($edit);
-			$sql->update();
+			$sql->update($edit);
 			// SQL RETURN NB UPDATE
-			if ($sql->rowCount == 1) {
+			if ($sql->rowCount == true) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_PAGE_SUCCESS
+					'text' => constant('EDIT_PAGE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_PAGE_ERROR
+					'text' => constant('EDIT_PAGE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -273,18 +274,18 @@ final class ModelsPage
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_SUBPAGE_SUCCESS
+					'text' => constant('DEL_SUBPAGE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_SUBPAGE_ERROR
+					'text' => constant('DEL_SUBPAGE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -307,21 +308,21 @@ final class ModelsPage
 			$del->delete();
 		
 			// SQL RETURN NB DELETE
-			if ($sql->rowCount == 1) {
+			if ($sql->rowCount == true) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_PAGE_SUCCESS
+					'text' => constant('DEL_PAGE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_SUBPAGE_ERROR
+					'text' => constant('DEL_SUBPAGE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -338,23 +339,22 @@ final class ModelsPage
 			$sql = New BDD();
 			$sql->table('TABLE_PAGES_CONFIG');
 			$sql->where(array('name' => 'name', 'value' => 'page'));
-			$sql->insert($upd);
-			$sql->update();
-			if ($sql->rowCount == 1) {
+			$sql->update($upd);
+			if ($sql->rowCount == true) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_PAGE_PARAM_SUCCESS
+					'text' => constant('EDIT_PAGE_PARAM_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_PAGE_PARAM_ERROR
+					'text' => constant('EDIT_PAGE_PARAM_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;

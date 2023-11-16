@@ -14,55 +14,45 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<div class="x_panel">
-	<div class="x_title">
-		<h2>Menu Page</h2>
-		<div class="clearfix"></div>
-	</div>
-	<div class="x_content">
-		<a href="/page?management&page=true" class="btn btn-app">
-			<i class="fa fas fa-home"></i> Accueil
-		</a>
-		<a href="page/parameter?management&page=true" class="btn btn-app">
-			<i class="fa fas fa-cogs"></i> Configuration
-		</a>
-	</div>
-</div>
-
-<div class="col-md-12">
-	<div class="panel panel-white">
-		<div class="panel-body basic-form-panel">
-			<form action="/page/sendnew?management&pages" method="post" class="form-horizontal">
-				<div class="form-group">
-					<label for="input-Default" class="col-sm-2 control-label"><?=NAME?></label>
-					<div class="col-sm-10">
-						<input name="name" type="text" class="form-control" id="input-Default" value="">
+<form action="/page/sendnew?management&option=pages" enctype="multipart/form-data" method="post">
+	<div class="flex flex-col gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title"><?=constant('PAGES');?></h4>
+				</div>
+			</div>
+			<div class="p-6">
+				<div class="overflow-x-auto">
+				<div class="mt-2 mb-2">
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
+						<input name="name" type="text" class="form-input" id="input-Default">
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Accès aux groupes</label>
-					<div class="col-sm-10">
-						<?php
-						$visitor = constant('VISITORS');
-						$groups->$visitor = 0;
-						foreach ($groups as $k => $v):
-							$checked = $v['id'] == 1 ? "checked" : "";
-							?>
-							<div class="input-group">
-								<span class="input-group-addon">
-									<input name="groups[]" value="<?=$v['id']?>" type="checkbox" <?=$checked?>>
-								</span>
-								<input type="text" class="form-control" disabled="disabled" value="<?=$k?>">
-							</div>
-							<?php
-						endforeach;
-						?>
-					</div>
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary"><?=ADD?></button>
-				</div>
-			</form>
+			</div>
 		</div>
+		<div class="card">
+			<div class="card-header">
+				<h4><?=constant('ACCESS_TO_GROUPS');?></h4>
+			</div>
+			<div class="p-6">
+				<?php
+				$visitor = constant('VISITORS');
+				$groups->$visitor['id'] = 0;
+				foreach ($groups as $k => $v):
+					$checked = $v['id'] == 1 ? "checked" : "";
+					?>
+					<div class="mt-2 mb-2">
+						<div class="flex items-center">
+							<input name="groups[]" value="<?=$v['id']?>" type="checkbox" <?=$checked?>>
+							<label for="<?=$v['id']?>" class="ms-2"><?=$k?></label>
+						</div>
+					</div>
+					<?php
+				endforeach;
+				?>
+			</div>
+		</div>
+		<button type="submit" class="btn bg-primary text-white"><?=constant('SEND');?></button>
 	</div>
-</div>
+</form>
