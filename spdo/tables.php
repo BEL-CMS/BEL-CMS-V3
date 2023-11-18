@@ -20,6 +20,8 @@ $tables = array(
 	#########################################
 	# Tables
 	#########################################
+	'TABLE_ARTICLES'            => $DB_PREFIX.'articles',
+	'TABLE_ARTICLES_CONTENT'    => $DB_PREFIX.'articles_content',
 	'TABLE_COMMENTS'            => $DB_PREFIX.'comments',
 	'TABLE_CONFIG'              => $DB_PREFIX.'config',
 	'TABLE_PAGES_CONFIG'        => $DB_PREFIX.'config_pages',
@@ -33,14 +35,12 @@ $tables = array(
 	'TABLE_NEWSLETTER'          => $DB_PREFIX.'newsletter',
 	'TABLE_NEWSLETTE_SEND'      => $DB_PREFIX.'newsletter_send',
 	'TABLE_NEWSLETTER_TPL'      => $DB_PREFIX.'newsletter_tpl',
-	'TABLE_PAGE'                => $DB_PREFIX.'page',
-	'TABLE_PAGES_ARTICLES'      => $DB_PREFIX.'page_articles',
-	'TABLE_PAGES_ARTICLES_CAT'  => $DB_PREFIX.'page_articles_cat',
-	'TABLE_PAGE_CONTENT'        => $DB_PREFIX.'page_content',
 	'TABLE_FORUM'               => $DB_PREFIX.'page_forum',
 	'TABLE_FORUM_POST'          => $DB_PREFIX.'page_forum_post',
 	'TABLE_FORUM_POSTS'         => $DB_PREFIX.'page_forum_posts',
 	'TABLE_FORUM_THREADS'       => $DB_PREFIX.'page_forum_threads',
+	'TABLE_PAGES_NEWS'          => $DB_PREFIX.'page_news',
+	'TABLE_PAGES_NEWS_CAT'      => $DB_PREFIX.'page_news_cat',
 	'TABLE_SHOUTBOX'            => $DB_PREFIX.'page_shoutbox',
 	'TABLE_PAGE_STATS'          => $DB_PREFIX.'page_stats',
 	'TABLE_SURVEY'              => $DB_PREFIX.'page_survey',
