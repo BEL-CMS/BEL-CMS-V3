@@ -27,7 +27,7 @@ endif;
 		<ul id="belcms_section_downloads_nav_ul">
 			<?php
 			foreach ($data as $a => $b):
-				if (empty($b->screen->download) or !is_file($b->screen->download)):
+				if (empty($b->screen) or !is_file($b->screen)):
 					$b->screen = '/pages/downloads/no_image.png';
 				endif;
 				?>
@@ -40,7 +40,7 @@ endif;
 				
 						<span>Taille : <?=Common::ConvertSize($b->size)?></span>
 						<span class="belcms_section_downloads_desc"><?=$b->description?></span>
-						<a class="belcms_section_downloads_nav_ul_right_dl belcms_btn belcms_bg_blue" href="downloads/detail/<?=$b->id;?>/<?=$b->name;?>">Voir</a>
+						<a class="belcms_section_downloads_nav_ul_right_dl belcms_btn belcms_bg_blue" href="downloads/detail/<?=$b->id;?>/<?=Common::MakeConstant($b->name)?>">Voir</a>
 					</div>
 				</li>
 			<?php
@@ -48,6 +48,7 @@ endif;
 		?>
 		</ul>
 		<?php
+		echo $pagination;
 		} else {
 			Notification::infos('Aucun téléchargement dans la catégorie.');
 		}

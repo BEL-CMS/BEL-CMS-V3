@@ -148,7 +148,7 @@ function bel_cms_private_message () {
 	}
 }
 function bel_cms_create_div_message () {
-	var $body = $('body');
+	var body = $('body');
 	html  = '<div class="modal fade" id="bel_cms_private_message" tabindex="-1" role="dialog" aria-hidden="true">';
 	html += '<div class="modal-dialog modal-dialog-centered" role="document">';
 	html += '<div class="modal-content">';
@@ -168,7 +168,7 @@ function bel_cms_create_div_message () {
 	html += '</div>';
 	html += '</div>';
 	html += '</div>';
-	$body.append(html);
+	body.append(html);
 }
 /*###################################
 # Function Alert box

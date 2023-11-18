@@ -14,6 +14,7 @@ use BelCMS\Core\Dispatcher as Dispatcher;
 use BelCMS\Core\Secure as Secure;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\User\User;
+use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -24,7 +25,12 @@ final class Members
 {
 	public function GetUsers ($where = false)
 	{
-		$nbpp = (int) 9;
+		$config = Config::GetConfigPage('members');
+		if (isset($config->config['MAX_USER'])) {
+			$nbpp = (int) $config->config['MAX_USER'];
+		} else {
+			$nbpp = (int) 10;
+		}
 
 		$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
 

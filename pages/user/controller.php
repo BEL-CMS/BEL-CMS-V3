@@ -39,6 +39,7 @@ class User extends Pages
 			}
 			$fopen  = fopen($dir.'/index.html', 'a+');
 			$fclose = fclose($fopen);
+			$_SESSION['USER'] = UserInfos::getInfosUserAll($_SESSION['USER']->user->hash_key);
 			$d['current'] ='user';
 			$d['user']    = $_SESSION['USER'];
 			$this->set($d);

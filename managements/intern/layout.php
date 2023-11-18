@@ -5,7 +5,7 @@ use BelCMS\Core\GetHost;
 <html lang="fr">
 <head>
 	<meta charset="utf-8">
-	<base href="<?=GetHost::base();?>">
+	<base href="<?=GetHost::getBaseUrl();?>">
 	<title>Administration</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="managements/assets/css/app.min.css" rel="stylesheet" type="text/css">
@@ -196,6 +196,11 @@ use BelCMS\Core\GetHost;
 						</ul>
 					</li>
 				</ul>
+				<div class="my-10 mx-5">
+            		<div class="help-box p-6 bg-black/5 text-center rounded-md">
+                		<a href="<?=GetHost::getBaseUrl();?>" class="btn btn-sm bg-secondary text-white">Retour au site</a>
+            		</div>
+       			</div>
 			</div>
 		</div>
 		<div class="page-content">

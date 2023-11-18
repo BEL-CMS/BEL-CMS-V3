@@ -159,7 +159,7 @@ final class User
 					$insertPage->insert(array('hash_key'=> $hash_key));
 
 					unset($_SESSION['TMP_QUERY_REGISTER']);
-
+					
 					Users::login($data['username'],$data['passwordhash']);
 
 					$return['msg']  = constant('CURRENT_RECORD');
@@ -366,12 +366,12 @@ final class User
 		if ($data) {
 			$a = array('?ajax', '?jquery', '?echo');
 			$data = str_replace($a, '', $data);
-			$dir = 'uploads/users/'.$_SESSION['USER']['HASH_KEY']->user->hash_key.'/';
+			$dir = 'uploads/users/'.$_SESSION['USER']->user->hash_key.'/';
 			$checkdir = strpos($data, $dir);
 			if ($checkdir !== false) {
 				$sql = New BDD();
 				$sql->table('TABLE_USERS_PROFILS');
-				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']['HASH_KEY']->user->hash_key));
+				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 				$sql->update(array('avatar'=> $data));
 			}
 		}
@@ -390,7 +390,7 @@ final class User
 	public function sendDeleteAvatar ($data = false)
 	{
 		if ($data) {
-			$dir = 'uploads'.DS.'users'.DS.$_SESSION['USER']['HASH_KEY']->user->hash_key.DS;
+			$dir = 'uploads'.DS.'users'.DS.$_SESSION['USER']->user->hash_key.DS;
 			$checkdir = strpos($data, $dir);
 			if ($checkdir !== false) {
 				unlink($data);
@@ -628,7 +628,6 @@ final class User
 						// TODO : faire un systeme de prévention 
 						return $return;
 					} else {
-
 						if ($data['username'] != $dataUser->username) {
 							$sql = New BDD();
 							$sql->table('TABLE_USERS');
@@ -674,10 +673,10 @@ final class User
 
 						$return = array('type' => 'success', 'msg' => 'Tout les paramètre, on été enregistré', 'title' => 'Profil');
 						return $return;
+						$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 					}
 				}
 			} else {
-
 				$return = array('type' => 'error', 'msg' => 'Erreur de Key', 'title' => 'Profil');
 				return $return;
 			}
@@ -755,7 +754,7 @@ final class User
 				$extensions = array('png', 'gif', 'jpg', 'jpeg');
 				if (in_array($ext->getExtension(), $extensions)) {
 					$sql = New BDD();
-					$sql->table('TABLE_USERS');
+					$sql->table('TABLE_USERS_PROFILS');
 					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 					$sql->update(array('avatar'=> $data['avatar']));
 					$return['msg']  = 'Avatar changer avec succès';
@@ -774,25 +773,14 @@ final class User
 				$return['ext']  = 'Avatar';
 			}
 		} else if ($data['select'] == 'delete') {
-			$return = (object) array();
 			$sql = New BDD();
-			$sql->table('TABLE_USERS');
+			$sql->table('TABLE_USERS_PROFILS');
 			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
-			$sql->queryOne();
-			$return->$sql->data;
-			if (!empty($return)) {
-				if ($return->avatar == $data['avatar']) {
-					$sql = New BDD();
-					$sql->table('TABLE_USERS');
-					$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
-					$sql->insert(array('avatar'=> ''));
-					$sql->update();
-				}
-			}
-			$link = constant('DIR_UPLOADS');
-			$link .= $data['avatar'];
+			$sql->update(array('avatar'=> constant('DEFAULT_AVATAR')));
+			$link = $data['avatar'];
 			// @ = fix erreur Windows localhost
 			@unlink($link);
+			unset($return);
 			$return['msg']  = $link;
 			$return['type'] = 'success';
 			$return['ext']  = 'Avatar';
@@ -812,6 +800,7 @@ final class User
 		if (!empty($update)) {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS_SOCIAL');
+			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 			$sql->update($update);
 			$return['msg']  = constant('MODIFY_SOCIAL_SUCCESS');
 			$return['type'] = 'success';

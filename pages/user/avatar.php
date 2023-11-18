@@ -8,6 +8,8 @@
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\Requires\Common;
 use BELCMS\User\User as UserInfos;
 
 if (!defined('CHECK_INDEX')):
@@ -16,7 +18,7 @@ if (!defined('CHECK_INDEX')):
 endif;
 if (UserInfos::isLogged() === true):
 	$list = array();
-	$path = "uploads/users/".$user->hash_key."/";
+	$path = "uploads/users/".$_SESSION['USER']->user->hash_key."/";
 	if($dossier = opendir($path))
 	{
 	    while(($fichier = readdir($dossier)))
@@ -70,14 +72,14 @@ if (UserInfos::isLogged() === true):
 						<ul id="bel_cms_user_ul_avatar">
 							<?php
 							foreach ($list as $k => $v):
-								$alt = 'uploads/users/'.$user->hash_key.'/'.$v;
+								$alt = 'uploads/users/'.$_SESSION['USER']->user->hash_key.'/'.$v;
 							?>
 							<li>
 								<label for="sel_avatar_<?=$k?>">
-								<a href="#<?=$v?>" class="bel_cms_jquery_avatar_sel" data-id="<?=$k?>">
-									<input class="select_avatar" id="sel_avatar_<?=$k?>" type="radio" name="avatar" value="<?=$alt?>">
-									<img width="100" height="100" class="bel_cms_jquery_avatar_sel" src="<?=$alt?>" alt="<?=$alt?>">
-								</a>
+									<a href="#<?=$v?>" class="bel_cms_jquery_avatar_sel" data-id="<?=$k?>">
+										<input class="select_avatar" id="sel_avatar_<?=$k?>" type="radio" name="avatar" value="<?=$alt?>">
+										<img width="100" height="100" class="bel_cms_jquery_avatar_sel" src="<?=$alt?>" alt="<?=$alt?>">
+									</a>
 								</label>
 							</li>
 							<?php

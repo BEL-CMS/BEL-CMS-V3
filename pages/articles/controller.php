@@ -31,7 +31,7 @@ class Articles extends Pages
 		$this->render('index');
 	}
 
-	function readmore ($name = false, $page = null, $id = false)
+	function readmore ($page = false, $subpage = null, $name = false, $id = 0)
 	{
 		if (strlen($id) == 0) {
 			$this->error = true;

@@ -41,6 +41,8 @@ endif;
 			} else {
 				$avatar = constant('DEFAULT_AVATAR');
 			}
+			$cat->last->title     = empty($cat->last->title)     ? '' : Common::truncate($cat->last->title, 15);
+			$cat->last->date_post = empty($cat->last->date_post) ? '' : Common::truncate($cat->last->date_post, 15);
 		?>
 		<div class="belcms_forum_main_cat_block">
 			<div class="belcms_forum_main_cat_ico"><i class="<?=$cat->icon;?>"></i></div>

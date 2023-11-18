@@ -138,10 +138,6 @@ $get_server_load = $get_server_load >= 75 ? '<span style="color:red">'.$get_serv
 $http   = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'sécurisé (HTTPS) SSL' : 'Non sécurisé (HTTP)';
 $df     = Common::ConvertSize(disk_free_space(ROOT), ['maxThreshold' => 6]);
 $ram    = Common::size(memory_get_usage());
-$belcms = "https://bel-cms.dev/version.php"; 
-$data   = file_get_contents($belcms); 
-$obj    = json_decode($data);
-$update = VERSION_CMS <= $obj->UPDATE ? '<span style="color:green;">'.VERSION_CMS.'</span>' : '<span style="color:red;">'.$obj->UPDATE.'</span>';
 $php    = PHP_VERSION;
 ?>
 <div class="grid lg:grid-cols-3 gap-6">

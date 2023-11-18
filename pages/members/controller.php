@@ -10,6 +10,7 @@
  */
 
 namespace Belcms\Pages\Controller;
+use BelCMS\Core\Config;
 use Belcms\Pages\Pages;
 use BelCMS\Core\Notification as Notification;
 use BelCMS\Core\Secures as Secures;
@@ -26,7 +27,8 @@ class Members extends Pages
 
 	public function index ()
 	{
-		$set['pagination'] = $this->pagination(9, get_class($this), constant('TABLE_USERS'));
+		$config =  Config::GetConfigPage('members');
+		$set['pagination'] = $this->pagination($config->config['MAX_USER'], 'members', constant('TABLE_USERS'));
 		$set['members'] = $this->models->GetUsers();
 		$this->set($set);
 		$this->render('index');

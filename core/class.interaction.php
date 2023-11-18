@@ -68,7 +68,7 @@ final class Interaction
 	{
 		$date = new \DateTime ('now');
 		$date = $date->format('Y/m/d H:i:s');
-		$this->date = $date;
+		return $date;
 	}
 
 	public function title ($text = null)
@@ -82,7 +82,7 @@ final class Interaction
 		$insert['author'] = $this->user;
 		$insert['type']   = $this->type;
 		$insert['text']   = $this->text;
-		$insert['date']   = $this->date;
+		$insert['date']   = self::date();
 		$insert['title']  = $this->title;
 		/* BDD */
 		$sql = New BDD();

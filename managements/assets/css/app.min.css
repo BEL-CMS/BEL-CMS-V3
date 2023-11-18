@@ -31,3 +31,7 @@
 	border-radius: 5px;
 	z-index: 5001;
 }
+input:read-only {
+	background-color: rgba(0,0,0,.15);
+	color: rgba(0, 0, 0, 1);
+}

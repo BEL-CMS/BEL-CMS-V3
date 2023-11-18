@@ -80,7 +80,7 @@ function Debug ($data, $exitAfter = true, $collapse = false)
 						$id = substr(md5(rand().":".$key.":".$level), 0, 8);
 
 						echo "<a href=\"javascript:toggleDisplay('". $id ."');\" style=\"text-decoration:none\">";
-						echo "<span style='color:red;font-weight:bold;'>" . $type . ($type_length !== null ? "(" . $type_length . ")" : "") . "</span>";
+						echo "<span style='color:red;font-weight:bold;text-align:left;'>" . $type . ($type_length !== null ? "(" . $type_length . ")" : "") . "</span>";
 						echo "</a>";
 						echo "<span id=\"plus". $id ."\" style=\"" . ($collapse ? "inline" : "none") . ";\">&nbsp;&#10549;</span>";
 						echo "<div id=\"container". $id ."\" style=\"display: " . ($collapse ? "" : "inline") . ";\">";

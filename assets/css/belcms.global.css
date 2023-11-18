@@ -507,6 +507,7 @@ nav#bel_cms_comment {
 			border-bottom: 1px solid #e6ecf5;
 			position: relative;
 			border-left: 1px solid #e6ecf5;
+			text-align: left !important;
 		}
 
 		nav#bel_cms_comment ul li::before {
@@ -575,4 +576,39 @@ nav#bel_cms_comment {
 #bel_cms_comment button {
 	margin: 20px;
 	float: right;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Pagination styles
+---------------------------------------------------------------------------------------------------*/
+#belcms_pagination {
+	display: inline-block;
+	margin: 20px 0 0 0;
+	background-color: rgba(0, 0, 0, 0.8);
+	text-align: center;
+	z-index: 10;
+	position: relative;
+	overflow: hidden;
+	border-radius: 4px;
+}
+#belcms_pagination ul {
+	display: flex;
+	text-decoration-style: none;
+}
+.belcms_pagination_item {
+	float: left;
+	text-decoration: none;
+}
+.belcms_pagination_item a {
+	display: block;
+	color: rgba(209, 207, 207, 1);
+	padding: 8px 16px;
+	border-left: 1px solid rgba(209, 207, 207, .5);
+}
+.belcms_pagination_item.active a {
+	background-color: green;
+	color: #FFF;
+	cursor: not-allowed;
+}
+.belcms_pagination_item.disabled a {
+	cursor: not-allowed;
 }

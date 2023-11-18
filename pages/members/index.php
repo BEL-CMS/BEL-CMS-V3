@@ -16,7 +16,6 @@ endif;
 
 ?>
 <section id="belcms_section_members_main">
-	<span class="bel-cms-pages_title"><?=constant('MEMBERS')?></span>
 	<?php
 	foreach ($members as $a):
 		$avatar = empty($a->profils->avatar) ? constant('DEFAULT_AVATAR') : $a->profils->avatar;

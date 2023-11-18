@@ -12,6 +12,7 @@
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
 use BelCMS\Core\Secures;
+use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -60,6 +61,8 @@ class Downloads extends Pages
 		$a = $this->models->getCat($this->data[2]);
 		$c['name'] = $a->name;
 		if (Secures::isAcess($a->groups) == true) {
+			$config =  Config::GetConfigPage('downloads');
+			$c['pagination'] = $this->pagination($config->config['MAX_DL'], 'downloads/category/'.$this->data[2], constant('TABLE_DOWNLOADS'));
 			$c['data'] = $this->models->getDls($this->data[2]);
 		} else {
 			$c['data'] = array();
@@ -81,8 +84,9 @@ class Downloads extends Pages
 		}
 	}
 
-	public function getDl ($id)
+	public function getDl ()
 	{
+		$id = $this->data[2];
 		if ($id != null && is_numeric($id)) {
 			if ($this->models->ifAccess($id) == true) {
 				if (stristr($this->models->getDownloads($id), 'http') === true or stristr($this->models->getDownloads($id), 'https')) {

@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Secure;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
 
@@ -244,7 +245,6 @@ final class ModelsDownloads
 		$insert['view']        = 0;
 		$insert['dls']         = 0;
 
-
 		if (isset($_FILES['screen'])) {
 			$screen = Common::Upload('screen', 'uploads/downloads'.DS.'screen', array('.png', '.gif', '.jpg', '.jpeg'));
 			if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
@@ -254,33 +254,32 @@ final class ModelsDownloads
 			$insert['screen'] = '';
 		}
 
-		if (!empty($_FILES['url'])):
-			$insert['download'] = Common::VarSecure($data['url'], 'html');
-		else:
+		if (!empty($_FILES['download']['name'])) {
 			$dl = Common::Upload('download', 'uploads/downloads',
-				array(
-					'.png',
-					'.gif', 
-					'.jpg',
-					'.jpeg',
-					'.doc',
-					'.txt',
-					'.pdf',
-					'.rar',
-					'.zip',
-					'.7zip',
-					'.tar',
-					'.exe',
-					'.rtf',
-					'.bz2'
-				));
-				$insert['download'] = 'uploads/downloads/'.$_FILES['download']['name'];
-		endif;
+			array(
+				'.png',
+				'.gif', 
+				'.jpg',
+				'.jpeg',
+				'.doc',
+				'.txt',
+				'.pdf',
+				'.rar',
+				'.zip',
+				'.7zip',
+				'.tar',
+				'.exe',
+				'.rtf',
+				'.bz2'
+			));
+			$insert['download'] = 'uploads/downloads/'.$_FILES['download']['name'];
+		} else {
+			$insert['download'] =  Secure::isUrl($data['url']) ? $data['url'] : '';
+		}
 
 		$sql = New BDD();
 		$sql->table('TABLE_DOWNLOADS');
 		$sql->insert($insert);
-		$sql->insert();
 
 		$return = array(
 			'type' => 'success',

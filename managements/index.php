@@ -17,6 +17,7 @@ use BelCMS\Core\Notification;
 use BelCMS\Core\Secure;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Requires\Common as Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -192,7 +193,6 @@ final class Managements
 				$Interaction->user($_SESSION['USER']->user->hash_key);
 				$Interaction->title(constant('UNAUTHORIZED_ACCESS'));
 				$Interaction->type('error');
-				$Interaction->date(date("Y-m-d H:i:s"));
 				$Interaction->text(constant('UNAUTHORIZED_ACCESS').' : '.$_SESSION['USER']->user->hash_key.' '.constant('ONE_PAGE').' '.$page.' : '.constant('SETTING'));
 				$Interaction->insert();
 			} else {
@@ -462,15 +462,14 @@ final class Managements
 					return true;
 				} else {
 					foreach ($bdd[$page]->access_admin as $k => $v) {
-						$access = $_SESSION['USER']->groups->all_groups;;
+						$_SESSION['USER'] = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
+						$access = $_SESSION['USER']->groups->all_groups;
 						if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
 							if (in_array(1, $access)) {
 								return true;
-								break;
 							}
 							if (in_array($v, $access)) {
 								return true;
-								break;
 							} else {
 								return false;
 							}

@@ -43,6 +43,8 @@ class Comments extends Pages
 				$this->errorInfos = array($insert['type'], $insert['text'], 'Commentaires', false);
 			}
 		}
-		$this->redirect(true, 3);
+
+		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : 'Comments';
+		$this->redirect($referer, 3);
 	}
 }

@@ -233,7 +233,7 @@ class Pages
 	function pagination ($nbpp = '5', $page = null, $table = null, $where = false)
 	{
 		$current     = (int) Dispatcher::RequestPages();
-		$page_url    = $page;
+		$page_url    = $page.'?';
 		$total       = self::paginationCount($nbpp, $table, $where);
 		$adjacents   = 1;
 		$current     = ($current == 0 ? 1 : $current);
@@ -245,59 +245,59 @@ class Pages
 		$setPaginate = null;
 
 		if ($setLastpage > 1) {
-			$setPaginate .= '<nav><ul class="pagination justify-content-center">';
+			$setPaginate .= '<nav id="belcms_pagination"><ul>';
 			if ($setLastpage < 7 + ($adjacents * 2)) {
 				for ($counter = 1; $counter <= $setLastpage; $counter++) {
 					if ($counter == $current) {
-						$setPaginate.= '<li class="page-item active"><a class="page-link">'.$counter.'</a></li>';
+						$setPaginate.= '<li class="belcms_pagination_item active"><a href="#">'.$counter.'</a></li>';
 					} else {
-						$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
+						$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
 					}
 				}
 			} else if($setLastpage > 5 + ($adjacents * 2)) {
 				if ($current < 1 + ($adjacents * 2)) {
 					for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
 						if ($counter == $current) {
-							$setPaginate.= '<li class="page-item active"><a class="page-link">'.$counter.'</a></li>';
+							$setPaginate.= '<li class="belcms_pagination_item active"><a href="#">'.$counter.'</a></li>';
 						} else {
-							$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
+							$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
 						}
 					}
-					$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$lpm1.'">'.$lpm1.'</a></li>';
-					$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$setLastpage.'">'.$setLastpage.'  </a></li>';
+					$setPaginate .= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$lpm1.'">'.$lpm1.'</a></li>';
+					$setPaginate .= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$setLastpage.'">'.$setLastpage.'  </a></li>';
 				}
 				else if($setLastpage - ($adjacents * 2) > $current && $current > ($adjacents * 2)) {
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page=1">1</a></li>';
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page=2">2</a></li>';
+					$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page=1">1</a></li>';
+					$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page=2">2</a></li>';
 					for ($counter = $current - $adjacents; $counter <= $current + $adjacents; $counter++) {
 						if ($counter == $current) {
-							$setPaginate.= '<li class="page-item active"><a class="page-link">'.$counter.'</a></li>';
+							$setPaginate.= '<li class="belcms_pagination_item active"><a href="#">'.$counter.'</a></li>';
 						}
 						else {
-							$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
+							$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
 						}
 					}
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$lpm1.'">'.$lpm1.'</a></li>';
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$setLastpage.'">'.$setLastpage.'</a></li>';
+					$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$lpm1.'">'.$lpm1.'</a></li>';
+					$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$setLastpage.'">'.$setLastpage.'</a></li>';
 				} else {
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page=1">1</a></li>';
-					$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page=2">2</a></li>';
+					$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page=1">1</a></li>';
+					$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page=2">2</a></li>';
 					for ($counter = $setLastpage - (2 + ($adjacents * 2)); $counter <= $setLastpage; $counter++) {
 						if ($counter == $current) {
-							$setPaginate.= '<li class="page-item active"><a class="page-link">'.$counter.'</a></li>';
+							$setPaginate.= '<li class="belcms_pagination_item active"><a href="#">'.$counter.'</a></li>';
 						} else {
-							$setPaginate.= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
+							$setPaginate.= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$counter.'">'.$counter.'</a></li>';
 						}
 					}
 				}
 			}
 
 			if ($current < $counter - 1) {
-				$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$next.'"><i class="fa-solid fa-forward"></i></a></li>';
-				$setPaginate .= '<li class="page-item"><a class="page-link" href="'.$page_url.'page='.$setLastpage.'"><i class="fa-solid fa-slash"></i></a></li>';
+				$setPaginate .= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$next.'"><i class="fa-solid fa-forward"></i></a></li>';
+				$setPaginate .= '<li class="belcms_pagination_item"><a href="'.$page_url.'page='.$setLastpage.'"><i class="fa-solid fa-slash"></i></a></li>';
 			} else {
-				$setPaginate .= '<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-forward"></i></a></li>';
-				$setPaginate .= '<li class="page-item disabled"><a class="page-link"><i class="fa-solid fa-slash"></i></a></li>';
+				$setPaginate .= '<li class="belcms_pagination_item disabled"><a href="#"><i class="fa-solid fa-forward"></i></a></li>';
+				$setPaginate .= '<li class="belcms_pagination_item disabled"><a href="#"><i class="fa-solid fa-slash"></i></a></li>';
 			}
 		}
 

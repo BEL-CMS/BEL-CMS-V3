@@ -25,6 +25,9 @@ if (UserInfos::isLogged() === true):
 	$genderU        = strtoupper($user->profils->gender) == strtoupper(constant('UNISEXUAL')) ? 'selected' : '';
 	require_once 'nav.php';
 	$birthday = Common::DatetimeReverse($user->profils->birthday);
+	if (!empty($user->profils->avatar) and !is_file($user->profils->avatar)) {
+		$user->profils->avatar = constant('DEFAULT_AVATAR');
+	}
 ?>
 
 	<div id="belcms_section_user_main">

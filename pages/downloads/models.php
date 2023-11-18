@@ -13,6 +13,8 @@ namespace Belcms\Pages\Models;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Core\Secures;
 use BelCMS\Requires\Common as Common;
+use BelCMS\Core\Dispatcher;
+use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -50,6 +52,14 @@ final class Downloads
 	public function getDls ($id = null)
 	{
 		if ($id !== null && is_numeric($id)) {
+			$config = Config::GetConfigPage('downloads');
+			if (isset($config->config['MAX_DL'])) {
+				$nbpp = (int) $config->config['MAX_DL'];
+			} else {
+				$nbpp = (int) 5;
+			}
+
+			$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
 			$sql = New BDD();
 			$sql->table('TABLE_DOWNLOADS');
 			$id = (int) $id;
@@ -58,6 +68,7 @@ final class Downloads
 				'value' => $id
 			);
 			$sql->where($where);
+			$sql->limit(array(0 => $page, 1 => $nbpp), true);
 			$sql->queryAll();
 			return $sql->data;
 		}

@@ -3,6 +3,7 @@
 	overflow: hidden;
 	position: relative;
 	margin-bottom: 15px;
+	padding: 0;
 }
 .belcms_section_members_main_users {
 	display: block;
@@ -20,7 +21,7 @@
 	border: none !important;
 	margin: 5px auto !important;
 	font-weight: 400 !important;
-	padding: 1.25rem;
+	padding: 0;
 }
 .belcms_section_members_main_avatar {
 	padding: 1.25rem;
@@ -54,7 +55,11 @@
 	color: rgba(0,0,0,.8);
 }
 .bel_cms_section_members_main_ul li a {
+	display: block;
 	padding: 5px;
+	width: 25px;
+	height: 25px;
+	border-radius: .25rem;
 }
 .bel_cms_section_members_main_contact {
 	display: block;
@@ -65,8 +70,8 @@
 	padding: 0 15px;
 	text-align: center;
 }
-.bel_cms_section_members_main_contact a{
-	line-height: 30px;
+.bel_cms_section_members_main_contact a {
+	line-height: 35px;
 }
 
 

@@ -49,7 +49,7 @@ endif;
 									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/registration/edit/<?=$v->user->hash_key?>?management&option=users'">
 										<i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
 									<?php
-									if ($k != 1 and $v->user->hash_key == $_SESSION['USER']->user->hash_key):
+									if ($v->user->hash_key != $_SESSION['USER']->user->hash_key):
 									?>
 									<button type="button" data-fc-target="delete-modal_<?=$k?>" data-fc-type="modal" class="btn bg-danger btn-sm text-white">
 										<i class="mgc_close_line text-base me-4"></i><?=constant('DELETE');?>

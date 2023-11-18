@@ -440,8 +440,12 @@ final class Common
 	#########################################
 	public static function ConvertSize ($size)
 	{
-		$unit = array('byte','Ko','Mo','Gb ','TéraOctet','Pétaoctet');
-		return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+		if (is_numeric($size)) {
+			$unit = array('byte','Ko','Mo','Gb ','TéraOctet','Pétaoctet');
+			return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+		} else {
+			return 0;
+		}
 	}
 	#########################################
 	# 
@@ -625,20 +629,6 @@ final class Common
 		}
 		return $return;
 	}
-	public static function PaginationCount ($nb, $table, $where = false)
-	{
-		$return = 0;
-
-		$sql = New BDD();
-		$sql->table($table);
-		if ($where !== false) {
-			$sql->where($where);
-		}
-		$sql->count();
-		$return = $sql->data;
-
-		return $return;
-	}
 	#########################################
 	# Security Upload
 	#########################################
@@ -646,7 +636,6 @@ final class Common
 	{
 		if ($_FILES[$name]['error'] != 4) {
 			$return  = '';
-			$dir     = $dir;
 			$file    = basename($_FILES[$name]['name']);
 			$sizeMax = self::GetMaximumFileUploadSize();
 			$size    = filesize($_FILES[$name]['tmp_name']);

@@ -34,55 +34,15 @@ final class Secures
 				if (in_array(0, $bdd[$page]->access_groups)) {
 					return true;
 				} else {
-					if ($_SESSION['USER']->user->hash_key) {
+					if (Users::isLogged()) {
 						foreach ($bdd[$page]->access_groups as $k => $v) {
 							$user = self::accessSqlUser();
-							$user = $user[$_SESSION['USER']->user->hash_key];
 							$access = $user->access ? $user->access : array(0);
-							if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
-								if (in_array(1, $access)) {
-									return true;
-									break;
-								}
-								if (in_array($v, $access)) {
-									return true;
-									break;
-								} else {
-									return false;
-								}
-							}
-						}
-					}
-				}
-			} else {
-				return true;
-			}
-		}
-	}
-	#########################################
-	# Accès au page admin via les groupes
-	#########################################
-	public static function getAccessPageAdmin ($page = null)
-	{
-		if ($page === null) {
-			return false;
-		} else {
-			$bdd = self::accessSqlPages($page);
-			if (isset($bdd[$page]->access_admin)) {
-				if (in_array(0, $bdd[$page]->access_admin)) {
-					return true;
-				} else {
-					foreach ($bdd[$page]->access_admin as $k => $v) {
-						$user = self::accessSqlUser();
-						$access = $user->access;
-						if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
 							if (in_array(1, $access)) {
 								return true;
-								break;
 							}
 							if (in_array($v, $access)) {
 								return true;
-								break;
 							} else {
 								return false;
 							}
@@ -113,7 +73,6 @@ final class Secures
 					if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
 						if (in_array($v, $access)) {
 							return true;
-							break;
 						} else {
 							return false;
 						}
@@ -207,28 +166,17 @@ final class Secures
 	# securisé par le hash_key
 	# * A delete groupe repris dans la $_SESSION['USER']
 	#########################################
-	public static function accessSqlUser () : object
+	public static function accessSqlUser ()
 	{
-		$return = (object) array();
-
-		if (isset($_SESSION['USER']->user->hash_key) and strlen($_SESSION['USER']->user->hash_key) == 32) {
-			$sql = New BDD();
-			$sql->table('TABLE_USERS_GROUPS');
-			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
-			$sql->fields(array('hash_key', 'user_group', 'user_groups'));
-			$sql->isObject(true);
-			$sql->queryOne();
-			if (empty($sql->data)) {
-				$return = false;
+		if (Users::isLogged()) {
+			if (isset($_SESSION['USER']->user->hash_key) and strlen($_SESSION['USER']->user->hash_key) == 32) {
+				$user = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
+				$return = new \stdClass();
+				$return->access = $user->groups->all_groups;
 			} else {
-				$return->groups      = array(0 => $sql->data->groups);
-				$return->main_groups = explode('|', $sql->data->user_group);
-				$return->access      = array_merge($return->groups, $return->user_group);
-				$return->access      = array_unique($return->access);
-				unset($return->groups, $return->user_group);
+				return false;
 			}
 		}
-
 		return $return;
 	}
 	#########################################
