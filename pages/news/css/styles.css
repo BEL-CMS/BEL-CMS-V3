@@ -1,0 +1,86 @@
+																		
+.bel_cms_blog .card-body {
+	padding-bottom: 15px;
+}
+
+
+#bel_cms_blog_main iframe,
+#bel_cms_blog_readmore iframe {
+	width: 100% !important;
+}
+
+	.bel_cms_blog,
+	.bel_cms_blog_readmore {
+		margin-bottom: 30px;
+		padding: 0;
+		border: 1px solid #dedede;
+		background: #FFF;
+		-moz-box-shadow: 0 0 5px #dedede;
+		-webkit-box-shadow: 0 0 5px #dedede;
+		box-shadow: 0 0 5px #dedede;
+		position: relative;
+		width: 100%;
+	}
+		.bel_cms_blog .card,
+		.bel_cms_blog_readmore .card {
+			background-color: transparent;
+			border-radius: 0;
+			border: none;
+		}
+			.bel_cms_blog .card-header,
+			.bel_cms_blog_readmore .card-header {
+				background-color: transparent;
+				border: 0;
+				padding: 0;
+			}
+				.bel_cms_blog .card-header h1,
+				.bel_cms_blog_readmore .card-header h1 {
+					font-size: 17px;
+					font-weight: bold;
+					margin: 0; padding: 0;
+					line-height: 50px;
+					padding: 0 20px;
+				}
+			.bel_cms_blog .card-body,
+			.bel_cms_blog_readmore .card-body {
+				padding: 0;
+			}
+				.bel_cms_blog_content {
+					padding: 15px 20px;
+					text-align: justify;
+				}
+				.bel_cms_blog_userdate {
+					display: block;
+					padding: 0;
+					overflow: hidden;
+					margin: 0;
+					padding: 0 20px;
+					text-transform: capitalize;
+				}
+					.bel_cms_blog_userdate li {
+						display: block;
+						float: left;
+						margin-right: 40px;
+					}
+			.bel_cms_blog .card-footer,
+			.bel_cms_blog_readmore .card-footer {
+				padding: 10px 0;
+				background-color: transparent;
+				border: 0;
+				border-top:1px solid #dedede;
+			}
+				.bel_cms_blog_infos {
+					display: block;
+					margin: 0; padding: 0;
+					overflow: hidden;
+					padding: 0 20px;
+				}
+					.bel_cms_blog_infos li {
+						display: block;
+						float: left;
+						margin-right: 20px;
+						line-height: 30px;
+					}
+					.bel_cms_blog_infos_last {
+						float: right !important;
+					}																														

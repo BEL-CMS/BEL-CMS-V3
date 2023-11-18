@@ -1,86 +1,73 @@
-																		
-.bel_cms_blog .card-body {
-	padding-bottom: 15px;
+#belcms_section_articles_main {
+	display: block;
+	max-width: 100%;
+	overflow: hidden;
+	position: relative;
+	margin-bottom: 15px;
+	border-radius: 4px;
 }
-
-
-#bel_cms_blog_main iframe,
-#bel_cms_blog_readmore iframe {
-	width: 100% !important;
+#belcms_section_articles_main ul {
+	display: table;
+	width: 100%;
 }
-
-	.bel_cms_blog,
-	.bel_cms_blog_readmore {
-		margin-bottom: 30px;
-		padding: 0;
-		border: 1px solid #dedede;
-		background: #FFF;
-		-moz-box-shadow: 0 0 5px #dedede;
-		-webkit-box-shadow: 0 0 5px #dedede;
-		box-shadow: 0 0 5px #dedede;
-		position: relative;
-		width: 100%;
-	}
-		.bel_cms_blog .card,
-		.bel_cms_blog_readmore .card {
-			background-color: transparent;
-			border-radius: 0;
-			border: none;
-		}
-			.bel_cms_blog .card-header,
-			.bel_cms_blog_readmore .card-header {
-				background-color: transparent;
-				border: 0;
-				padding: 0;
-			}
-				.bel_cms_blog .card-header h1,
-				.bel_cms_blog_readmore .card-header h1 {
-					font-size: 17px;
-					font-weight: bold;
-					margin: 0; padding: 0;
-					line-height: 50px;
-					padding: 0 20px;
-				}
-			.bel_cms_blog .card-body,
-			.bel_cms_blog_readmore .card-body {
-				padding: 0;
-			}
-				.bel_cms_blog_content {
-					padding: 15px 20px;
-					text-align: justify;
-				}
-				.bel_cms_blog_userdate {
-					display: block;
-					padding: 0;
-					overflow: hidden;
-					margin: 0;
-					padding: 0 20px;
-					text-transform: capitalize;
-				}
-					.bel_cms_blog_userdate li {
-						display: block;
-						float: left;
-						margin-right: 40px;
-					}
-			.bel_cms_blog .card-footer,
-			.bel_cms_blog_readmore .card-footer {
-				padding: 10px 0;
-				background-color: transparent;
-				border: 0;
-				border-top:1px solid #dedede;
-			}
-				.bel_cms_blog_infos {
-					display: block;
-					margin: 0; padding: 0;
-					overflow: hidden;
-					padding: 0 20px;
-				}
-					.bel_cms_blog_infos li {
-						display: block;
-						float: left;
-						margin-right: 20px;
-						line-height: 30px;
-					}
-					.bel_cms_blog_infos_last {
-						float: right !important;
-					}																														
+#belcms_section_articles_main ul li {
+	display: table-row;
+}
+#belcms_section_articles_main ul li > div {
+	display: table-cell;
+	border: 1px solid rgb(0, 0, 0, 0.125);
+	padding: 5px 15px;
+	text-align: left;
+}
+#belcms_section_articles_main ul li.articles_title {
+	background-color: rgb(0, 0, 0, 0.25);
+}
+#belcms_section_articles_main ul li.articles_title > div {
+	font-weight: bold;
+}
+#belcms_section_articles_main_title {
+	background-color:  rgba(0,0,0,.125);
+	padding: 10px 15px;
+	line-height: 30px;
+	font-weight: bold;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+}
+#belcms_section_articles_read {
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	min-width: 0;
+	word-wrap: break-word;
+	background-color: #fff;
+	background-clip: border-box;
+	border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
+}
+#belcms_section_articles_main_body {
+	border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
+	border-left: 0;
+	border-right: 0;
+	padding: 15px;
+}
+#belcms_section_articles_main_body img {
+	max-width: 95%;
+	margin: 15px auto;
+}
+#belcms_section_articles_main_footer {
+	display: block;
+	text-align: center;
+	width: 100%;
+	background: linear-gradient(to right, #f5f5f5, #efeff0);
+	border-top: 1px solid rgba(0, 0, 0, 0.025);
+}
+#belcms_section_articles_main_footer p {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	line-height: 30px;
+	font-style: oblique 20deg;
+}

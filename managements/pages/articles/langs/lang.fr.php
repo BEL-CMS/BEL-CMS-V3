@@ -18,25 +18,23 @@ endif;
 
 Common::constant(array(
 	#####################################
-	# Fichier lang en français - Pages Blog
+	# Fichier lang en français - Page
 	#####################################
-	'EDIT_BLOG_SUCCESS'       => 'Blog éditer avec succès',
-	'EDIT_BLOG_ERROR'         => 'Erreur d\'edition',
-	'ERROR_NO_DATA'           => 'Erreur de transfert de données',
-	'ARTICLE'                 => 'Article',
-	'COMPLEMENT'              => 'Complément',
-	'NB_BLOG'                 => 'Nombre d\'articles',
-	'ERROR_NO_NUM'            => 'Erreur le texte rentrer n\'est pas du numerique',
-	'EDIT_BLOG_PARAM_SUCCESS' => 'les paramètres de l\'article sont sauvegarder avec succès',
-	'EDIT_BLOG_PARAM_ERROR'   => 'Erreur durant la sauvegarde des paramètres de l\'articles',
-	'SEND_BLOG_SUCCESS'       => 'La page été ajouté avec succès à votre articles',
-	'SEND_BLOG_ERROR'         => 'La page n\'a pas pu etre ajouté : erreur BDD',
-	'DEL_BLOG_SUCCESS'        => 'La page de l\'article à été supprimé avec succès',
-	'DEL_BLOG_ERROR'          => 'Erreur durant la suppression de l\'article',
-	'ADD_BLOG_EMPTY'          => 'Le nom ne peux-être vide',
-	'ADD_BLOG_EMPTY_CONTENT'  => 'Le contenue ne peux-être vide',
-	'LIST_OF_ARTICLES'        => 'Liste des articles',
-	'CREATION_DATE'           => 'Date de création',
-	'NEW'                     => 'Nouveau',
-	'READMORE_ADMIN'          => 'La suite de l\'article',
+	'SEND_PAGE_SUCCESS'         => 'Page ajouté avec succès',
+	'SEND_PAGE_ERROR'           => 'Erreur lors de l\'ajout de la page',
+	'ERROR_NO_DATA'             => 'Erreur de transfert de données',
+	'EDIT_PAGE_SUCCESS'         => 'Edition de la page effectué avec succès',
+	'EDIT_PAGE_ERROR'           => 'Erreur lors de l\'edition de la page',
+	'DEL_SUBPAGE_SUCCESS'       => 'Suppression de la sous-page effectué avec succès',
+	'DEL_SUBPAGE_ERROR'         => 'Erreur lors de la suppression de la page',
+	'DEL_PAGE_SUCCESS'          => 'Suppression de la pageet sous page effectué avec succès',
+	'PAGE_NUMBER' 			    => 'Numéro de la page',
+	'DATE_OF_PUBLISH'           => 'Date de publication',
+	'DEL_ALL'                   => 'Tout effacer',
+	'CODE_HTML'                 => 'Code HTML',
+	'NAME_PAGE'                 => 'Nom de la page',
+	'PRIO'                      => '<!> Si du code est utilisé, il sera prioritaire !',
+	'CONFIRM_DEL'               => 'Confirmer la suppression de la page :',
+	'ARTICLES_PAGE_ACTIVE'      => 'Activer la page articles',
+	'ARTICLES_ACTIVE'          => 'Articles actif',
 ));

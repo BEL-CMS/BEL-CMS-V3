@@ -11,7 +11,6 @@
 
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
-use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -23,94 +22,144 @@ final class ModelsArticles
 	#####################################
 	# Infos tables
 	#####################################
-	# TABLE_PAGES_ARTICLES
+	# TABLE_ARTICLES
+	# TABLE_ARTICLES_CONTENT
 	#####################################
-	public function getAllArticles ()
+	public function addNewPage ($data)
+	{
+		if ($data !== false) {
+			// SECURE DATA
+			$send['name'] = Common::VarSecure($data['name'], ''); // autorise que du texte
+			if (!isset($data['groups'])) {
+				$send['groups'] = 0;
+			} else {
+				$send['groups'] = implode('|', $data['groups']);
+			}
+			// SQL INSERT
+			$sql = New BDD();
+			$sql->table('TABLE_ARTICLES');
+			$sql->insert($send);
+			$sql->insert();
+			// SQL RETURN NB INSERT
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('SEND_PAGE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('SEND_PAGE_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+
+		return $return;
+	}
+
+	public function getPages ()
 	{
 		$return = array();
-
-		$sql = New BDD;
-		$sql->table('TABLE_PAGES_ARTICLES');
+		$sql = New BDD();
+		$sql->table('TABLE_ARTICLES');
 		$sql->queryAll();
+		foreach ($sql->data as $k => $v) {
+			$sql->data[$k]->count = self::countPages($v->id);
+		}
+		$return = $sql->data;
+		return $return;
+	}
 
-		if ($sql->data) {
+	public function getPage ($id = false)
+	{
+		$return = null;
+
+		if ($id) {
+			$sql = New BDD();
+			$sql->table('TABLE_ARTICLES');
+			$where = array(
+				'name'  => 'id',
+				'value' => $id
+			);
+			$sql->where($where);
+			$sql->queryOne();
 			$return = $sql->data;
 		}
 
 		return $return;
 	}
 
-	public function getArticles ($id = false)
+	public function getPagecontent ($id = false)
 	{
-		$sql = New BDD();
-		$sql->table('TABLE_PAGES_ARTICLES');
+		$return = array();
 
-		if ($id) {
-			$request = Common::secureRequest($id);
-			if (is_numeric($id)) {
-				$sql->where(array(
-					'name'  => 'id',
-					'value' => $request
-				));
-			} else {
-				$sql->where(array(
-					'name'  => 'rewrite_name',
-					'value' => $request
-				));
-			}
-			$sql->queryOne();
-			if (!empty($sql->data)) {
-				$sql->data->link = 'article/readmore/'.$sql->data->rewrite_name.'?id='.$sql->data->id;
-				if (empty($sql->data->tags)) {
-					$sql->data->tags = array();
-				} else {
-					$sql->data->tags = explode(',', $sql->data->tags);
-				}
-				$author =  User::getInfosUserAll($sql->data->author);
-				if ($author == false) {
-					$sql->data->username = constant('MEMBER_DELETE');
-					$sql->data->avatar   = constant('DEFAULT_AVATAR');
-				} else {
-					$sql->data->username = $author->user->username;
-					$sql->data->avatar   = $author->profils->avatar;					
-				}
-			} else {
-				$sql->data = null;
-			}
+		if ($id && is_numeric($id)) {
+			$sql = New BDD();
+			$sql->table('TABLE_ARTICLES_CONTENT');
+			$where = array(
+				'name'  => 'number',
+				'value' => $id
+			);
+			$sql->where($where);
+			$sql->queryAll();
+			$return = $sql->data;
 		}
-		return $sql->data;
+
+		return $return;
 	}
 
-	public function sendEdit ($data = false)
+	public function getPagecontentId ($id = false)
 	{
-		if ($data !== false) {
-			if (empty($data['name'])) {
-				$return = array(
-					'type' => 'error',
-					'text' => constant('ADD_BLOG_EMPTY')
-				);
-				return $return;
-			}
-			if (empty($data['content'])) {
-				$return = array(
-					'type' => 'error',
-					'text' => constant('ADD_BLOG_EMPTY_CONTENT')
-				);
-				return $return;
-			}
+		$return = array();
+
+		if ($id && is_numeric($id)) {
+			$sql = New BDD();
+			$sql->table('TABLE_ARTICLES_CONTENT');
+			$where = array(
+				'name'  => 'id',
+				'value' => $id
+			);
+			$sql->where($where);
+			$sql->queryOne();
+			$return = $sql->data;
+		}
+
+		return $return;
+	}	#####################################
+	# Récupère le nombre de page
+	#####################################
+	public function countPages ($id)
+	{
+		$id = (int) $id;
+		$sql = New BDD();
+		$sql->table('TABLE_ARTICLES_CONTENT');
+		$where = array(
+			'name' => 'number',
+			'value' => $id
+		);
+		$sql->where($where);
+		$sql->count();
+		$return = $sql->data;
+		return $return;
+	}
+	public function sendedit ($data)
+	{
+		if ($data && is_array($data)) {
 			// SECURE DATA
-			$edit['rewrite_name']      = Common::MakeConstant($data['name']);
 			$edit['name']              = Common::VarSecure($data['name'], ''); // autorise que du texte
 			$edit['content']           = Common::VarSecure($data['content'], 'html'); // autorise que les balises HTML
-			$edit['additionalcontent'] = Common::VarSecure($data['additionalcontent'], 'html'); // autorise que les balises HTML
-			$edit['author']            = strlen($data['author']) == 32 ? $data['author'] : $_SESSION['USER']->user->hash_key;
-			$edit['authoredit']        = $_SESSION['USER']->user->hash_key;
-			$edit['tags']              = Common::VarSecure($data['tags'], ''); // autorise que du texte
-			$edit['tags']              = str_replace(' ', '', $edit['tags']);
-			$edit['cat']               = ''; // à implanter
-			// SQL UPDATE
+			if (!isset($data['groups'])) {
+				$edit['groups'] = 0;
+			} else {
+				$edit['groups'] = implode('|', $data['groups']);
+			}
 			$sql = New BDD();
-			$sql->table('TABLE_PAGES_ARTICLES');
+			$sql->table('TABLE_ARTICLES');
 			$id = Common::SecureRequest($data['id']);
 			$sql->where(array('name' => 'id', 'value' => $id));
 			$sql->update($edit);
@@ -118,123 +167,170 @@ final class ModelsArticles
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_BLOG_SUCCESS
+					'text' => constant('EDIT_PAGE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_BLOG_ERROR
+					'text' => constant('EDIT_PAGE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
-
 		return $return;
 	}
 
-	public function sendEditPost ($d)
+	public function sendnewsub ($data)
 	{
-		$data['info_text'] = Common::VarSecure($d['info_text']);
-		$update = New BDD();
-		$update->table('TABLE_FORUM_POSTS');
-		$where = array(
-			'name'  => 'id',
-			'value' => Common::SecureRequest($d['id'])
-		);
-		$update->where($where);
-		$options = $data['info_text'];
-		$update->update(array('content' => $options));
-		if ($update->rowCount == 1) {
-			$return['msg']  = EDIT_SUCCESS;
-			$return['type'] = 'success';
-		} else {
-			$return['msg']  = EDIT_FALSE;
-			$return['type'] = 'error';
-		}
-		return $return;	
-	}
-
-	public function sendnew ($data = false)
-	{
-		if (empty($data['name'])) {
-			$return = array(
-				'type' => 'error',
-				'text' => ADD_BLOG_EMPTY
-			);
-			return $return;
-		}
-		if (empty($data['content'])) {
-			$return = array(
-				'type' => 'error',
-				'text' => ADD_BLOG_EMPTY_CONTENT
-			);
-			return $return;
-		}
-		if ($data !== false) {
+		if ($data && is_array($data)) {
+			$id = (int) $data['id'];
+			$count = self::countPages($id) + 1;
 			// SECURE DATA
-			$send['rewrite_name']      = Common::MakeConstant($data['name']);
-			$send['name']              = Common::VarSecure($data['name'], ''); // autorise que du texte
-			$send['content']           = Common::VarSecure($data['content'], 'html'); // autorise que les balises HTML
-			$send['additionalcontent'] = Common::VarSecure($data['additionalcontent'], 'html'); // autorise que les balises HTML
-			$send['author']            = $_SESSION['USER']->user->hash_key;
-			$send['authoredit']        = null;
-			$send['tags']              = Common::VarSecure($data['tags'], ''); // autorise que du texte
-			$send['tags']              = str_replace(' ', '', $send['tags']);
-			$send['cat']               = ''; // à implanter
-			$send['view']              = 0;
+			if (!empty($data['content_pur'])) {
+				$send['content'] = Common::VarSecure($data['content_pur'], 'html');
+			} else {
+				$send['content'] = Common::VarSecure($data['content'], 'html');
+			}
+			$send['name']       = Common::VarSecure($data['name'], '');
+			$send['pagenumber'] = $count;
+			$send['number']     = $id;
 			// SQL INSERT
 			$sql = New BDD();
-			$sql->table('TABLE_PAGES_ARTICLES');
+			$sql->table('TABLE_ARTICLES_CONTENT');
 			$sql->insert($send);
 			// SQL RETURN NB INSERT
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_BLOG_SUCCESS
+					'text' => constant('SEND_PAGE_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_BLOG_ERROR
+					'text' => constant('SEND_PAGE_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
-
 		return $return;
 	}
 
-	public function getNbArticles ()
+	public function sendeditsub ($data = false)
 	{
-		$return = 0;
-
-		$sql = New BDD();
-		$sql->table('TABLE_PAGES_ARTICLES');
-		$sql->count();
-
-		if (!empty($sql->data)) {
-			$return = $sql->data;
+		if (is_array($data)) {
+			if (!empty($data['content_pur'])) {
+				$edit['content'] = Common::VarSecure($data['content_pur'], 'html');
+			} else {
+				$edit['content'] = Common::VarSecure($data['content'], 'html');
+			}
+			// SECURE DATA
+			$edit['name']    = Common::VarSecure($data['name'], ''); // autorise que du texte
+			$sql = New BDD();
+			$sql->table('TABLE_ARTICLES_CONTENT');
+			$id = Common::SecureRequest($data['id']);
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->update($edit);
+			// SQL RETURN NB UPDATE
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDIT_PAGE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_PAGE_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
 		}
-
 		return $return;
 	}
 
+	public function deletesub ($data)
+	{
+		if ($data && is_numeric($data)) {
+			// SECURE DATA
+			$delete = (int) $data;
+			// SQL DELETE
+			$sql = New BDD();
+			$sql->table('TABLE_ARTICLES_CONTENT');
+			$sql->where(array('name'=>'id','value' => $delete));
+			$sql->delete();
+			// SQL RETURN NB DELETE
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('DEL_SUBPAGE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('DEL_SUBPAGE_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+
+	public function deleteAll ($id = false)
+	{
+		if (is_numeric($id)) {
+			// SECURE DATA
+			$delete = (int) $id;
+			// SQL DELETE
+			$sql = New BDD();
+			$sql->table('TABLE_ARTICLES');
+			$sql->where(array('name'=>'id','value' => $delete));
+			$sql->delete();
+
+			$del = New BDD();
+			$del->table('TABLE_ARTICLES_CONTENT');
+			$del->where(array('name'=>'number','value' => $delete));
+			$del->delete();
+		
+			// SQL RETURN NB DELETE
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('DEL_PAGE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('DEL_SUBPAGE_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
 	public function sendparameter($data = null)
 	{
 		if ($data !== false) {
-			$data['MAX_ARTICLES'] = (int) $data['MAX_ARTICLES'];
-			$opt                  = array('MAX_ARTICLES' => $data['MAX_ARTICLES']);
 			$data['admin']        = isset($data['admin']) ? $data['admin'] : array(1);
 			$data['groups']       = isset($data['groups']) ? $data['groups'] : array(1);
-			$upd['config']        = Common::transformOpt($opt, true);
 			$upd['active']        = isset($data['active']) ? 1 : 0;
 			$upd['access_admin']  = implode("|", $data['admin']);
 			$upd['access_groups'] = implode("|", $data['groups']);
@@ -243,15 +339,15 @@ final class ModelsArticles
 			$sql->table('TABLE_PAGES_CONFIG');
 			$sql->where(array('name' => 'name', 'value' => 'articles'));
 			$sql->update($upd);
-			if ($sql->rowCount == 1) {
+			if ($sql->rowCount == true) {
 				$return = array(
 					'type' => 'success',
-					'text' => constant('EDIT_BLOG_PARAM_SUCCESS')
+					'text' => constant('PARAMETER_EDITING_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => constant('EDIT_BLOG_PARAM_ERROR')
+					'text' => constant('EDIT_PAGE_PARAM_ERROR')
 				);
 			}
 		} else {
@@ -263,34 +359,4 @@ final class ModelsArticles
 		return $return;
 	}
 
-	public function delete ($data = false)
-	{
-		if ($data !== false) {
-			// SECURE DATA
-			$delete = (int) $data;
-			// SQL DELETE
-			$sql = New BDD();
-			$sql->table('TABLE_PAGES_ARTICLES');
-			$sql->where(array('name'=>'id','value' => $delete));
-			$sql->delete();
-			// SQL RETURN NB DELETE
-			if ($sql->rowCount == 1) {
-				$return = array(
-					'type' => 'success',
-					'text' => constant('DEL_BLOG_SUCCESS')
-				);
-			} else {
-				$return = array(
-					'type' => 'warning',
-					'text' => constant('DEL_BLOG_ERROR')
-				);
-			}
-		} else {
-			$return = array(
-				'type' => 'error',
-				'text' => constant('ERROR_NO_DATA')
-			);
-		}
-		return $return;
-	}
 }

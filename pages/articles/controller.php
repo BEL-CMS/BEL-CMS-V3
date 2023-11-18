@@ -10,8 +10,10 @@
  */
 
 namespace Belcms\Pages\Controller;
+use BelCMS\Core\Notification;
+use BelCMS\Core\Secures;
 use Belcms\Pages\Pages;
-use BelCMS\Core\Config as Config;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -20,46 +22,81 @@ endif;
 
 class Articles extends Pages
 {
-	var $useModels = 'Articles';
+	var $useModels  = 'Articles';
 
-	function index ()
-	{
-		$config =  Config::GetConfigPage('articles');
-		$set['pagination'] = $this->pagination($config->config['MAX_ARTICLES'], 'articles', constant('TABLE_PAGES_ARTICLES'));
-		$set['articles'] = $this->models->getArticles();
+	public function index ()
+	{	
+		$set['data'] = $this->models->getPage();
+		if (empty($set['data'])) {
+			Notification::warning('Aucune page');
+		}
+		foreach ($set['data'] as $k => $v) {
+			if (Secures::IsAcess($v->groups) == false) {
+				unset($set['data'][$k]);
+			}
+		}
+		$page = Common::ScanFiles(ROOT.'/pages/page/uploads');
+		if (!empty($page)) {
+			$set['sub'] = str_replace(".php", "", $page);
+		}
 		$this->set($set);
 		$this->render('index');
 	}
 
-	function readmore ($page = false, $subpage = null, $name = false, $id = 0)
+	public function read ($id = null)
 	{
-		if (strlen($id) == 0) {
-			$this->error = true;
-			$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), constant('INFO'), false);
-		} else {
-			$set = array();
-			$set['articles'] = $this->models->getArticles($id);
-			if (!is_object($set['articles']) && $set['articles'] == 0) {
+		$id = $this->data[2];
+		if (!is_null($id) && is_numeric($id)) {
+			$set['data'] = $this->models->getArticlesContentId($id);
+			$get = $this->models->getArticlesId($set['data']->number);
+			if (Secures::IsAcess($get->groups) == false) {
 				$this->error = true;
-				$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), constant('INFO'), false);
-				return;
+				$this->errorInfos = array('error', constant('NO_ACCESS_GROUP_PAGE'), constant('INFO'), false);
 			} else {
-				$this->models->NewView($id);
+				$this->set($set);
+				$this->render('read');	
 			}
-			$this->set($set);
-			$this->render('readmore');
+		} else {
+			$this->error = true;
+			$this->errorInfos = array('error', 'Aucun ID', constant('INFO'), false);
 		}
 	}
 
-	function json ($api_key)
+	public function subpage ()
 	{
-		if (defined('API_KEY')) {
-			if (!empty($api_key) && $api_key == constant('API_KEY')) {
-				$data = $this->models->getLastArticles();
-				echo json_encode($data);
+		$id = $this->data[2];
+		if (!is_null($id) && is_numeric($id)) {
+			$set['data'] = $this->models->getArticles($id);
+			if (empty($set['data'])) {
+				Notification::warning('Aucune page dans la BDD');
+			} else {
+				$get = $this->models->getArticlesId(current($set['data'])->number);
+				if (Secures::IsAcess($get->groups) == false) {
+					$this->error = true;
+					$this->errorInfos = array('warning', constant('NO_ACCESS_GROUP_PAGE'), constant('INFO'), false);
+				} else {
+					$this->set($set);
+					$this->render('subpage');
+				}
 			}
 		} else {
-			echo json_encode(null);
+			$this->error = true;
+			$this->errorInfos = array('warning', 'Aucun ID', constant('INFO'), false);
+		}
+	}
+
+	public function intern ($name = null)
+	{
+		$page = Common::ScanFiles(ROOT.'pages/articles/uploads');
+		if (!empty($page)) {
+			$page = str_replace(".php", "", $page);
+		}
+		$full = Common::ScanFiles(ROOT.'pages/articles/uploads', true, true);
+		if (in_array(strtolower($name), $page)) {
+			require_once(ROOT.'pages/articles/uploads'.DS.$name.'.php');
+		} else {
+			$this->error = true;
+			$this->errorInfos = array('warning','La page ('.$name.') demander n\'existe pas !', constant('INFO'), false);
 		}
 	}
 }

@@ -13,64 +13,66 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
-
-$tags = null;
-$c    = null;
-if ($data->tags != null) {
-	foreach ($data->tags as $k => $v) {
-		$v = str_replace(' ','',$v);
-		if ($c != $k+1) {
-			$tags.= $v. ', ';
-		} else {
-			$tags.= $v;
-		}
-	}
-}
 ?>
-<div class="flex flex-col gap-6">
-	<div class="grid lg:grid-cols-1 gap-6">
-		<div class="card">
-			<div class="card-header">
-				<h4><?=constant('EDITING');?> <?=constant('ARTICLE');?></h4>
-			</div>
-			<div class="p-6">
-				<form action="/articles/sendedit?management&option=pages" method="post" class="form-horizontal form-bordered">
-					<div>
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?> :</label>
-						<div class="col-sm-12">
-							<input name="name" type="text" class="form-input" value="<?=$data->name?>">
-						</div>
+<div class="x_panel">
+	<div class="x_title">
+		<h2>Menu Articles</h2>
+		<div class="clearfix"></div>
+	</div>
+	<div class="x_content">
+		<a href="/page?management&pages" class="btn btn-app">
+			<i class="fa fas fa-home"></i> Accueil
+		</a>
+		<a href="page/parameter?management&pages" class="btn btn-app">
+			<i class="fa fas fa-cogs"></i> Configuration
+		</a>
+	</div>
+</div>
+
+<div class="col-md-12">
+	<div class="panel panel-white">
+		<div class="panel-body basic-form-panel">
+			<form action="Articles/sendedit?management&pages" method="post" class="form-horizontal">
+				<div class="form-group">
+					<label for="input-Default" class="col-sm-2 control-label"><?=NAME?></label>
+					<div class="col-sm-10">
+						<input name="name" type="text" class="form-control" id="input-Default" value="<?=$data->name?>">
+						<small>Doit-être unique</small>
 					</div>
-					<div>
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TAGS');?> :</label>
-						<div class="col-sm-12">
-							<input name="tags" placeholder="( séparer par des => , )" value="<?=$tags?>" type="text" value="" data-role="tagsinput" class="form-input">
-						</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"><?=TEXT?></label>
+					<div class="col-sm-10">
+						<textarea class="bel_cms_textarea_full" name="content"><?=$data->content?></textarea>
 					</div>
-					<div>
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TEXT');?> :</label>
-						<div class="mt-2 mb-2">
-							<textarea class="bel_cms_textarea_full" name="content"><?=$data->content?></textarea>
-						</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Accès aux groupes</label>
+					<div class="col-sm-10">
+						<?php
+						$visitor = constant('VISITORS');
+						$groups->$visitor = 0;
+						$ex = explode('|', $data->groups);
+						foreach ($groups as $k => $v):
+							$checked = in_array($v, $ex) ? 'checked="checked"' : '';
+							$checked = $v == 1 ? "checked" : $checked;
+							?>
+							<div class="input-group">
+								<span class="input-group-addon">
+									<input name="groups[]" value="<?=$v?>" type="checkbox" <?=$checked?>>
+								</span>
+								<input type="text" class="form-control" disabled="disabled" value="<?=$k?>">
+							</div>
+							<?php
+						endforeach;
+						?>
 					</div>
-					<div>
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('READMORE_ADMIN');?></label>
-						<div class="col-sm-12 mt-2 mb-2">
-							<textarea class="bel_cms_textarea_full" name="additionalcontent"><?=$data->additionalcontent?></textarea>
-						</div>
-					</div>
-					<div>
-						<div>
-							<input type="hidden" name="author" value="<?=$data->author?>">
-							<input type="hidden" name="id" value="<?=$data->id?>">
-							<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i> <?=constant('SAVE')?></button>
-						</div>
-					</div>
-				</form>
-			</div>
+				</div>
+				<div class="form-group">
+					<input type="hidden" name="id" value="<?=$data->id?>">
+					<button type="submit" class="btn btn-primary"><?=ADD?></button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
-<?php
-endif;
