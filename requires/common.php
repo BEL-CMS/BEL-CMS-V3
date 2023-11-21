@@ -819,4 +819,24 @@ final class Common
 	{
 		return '<a href="' . $d[1] . '" title="' . $d[1] . '" >[Lien]</a>';
 	}
+
+	public static function randomString($length) {
+		$str = random_bytes($length);
+		$str = base64_encode($str);
+		$str = str_replace(["+", "/", "="], "", $str);
+		$str = substr($str, 0, $length);
+		return $str;
+	}
+
+	public static function crypt ($string, $key)
+	{
+		$return = openssl_encrypt($string, "AES-128-ECB" ,$key);
+		return $return;
+	}
+
+	public static function decrypt ($string, $key)
+	{
+		$return = openssl_decrypt($string, "AES-128-ECB",$key);
+		return $return;
+	}
 }

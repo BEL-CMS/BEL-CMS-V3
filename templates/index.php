@@ -144,6 +144,8 @@ class Templates
 		$files[] = 'assets/css/belcms.notification.css';
 		/* FONTAWASOME 6.4.2 ALL */
 		$files[] = 'assets/plugins/fontawesome-6.4.2/css/all.min.css';
+		/* HightLight */
+		$files[] = 'assets/plugins/highlight/styles/github-dark-dimmed.min.css';
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/custom.css')) {
 			$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/custom.css?';
@@ -166,7 +168,7 @@ class Templates
 			$return .= '	<link href="'.$v.'" rel="stylesheet" type="text/css" media="all">'.PHP_EOL;
 		}
 
-		return trim($return);
+		return $return;
 
 	}
 	#########################################
@@ -182,6 +184,19 @@ class Templates
 		$files[] = 'assets/plugins/tinymce/tinymce.min.js';
 		/* FONTAWASOME 6.4.2 ALL */
 		$files[] = 'assets/plugins/fontawesome-6.4.2/js/all.min.js';
+		/* HightLight */
+		$files[] = 'assets/plugins/highlight/highlight.min.js';
+		$files[] = 'assets/plugins/highlight/languages/apache.min.js';
+		$files[] = 'assets/plugins/highlight/languages/css.min.js';
+		$files[] = 'assets/plugins/highlight/languages/javascript.min.js';
+		$files[] = 'assets/plugins/highlight/languages/php.min.js';
+		$files[] = 'assets/plugins/highlight/languages/sql.min.js';
+		$files[] = 'assets/plugins/highlight/go.min.js';
+		$files[] = 'assets/plugins/highlight/set.js';
+		/* Tooltip */
+		$files[] = 'assets/plugins/tooltip/popper.min.js';
+		$files[] = 'assets/plugins/tooltip/tippy-bundle.umd.min.js';
+		$files[] = 'assets/plugins/tooltip/tooltip.js';
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js')) {
 			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js';
@@ -210,6 +225,6 @@ class Templates
 			$return .= '	<script type="text/javascript" src="'.$v.'"></script>'.PHP_EOL;
 		}
 
-		return trim($return);
+		return $return;
 	}
 }
