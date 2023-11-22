@@ -115,7 +115,6 @@ final class User
 						'valid'             => (int) 1,
 						'expire'            => (int) 0,
 						'token'             => '',
-						'expire'            => (int) 0,
 						'god'               => (int) 0
 					);	
 					$insert = New BDD();
@@ -138,7 +137,7 @@ final class User
 						'public_mail'  => '',
 						'websites'     => '',
 						'list_ip'      => '',
-						'avatar'       => constant('AVATAR_DEFAULT'),
+						'avatar'       => constant('DEFAULT_AVATAR'),
 						'config'       => 0,
 						'info_text'    => '',
 						'birthday'     => date('Y-m-d'),

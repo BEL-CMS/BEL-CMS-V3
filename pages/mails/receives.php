@@ -56,9 +56,12 @@ if (User::isLogged() === true):
 					<li><?=Notification::infos(constant('NO_MESSAGE'), null);?></li>
 					<?php
 					else:
+                        $mail_id = current($inbox);
+                        $_SESSION['MAIL_ID'] = $mail_id['data']->mail_id;
 					foreach ($inbox as $value):
 						if ($value['data']->archive_receives == 0):
-							$date = Common::TransformDate($value['read']->date_send, 'MEDIUM', 'SHORT');
+                            $lastMsg = end($value['read']);
+							$date = Common::TransformDate($lastMsg->date_send, 'MEDIUM', 'SHORT');
 							$user = User::ifUserExist($value['data']->author_send);
 							if ($user !== false) {
 								$user = User::getInfosUserAll($value['data']->author_send);
@@ -96,8 +99,38 @@ if (User::isLogged() === true):
 					?>
 				</ul>
 			</div>
-			<div class="belcms_grid_8">
-				
+			<div class="belcms_grid_8" style="display: block;">
+                <div id="belcms_mails_list_read">
+                    <?php
+                    foreach ($inbox as $value):
+                        foreach ($value['read'] as $k => $read):
+                            $clock = Common::TransformDate($read->date_send, 'MEDIUM', 'MEDIUM');
+                            $user  = User::getInfosUserAll($read->author_send);
+                        ?>
+                        <div class="belcms_mails_list_read">
+                            <div class="belcms_mails_list_read_infos">
+                                <ul>
+                                    <li><i class="fa-solid fa-user-pen"></i>&nbsp;<?=$user->user->username;?>
+                                    <li><i class="fa-regular fa-clock"></i>&nbsp;<?=$clock;?></li>
+                                </ul>
+                            </div>
+                            <div class="belcms_mails_list_read_msg">
+                                <?=Common::decrypt($read->message, $read->mail_id)?>
+                            </div>
+                        </div>
+                        <?php 
+                        endforeach;
+                    ?>
+                    <?php
+                    endforeach;
+                    ?>
+                </div>
+                <a id="belcms_mails_list_reply" href="Mails/Reply/<?=$_SESSION['MAIL_ID'];?>" data="<?=constant('REPLY');?>" class="belcms_tooltip_top" class="belcms_btn">
+                    <i class="fa-solid fa-envelope-open-text"></i>&nbsp;<?=constant('REPLY');?>
+                </a>
+                <a id="belcms_mails_list_archive" href="Mails/archive/<?=$_SESSION['MAIL_ID'];?>" data="<?=constant('ARCHIVES');?>" class="belcms_tooltip_top" class="belcms_btn">
+                <i class="fa-solid fa-boxes-packing"></i>&nbsp;<?=constant('ARCHIVES');?>
+                </a>
 			</div>
 		</div>
 	</section>

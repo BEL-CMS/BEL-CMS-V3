@@ -19,14 +19,14 @@ if (User::isLogged() === true):
 	$user = isset($_GET['user']) ? $_GET['user'] : null;
 ?>
 	<section id="belcms_section">
-		<form action="Mails/SendNew" method="post" enctype="multipart/form-data">
+		<form action="Mails/sendNew" method="post" enctype="multipart/form-data">
 			<div id="belcms_mails_new">
 				<div>
 					<div class="belcms_grid_3">
 						<label><?=constant('RECIPIENT');?></label>
 					</div>
 					<div class="belcms_grid_9">
-						<input name="author" type="text" required value="<?=$user;?>">
+						<input id="belcms_mails_new_author" autocomplete="off" type="search" name="author" required value="<?=$user;?>">
 					</div>
 				</div>
 				<div>
@@ -42,7 +42,13 @@ if (User::isLogged() === true):
 						<label><?=constant('MESSAGE');?></label>
 					</div>
 					<div class="belcms_grid_9">
-						<textarea class="bel_cms_textarea_simple" name="content"></textarea>
+						<textarea class="bel_cms_textarea_simple" name="message"></textarea>
+					</div>
+				</div>
+				<div>
+					<div class="belcms_grid_3">&nbsp;</div>
+					<div id="belcms_mails_new_submit" class="belcms_grid_9">
+						<input type="submit" class="belcms_btn belcms_bg_grey " value="<?=constant('SUBMIT');?>">
 					</div>
 				</div>
 			</div>

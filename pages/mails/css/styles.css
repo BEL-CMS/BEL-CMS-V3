@@ -118,3 +118,63 @@ ul#belcms_mail_menu li.active a {
 #belcms_mails_new > div > div {
 	float: left !important;
 }
+#belcms_mails_new_submit {
+	display: block;
+	width: auto;
+	padding: 8px 12px;
+}
+#belcms_mails_list_read {
+	padding: 15px;
+}
+.belcms_mails_list_read {
+	background-color: rgba(242,242,242,1);
+	display: block;
+	width: 100%;
+	margin-bottom: 15px;
+	text-align: justify;
+	border-bottom: 1px solid rgb(238, 238, 238);
+	padding: 10px;
+}
+.belcms_mails_list_read:last-child {
+	margin-bottom: 0;
+}
+.belcms_mails_list_read_infos ul {
+	display: block;
+	list-style: none;
+	overflow: hidden;
+}
+.belcms_mails_list_read_infos ul li {
+	display: block;
+	float: left;
+	padding: 0 10px;
+}
+.belcms_mails_list_read_infos ul li:last-child {
+	float: right;
+}
+.belcms_mails_list_read_infos ul li::after {
+	clear: both;
+	margin-bottom: 5px;
+}
+.belcms_mails_list_read_msg {
+	margin: 5px auto;
+	background-color: #f9f9f9;
+	color: black;
+	text-align: justify;
+	padding: 5px;
+}
+#belcms_mails_list_archive,
+#belcms_mails_list_reply {
+	background-color: #656266;
+	color: #FFF;
+	display: block;
+	max-width: 110px;
+	text-align: left;
+	padding: 5px 15px;
+	margin-left: 25px;
+	float: left;
+}
+#belcms_mails_list_archive {
+	float: right;
+	margin-left: 0;
+	margin-right: 25px;
+}

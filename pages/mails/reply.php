@@ -9,14 +9,31 @@
  * @author as Stive - stive@determe.be
  */
 
-if (!defined('CHECK_INDEX')) {
+use BELCMS\User\User;
+
+if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
-}
-
-if ($_SESSION['user']):
+endif;
+if (User::isLogged() === true):
+	$user = isset($_GET['user']) ? $_GET['user'] : null;
 ?>
-&nbsp;
+	<section id="belcms_section">
+		<form action="Mails/sendNew" method="post" enctype="multipart/form-data">
+			<div id="belcms_mails_new">
+				<div>
+					<div class="belcms_grid_12">
+						<textarea class="bel_cms_textarea_simple" name="message"></textarea>
+					</div>
+				</div>
+				<div>
+					<div id="belcms_mails_new_submit">
+						<input type="submit" class="belcms_btn belcms_bg_grey " value="<?=constant('SUBMIT');?>">
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
 <?php
 endif;
 ?>

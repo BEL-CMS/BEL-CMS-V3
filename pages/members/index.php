@@ -13,7 +13,6 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-
 ?>
 <section id="belcms_section_members_main">
 	<?php
@@ -38,9 +37,7 @@ endif;
 		$vr     = empty($a->social->viber)     ? '' : 'class="active"';
 		$tms    = empty($a->social->teams_ms)  ? '' : 'class="active"';
 		$tc     = empty($a->social->twitch)    ? '' : 'class="active"';
-		if (file_exists($avatar)) {
-			$avatar = $avatar;
-		} else {
+		if (!file_exists($avatar)) {
 			$avatar = constant('DEFAULT_AVATAR');
 		}
 	?>
@@ -107,19 +104,27 @@ endif;
 				</li>
 			</ul>
 			<?php
-			if ($a->user->username == $_SESSION['USER']->user->username):
+			if (isset($_SESSION['USER'])) {
+				if ($a->user->username == $_SESSION['USER']->user->username) {
+				?>
+					<div class="bel_cms_section_members_main_contact">
+						<a href="User"><i class="fa-solid fa-user-gear"></i> Gérer mon compte</a>
+					</div>
+				<?php
+				} else {
+					?>
+					<div class="bel_cms_section_members_main_contact">
+						<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="User/mail/<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
+					</div>
+				<?php	
+				}
+			} else {
 			?>
-			<div class="bel_cms_section_members_main_contact">
-				<a href="User"><i class="fa-solid fa-user-gear"></i> Gérer mon compte</a>
-			</div>
+				<div class="bel_cms_section_members_main_contact">
+					<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="User/mail/<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
+				</div>
 			<?php
-			else:
-			?>
-			<div class="bel_cms_section_members_main_contact">
-				<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="User/mail/<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
-			</div>
-			<?php
-			endif;
+			}
 			?>
 		</div>
 	</div>

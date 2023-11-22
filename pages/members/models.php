@@ -10,9 +10,8 @@
  */
 
 namespace Belcms\Pages\Models;
-use BelCMS\Core\Dispatcher as Dispatcher;
-use BelCMS\Core\Secure as Secure;
-use BelCMS\PDO\BDD as BDD;
+use BelCMS\Core\Dispatcher;
+use BelCMS\PDO\BDD;
 use BelCMS\User\User;
 use BelCMS\Core\Config;
 

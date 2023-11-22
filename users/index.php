@@ -28,7 +28,9 @@ class User
 		if (isset($_SESSION['USER'])) {
 			self::autoUpdateSession();
 		} else {
-			self::autoLogin();
+			if (Dispatcher::view() != 'logout') {
+				self::autoLogin();
+			}
 		}    
     }
 	#########################################
@@ -48,7 +50,7 @@ class User
 	#########################################
 	private function autoUpdateSession ()
 	{
-		if (User::isLogged() === true) {
+		if (User::isLogged() === true and Dispatcher::view() != 'logout') {
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
 			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
@@ -67,7 +69,7 @@ class User
 	private function autoLogin()
 	{
 		// Si la session existe déjà, inutile d'aller plus loin
-		if (self::isLogged() === false) {
+		if (self::isLogged() === false and Dispatcher::view() != 'logout') {
 			// Control si la variable $_COOKIE existe
 			if (
 				isset($_COOKIE['BELCMS_HASH_KEY']) AND
@@ -215,10 +217,13 @@ class User
 			unset($_SESSION['LOGIN_MANAGEMENT']);
 		}
 
-		unset($_SESSION['USER']);
-		setcookie('BELCMS_HASH_KEY', '', -1, '/');
-		setcookie('BELCMS_NAME', '', -1, '/');
-		setcookie('BELCMS_PASS', '', -1, '/');
+		$domain = ($_SERVER['HTTP_HOST']);
+		setcookie('BELCMS_HASH_KEY', 'data', time()-60*60*24*365, '/', $domain, false);
+		setcookie('BELCMS_NAME', 'data', time()-60*60*24*365, '/', $domain, false);
+		setcookie('BELCMS_PASS', 'data', time()-60*60*24*365, '/', $domain, false);
+
+		unset($_SESSION['USER'], $_COOKIE["BELCMS_HASH_KEY"],$_COOKIE["BELCMS_NAME"], $_COOKIE["BELCMS_PASS"]);
+
 		session_destroy();
 
 		$return['msg']  = constant('SESSION_COOKIES_DELETE');
@@ -229,7 +234,6 @@ class User
 			session_start();
 		}
 		$_SESSION['NB_REQUEST_SQL']   = 0;
-		$_SESSION['USER']['HASH_KEY'] = false;
 		/* Re cree la _SESSION; */
 		return $return;
 	}

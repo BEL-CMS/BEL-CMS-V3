@@ -19,10 +19,10 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 if (UserInfos::isLogged() === true):
-	$user->gender   = mb_strtoupper($user->profils->gender);
-	$genderM        = strtoupper($user->profils->gender) == strtoupper(constant('MALE')) ? 'selected' : '';
-	$genderF        = strtoupper($user->profils->gender) == strtoupper(constant('FEMALE')) ? 'selected' : '';
-	$genderU        = strtoupper($user->profils->gender) == strtoupper(constant('UNISEXUAL')) ? 'selected' : '';
+	$user->gender   = strtolower($user->profils->gender);
+	$genderM        = strtoupper($user->profils->gender) == 'MALE' ? 'selected' : '';
+	$genderF        = strtoupper($user->profils->gender) == 'FEMALE' ? 'selected' : '';
+	$genderU        = strtoupper($user->profils->gender) == 'NOSPEC' ? 'selected' : '';
 	require_once 'nav.php';
 	$birthday = Common::DatetimeReverse($user->profils->birthday);
 	if (!empty($user->profils->avatar) and !is_file($user->profils->avatar)) {

@@ -140,6 +140,9 @@ class Templates
 		$return         = '';
 		/* GLOBAL STYLE */
 		$files[] = 'assets/css/belcms.global.css';
+		/* jQuery ui 1.13.2 */
+		$files[] = 'assets/plugins/jquery-ui-1.13.2/themes/base/jquery-ui.min.css';
+		$files[] = 'assets/plugins/jquery-ui-1.13.2/themes/base/theme.css';
 		// NOTIFICATION */
 		$files[] = 'assets/css/belcms.notification.css';
 		/* FONTAWASOME 6.4.2 ALL */
@@ -180,6 +183,9 @@ class Templates
 		$return         = '';
 		/* jQuery 3.7.1 */
 		$files[] = 'assets/js/jQuery/jquery-3.7.1.min.js';
+		/* jQuery ui 1.13.2 */
+		$files[] = 'assets/plugins/jquery-ui-1.13.2/jquery.js';
+		$files[] = 'assets/plugins/jquery-ui-1.13.2/jquery-ui.min.js';
 		/* Tinymce */
 		$files[] = 'assets/plugins/tinymce/tinymce.min.js';
 		/* FONTAWASOME 6.4.2 ALL */
