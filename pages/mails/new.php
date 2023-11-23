@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
 use BELCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
@@ -43,6 +44,14 @@ if (User::isLogged() === true):
 					</div>
 					<div class="belcms_grid_9">
 						<textarea class="bel_cms_textarea_simple" name="message"></textarea>
+					</div>
+				</div>
+				<div>
+					<div class="belcms_grid_3">
+						<label><?=constant('UPLOAD');?> (<?=Common::ConvertSize(Common::GetMaximumFileUploadSize())?> max)</label>
+					</div>
+					<div class="belcms_grid_9">
+						<input type="file" name="upload">
 					</div>
 				</div>
 				<div>

@@ -16,10 +16,9 @@ if (!defined('CHECK_INDEX')):
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 if (User::isLogged() === true):
-	$user = isset($_GET['user']) ? $_GET['user'] : null;
 ?>
 	<section id="belcms_section">
-		<form action="Mails/sendNew" method="post" enctype="multipart/form-data">
+		<form action="Mails/sendReply" method="post" enctype="multipart/form-data">
 			<div id="belcms_mails_new">
 				<div>
 					<div class="belcms_grid_12">
@@ -28,6 +27,7 @@ if (User::isLogged() === true):
 				</div>
 				<div>
 					<div id="belcms_mails_new_submit">
+						<input type="hidden" value="<?=$mail_id;?>" name="mail_id">
 						<input type="submit" class="belcms_btn belcms_bg_grey " value="<?=constant('SUBMIT');?>">
 					</div>
 				</div>

@@ -29,18 +29,18 @@ if (User::isLogged() === true):
 						</a>
 					</li>
 					<li class="belcms_pb_5 active">
-						<a href="Mail/New" data="<?=constant('MAILBOX');?>" class="belcms_btn belcms_tooltip_right">
+						<a href="Mails" data="<?=constant('MAILBOX');?>" class="belcms_btn belcms_tooltip_right">
 						<i class="fa-solid fa-envelope-open-text"></i>
 						</a>
 					</li>
 					<li class="belcms_pb_5">
-						<a href="#" data="<?=constant('SENT_MSG');?>" class="belcms_btn belcms_tooltip_right">
-							<i class="fa-solid fa-paper-plane"></i>
+						<a href="Mails/Archive" data="<?=constant('ARCHIVES');?>" class="belcms_btn belcms_tooltip_right">
+						<i class="fa-solid fa-envelopes-bulk"></i>
 						</a>
 					</li>
 					<li class="belcms_pb_5">
-						<a href="#" data="<?=constant('ARCHIVES');?>" class="belcms_btn belcms_tooltip_right">
-						<i class="fa-solid fa-envelopes-bulk"></i>
+						<a href="Mails/Close" data="<?=constant('CLOSE_MSG');?>" class="belcms_btn belcms_tooltip_right">
+                            <i class="fa-solid fa-square-xmark"></i>
 						</a>
 					</li>
 				</ul>
@@ -71,21 +71,29 @@ if (User::isLogged() === true):
 								$user   = constant('MEMBER_DELETE');
 								$avatar = constant('DEFAULT_AVATAR');
 							}
-							$subject = empty($value['data']->subject) ? constant('NO_SUBJECT') : $value['data']->subject;
-					?>
+							$subject   = empty($value['data']->subject) ? constant('NO_SUBJECT') : $value['data']->subject;
+							$color     = $value['data']->read_msg_receives == 1 ? 'iNew':'Iview';
+							if ($value['data']->author_send == $_SESSION['USER']->user->hash_key) {
+								$color     = $value['data']->read_msg_send == 1 ? 'iNew':'Iview';
+								$textRead  = $value['data']->read_msg_send == 0 ? constant('UNREAD_MESSAGE') : constant('MESSAGE_READ');
+							} else if ($value['data']->author_receives == $_SESSION['USER']->user->hash_key) {
+								$color     = $value['data']->read_msg_receives == 1 ? 'iNew':'Iview';
+								$textRead  = $value['data']->read_msg_receives == 1 ? constant('MESSAGE_READ') : constant('UNREAD_MESSAGE');
+							}
+							?>
 							<li>
 								<div id="belcms_mails_list_screen">
 									<img src="<?=$avatar;?>" alt="" data="<?=$username;?>" class="belcms_tooltip_right">
 								</div>
 								<div>
 									<span>
-										<i class="fa-solid fa-square-envelope"></i>&nbsp;
+										<b data="<?=$textRead;?>" class="<?=$color;?> belcms_tooltip_right"><i class="fa-solid fa-square-envelope"></i></b>&nbsp;
 										<a href="Mails/Read/<?=$value['data']->mail_id;?>" data="<?=constant('READ');?>" class="belcms_tooltip_right">
 											<?=Common::truncate($subject, 30);?>
 										</a>
 									</span>
 									<span><i class="fa-regular fa-clock"></i>&nbsp;<?=Common::truncate($date, 30);?></span>
-									<a href="Mail/Remove/<?=$value['data']->mail_id;?>" title="<?=constant('DELETE');?>">
+									<a href="Mails/Remove/<?=$value['data']->mail_id;?>" title="<?=constant('DELETE');?>">
 										<i class="fa-solid fa-trash-can"></i>
 									</a>
 								</div>
@@ -115,7 +123,16 @@ if (User::isLogged() === true):
                                 </ul>
                             </div>
                             <div class="belcms_mails_list_read_msg">
-                                <?=Common::decrypt($read->message, $read->mail_id)?>
+                                <?=Common::decrypt($read->message, $read->mail_id);?>
+								<?php
+								if (!empty($read->upload)):
+								?>
+									<div class="attachment">
+										<a href="<?=$read->upload?>" target="_blank"><i class="fa-regular fa-floppy-disk"></i>&ensp;<?=constant('FILE');?></a> (<?=Common::SizeFile(ROOT.$read->upload)?>)
+									</div>
+								<?php
+								endif;
+								?>
                             </div>
                         </div>
                         <?php 
@@ -128,7 +145,7 @@ if (User::isLogged() === true):
                 <a id="belcms_mails_list_reply" href="Mails/Reply/<?=$_SESSION['MAIL_ID'];?>" data="<?=constant('REPLY');?>" class="belcms_tooltip_top" class="belcms_btn">
                     <i class="fa-solid fa-envelope-open-text"></i>&nbsp;<?=constant('REPLY');?>
                 </a>
-                <a id="belcms_mails_list_archive" href="Mails/archive/<?=$_SESSION['MAIL_ID'];?>" data="<?=constant('ARCHIVES');?>" class="belcms_tooltip_top" class="belcms_btn">
+                <a id="belcms_mails_list_archive" href="Mails/SendArchive/<?=$_SESSION['MAIL_ID'];?>" data="<?=constant('ARCHIVES');?>" class="belcms_tooltip_top" class="belcms_btn">
                 <i class="fa-solid fa-boxes-packing"></i>&nbsp;<?=constant('ARCHIVES');?>
                 </a>
 			</div>

@@ -28,36 +28,41 @@ if (User::isLogged() === true):
 							<i class="fa-solid fa-at"></i>
 						</a>
 					</li>
-					<li class="belcms_pb_5 active">
+					<li class="belcms_pb_5">
 						<a href="Mails" data="<?=constant('MAILBOX');?>" class="belcms_btn belcms_tooltip_right">
-						<i class="fa-solid fa-envelope-open-text"></i>
+							<i class="fa-solid fa-envelope-open-text"></i>
 						</a>
 					</li>
-					<li class="belcms_pb_5">
+					<li class="belcms_pb_5 active">
 						<a href="Mails/Archive" data="<?=constant('ARCHIVES');?>" class="belcms_btn belcms_tooltip_right">
-						<i class="fa-solid fa-envelopes-bulk"></i>
+							<i class="fa-solid fa-envelopes-bulk"></i>
 						</a>
 					</li>
 					<li class="belcms_pb_5">
 						<a href="Mails/Close" data="<?=constant('CLOSE_MSG');?>" class="belcms_btn belcms_tooltip_right">
-                            <i class="fa-solid fa-square-xmark"></i>
+							<i class="fa-solid fa-square-xmark"></i>
 						</a>
 					</li>
 				</ul>
 			</div>
 			<div class="belcms_grid_4">
 				<div id="belcms_mails_title" class="belcms_pb_15">
-					<h3><i class="fa-solid fa-inbox"></i> <?=constant('MAILBOX');?></h3>
+					<h3><i class="fa-solid fa-envelopes-bulk"></i> <?=constant('ARCHIVES');?></h3>
 				</div>
 				<ul id="belcms_mails_list" class="belcms_pb_10">
 					<?php
 					if (empty($inbox)):
 					?>
-					<li><?=Notification::infos(constant('NO_MESSAGE'), null);?></li>
+					<li><?=Notification::infos(constant('NO_ARCHIVE_MESSAGE'), null);?></li>
 					<?php
 					else:
 					foreach ($inbox as $value):
-						if ($value['data']->archive_receives == 0):
+						if ($value['data']->author_send == $_SESSION['USER']->user->hash_key) {
+							$archive = $value['data']->close_send == 0 ? true : false; 
+						} else if ($value['data']->author_receives == $_SESSION['USER']->user->hash_key) {
+							$archive = $value['data']->close_receives == 0 ? true : false; 
+						}
+						if ($value['data']->archive_receives == 1 and $archive == true):
 							$date = Common::TransformDate($value['read']->date_send, 'MEDIUM', 'SHORT');
 							$user = User::ifUserExist($value['data']->author_send);
 							if ($user !== false) {
@@ -68,23 +73,16 @@ if (User::isLogged() === true):
 								$user   = constant('MEMBER_DELETE');
 								$avatar = constant('DEFAULT_AVATAR');
 							}
-							$subject   = empty($value['data']->subject) ? constant('NO_SUBJECT') : $value['data']->subject;
-							if ($value['data']->author_send == $_SESSION['USER']->user->hash_key) {
-								$color     = $value['data']->read_msg_send == 1 ? 'iNew':'Iview';
-								$textRead  = $value['data']->read_msg_send == 0 ? constant('UNREAD_MESSAGE') : constant('MESSAGE_READ');
-							} else if ($value['data']->author_receives == $_SESSION['USER']->user->hash_key) {
-								$color     = $value['data']->read_msg_receives == 1 ? 'iNew':'Iview';
-								$textRead  = $value['data']->read_msg_receives == 1 ? constant('MESSAGE_READ') : constant('UNREAD_MESSAGE');
-							}
-					?>
+							$subject = empty($value['data']->subject) ? constant('NO_SUBJECT') : $value['data']->subject;
+							?>
 							<li>
 								<div id="belcms_mails_list_screen">
 									<img src="<?=$avatar;?>" alt="" data="<?=$username;?>" class="belcms_tooltip_right">
 								</div>
 								<div>
 									<span>
-										<b data="<?=$textRead;?>" class="<?=$color;?> belcms_tooltip_right"><i class="fa-solid fa-square-envelope"></i></b>&nbsp;
-										<a href="Mails/Read/<?=$value['data']->mail_id;?>" data="<?=constant('READ');?>" class="belcms_tooltip_right">
+										<i class="fa-solid fa-square-envelope"></i>&nbsp;
+										<a href="Mails/ReadArchive/<?=$value['data']->mail_id;?>" data="<?=constant('READ');?>" class="belcms_tooltip_right">
 											<?=Common::truncate($subject, 30);?>
 										</a>
 									</span>

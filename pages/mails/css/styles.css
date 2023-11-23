@@ -4,6 +4,8 @@
 	padding: 25px 20px;
 	background: #f9f9f9;
 	border: 1px solid rgb(238, 238, 238);
+	max-height: 815px;
+	overflow-y: auto;
 }
 #belcms_mails > div {
 	border-right: 1px solid rgb(238, 238, 238);
@@ -45,10 +47,15 @@ ul#belcms_mail_menu li.active a {
 }
 #belcms_mails_list > li {
 	display: block;
-	height: 50px;
+	height: 60px;
 	padding-bottom: 10px;
+	padding-top: 10px;
 	border-bottom: 1px solid rgb(238, 238, 238);
 	position: relative;
+}
+#belcms_mails_list > li:first-child {
+	padding-top: 0;
+	height: 50px;
 }
 #belcms_mails_list > li:last-child {
 	border-bottom: 0;
@@ -76,7 +83,7 @@ ul#belcms_mail_menu li.active a {
 #belcms_mails_list li div > a {
 	position: absolute;
 	right: 0;
-	top: 0;
+	top: 10%;
 	background: red;
 	width: 1.25em;
 	text-align: center;
@@ -108,7 +115,7 @@ ul#belcms_mail_menu li.active a {
 	overflow: hidden;
 }
 #belcms_mails_new > div {
-	display: block;
+	display: inline-table;
 	width: 100%;
 	margin-bottom: 10px;
 	line-height: 30px;
@@ -177,4 +184,13 @@ ul#belcms_mail_menu li.active a {
 	float: right;
 	margin-left: 0;
 	margin-right: 25px;
+}
+#belcms_mails_clos {
+	padding: 25px;
+}
+.iNew {
+	color: red;
+}
+.Iview {
+	color: greenyellow;
 }
