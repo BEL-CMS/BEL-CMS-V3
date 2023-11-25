@@ -1,0 +1,298 @@
+@charset "utf-8";
+/*-reset -*/ 
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;text-decoration:none;margin:0;padding:0}table{border-collapse:separate;border-spacing:0}blockquote:before,blockquote:after,q:before,q:after{content:""}*{margin:0;padding:0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}ol,ul{list-style:none}blockquote,q{quotes:none}:focus{outline:0}table{border-collapse:collapse;border-spacing:0}img{border:0;-ms-interpolation-mode:bicubic;vertical-align:middle}a{text-decoration:none;position:relative;color:#000}audio,video,canvas{max-width:100%}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+html{
+	overflow: hidden !important;
+	height: 100%;
+}
+body {
+	margin: 0;
+	padding: 0;
+ 	font-family: 'Poppins', sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+	background: #2A2A2E;
+	height: 100%;
+	position: relative;
+}
+a {
+	font-family: 'Poppins', sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+}
+p {
+	font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+	margin-bottom: 10px;
+	text-align: justify;
+	font-size: 0.875rem;
+}
+main {
+	position: absolute;
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	border-radius: 3px;
+	display: block;
+	background-color: #FFF;
+	color: #2A2A2E;
+	padding: 40px;
+	overflow-y: scroll;
+}
+@media (min-width: 480px) {
+	main {
+		left: 2%;
+		right: 2%;
+		top: 2%;
+		bottom: 2%;
+	}
+}
+@media (min-width: 768px) {
+	main {
+		left: 5%;
+		right: 5%;
+		top: 5%;
+		bottom: 5%;
+	}
+}
+@media (min-width: 1200px) {
+	main {
+		left: 10%;
+		right: 10%;
+		top: 10%;
+		bottom: 10%;
+	}
+}
+@media (min-width: 1600px) {
+	main {
+		left: 20%;
+		right: 20%;
+		top: 20%;
+		bottom: 20%;
+	}
+}
+main h1 {
+	display: flex;
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: #2b333e;
+	border-bottom: 1px solid #2A2A2E;
+	margin-bottom: 25px;
+}
+main h2 {
+	font-weight: 700;
+	color: #2b333e;
+}
+main > ul {
+	list-style: none !important;
+	padding: 0;
+	margin-bottom: 25px;
+	display: flex;
+}
+main > ul > li {
+	flex-direction: row;
+	width: auto;
+	padding: 0;
+}
+main > ul > li a {
+	width: auto;
+	margin: 0 0.5em 0.5em;
+	padding: 1em 1em;
+	text-decoration: none;
+	display: flex;
+	cursor: default;
+	background: #eee;
+	color: #aaa;
+}
+main > ul > li.active a {
+	background: #2184be;
+	color: #fff;
+}
+main > ul > li a span {
+	line-height: 25px;
+	font-weight: bold;
+}
+main > ul > li a span.number {
+	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25px;
+	height: 25px;
+	border: 1px solid #adb5bd;
+	border-top-color: rgb(173, 181, 189);
+	border-right-color: rgb(173, 181, 189);
+	border-bottom-color: rgb(173, 181, 189);
+	border-left-color: rgb(173, 181, 189);
+	border-radius: 50px;
+	border-color: #fff;
+}
+main > ul > li a span.title {
+	margin-left: 10px;
+}
+main > section {
+	background-color: #e9ecef;
+	margin: 0.5em 0;
+	min-height: 150px;
+	border-radius: 0;
+	padding: 15px;
+}
+main > section h2 {
+	display: inline-block;
+	padding: 0 10px;
+	clear: both;
+	border-bottom: 1px solid rgb(173, 181, 189);
+	margin: auto;
+	margin-bottom: 20px;
+	line-height: 30px;
+}
+main > section span#title {
+	text-align: center;
+	margin: auto;
+	width: 100%;
+	display: block;
+}
+.belcms_notification {
+	border: 1px solid rgba(209, 207, 207, 1);
+	background: rgba(248, 248, 248, 1);
+	margin: 15px auto;
+	width: 100%;
+	overflow: hidden;
+}
+.belcms_notification_header {
+	display: block;
+	width: 100%;
+	padding: 15px;
+	overflow: hidden;
+	color: rgba(255, 255, 255, 0.95);
+	min-height: auto !important;
+}
+.belcms_notification > .error {
+	background-color: rgba(223, 83, 73, .8);
+}
+.belcms_notification > .success {
+	background-color: rgba(106, 189, 110, .8);
+}
+.belcms_notification > .warning {
+	background-color: rgba(255, 170, 43, .8);
+}
+.belcms_notification > .infos {
+	background-color: rgba(42, 167, 246, .8);
+}
+.belcms_notification span {
+	display: block;
+	float: left;
+	margin-left: 15px;
+	line-height: 24px;
+	font-size: 16px;
+	font-weight: bold;
+}
+.belcms_notification .belcms_notification_msg {
+	margin: 15px;
+	padding: 15px;
+	text-align: justify;
+	border: 1px solid rgba(209, 207, 207, 1);
+	background-color: rgba(244, 242, 242, 1);
+	font-weight: 13px;
+	color: grey;
+}
+#menu {
+	display: block;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-weight: bold;
+	position: relative;
+}
+#menu li {
+	display: inline-block;
+	list-style: none;
+	padding: 0; margin: 0;
+}
+#menu li:first-child {
+	float: left;
+}
+#menu li:last-child {
+	float: right;
+}
+#menu li#disabled {
+	display: block;
+}
+#menu li a {
+	width: auto;
+	margin: 0 0.5em 0.5em;
+	padding: 1em 1em;
+	text-decoration: none;
+	display: flex;
+	cursor: default;
+	background: #eee;
+	color: #aaa;
+}
+#menu li#disabled a {
+	font-weight: normal;
+	cursor: not-allowed;
+}
+#menu li#next a,
+#menu li#preview a {
+	background: #5B93D3;
+	font-weight: bold;
+	cursor: pointer;
+	color: #FFF;
+}
+#menu li#next {
+	float: right;
+}
+#menu li a {
+	margin: 0 !important;
+}
+section#code {
+	max-height: 180px;
+	overflow-y: scroll;
+	height: 180px;
+	scroll-behavior: auto;
+}
+code {
+	max-width: 90%;
+	width: 80%;
+	height: 200px;
+	scroll-behavior: auto;
+}
+form {
+	margin-bottom: 15px;
+}
+.form-group {
+	margin-bottom: 10px;
+}
+#install {
+	scroll-behavior: auto;
+}
+#install > div {
+	display: block;
+	width: 100%;
+}
+#install > div {
+	font-size: 13px;
+	display: table;
+	width: 100%;
+	line-height: 20px;
+	padding: 3px 15px;
+	background-color: #CFD8DC;
+}
+#install > div#red {
+	background-color: red;
+	color: #FFF;
+}
+#install > div > span {
+	display: table-cell;
+	font-weight: bold;
+}
+#install > div > span:nth-child(even) {
+	text-align: right;
+}
+#install > div:nth-child(odd) {
+	background-color: #78909C;
+	color: #FFF;
+}
+.visible {
+	display: block;
+}
