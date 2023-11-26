@@ -37,6 +37,7 @@ final class BelCMS
 	public		$typeMime;
 
 	public 		$page,
+	            $view,
 				$widgets = array(),
 				$template;
 
@@ -50,7 +51,9 @@ final class BelCMS
 
 	public function __construct ()
 	{
-		new Visitors;
+		if ($this->view != 'countUnreadMessage') {
+			new Visitors;
+		}
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
 		$this->widgets  = self::getWidgets();
@@ -76,19 +79,22 @@ final class BelCMS
 				$newPage = new $require;
 				if (method_exists($newPage, $view)) {
 					call_user_func_array(array($newPage,$view),Dispatcher::link());
-					echo $newPage->page;
+					if ($newPage->typeMime == 'application/json') {
+						die();
+					}
 					$error = $newPage->error;
+					if ($error === false AND empty($newPage->page)) {
+						Notification::alert('Page '.$this->link.' vide', 'Page', false);
+					} else {
+						echo $newPage->page;
+						self::statsPages();
+					}
 					if ($newPage->error === true) {
 						$error_type = $newPage->errorInfos[0];
 						$error_text = $newPage->errorInfos[1];
 						$error_name = $newPage->errorInfos[2];
 						$error_full = $newPage->errorInfos[3];
 						self::error($error_type, $error_text, $error_name, $error_full);
-					} else {
-						self::statsPages();
-					}
-					if ($error === false AND empty($newPage->page)) {
-						Notification::alert(constant('ERROR_LOADING_PAGE'), constant('WARNING'), true);
 					}
 					$content = ob_get_contents();
 				} else {

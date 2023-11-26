@@ -47,12 +47,4 @@ if ($insert === true): ?>
 </div>
 <?php endif;
 rmAllDir(ROOT.DS.'INSTALL');
-
-if (!isset($_SESSION)) {
-	session_start();
-} else {
-	$_SESSION = array();
-}
-$_SESSION = array();
-$_SESSION['INSTALL'] = true;
-redirect($_SERVER['HTTP_HOST'], 5);
+redirect(GetHost::getBaseUrl(), 5);

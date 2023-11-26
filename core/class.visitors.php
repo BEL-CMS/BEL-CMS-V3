@@ -49,14 +49,13 @@ final class Visitors
 		$this->visitorMonth    = date('m');
 		$this->visitorYear     = date('Y');
 		$this->visitorRefferer = gethostbyname(Common::GetIp());
-		$this->visitedPage     = Dispatcher::page();
 		if (!empty($json)) {
 			$this->visitedUser = $json->hash_key;
 		} else {
 			if (Users::isLogged() === true) {
 				$this->visitedUser = $_SESSION['USER']->user->hash_key;
 			} else {
-				if (preg_match('/([bB]ot|[sS]pider|[yY]ahoo|[gG]oggle)/i', $_SERVER["HTTP_USER_AGENT"] )) {
+				if (preg_match('/bot|crawl|slurp|spider|mediapartners|Mb2345Browser|LieBaoFast|MicroMessenger|zh-CN|zh_CN|Kinza/i', $_SERVER["HTTP_USER_AGENT"] )) {
 					$this->visitedUser = $_SERVER["HTTP_USER_AGENT"];
 				} else {
 					$this->visitedUser = Users::isLogged() === true ? $_SESSION['USER']->user->hash_key : constant('VISITOR');
@@ -67,80 +66,68 @@ final class Visitors
 		$this->insertBdd();
 	}
 
-	private function insertBdd () {
-		# Where datetime - 5min
+	private function insertBdd () 
+	{
+		$insert['visitor_user']     = $this->visitedUser;
+		$insert['visitor_ip']       = Common::GetIp();
+		$insert['visitor_browser']  = $this->visitorBrowser;
+		$insert['visitor_hour']     = $this->visitorHour;
+		$insert['visitor_minute']   = $this->visitorMinute;
+		$insert['visitor_date']     = date("Y-m-d H:i:s");
+		$insert['visitor_day']      = $this->visitorDay;
+		$insert['visitor_month']    = $this->visitorMonth;
+		$insert['visitor_year']     = $this->visitorYear;
+		$insert['visitor_refferer'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+		$insert['visitor_page']     = Dispatcher::page();
+
 		$where[] = array(
 			'name' => 'visitor_ip',
-			'value'=> Common::GetIp()
+			'value'=> Common::GetIp(),
+			'op'    => ' = '
 		);
 		$where[] = array(
 			'name' => 'visitor_day',
-			'value'=> $this->visitorDay
+			'value'=> $this->visitorDay,
+			'op'    => ' = '
 		);
 		$where[] = array(
 			'name' => 'visitor_month',
-			'value'=> $this->visitorMonth
+			'value'=> $this->visitorMonth,
+			'op'    => ' = '
 		);
 		$where[] = array(
 			'name' => 'visitor_year',
-			'value'=> $this->visitorYear
+			'value'=> $this->visitorYear,
+			'op'    => ' = '
 		);
+
 		# table count <1
 		$sql = New BDD;
 		$sql->table('TABLE_VISITORS');
 		$sql->where($where);
-		$sql->queryAll();
-		$return = $sql->rowCount;
-		unset($sql);
-		# Mise à jour
-		if ($return == 0) {
-			# data insert
-			$insert['visitor_ip']       = Common::GetIp();
-			$insert['visitor_user']     = $this->visitedUser;
-			$insert['visitor_browser']  = $this->visitorBrowser;
-			$insert['visitor_hour']     = $this->visitorHour;
-			$insert['visitor_minute']   = $this->visitorMinute;
-			$insert['visitor_date']     = date("Y-m-d H:i:s");
-			$insert['visitor_day']      = $this->visitorDay;
-			$insert['visitor_month']    = $this->visitorMonth;
-			$insert['visitor_year']     = $this->visitorYear;
-			$insert['visitor_refferer'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-			$insert['visitor_page']     = $this->visitedPage;
-			# SQL Insert
+		$sql->count();
+		# Plus d'une fois dans la BDD (multiple page ouverte)
+		if ($sql->data > 1) {
 			$sql = New BDD;
 			$sql->table('TABLE_VISITORS');
-			$sql->insert($insert);
-		} else {
-			$where[] = array(
-				'name'  => 'visitor_ip',
-				'value' => Common::GetIp()
-			);
-			$where[] = array(
-				'name' => 'visitor_day',
-				'value'=> date('d')
-			);
-			$where[] = array(
-				'name' => 'visitor_month',
-				'value'=> date('m')
-			);
-			$where[] = array(
-				'name' => 'visitor_year',
-				'value'=> date('Y')
-			);
-			$update['visitor_user']   = $this->visitedUser;
-			$update['visitor_hour']   = $this->visitorHour;
-			$update['visitor_hour']   = $this->visitorHour;
-			$update['visitor_minute'] = $this->visitorMinute;
-			$update['visitor_page']   = $this->visitedPage;
-			$update['visitor_date']   = date("Y-m-d H:i:s");
+			$sql->where($where);
+			$sql->delete();
+			$this->insertBdd();
+		}
+		# Mise à jour
+		if ($sql->data == 1) {
 			# SQL Update
 			$sql = new BDD;
 			$sql->table('TABLE_VISITORS');
 			$sql->where($where);
-			$sql->update($update);
+			$sql->update($insert);
+		} else {
+			# SQL Insert
+			$sql = New BDD;
+			$sql->table('TABLE_VISITORS');
+			$sql->insert($insert);
 		}
 	}
-
 	public static function getVisitorDay () {
 		$sql = new BDD;
 		$sql->table('TABLE_VISITORS');

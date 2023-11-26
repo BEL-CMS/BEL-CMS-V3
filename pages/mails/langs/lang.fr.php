@@ -44,4 +44,7 @@ Common::constant(array(
 	'MESSAGE_READ'            => 'Message lu',
 	'UNREAD_MESSAGE'          => 'Message non lu',
 	'MESSAGE_DELETE_SUCCESS'  => 'Message mis dans la boite supprimé',
+	'MESSAGE_REPLY_CLOS'      => 'Impossible de répondre au sujet, la destinataire a fermé le message.<br>Retour dans votre boite de réception dans 3s',
+	'SUBCRIBE_OK'             => 'Abonnement au site enregistré',
+	'SUBCRIBE_REMOVE'         => 'Désactivation de l\'abonnement au site enregistré',
 ));

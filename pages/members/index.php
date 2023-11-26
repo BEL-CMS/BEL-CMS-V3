@@ -114,14 +114,14 @@ endif;
 				} else {
 					?>
 					<div class="bel_cms_section_members_main_contact">
-						<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="User/mail/<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
+						<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="Mails/New?user=<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
 					</div>
 				<?php	
 				}
 			} else {
 			?>
 				<div class="bel_cms_section_members_main_contact">
-					<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="User/mail/<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
+					<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="Mails/New?user=<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
 				</div>
 			<?php
 			}

@@ -58,11 +58,13 @@ if (User::isLogged() === true):
 					else:
 					foreach ($inbox as $value):
 						if ($value['data']->author_send == $_SESSION['USER']->user->hash_key) {
-							$archive = $value['data']->close_send == 0 ? true : false; 
+							$archive = $value['data']->archive_send == 1 ? true : false;
+							$close   = $value['data']->close_send == 0 ? true : false;
 						} else if ($value['data']->author_receives == $_SESSION['USER']->user->hash_key) {
-							$archive = $value['data']->close_receives == 0 ? true : false; 
+							$archive = $value['data']->archive_receives == 1 ? true : false;
+							$close   = $value['data']->close_receives == 0 ? true : false;
 						}
-						if ($value['data']->archive_receives == 1 and $archive == true):
+						if ($archive == true and $close == true):
 							$date = Common::TransformDate($value['read']->date_send, 'MEDIUM', 'SHORT');
 							$user = User::ifUserExist($value['data']->author_send);
 							if ($user !== false) {

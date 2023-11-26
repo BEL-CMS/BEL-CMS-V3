@@ -57,6 +57,37 @@ final class Mails
 		return $return;
 	}
 
+	public function testNewMSG () : bool
+	{
+		if (empty($_SESSION['USER'])) {
+			return false;
+		}
+		$hash_key = $_SESSION['USER']->user->hash_key;
+		$whereMail = 'WHERE `author_send` = "'.$hash_key.'" OR `author_receives` = "'.$hash_key.'"';
+		$sql   = New BDD();
+		$sql->table('TABLE_MAILS');
+		$sql->where($whereMail);
+		$sql->isObject(true);
+		$sql->queryAll();
+		$mail = $sql->data;
+		if (!empty($mail)) {
+			foreach ($mail as $a) {
+				if ($a->author_send == $hash_key) {
+					if ($a->read_msg_send == 0) {
+						return true;
+					}
+				}
+				if ($a->author_receives == $hash_key) {
+					if ($a->read_msg_receives == 0) {
+						return true;
+					}
+				}
+			}
+		} else {
+			return false;
+		}
+	}
+
 	public function getMessagesClose ()
 	{
 		$return = array();
@@ -64,24 +95,13 @@ final class Mails
 			return false;
 		} else {
 			$hash_key  = $_SESSION['USER']->user->hash_key;
-			$whereMail = 'WHERE `author_send` = "'.$hash_key.'" AND `close_send` = 1';
+			$whereMail = 'WHERE `author_send` = "'.$hash_key.'" OR `author_receives` = "'.$hash_key.'"';
 			$sql = New BDD();
 			$sql->table('TABLE_MAILS');
 			$sql->where($whereMail);
 			$sql->isObject(true);
 			$sql->queryAll();
 			$mail = $sql->data;
-			foreach ($mail as $key => $value) {
-				$whereRead = array('name' => 'mail_id', 'value' => $value->mail_id);
-				$read   = New BDD();
-				$read->table('TABLE_MAILS_MSG');
-				$read->orderby(array(array('name' => 'id', 'type' => 'DESC')));
-				$read->where($whereRead);
-				$read->isObject(true);
-				$read->queryOne();
-				$return[$key]['data'] = $value;
-				$return[$key]['read'] = $read->data;
-			}
 		}
 		return $return;
 	}
@@ -154,8 +174,7 @@ final class Mails
 	public function readArchive ($mail_id)
 	{
 		if (strlen($_SESSION['USER']->user->hash_key) == 32) {
-			$whereMail[] = array('name' => 'mail_id', 'value' => $mail_id);
-			$whereMail[] = array('name'=> 'author_send', 'value' => $_SESSION['USER']->user->hash_key);
+			$whereMail = array('name' => 'mail_id', 'value' => $mail_id);
 			$sql = New BDD();
 			$sql->table('TABLE_MAILS');
 			$sql->where($whereMail);
@@ -172,6 +191,21 @@ final class Mails
 			$return['data'] = $mail;
 			$return['read'] = $read->data;
 			return $return;
+		}
+	}
+
+	public function getTestReply ($mail_id)
+	{
+		if (strlen($_SESSION['USER']->user->hash_key) == 32) {
+			$whereMail = array('name' => 'mail_id', 'value' => $mail_id);
+			$sql = New BDD();
+			$sql->table('TABLE_MAILS');
+			$sql->fields(array('archive_receives', 'archive_send', 'close_send', 'close_receives'));
+			$sql->where($whereMail);
+			$sql->isObject(true);
+			$sql->queryOne();
+			$mail = $sql->data;
+			return $mail;
 		}
 	}
 
@@ -446,12 +480,20 @@ final class Mails
 				'name'  => 'mail_id',
 				'value' => $data
 			);
+			$whereAuthorReceives[] = array(
+				'name'  => 'author_receives',
+				'value' => $_SESSION['USER']->user->hash_key
+			);
+			$whereAuthorReceives[] = array(
+				'name'  => 'mail_id',
+				'value' => $data
+			);
 			$getAuthorSend = New BDD();
 			$getAuthorSend->table('TABLE_MAILS');
 			$getAuthorSend->where($whereAuthorSend);
 			$getAuthorSend->queryOne();
 			$getAuthorSend = $getAuthorSend->data;
-			if ($getAuthorSend == false) {
+			if (!empty($getAuthorSend)) {
 				$update = array(
 					'archive_send' => 1,
 				);
@@ -465,7 +507,7 @@ final class Mails
 				);
 				$insert = new BDD();
 				$insert->table('TABLE_MAILS');
-				$insert->where($whereAuthorSend);
+				$insert->where($whereAuthorReceives);
 				$insert->update($update);
 			}
 		}
@@ -495,7 +537,7 @@ final class Mails
 			$getAuthorSend->where($whereAuthorSend);
 			$getAuthorSend->queryOne();
 			$getAuthorSend = $getAuthorSend->data;
-			if ($getAuthorSend->author_send == $_SESSION['USER']->user->hash_key) {
+			if ($getAuthorSend != false and $getAuthorSend->author_send == $_SESSION['USER']->user->hash_key) {
 				$update = array(
 					'close_send' => 1,
 				);
@@ -504,13 +546,21 @@ final class Mails
 				$sql->where($whereAuthorSend);
 				$sql->update($update);
 			} else {
+				$whereAuthorReceives[] = array(
+					'name'  => 'author_receives',
+					'value' => $_SESSION['USER']->user->hash_key
+				);
+				$whereAuthorReceives[] = array(
+					'name'  => 'mail_id',
+					'value' => $data
+				);
 				$updateReceives = array(
 					'close_receives' => 1,
 				);
 				$sql = new BDD();
 				$sql->table('TABLE_MAILS');
-				$sql->where($whereAuthorSend);
-				$sql->update($updateReceives);	
+				$sql->where($whereAuthorReceives);
+				$sql->update($updateReceives);
 			}
 			self::deleteAll($data);
 			$return['text']	= constant('MESSAGE_DELETE_SUCCESS');
@@ -527,7 +577,7 @@ final class Mails
 		} else {
 			$data = Common::VarSecure($mail_id, null);
 			$user = $_SESSION['USER']->user->hash_key;
-			$whereMail = 'WHERE `mail_id` = "'.$data.'" AND `close_send` = 1 AND `close_receives` = 1 AND `author_send` = "'.$user.'" OR `author_receives` = "'.$user.'"';
+			$whereMail = 'WHERE `mail_id` = "'.$data.'" AND `close_send` = 1 AND `close_receives` = 1';
 			$getAuthorSend = New BDD();
 			$getAuthorSend->table('TABLE_MAILS');
 			$getAuthorSend->where($whereMail);

@@ -63,6 +63,7 @@ section#belcms_forum {
 	padding: 15px;
 	font-size: 18px;
 	width: 40px;
+	line-height: 40px;
 }
 .belcms_forum_main_cat_ico i {
 	display: block;
@@ -84,12 +85,12 @@ section#belcms_forum {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	line-height: 12px;
+	line-height: 20px;
 }
 .belcms_forum_main_cat_subtitle span {
 	display: block;
 	color: #a0afce;
-	line-height: 12px;
+	line-height: 20px;
 }
 .belcms_forum_main_cat_last,
 .belcms_forum_main_cat_message,
@@ -107,8 +108,23 @@ section#belcms_forum {
 .belcms_forum_main_cat_last div,
 .belcms_forum_main_cat_message div,
 .belcms_forum_main_cat_subject div {
-	line-height: 12px;
+	line-height: 20px;
 	text-align: center;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+	text-decoration: none;
+	margin: 0;
+	padding: 0;
+}
+.belcms_forum_main_cat_last div:first-child,
+.belcms_forum_main_cat_message div:first-child,
+.belcms_forum_main_cat_subject div:first-child {
+	font-weight: bold;
 }
 .belcms_forum_main_cat_avatar {
 	text-align: center;

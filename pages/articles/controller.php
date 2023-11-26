@@ -27,9 +27,6 @@ class Articles extends Pages
 	public function index ()
 	{	
 		$set['data'] = $this->models->getPage();
-		if (empty($set['data'])) {
-			Notification::warning('Aucune page');
-		}
 		foreach ($set['data'] as $k => $v) {
 			if (Secures::IsAcess($v->groups) == false) {
 				unset($set['data'][$k]);
@@ -40,6 +37,7 @@ class Articles extends Pages
 			$set['sub'] = str_replace(".php", "", $page);
 		}
 		$this->set($set);
+		$this->render('index');
 		$this->render('index');
 	}
 

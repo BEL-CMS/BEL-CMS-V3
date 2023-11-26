@@ -21,5 +21,6 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - Articles
 	#####################################
-	'PUBLICATION_DATE' => 'Date de publication : ',
+	'PUBLICATION_DATE'   => 'Date de publication : ',
+	'NO_ITEMS_AVAILABLE' => 'Aucun article de disponible',
 ));

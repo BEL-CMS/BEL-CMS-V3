@@ -49,7 +49,6 @@ if (User::isLogged() === true):
                 <div id="belcms_mails_list_read">
                     <?php
                     foreach ($inbox['read'] as $value):
-                        ?>
                             $clock = Common::TransformDate($value->date_send, 'FULL', 'MEDIUM');
                             $user  = User::getInfosUserAll($value->author_send);
                         ?>

@@ -1,6 +1,6 @@
 <nav>
     <ul class="sf-menu">
-        <li><a href="Articles">Home<span class="sub">Accueil</span></a></li>
+        <li><a href="News">Home<span class="sub">Accueil</span></a></li>
         <li><a href="Pages">Pages<span class="sub">Pages</span></a>
             <ul>
                 <li><a href="#">Page 1 Test</a></li>

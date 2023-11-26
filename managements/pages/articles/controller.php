@@ -45,7 +45,9 @@ class Articles extends AdminPages
 		$menu[] = array(constant('ADD') => array('href'=>'Articles/addsubpage/'.$id.'/?management&option=pages', 'icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 		$menu[] = array(constant('DEL_ALL') => array('href'=>'Articles/deleteAll/'.$id.'/?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$set['data'] = $this->models->getPagecontent($id);
-		$set['name'] = $this->models->getPage($id)->name;
+		if (!empty($set['data'])) {
+			$set['name'] = $this->models->getPage($id)->name;
+		}
 		$set['id']   = (int) $id;
  		$this->set($set);
 		$this->render('page', $menu);

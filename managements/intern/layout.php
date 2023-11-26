@@ -32,14 +32,14 @@ use BelCMS\Core\GetHost;
 </head>
 <body>
 	<div id="loading">
-		<div><img src="/assets/images/loader_7.gif"><p><?=constant('DOWNLOADS_IS_PROGRESS');?></p></div>
+		<div><img src="assets/images/loader_7.gif"><p><?=constant('DOWNLOADS_IS_PROGRESS');?></p></div>
 	</div>
 	<div class="flex wrapper">
 		<div class="app-menu">
 			<a href="Dashboard?admin" class="logo-box">
 				<div class="logo-light">
-					<img src="/managements/assets/images/logo-light.png" class="logo-lg h-6" alt="Light logo">
-					<img src="/managements/assets/images/logo-sm.png" class="logo-sm" alt="Small logo">
+					<img src="managements/assets/images/logo-light.png" class="logo-lg h-6" alt="Light logo">
+					<img src="managements/assets/images/logo-sm.png" class="logo-sm" alt="Small logo">
 				</div>
 			</a>
 			<button id="button-hover-toggle" class="absolute top-5 end-2 rounded-full p-1.5">
@@ -213,12 +213,12 @@ use BelCMS\Core\GetHost;
                 </button>
                 <a href="index.html" class="logo-box">
                     <div class="logo-light">
-                        <img src="/managements/assets/images/logo-light.png" class="logo-lg h-6" alt="Light logo">
-                        <img src="/managements/assets/images/logo-sm.png" class="logo-sm" alt="Small logo">
+                        <img src="managements/assets/images/logo-light.png" class="logo-lg h-6" alt="Light logo">
+                        <img src="managements/assets/images/logo-sm.png" class="logo-sm" alt="Small logo">
                     </div>
                     <div class="logo-dark">
-                        <img src="/managements/assets/images/logo-dark.png" class="logo-lg h-6" alt="Dark logo">
-                        <img src="/managements/assets/images/logo-sm.png" class="logo-sm" alt="Small logo">
+                        <img src="managements/assets/images/logo-dark.png" class="logo-lg h-6" alt="Dark logo">
+                        <img src="managements/assets/images/logo-sm.png" class="logo-sm" alt="Small logo">
                     </div>
                 </a>
                 <div class="md:flex hidden">
@@ -237,9 +237,12 @@ use BelCMS\Core\GetHost;
                         </span>
                     </button>
                 </div>
+				<?php 
+				$avatar = empty($_SESSION['USER']->profils->avatar) or is_file($_SESSION['USER']->profils->avatar) ? constant('DEFAULT_AVATAR') : $_SESSION['USER']->profils->avatar;
+				?>
                 <div class="relative">
                     <button data-fc-type="dropdown" data-fc-placement="bottom-end" type="button" class="nav-link fc-dropdown">
-                        <img src="<?=$_SESSION['USER']->profils->avatar;?>" alt="user-image" class="rounded-full h-10">
+                        <img src="<?=$avatar;?>" alt="user-image" class="rounded-full h-10">
                     </button>
                     <div class="fc-dropdown fc-dropdown-open:opacity-100 hidden opacity-0 w-44 z-50 transition-[margin,opacity] duration-300 mt-2 bg-white shadow-lg border rounded-lg p-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800">
                         <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="pages-gallery.html">

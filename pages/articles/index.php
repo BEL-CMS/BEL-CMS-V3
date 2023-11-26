@@ -58,5 +58,5 @@ if (!empty($data)):
 <?php
 endif;
 if (empty($data) and empty($sub)):
-	Notification::warning('Aucune page de disponible', 'Articles');
+	Notification::warning(constant('NO_ITEMS_AVAILABLE'), 'Articles');
 endif;

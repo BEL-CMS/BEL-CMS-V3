@@ -57,7 +57,15 @@ if (User::isLogged() === true):
 					<?php
 					else:
 					foreach ($inbox as $value):
-						if ($value['data']->archive_receives == 0):
+						$close = $value['data']->author_send == $_SESSION['USER']->user->hash_key ? true : false;
+						if ($close == true) {
+							$test = $value['data']->archive_send == 0 ? true : false;
+							$testClose = $value['data']->close_send == 0 ? true : false;
+						} else {
+							$test = $value['data']->archive_receives == 0 ? true : false;
+							$testClose = $value['data']->close_receives == 0 ? true : false;
+						}
+						if ($test === true and $testClose === true):
 							$date = Common::TransformDate($value['read']->date_send, 'MEDIUM', 'SHORT');
 							$user = User::ifUserExist($value['data']->author_send);
 							if ($user !== false) {

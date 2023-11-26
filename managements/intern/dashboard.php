@@ -50,11 +50,11 @@ function nbCountUsers ()
 	$sql->count();
 	return $sql->data;
 }
-function nbCountArticles ()
+function nbCountNews ()
 {
 	$result = 0;
 	$sql = New BDD();
-	$sql->table('TABLE_PAGES_ARTICLES');
+	$sql->table('TABLE_PAGES_NEWS');
 	$sql->count();
 	return $sql->data;
 }
@@ -81,14 +81,6 @@ function getNbVisitors()
 	$result = 0;
 	$sql = New BDD();
 	$sql->table('TABLE_USERS');
-	$sql->count();
-	return $sql->data;
-}
-function getNbNews()
-{
-	$result = 0;
-	$sql = New BDD();
-	$sql->table('TABLE_PAGES_ARTICLES');
 	$sql->count();
 	return $sql->data;
 }
@@ -175,7 +167,7 @@ $php    = PHP_VERSION;
 					<div class="flex items-center gap-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
 						<div class="">
-							<h4 class="text-lg text-gray-700 dark:text-gray-300 font-medium"><?=nbCountArticles();?></h4>
+							<h4 class="text-lg text-gray-700 dark:text-gray-300 font-medium"><?=nbCountNews();?></h4>
 							<span class="text-sm">Totale d'articles</span>
 						</div>
 					</div>

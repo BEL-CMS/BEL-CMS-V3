@@ -21,7 +21,7 @@ use BelCMS\Core\Comment as Comment;
 <div>
 	<section class="section_bg" id="bel_cms_blog_main">
 		<?php
-		foreach ($articles as $k => $v):
+		foreach ($news as $k => $v):
 			$countComment = Comment::countComments('news', $v->id);
 			$user = User::getInfosUserAll($v->author);
 			if (!$user){

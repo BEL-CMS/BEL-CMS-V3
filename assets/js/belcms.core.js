@@ -26,8 +26,6 @@ if (typeof jQuery === 'undefined') {
 		bel_cms_alert_box($(this), 'GET');
 	});
 
-	bel_cms_private_message();
-
 	if (window.sidebar){
 		//document.onmousedown = disableselect
 		document.onclick = reEnable
@@ -74,10 +72,8 @@ if (typeof jQuery === 'undefined') {
 		$('.colorpicker').colorpicker();
 	}
 
-	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-	  return new bootstrap.Tooltip(tooltipTriggerEl)
-	})
+
+	bel_cms_private_message();
 
     console.log("Chargement BEL-CMS script Ok");
 
@@ -130,45 +126,22 @@ function _initTinymceFull () {
 function bel_cms_private_message () {
 	var currentLink = $(location).attr('pathname').replace('/', '').toLowerCase();
 	if (
-		currentLink == 'articles' || 
-		currentLink == '' || 
-		currentLink == 'home' || 
-		currentLink == 'index.html' ||
-		currentLink == 'index.php'
+		currentLink != 'mails'
 	) {
-		var link = "Inbox/countUnreadMessage?json";
+		var link = "Mails/testMsg?json";
 		$.getJSON(link, {
 			format: "json"
 		}).done(function(data) {
-			if (data >= 1) {
+			if (data.data == true) {
 				bel_cms_create_div_message();
-				$("#bel_cms_private_message").modal('show');
 			}
 		});
 	}
 }
+
 function bel_cms_create_div_message () {
-	var body = $('body');
-	html  = '<div class="modal fade" id="bel_cms_private_message" tabindex="-1" role="dialog" aria-hidden="true">';
-	html += '<div class="modal-dialog modal-dialog-centered" role="document">';
-	html += '<div class="modal-content">';
-	html += '<div class="modal-header">';
-	html += '<h5 class="modal-title">Message priver</h5>';
-	html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-	html += '<span aria-hidden="true">&times;</span>';
-	html += '</button>';
-	html += '</div>';
-	html += '<div class="modal-body">';
-	html += '<p>Vous avez un message priver</p>';
-	html += '<p><a href="Inbox" title="Message priver">Lire le message</a></p>';
-	html += '</div>';
-	html += '<div class="modal-footer">';
-	html += '<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>';
-	html += '</div>';
-	html += '</div>';
-	html += '</div>';
-	html += '</div>';
-	body.append(html);
+	$('body').append('<div id="alrt_bel_cms" class="success">Vous avez un nouveau message <a href="Mails" title="Mail">Lire</a></div>');
+	$('#alrt_bel_cms').animate({ top: 0 }, 1000);
 }
 /*###################################
 # Function Alert box

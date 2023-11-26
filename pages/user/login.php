@@ -46,10 +46,10 @@ if (UserInfos::isLogged() === false):
 							</label>
 						</div>
 						<div class="forgot">
-							<a href="User/lostpassword&echo"><?=constant('FORGOT_PASSWORD');?></a>
+							<a href="/User/lostpassword&echo"><?=constant('FORGOT_PASSWORD');?></a>
 						</div>
 						<div class="nouser">
-							<a href="User/register&echo"><?=constant('DON_T_HAVE_ACCOUNT');?></a>
+							<a href="/User/register&echo"><?=constant('DON_T_HAVE_ACCOUNT');?></a>
 						</div>
 						<input type="hidden" name="send" value="login">
 						<button type="submit" class="btn btn-primary"><?=constant('LOGIN');?><i>==></i></button>

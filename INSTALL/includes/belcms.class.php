@@ -55,7 +55,6 @@ class BelCMS
 			        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 			        <link rel="stylesheet" href="/INSTALL/css/styles.css">
-			        <link rel="stylesheet" href="/assets/plugins/fontawesome-6.1.1/css/all.min.css">
 			    </head>
 			    <body>
 			    	<main>
@@ -65,7 +64,6 @@ class BelCMS
 			        <script src="/INSTALL/js/jquery.min.js"></script>
 			        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 			        <script src="/INSTALL/js/scripts.js"></script>
-			        <script src="/assets/plugins/fontawesome-6.1.1/js/all.min.js"></script>
 				</body>
 			</html>
 			<?php
@@ -184,10 +182,18 @@ function insertUserBDD ()
 				NULL , '".$user['username']."','".$user['hash_key']."','".$user['password']."','".$user['email']."','".$user['ip']."', '1', '0', '', '1'
 			);";
 
-	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_page` (
-				`id`, `hash_key`, `namepage`, `last_visit` 	
-			) VALUES (
-				'','".$user['hash_key']."', NULL, NOW()
+	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_page` (`id`, `hash_key`, `namepage`, `last_visit`) VALUES (
+				'',
+				'".$user['hash_key']."',
+				NULL,
+				NOW()
+			);";
+
+			$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_groups` (`id`, `hash_key`, `user_group`, `user_groups`) VALUES (
+				'',
+				'".$user['hash_key']."',
+				1,
+				1
 			);";
 
 	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_profils` (

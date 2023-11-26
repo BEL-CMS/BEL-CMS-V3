@@ -44,6 +44,18 @@ class Mails extends Pages
 		}
 	}
 	#########################################
+	# Vérifie s'il y a un nouveau message
+	#########################################
+	public function testMsg ()
+	{
+		$this->typeMime = 'application/json';
+		if (User::isLogged() === true) {
+			echo json_encode(array('data' => $this->models->testNewMSG()));
+		} else {
+			echo json_encode(array('data'=> false));
+		}
+	}
+	#########################################
 	# Nouveau message
 	#########################################
 	public function new ()
@@ -133,8 +145,10 @@ class Mails extends Pages
 	{
 		if (User::isLogged() === true) {
 			$data['mail_id'] = $this->data[2];
+			$data['test'] = $this->models->getTestReply($this->data[2]);
 			$this->set($data);
-			$this->render('reply');	
+			$this->render('reply');
+			$this->redirect('Mails', 3);
 		} else {
 			// Redirection vers le login, après 3 secondes
 			$this->redirect('User/login&echo', 3);
@@ -249,6 +263,48 @@ class Mails extends Pages
 			$data['inbox'] = $this->models->readArchive($this->data[2]);
 			$this->set($data);
 			$this->render('readarchive');	
+		} else {
+			// Redirection vers le login, après 3 secondes
+			$this->redirect('User/login&echo', 3);
+			// Initialise une erreur / message information
+			$this->error = true;
+			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	#########################################
+	# Vous ajouté à la liste d'envoi e-mail
+	#########################################
+	public function subcribe ()
+	{
+		if (User::isLogged() === true) {
+			// Redirection vers le login, après 3 secondes
+			$this->redirect('Mails/login&echo', 3);
+			// Initialise une erreur / message information
+			$this->error = true;
+			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
+			$this->errorInfos = array('success', constant('SUBCRIBE_OK'), constant('INFO'), true);
+		} else {
+			// Redirection vers le login, après 3 secondes
+			$this->redirect('User/login&echo', 3);
+			// Initialise une erreur / message information
+			$this->error = true;
+			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	#########################################
+	# Vous retirez de la liste d'envoi e-mail
+	#########################################
+	public function unsubcribe ()
+	{
+		if (User::isLogged() === true) {
+			// Redirection vers le login, après 3 secondes
+			$this->redirect('Mails/login&echo', 3);
+			// Initialise une erreur / message information
+			$this->error = true;
+			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
+			$this->errorInfos = array('success', constant('SUBCRIBE_REMOVE'), constant('INFO'), true);
 		} else {
 			// Redirection vers le login, après 3 secondes
 			$this->redirect('User/login&echo', 3);

@@ -119,7 +119,6 @@ function createConfig ()
 function configIncPhp ()
 {
 	$content  = "<?php".PHP_EOL;
-	$content .= "use BelCMS\Requires\Common;".PHP_EOL;
 	$content .= "/**".PHP_EOL;
 	$content .= "* Bel-CMS [Content management system]".PHP_EOL;
 	$content .= "* @version 3.0.0 [PHP8.3]".PHP_EOL;
@@ -142,8 +141,9 @@ function configIncPhp ()
 	$content .= "'DB_PREFIX'   => '".$_SESSION['prefix']."',".PHP_EOL;
 	$content .= "'DB_PORT'     => '".$_SESSION['port']."'".PHP_EOL;
 	$content .= ");".PHP_EOL;
-	$content .= "Common::constant(\$databases[\$BDD]); unset(\$databases, \$BDD);".PHP_EOL;
-
+	$content .= "foreach (\$databases[\$BDD] as \$constant => \$value) {".PHP_EOL;
+	$content .= "	define(\$constant, \$value); unset(\$databases);".PHP_EOL;
+	$content .= "}".PHP_EOL;
 	return $content;
 }
 
@@ -162,27 +162,25 @@ function isWritable($path) {
 	return true;
 }
 final class GetHost {
+	public static function isHttps() {
+		return (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") ||
+			$_SERVER['SERVER_PORT'] == 443;
+	}
 	public static function getBaseUrl() {
-		$base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='off') ? 'https://' : 'http://';
-		$tmpURL   = dirname(__FILE__);
-		$tmpURL   = str_replace(chr(92),'/',$tmpURL);
-		$tmpURL   = str_replace($_SERVER['DOCUMENT_ROOT'],'',$tmpURL);
-		$tmpURL   = ltrim($tmpURL,'/');
-		$tmpURL   = rtrim($tmpURL, '/');
-
-		if (strpos($tmpURL,'/')) {
-			$tmpURL = explode('/',$tmpURL);
-			$tmpURL = $tmpURL[0];
-		}
-
-		$tmpURL = str_replace('core', '', $tmpURL);
-
-		if ($tmpURL !== $_SERVER['HTTP_HOST']) {
-			$base_url .= $_SERVER['HTTP_HOST'].'/'.$tmpURL;
+		$protocol = self::isHttps() ? 'https' : 'http';
+		if (isset($_SERVER["SERVER_PORT"])) {
+			$port = ':' . $_SERVER["SERVER_PORT"];
 		} else {
-			$base_url .= $tmpURL;
+			$port = '';
 		}
-
-		return $base_url;
+		if ($port == ':80' || $port == ':443') {
+			$port = '';
+		}
+		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		$cutoff = strpos($uri, 'index.php');
+		$uri = substr($uri, 0, $cutoff);
+		$serverName = getenv('HOSTNAME')!==false ? getenv('HOSTNAME') : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '');
+		$serverName = str_replace('INSTALL/','',$serverName);
+		return "$protocol://{$serverName}$port";
 	}
 }

@@ -31,7 +31,8 @@ final class BDD
 				$type,
 				$rowCount,
 				$sqlInsert,
-				$lastId;
+				$lastId,
+				$update;
 	private		$requete,
 				$connect,
 				$isObject = true;
@@ -201,7 +202,8 @@ final class BDD
 
 		$data = (count($data) == 0) ? null : $data;
 		try {
-			$this->rowCount = $this->cnx->execute($data);
+			$this->cnx->execute($data);
+			$this->rowCount = $this->cnx->rowCount();
 			$_SESSION['NB_REQUEST_SQL']++;
 			$this->lastId = self::lastId();
 			$return = true;
@@ -375,6 +377,7 @@ final class BDD
 
 		if (is_array($data) && !empty($data)) {
 			$prepare = ' UPDATE `'.$this->table.'` SET '.trim(implode(', ', $update)).$this->where;
+			$this->update = $prepare;
 			$this->cnx = $this->cnx->prepare($prepare);
 			if (self::sqlExecute($data)) {
 				$this->data = true;

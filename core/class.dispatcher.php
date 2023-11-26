@@ -47,7 +47,7 @@ final class Dispatcher
 	public static function page ($page = null)
 	{
 		if ($page === null) {
-			$page = 'articles';
+			$page = 'news';
 		}
 		$return = null;
 		$dispatcher = new Dispatcher;

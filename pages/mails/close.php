@@ -47,7 +47,7 @@ if (User::isLogged() === true):
 			</div>
 			<div class="belcms_grid_4">
 				<div id="belcms_mails_title" class="belcms_pb_15">
-					<h3><i class="fa-solid fa-inbox"></i> <?=constant('MAILBOX');?></h3>
+					<h3><i class="fa-solid fa-inbox"></i> <?=constant('CLOSE_MSG');?></h3>
 				</div>
 				<ul id="belcms_mails_list" class="belcms_pb_10">
 					<?php
@@ -57,30 +57,38 @@ if (User::isLogged() === true):
 					<?php
 					else:
 					foreach ($inbox as $value):
-						$date = Common::TransformDate($value['read']->date_send, 'MEDIUM', 'SHORT');
-						$user = User::ifUserExist($value['data']->author_send);
-						if ($user !== false) {
-							$user = User::getInfosUserAll($value['data']->author_send);
-							$username = $user->user->username;
-							$avatar = is_file($user->profils->avatar) ? $user->profils->avatar : constant('DEFAULT_AVATAR');
+						$close = $value['data']->author_send == $_SESSION['USER']->user->hash_key ? true : false;
+						if ($close == true) {
+							$test = $value['data']->close_send == 1 ? true : false;
 						} else {
-							$user   = constant('MEMBER_DELETE');
-							$avatar = constant('DEFAULT_AVATAR');
+							$test = $value['data']->close_receives == 1 ? true : false;
 						}
-						$subject = empty($value['data']->subject) ? constant('NO_SUBJECT') : $value['data']->subject;
-					?>
-						<li>
-							<div id="belcms_mails_list_screen">
-								<img src="<?=$avatar;?>" alt="" data="<?=$username;?>" class="belcms_tooltip_right">
-							</div>
-							<div>
-								<span>
-									<i class="fa-solid fa-square-envelope"></i>&nbsp;<b><?=Common::truncate($subject, 30);?></b>
-								</span>
-								<span><i class="fa-regular fa-clock"></i>&nbsp;<?=Common::truncate($date, 30);?></span>
-							</div>
-						</li>
+						if ($test === true):
+							$date = Common::TransformDate($value['read']->date_send, 'MEDIUM', 'SHORT');
+							$user = User::ifUserExist($value['data']->author_send);
+							if ($user !== false) {
+								$user = User::getInfosUserAll($value['data']->author_send);
+								$username = $user->user->username;
+								$avatar = is_file($user->profils->avatar) ? $user->profils->avatar : constant('DEFAULT_AVATAR');
+							} else {
+								$user   = constant('MEMBER_DELETE');
+								$avatar = constant('DEFAULT_AVATAR');
+							}
+							$subject = empty($value['data']->subject) ? constant('NO_SUBJECT') : $value['data']->subject;
+						?>
+							<li>
+								<div id="belcms_mails_list_screen">
+									<img src="<?=$avatar;?>" alt="" data="<?=$username;?>" class="belcms_tooltip_right">
+								</div>
+								<div>
+									<span>
+										<i class="fa-solid fa-square-envelope"></i>&nbsp;<b><?=Common::truncate($subject, 30);?></b>
+									</span>
+									<span><i class="fa-regular fa-clock"></i>&nbsp;<?=Common::truncate($date, 30);?></span>
+								</div>
+							</li>
 						<?php
+						endif;
 					endforeach;
 					?>
 					<?php

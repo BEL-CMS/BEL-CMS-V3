@@ -20,6 +20,7 @@ $array = array(
 	#####################################
 	'DEFAULT_AVATAR'                      => 'assets/img/default_avatar.jpg',
 	'DEFAULT_COLOR_USERNAME'              => '#000',
+	'BOT'                                 => 'Bot',
 	#####################################
 	# Langue Français - COMMUN
 	#####################################
@@ -72,11 +73,7 @@ $array = array(
 	# Fichier lang en français - Erreur
 	### ##################################
 	'ID'                                  => 'ID',
-	'ERROR'                               => 'Erreur',
 	'UNKNOWN_ERROR'                       => 'Erreur inconnu',
-	'WARNING'                             => 'Avertissement',
-	'INFO'                                => 'Information',
-	'SUCCESS'                             => 'Succès',
 	'ACCESS'                              => 'Accès',
 	'NO_ACCESS_REQUEST_PAGE'              => 'L\'accès à la page demandée est interdite',
 	'NO_ACCESS_PAGE'                      => 'La page demandée est actuellement fermée',
@@ -87,7 +84,6 @@ $array = array(
 	'COPYLEFT'                            => '<a id="bel_cms_copyleft" href="https://bel-cms.dev" title="BEL-CMS">Powered by Bel-CMS</a>',
 	'PUBLISH'                             => 'Publier',
 	'YOUR_COMMENT'                        => 'Votre commentaire',
-	'COMMENT'                             => 'commentaire',
 	'COMMENT_EMPTY'                       => 'Commentaire vide',
 	'VIEW_COMMENTS'                       => 'Voir les commentaires',
 	'NO_COMMENT'                          => 'Pas de commentaire',
@@ -119,12 +115,10 @@ $array = array(
 	'CATEGORIES'                          => 'Catégories',
 	'CATEGORIE'                           => 'Catégorie',
 	'WEB_IS_CLOSED'                       => 'Le site web est en mode fermé, seuls les administrateurs suprêmes ont accès.',
-	'AVATAR_DEFAULT'                      => 'assets/images/default_avatar.jpg',
 	########## ###########################
 	# COMMUN
 	#####################################
 	'VALIDATE_MEMBER'                     => 'Membre validé',
-	'VALIDATE_MEMBER'                     => 'Membre actif',
 	'PENDING_MEMBER'                      => 'Membre en attente',
 	'VISITOR'                             => 'Visiteur',
 	'VISITORS'                            => 'Visiteurs',
@@ -175,7 +169,6 @@ $array = array(
 	'MAIL'                                => 'E-mail',
 	'NDD'                                 => 'Nom de domaine',
 	'UPDATE_NOW'                          => 'Mettre à jour maintenant',
-	'FILE'                                => 'Fichier',
 	'FILES'                               => 'Fichiers',
 	'LINK'                                => 'Lien',
 	'LINKS'                               => 'Liens',
@@ -185,7 +178,6 @@ $array = array(
 	'NOW'                                 => 'Maintenant',
 	'ADMINISTRATOR'                       => 'Administrateur',
 	'ADMINISTRATORS'                      => 'Administrateurs',
-	'MANAGEMENTS'                         => 'Managements',
 	'FILE_ATTACHMENT'                     => 'Pièce jointe',
 	'TEXT'                                => 'Texte',
 	'AUTHOR'                              => 'Auteur',
@@ -197,7 +189,6 @@ $array = array(
 	'CLOSE'                               => 'Fermer',
 	'NB_BLOG'                             => 'Nombre de blog',
 	'OPTION'                              => 'Option',
-	'OPTIONS'                             => 'Options',
 	'IP_USER'                             => 'IP',
 	'TOWARDS'                             => 'pour',
 	'WHITE'                               => 'avec',
@@ -225,6 +216,7 @@ $array = array(
 	'CONNECTION'                          => 'connexion',
 	'FILE_NO_FOUND'                       => 'Fichier non trouvé',
 	'FILE'                                => 'Fichier',
+	'FILES'                               => 'Fichiers',
 	'NO_FOUND'                            => 'non trouvé',
 	'FILE_MODELS_NO_FOUND'                => 'Models non trouvé',
 	'ERROR_FILE'                          => 'Erreur de fichier',
@@ -253,6 +245,8 @@ $array = array(
 	'UPLOAD_ERROR_SIZE'                   => 'Le fichier est trop volumineux',
 	'UPLOAD_FILE_SUCCESS'                 => 'Upload effectué avec succès.',
 	'UPLOAD_NONE'                         => 'Aucun fichier en upload',
+	'UPLOAD'                              => 'Télécharger',
+	'SIZE'                                => 'Taille',
 	#####################################
 	# COLOR
 	#####################################
@@ -391,9 +385,8 @@ $array = array(
 	'COMMENT'                             => 'Commentaire',
 	'READMORE'                            => 'Lire la suite',
 	'NEWTHREAD'                           => 'Nouveau Post',
-	'INBOX'                               => 'Boîte de réception',
+	'MAILS'                               => 'Boîte de réception',
 	'MANAGEMENTS'                         => 'Administration',
-	'MEMBERS'                             => 'Membres',
 	#####################################
 	# USER
 	#####################################

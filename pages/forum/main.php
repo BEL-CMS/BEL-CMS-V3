@@ -48,7 +48,7 @@ endif;
 			<div class="belcms_forum_main_cat_ico"><i class="<?=$cat->icon;?>"></i></div>
 			<div class="belcms_forum_main_cat_subtitle">
 				<h3><a href="Forum/Threads/<?=Common::MakeConstant($cat->title)?>?id=<?=$cat->id?>"><?=$cat->title?></a></h3>
-				<div><?=$value->subtitle;?></div>
+				<div><?=$cat->subtitle;?></div>
 			</div>
 			<div class="belcms_forum_main_cat_subject">
 				<div>Sujets</div>

@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Notification;
 use BELCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
@@ -16,6 +17,13 @@ if (!defined('CHECK_INDEX')):
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 if (User::isLogged() === true):
+	if ($test->archive_receives == 1 or $test->archive_send == 1 or $test->close_send == 1 or $test->close_receives == 1):
+	?>
+		<section id="belcms_section">
+			<?=Notification::infos(constant('MESSAGE_REPLY_CLOS'), constant('MESSAGE_ARCHIVE_SUCCESS'));?>
+		</section>
+	<?php
+	else:
 ?>
 	<section id="belcms_section">
 		<form action="Mails/sendReply" method="post" enctype="multipart/form-data">
@@ -34,6 +42,7 @@ if (User::isLogged() === true):
 			</div>
 		</form>
 	</section>
-<?php
+	<?php
+	endif;
 endif;
 ?>

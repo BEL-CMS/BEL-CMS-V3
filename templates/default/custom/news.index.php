@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -14,13 +14,13 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-use BelCMS\User\User as User;
-use BelCMS\Requires\Common as Common;
-use BelCMS\Core\Comment as Comment;
+use BelCMS\User\User;
+use BelCMS\Requires\Common;
+use BelCMS\Core\Comment;
 ?>
 <?php
-	foreach ($articles as $k => $v):
-        $countComment = Comment::countComments('articles', $v->id);
+	foreach ($news as $k => $v):
+        $countComment = Comment::countComments('news', $v->id);
         if ($countComment == 0) {
             $comment = constant('NO_COMMENT');
         } else if($countComment == 1) {
@@ -29,7 +29,7 @@ use BelCMS\Core\Comment as Comment;
             $comment = $countComment.' '.constant('COMMENTS');
         }
 
-		$countComment = Comment::countComments('articles', $v->id);
+		$countComment = Comment::countComments('news', $v->id);
         $authorname   = User::getInfosUserAll($v->author);
 
         if ($authorname == false) {

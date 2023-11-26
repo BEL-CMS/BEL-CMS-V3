@@ -9,13 +9,18 @@
  * @author as Stive - stive@determe.be
  */
 
+if ($_SERVER['SERVER_PORT'] == '80') {
+	$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+} else {
+	$host = 'https://'.$_SERVER['HTTP_HOST'].'/';
+}
+$_SESSION['HTTP_HOST'] = $host;
 $current    = new DateTime('now');
 $date       = $current->format('Y-m-d H:i:s');
 $error      = false;
 $class      = null;
 $insert     = null;
 $sql        = null;
-$host       = $_SERVER['HTTP_HOST'];
 
 switch ($_POST['table']) {
 	case 'articles':

@@ -20,11 +20,13 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - Pages
 	#####################################
-	'ADDED_AN_ARTICLE' => 'Ajouté un article',
-	'ADD_DOWNLOADS'    => 'Ajouté un téléchargement',
-	'CONFIRM_DELETE'   => 'Confirmer la suppression : ',
-	'DEL_CONFIRM'      => 'Confirmer la suppression',
-	'ACCESS_TO_ADMIN'  => 'Accès aux administrateurs',
-	'ACCESS_TO_GROUPS' => 'Accès aux groupes',
-	'TO_REGISTER'      => 'Enregistrer',
+	'ADDED_AN_ARTICLE'          => 'Ajouté un article',
+	'ADD_DOWNLOADS'             => 'Ajouté un téléchargement',
+	'CONFIRM_DELETE'            => 'Confirmer la suppression : ',
+	'DEL_CONFIRM'               => 'Confirmer la suppression',
+	'ACCESS_TO_ADMIN'           => 'Accès aux administrateurs',
+	'ACCESS_TO_GROUPS'          => 'Accès aux groupes',
+	'TO_REGISTER'               => 'Enregistrer',
+	'PARAMETER_EDITING_SUCCESS' => 'Édition des paramètre avec succès',
+	'EDIT_PARAM_ERROR'          => 'Erreur lors de la sauvegarde des paramètre',
 ));

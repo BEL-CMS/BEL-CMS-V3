@@ -37,15 +37,28 @@ endif;
 				$i = 0;
 				$visitor = null;
 				foreach (Visitors::getVisitorConnected()->data as $k => $v):
-					if (User::getInfosUserAll($v->visitor_user)) {
-						$visitor = User::getInfosUserAll($v->visitor_user)->user->username;
+					if (User::ifUserExist($v->visitor_user)) {
+						if (User::getInfosUserAll($v->visitor_user)) {
+							$visitor = User::getInfosUserAll($v->visitor_user)->user->username;
+						}
 					} else {
-						$visitor = constant('VISITOR');
+						if ($visitor != null) {
+							$visitor = strtolower($v->visitor_user);
+							$pos = strpos($visitor, 'bot');
+							if ($pos === false) {
+								$visitor = constant('VISITOR');
+							} else {
+								$visitor = constant('BOT');
+							}
+						} else {
+							$visitor = strtolower($v->visitor_user);
+						}
 					}
+					$page = defined(strtoupper($v->visitor_page)) ? constant(strtoupper($v->visitor_page)) : $v->visitor_page;
 					?>
 					<li>
 						<span><?=$visitor;?></span>
-						<span><?=$v->visitor_page?></span>
+						<span><?=$page?></span>
 					</li>
 					<?php
 					if ($i++ == 5) {

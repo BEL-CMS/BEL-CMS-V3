@@ -52,6 +52,7 @@
 	border-left: 0;
 	border-right: 0;
 	padding: 15px;
+	text-align: justify;
 }
 #belcms_section_articles_main_body img {
 	max-width: 95%;
