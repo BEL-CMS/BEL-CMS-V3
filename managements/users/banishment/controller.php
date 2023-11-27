@@ -14,16 +14,16 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Ban extends AdminPages
+class Banishment extends AdminPages
 {
 	var $admin  = true; // Admin suprême uniquement (Groupe 1);
 	var $active = true; // activation manuel;
-	var $models = 'ModelsBan';
+	var $bdd    = 'ModelsBan';
 
 	public function index ()
 	{
-		$menu[] = array('Accueil'=> array('href'=>'ban?management&option=users','icon'=>'fa fa-home'));
-		$menu[] = array('Ajouter'=> array('href'=>'ban/add?management&option=users','icon'=>'fa fa-plus'));
+		$menu[] = array(constant('HOME') => array('href'=>'banishment?management&option=users','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'banishment/add?management&option=users','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 		$data['ban'] = $this->models->getUsersBan();
 		$this->set($data);
 		$this->render('index', $menu);
@@ -31,8 +31,8 @@ class Ban extends AdminPages
 
 	public function add ()
 	{
+		$menu[] = array(constant('HOME') => array('href'=>'banishment?management&option=users','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$data['author'] = $this->models->getUsers();
-		$menu[]         = array('Accueil'=> array('href'=>'ban?management&option=users','icon'=>'fa fa-home'));
 		$this->set($data);
 		$this->render('add', $menu);
 	}
@@ -41,13 +41,14 @@ class Ban extends AdminPages
 	{
 		$return = $this->models->sendadd($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('ban?management&option=users', 3);
+		$this->redirect('banishment?management&option=users', 3);
 	}
 
 	public function del ($id)
 	{
+		$id = (int) $this->data[2];
 		$return = $this->models->del($id);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('ban?management&option=users', 3);
+		$this->redirect('banishment?management&option=users', 3);
 	}
 }

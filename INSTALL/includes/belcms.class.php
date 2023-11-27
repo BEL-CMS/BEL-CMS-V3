@@ -77,6 +77,7 @@ class BelCMS
 		$tables = array(
 			'articles',
 			'articles_content',
+			'ban',
 			'comments',
 			'config',
 			'config_pages',
@@ -177,7 +178,7 @@ function insertUserBDD ()
 				`valid`,
 				`expire`,
 				`token`,
-				`god`
+				`gold`
 			) VALUES (
 				NULL , '".$user['username']."','".$user['hash_key']."','".$user['password']."','".$user['email']."','".$user['ip']."', '1', '0', '', '1'
 			);";

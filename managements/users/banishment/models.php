@@ -9,6 +9,11 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Secure;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -76,20 +81,20 @@ final class ModelsBan
 		if ($author == false and $email == false and $ipBan == false) {
 			return array(
 				'type' => 'error',
-				'text' => NO_EXIST_USER_IP_MAIL
+				'text' => constant('NO_EXIST_USER_IP_MAIL')
 			);
 		}
 		// Impossible de s'autobannir par nom (logiquement impossible, vu qu'il ne se trouve pas dans la liste)...).
-		if ($author == $_SESSION['USER']['HASH_KEY'] or $ipBan == Common::GetIp()) {
+		if ($author == $_SESSION['USER']->user->username or $ipBan == Common::GetIp()) {
 			return array(
 				'type' => 'error',
-				'text' => IMPOSSIBLE_TO_BAN_YOURSELF
+				'text' => constant('IMPOSSIBLE_TO_BAN_YOURSELF')
 			);
 		}
 		// Utilisateur qui veut ban par hash_key.
 		$user = New BDD;
 		$user->table('TABLE_USERS');
-		$user->where('WHERE 1 AND `hash_key` = "'.$_SESSION['USER']['HASH_KEY'].'"');
+		$user->where('WHERE 1 AND `hash_key` = "'.$_SESSION['USER']->user->hash_key.'"');
 		$user->queryOne();
 		// Utilisateur qui veut ban par ip.
 		$userIP = New BDD;
@@ -101,6 +106,13 @@ final class ModelsBan
 		$sql->table('TABLE_USERS');
 		$sql->where($where);
 		$sql->queryOne();
+		if ($sql->rowCount != 0) {
+			$user = $sql->data;
+			$userHash_key = $user->hash_key;
+			$userInfos = User::getInfosUserAll($userHash_key);
+			$gold = $userInfos->user->gold;
+			$groups = $userInfos->groups->all_groups;
+		}
 		// Contrôle si l'utilisateur a un compte enregistré [NON].
 		if ($sql->rowCount == 0) {
 			// Contrôle si e-mail d'utilisateur est à bannir est bon.
@@ -109,20 +121,20 @@ final class ModelsBan
 				self::addBan (null,$ipBan,$email,$date,$endban,$timeban,$reason);
 				return array(
 					'type' => 'success',
-					'text' => EMAIL_USER.' : '.$email.'<br>'.constant('END').' IP : '.$ipBan.' '.EAST.' '.BANNED_SUCCESSFULLY.'<br>'.BAN_DURATION_OF.' '.$textTime.'<br> date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT')
+					'text' => constant('EMAIL_USER').' : '.$email.'<br>'.constant('END').' IP : '.$ipBan.' '.constant('EAST').' '.constant('BANNED_SUCCESSFULLY').'<br>'.constant('BAN_DURATION_OF').' '.$textTime.'<br> date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT')
 				);
 			} else {
-				$error = NO_EXIST_IP_MAIL;
+				$error = constant('NO_EXIST_IP_MAIL');
 			}
 			if ($email and !empty($error)) {
 				$textTime = defined(strtoupper($timeban)) ? constant(strtoupper($timeban)) : null;
 				self::addBan (null,null,$email,$date,$endban,$timeban,$reason);
 				return array(
 					'type' => 'success',
-					'text' => EMAIL_USER.' : '.$email.' '.EAST.' '.BANNED_SUCCESSFULLY.'<br>'.BAN_DURATION_OF.' '.$textTime.'<br> date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT')
+					'text' => constant('EMAIL_USER').' : '.$email.' '.constant('EAST').' '.constant('BANNED_SUCCESSFULLY').'<br>'.constant('BAN_DURATION_OF').' '.$textTime.'<br> date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT')
 				);
 			} else {
-				$error = EMAIL_USER_BAN;
+				$error = constant('EMAIL_USER_BAN');
 			}
 			// Contrôle si IP d'utilisateur est à bannir est bon.
 			if ($ipBan) {
@@ -130,11 +142,11 @@ final class ModelsBan
 				self::addBan (null,$ipBan,null,$date,$endban,$timeban,$reason);
 				return array(
 					'type' => 'success',
-					'text' => IP_USER.' : '.$ipBan.' '.EAST.' '.BANNED_SUCCESSFULLY.'<br>'.BAN_DURATION_OF.' '.$textTime.'<br> date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT')
+					'text' => constant('IP_USER').' : '.$ipBan.' '.constant('EAST').' '.constant('BANNED_SUCCESSFULLY').'<br>'.constant('BAN_DURATION_OF').' '.$textTime.'<br> date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT')
 				);
-				$error = BANNED_SUCCESSFULLY;
+				$error = constant('BANNED_SUCCESSFULLY');
 			} else {
-				$error = IPV4_IPV6_NO_VALID;
+				$error = constant('IPV4_IPV6_NO_VALID');
 			}
 			// return l'erreur en texte.
 			if (!empty($error)) {
@@ -144,22 +156,22 @@ final class ModelsBan
 				);
 			}
 		// Contrôle si l'utilisateur est un Gold ou du group 1 (administrateur) [OUI].
-		} else if ($sql->data->gold == '1' or $sql->data->groups == '1') {
+		} else if ($gold == '1' or in_array(1, $groups)) {
 			// Contrôle si l'utilisateur qui va bannir est un Gold ou qu'il possède une clef sécurité valide.
 			if ($user->data->gold == '1' or constant('KEY_ADMIN') == $gold) {
 				// Contrôle si l'utilisateur à bannir existe et son IP
-				if (Users::ifUserExist($sql->data->hash_key) and Secure::isIp($sql->data->ip) or $email !== false) {
+				if (User::ifUserExist($sql->data->hash_key) and Secure::isIp($sql->data->ip) or $email !== false) {
 					$textTime = defined(strtoupper($timeban)) ? constant(strtoupper($timeban)) : null;
-					self::addBan ($sql->data->hash_key,$sql->data->ip,$sql->email,$date,$endban,$timeban, $reason);
+					self::addBan ($sql->data->hash_key,$sql->data->ip,$sql->data->email,$date,$endban,$timeban, $reason);
 					return array(
 						'type' => 'success',
-						'text' => USER.' : '.$sql->data->username.' '.EAST.' '.BANNED_SUCCESSFULLY.'<br>'.WHITE.' ' .SINCE.' '.IP_USER.' : '.$sql->data->ip.'<br>'.TOWARDS.' '.$textTime.'.'
+						'text' => constant('USER').' : '.$sql->data->username.' '.constant('EAST').' '.constant('BANNED_SUCCESSFULLY').'<br>'.constant('WHITE').' ' .constant('SINCE').' '.constant('IP_USER').' : '.$sql->data->ip.'<br>'.constant('TOWARDS').' '.$textTime.'.'
 					);
 				// Verifie si l'utilisateur existe et verifie IP valide.
 				} else {
 					return array(
 						'type' => 'error',
-						'text' => NO_EXIST_USER_IP_MAIL
+						'text' => constant('NO_EXIST_USER_IP_MAIL')
 					);
 				}
 			// L'utilisateur qui veut bannir n'est pas Gold ou n'a pas de clé valide.
@@ -167,25 +179,25 @@ final class ModelsBan
 		// Contrôle si l'utilisateur a un compte enregistré [OUI].
 		} else {
 			// Contrôle si l'utilisateur à bannir existe et son IP ou son email.
-			if (Users::ifUserExist($sql->data->hash_key) and Secure::isIp($sql->data->ip) or $sql->data->email !== false) {
+			if (User::ifUserExist($sql->data->hash_key) and Secure::isIp($sql->data->ip) or $sql->data->email !== false) {
 				$textTime = defined(strtoupper($timeban)) ? constant(strtoupper($timeban)) : null;
 				self::addBan ($sql->data->hash_key,$sql->data->ip,$sql->data->email,$date,$endban,$timeban, $reason);
 				return array(
 					'type' => 'success',
-					'text' => USER.' : '.$sql->data->username.' '.EAST.' '.BANNED_SUCCESSFULLY.'<br>'.WHITE.' ' .SINCE.' '.IP_USER.' : '.$sql->data->ip.'<br>'.TOWARDS.' '.$textTime.', date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT').'.'
+					'text' => constant('USER').' : '.$sql->data->username.' '.constant('EAST').' '.constant('BANNED_SUCCESSFULLY').'<br>'.constant('WHITE').' ' .constant('SINCE').' '.constant('IP_USER').' : '.$sql->data->ip.'<br>'.constant('TOWARDS').' '.$textTime.', date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT').'.'
 				);
 			// L'utilisateur n'existe pas ou l'IP n'est pas bon.
 			} else {
 				return array(
 					'type' => 'error',
-					'text' => NO_EXIST_USER_IP_MAIL
+					'text' => constant('NO_EXIST_USER_IP_MAIL')
 				);
 			}
 		}
 	}
 	private function addBan ($author = null,$ip = null, $email = nul, $date = null, $endban = null, $timeban = null, $reason = null
 	) {
-		$insert['who']      = $_SESSION['USER']['HASH_KEY'];
+		$insert['who']      = $_SESSION['USER']->user->hash_key;
 		$insert['author']   = $author;
 		$insert['ip']       = $ip;
 		$insert['email']    = $email;
@@ -245,7 +257,7 @@ final class ModelsBan
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_SUCCESS
+					'text' => constant('DEL_SUCCESS')
 				);
 			} else {
 				$return = array(
@@ -256,7 +268,7 @@ final class ModelsBan
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => UNKNOWN_ERROR_ID
+				'text' => constant('UNKNOWN_ERROR_ID')
 			);
 		}
 		return $return;

@@ -46,6 +46,22 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
 
+	case "ban":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`who` varchar(32) DEFAULT NULL,
+			`author` varchar(32) DEFAULT NULL,
+			`ip` text,
+			`email` text NOT NULL,
+			`date` datetime DEFAULT NULL,
+			`endban` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`timeban` varchar(5) DEFAULT '0',
+			`reason` text NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+	break;
+
 	case 'comments':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -512,7 +528,7 @@ switch ($_POST['table']) {
 			`valid` float NOT NULL DEFAULT '1',
 			`expire` float NOT NULL DEFAULT '0',
 			`token` varchar(50) DEFAULT NULL,
-			`god` int NOT NULL DEFAULT '0',
+			`gold` int NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `name` (`username`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";

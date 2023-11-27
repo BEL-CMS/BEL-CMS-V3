@@ -9,6 +9,8 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -29,7 +31,7 @@ Common::constant(array(
     'BANNED_SUCCESSFULLY'   => 'banni avec succès',
     'USER_WITH_IP'          => 'Utilisateur avec IP',
     'BAN_DURATION_OF'       => 'Pour une duree de : ',
-    'FONFIRM _BAN_REMOVAL'  => 'Confirmer la suppression du ban de : ',
+    'FONFIRM_BAN_REMOVAL'  => 'Confirmer la suppression du ban de : ',
     'BANNED_BY'             => 'Banni par',
     'UNKNOWN_ERROR_ID'      => 'Erreur ID',
 ));

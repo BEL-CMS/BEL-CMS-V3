@@ -3,6 +3,7 @@
 	$ajax = Array(
 		'articles',
 		'articles_content',
+		'ban',
 		'comments',
 		'config',
 		'config_pages',
