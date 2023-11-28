@@ -9,6 +9,10 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Config\Config;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -18,7 +22,7 @@ final class ModelsThemes
 {
 	public function getTpl ()
 	{
-		$return = Common::ScanDirectory(DIR_TPL);
+		$return = Common::ScanDirectory(constant('DIR_TPL'));
 		return $return;
 	}
 
@@ -26,22 +30,26 @@ final class ModelsThemes
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_CONFIG');
-		$sql->where(array('name'=>'name','value'=>'CMS_TPL_WEBSITE'));
+		$sql->where(array('name'=>'name','value'=> 'CMS_TPL_WEBSITE'));
 		$sql->queryOne();
-		$return = $sql->data;
+		if ($sql->rowCount == 0) {
+			$return = 'default';
+		} else {
+			$return = $sql->data;
+		}
 		return $return;
 	}
 
 	public function getTplImg ()
 	{
-		$scan = Common::ScanDirectory(DIR_TPL);
+		$scan = Common::ScanDirectory(constant('DIR_TPL'));
 
 		if (count($scan) !== 0):
 			foreach ($scan as $k => $n):
 				if (is_file('templates'.DS.$n.DS.'screen.png')):
 					$return[$n] = 'templates'.DS.$n.DS.'screen.png';
 				else:
-					$return[$n] = 'templates'.DS.'noscreen.png';
+					$return[$n] = 'assets'.DS.'img'.DS.'no_screen.png';
 				endif;
 			endforeach;
 		else:
@@ -53,7 +61,7 @@ final class ModelsThemes
 
 	public function getInfos ($n = null)
 	{
-		$file = DIR_TPL.$n.DS.'infos.php';
+		$file = constant('DIR_TPL').$n.DS.'infos.php';
 		if (is_file($file)):
 			require_once $file;
 			return $description;
@@ -67,6 +75,9 @@ final class ModelsThemes
 		$sql->where(array('name'=>'name','value'=>'CMS_TPL_WEBSITE'));
 		$sql->update(array('value' => $data));
 		$return = array('type' => 'success', 'text' => 'le Theme principale a été changé', 'title' => 'Templates');
+
+		new Config;
+
 		return $return;
 	}
 
@@ -88,7 +99,7 @@ final class ModelsThemes
 
 	public function listPages ()
 	{
-		$return = Common::ScanDirectory(DIR_PAGES);
+		$return = Common::ScanDirectory(constant('DIR_PAGES'));
 		return $return;
 	}
 
@@ -96,7 +107,7 @@ final class ModelsThemes
 	{
 		$sql = New BDD;
 		$sql->table('TABLE_CONFIG');
-		$sql->where(array('name'=>'name','value'=>'CMS_TPL_FULL'));
+		$sql->where(array('name'=>'name','value'=> constant('CMS_TPL_FULL')));
 		$sql->queryOne();
 		$data = $sql->data;
 		$return = explode(',', $data->value);

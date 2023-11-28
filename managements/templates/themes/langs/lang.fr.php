@@ -1,13 +1,15 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -25,4 +27,7 @@ Common::constant(array(
 	'DATE'              => 'Date',
 	'PAGE_FULL_WIDE'    => 'Page sans widgets à gauche et à droite',
 	'LISTE_OF_TEMPLATE' => 'Liste des thèmes',
+	'ENABLE'            => 'Activer',
+	'ALREADY_ACTIVE'    => 'Déjà actif',
+	'DIMENSION'         => 'Dimension',
 ));

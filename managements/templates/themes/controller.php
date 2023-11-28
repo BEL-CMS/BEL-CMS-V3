@@ -1,4 +1,5 @@
 <?php
+use BelCMS\Requires\Common;
 /**
  * Bel-CMS [Content management system]
  * @version 3.0.0 [PHP8.2]
@@ -16,18 +17,21 @@ endif;
 
 class Themes extends AdminPages
 {
-	var $admin     = true; // Admin suprême uniquement (Groupe 1);
-	var $active    = true;
-	var $models    = 'ModelsThemes';
+	var $admin   = true; // Admin suprême uniquement (Groupe 1);
+	var $active  = true;
+	var $bdd     = 'ModelsThemes';
 
 	public function index ()
 	{
-		$menu[] = array('Accueil'=> array('href'=>'/themes?management&option=templates','icon'=>'fa fa-home'));
-		$menu[] = array('Dimension'=> array('href'=>'/themes/dim?management&option=templates','icon'=>'fa fa-solid fa-arrows-left-right-to-line'));
+		$menu[] = array(constant('HOME') => array('href'=>'themes?management&option=templates','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('DIMENSION') => array('href'=>'themes/dim?management&option=templates','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 
 		$actual = $this->models->getTplActive();
 		$actual = $actual->value;
 		$screen = $this->models->getTplImg();
+		if ($actual == NULL) {
+			$actual = 'default';
+		}
 
 		$return = array();
 
@@ -43,11 +47,11 @@ class Themes extends AdminPages
 				$return[$name]['screen'] = $screen[$name];
 			endif;
 
-			if (strtolower($name) == strtolower($actual)):
+			if (strtolower($name) == strtolower($actual)) {
 				$return[$name]['active'] = true;
-			else:
-				$return[$name]['active'] = 0;
-			endif;
+			} else {
+				$return[$name]['active'] = false;
+			}
 
 			$d = $this->models->getInfos($name);
 			if ($d):
@@ -65,13 +69,13 @@ class Themes extends AdminPages
 		endforeach;
 
 		$data['themes'] = $return;
-
 		$this->set($data);
 		$this->render('index', $menu);
 	}
 
-	public function send ($data)
+	public function send ()
 	{
+		$data = Common::VarSecure($this->data[2], NULL);
 		$return = $this->models->sendTpl($data);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('themes?management&option=templates', 2);
