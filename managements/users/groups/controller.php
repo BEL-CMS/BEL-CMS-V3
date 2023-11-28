@@ -1,4 +1,5 @@
 <?php
+use BelCMS\Core\Config;
 /**
  * Bel-CMS [Content management system]
  * @version 3.0.0 [PHP8.2]
@@ -18,19 +19,20 @@ class Groups extends AdminPages
 {
 	var $admin  = true; // Admin suprême uniquement (Groupe 1);
 	var $active = true; // activation manuel;
-	var $models = 'ModelGroups';
+	var $bdd = 'ModelGroups';
 
 	public function index ()
 	{
-		$menu[] = array('Accueil'=> array('href'=>'/groups?management&users','icon'=>'fa fa-home'));
-		$menu[] = array('Ajouter'=> array('href'=>'/groups/add?management&users','icon'=>'fa fa-plus'));
+		$data['groups'] = Config::getGroups();
+		$menu[] = array(constant('HOME') => array('href'=>'groups?management&option=users','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'groups/add?management&option=users','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$this->set($data);
 		$this->render('index', $menu);
 	}
 
 	public function add ()
 	{
-		$menu[] = array('Accueil'=> array('href'=>'groups?management&users','icon'=>'fa fa-home'));
-		$menu[] = array('Ajouter'=> array('href'=>'/groups/add?management&users','icon'=>'fa fa-plus'));
+		$menu[] = array(constant('HOME') => array('href'=>'groups?management&option=users','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$this->render('new', $menu);
 	}
 
@@ -38,26 +40,26 @@ class Groups extends AdminPages
 	{
 		$return = $this->models->sendnew($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/groups?management&users', '2');
+		$this->redirect('groups?management&option=users', '2');
 	}
 
-	public function detele ($id)
+	public function detele ()
 	{
-		$id = (int) $id;
+		$id = (int) $this->data[2];
 		if ($id == 1 or $id == 2) {
-			$this->error(get_class($this), 'Impossible de supprimer ce groupe', 'error');
-			$this->redirect('/groups?management&users', '1');
+			$this->error(get_class($this), constant('NO_POSSIBLE_GROUPS'), 'error');
+			$this->redirect('groups?management&option=users', '1');
 		} else {
 			$return = $this->models->delete($id);
 			$this->error(get_class($this), $return['text'], $return['type']);
-			$this->redirect('/groups?management&users', '1');
+			$this->redirect('groups?management&option=users', '1');
 			return $return;	
 		}
 	}
 
-	public function edit ($id)
+	public function edit ()
 	{
-		$id = (int) $id;
+		$id = (int) $this->data[2];
 		$data['data'] = $this->models->edit($id);
 		$this->set($data);
 		$this->render('edit');
@@ -65,15 +67,9 @@ class Groups extends AdminPages
 
 	public function sendedit ()
 	{
-		if (isset($POST['id']) and $_POST == 1 or isset($POST['id']) and $_POST == 2) {
-			$this->error(get_class($this), 'Impossible d\'editer ce groupe', 'warning');
-			$return = $this->models->sendedit($_POST);
-			$this->redirect('/groups?management&users', '1');
-		} else {
-			$return = $this->models->sendedit($_POST);
-			$this->error(get_class($this), $return['text'], $return['type']);
-			$this->redirect('/groups?management&users', '1');
-		}
+		$return = $this->models->sendedit($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('groups?management&option=users', '1');
 		return $return;
 	}
 }

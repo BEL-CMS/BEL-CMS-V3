@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -10,40 +10,43 @@
  */
 
 if (!defined('CHECK_INDEX')):
-    header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
-    exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
+	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
+	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
 ?>
-<form action="/groups/sendnew?management&users" enctype="multipart/form-data" method="post" class="form-horizontal form-label-left">
-	<div class="card card-info">
-		<div class="card-header">
-			<h3 class="card-title">Ajouter un groupe</h3>
-		</div>
-		<div class="card-body">
-			<div class="form-group">
-				<label><?=NAME?></label>
-				<div class="col-sm-12">
-					<input name="name" type="text" class="form-control form-control-border" value="" required="required">
+<div class="flex flex-col gap-6">
+	<div class="grid gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4><?=constant('ADD');?> <?=constant('GROUPS');?></h4>
 				</div>
 			</div>
-			<div class="form-group">
-				<label>Couleur du groupe :</label>
-				<div class="input-group">
-					<input type="text" name="color" class="form-control form-control form-control-border colorpicker" value="">
-				</div>
+			<div class="p-6">
+				<form action="groups/sendnew/?management&option=users" enctype="multipart/form-data" method="post">
+					<div class="mt-2 mb-2">
+						<label class="col-md-12 control-label" for="ban_author"><?=constant('NAME')?></label>
+						<input name="name" type="text" class="form-input" value="" required="required">
+					</div>
+					<div class="mt-2 mb-2">
+						<label class="col-md-12 control-label" for="ban_author"><?=constant('COLOR')?></label>
+						<input type="color" name="color" class="form-input" value="">
+					</div>
+					<div class="mt-2 mb-2">
+						<label class="col-md-12 control-label" for="ban_author"><?=constant('UPLOADS_IMG')?> (728*90px)</label>
+						<input type="file" name="image" class="form-input" id="upload" accept="image/*">
+					</div>
+					<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
+						<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
+							<i class="fa fa-dot-circle-o"></i><?=constant('SAVE');?>
+						</button>
+					</div>
+				</form>
 			</div>
-			<div class="form-group">
-				<div class="custom-file">
-					<input type="file" name="image" class="custom-file-input" id="upload" accept="image/*">
-					<label class="custom-file-label" for="upload">Upload</label>
-				</div>
-	        </div>
 		</div>
 	</div>
-	<div class="card-footer" style="margin-top: -15px;">
-		<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> <?=SAVE?></button>
-	</div>
-</form>
+</div>
 <?php
 endif;

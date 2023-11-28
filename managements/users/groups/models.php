@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Bel-CMS [Content management system]
  * @version 3.0.0 [PHP8.2]
@@ -13,6 +14,10 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+
+use BelCMS\Requires\Common;
+use BelCMS\PDO\BDD;
+
 #   TABLE_GROUPS
 #-> id, name, id_group
 final class ModelGroups
@@ -20,9 +25,24 @@ final class ModelGroups
 	public function sendnew ($data)
 	{
 		if (empty($data['name'])) {
-			$return['text']  = GROUP_NAME_EMPTY;
+			$return['text']  = constant('GROUP_NAME_EMPTY');
 			$return['type']  = 'warning';
 			return $return;
+		}
+
+		$dir = ROOT.DS.'uploads'.DS.'groups'.DS;
+		$dirWeb = '/uploads/groups/';
+
+		if (!is_dir($dir)) {
+			mkdir($dir, 0777, true);
+			$fopen  = fopen($dir.'index.html', 'a+');
+			fclose($fopen);
+		}
+
+		$extensions = array('.png', '.gif', '.jpg', '.ico', '.jpeg');
+		if (isset($_FILES['image']['name']) AND !empty($_FILES['image']['name'])) {
+			Common::Upload('image', $dir, $extensions);
+			$d['image'] = $dirWeb.$_FILES['image']['name'];
 		}
 
 		$test = New BDD();
@@ -31,7 +51,7 @@ final class ModelGroups
 		$test->count();
 		$returnCheckName = (int) $test->data;
 		if ($returnCheckName >= 1) {
-			$return['text']  = GROUP_NAME_RESERVED;
+			$return['text']  = constant('GROUP_NAME_RESERVED');
 			$return['type']  = 'warning';
 			return $return;
 		}
@@ -42,20 +62,18 @@ final class ModelGroups
 		$sql->queryOne();
 		$lastid = $sql->data->id_group +1;
 
-
 		$insert = New BDD();
 		$insert->table('TABLE_GROUPS');
 		$d['name']     = Common::VarSecure($data['name']);
 		$d['color']    = Common::VarSecure($data['color']);
 		$d['id_group'] = Common::SecureRequest($lastid);
-		$insert->sqldata($d);
-		$insert->insert();
+		$insert->insert($d);
 		# check insert new group
 		if ($insert->rowCount == 1) {
-			$return['text']	= GROUP_SEND_SUCCESS;
+			$return['text']	= constant('GROUP_SEND_SUCCESS');
 			$return['type']	= 'success';
 		} else {
-			$return['text']	= GROUP_ERROR_SUCCESS;
+			$return['text']	= constant('GROUP_ERROR_SUCCESS');
 			$return['type']	= 'error';
 		}
 		return $return;
@@ -75,18 +93,18 @@ final class ModelGroups
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_GROUP_SUCCESS
+					'text' => constant('DEL_GROUP_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_GROUP_ERROR
+					'text' => constant('DEL_GROUP_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -103,12 +121,13 @@ final class ModelGroups
 
 	public function sendedit ()
 	{
-		$dir = 'uploads/groups/';
+		$dir = ROOT.DS.'uploads'.DS.'groups'.DS;
+		$dirWeb = '/uploads/groups/';
 
-		if (!is_dir(DIR_UPLOADS.$dir)) {
-		    mkdir(DIR_UPLOADS.$dir, 0777, true);
+		if (!is_dir($dir)) {
+			mkdir($dir, 0777, true);
 			$fopen  = fopen($dir.'index.html', 'a+');
-			$fclose = fclose($fopen); 
+			fclose($fopen);
 		}
 
 		$extensions = array('.png', '.gif', '.jpg', '.ico', '.jpeg');
@@ -116,27 +135,27 @@ final class ModelGroups
 			Common::Upload('image', $dir, $extensions);
 		}
 
-		$d['image'] = $dir.$_FILES['image']['name'];
+		$d['image'] = $dirWeb.$_FILES['image']['name'];
 
 		$s = New BDD;
 		$s->table('TABLE_GROUPS');
 		$s->where(array('name' => 'id_group','value' => $_POST['id']));
-		$d['name']  = Common::VarSecure($_POST['name']);
+		if ($_POST['id'] != 1 AND $_POST['id'] != 2) {
+			$d['name']  = Common::VarSecure($_POST['name']);
+		}
 		$d['color'] = Common::VarSecure($_POST['color']);
-
-		$s->sqldata($d);
-		$s->update();
+		$s->update($d);
 
 		// SQL RETURN NB DELETE
 		if ($s->rowCount == 1) {
 			$return = array(
 				'type' => 'success',
-				'text' => EDIT_GROUP_SUCCESS
+				'text' => constant('EDIT_GROUP_SUCCESS')
 			);
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => EDIT_GROUP_ERROR
+				'text' => constant('EDIT_GROUP_ERROR')
 			);
 		}
 		return $return;
