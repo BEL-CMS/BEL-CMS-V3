@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -15,57 +15,60 @@ if (!defined('CHECK_INDEX')):
 endif;
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
 ?>
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title">Liste des full pages</h3>
-		<div class="card-tools">
-			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-				<i class="fas fa-minus"></i>
-			</button>
-		</div>
-	</div>
-	<div class="card-body">
-		<div class="table-responsive">
-			<form action="/themes/sendpages?management&option=templates" method="post">
-				<table class="table table-vcenter table-bordered">
-					<thead>
-						<tr>
-							<th><?=PAGE_FULL_WIDE;?></th>
-							<th><?=ACTIVATE?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						foreach ($scan as $k => $n):
-							$chcked = in_array($n, $pages) ? 'checked="checked"': '';
-							$name   = defined(strtoupper($n)) ? constant(strtoupper($n)) : $n;
-						?>
-						<tr>
-							<td><?=$name?></td>
-							<td>
-								<input <?=$chcked?> type="checkbox" name="full[]" data-bootstrap-switch data-off-color="danger" data-on-color="success" value="<?=$n?>">
-							</td>
-						</tr>
-						<?php
-						endforeach;
-						?>
-						<tr>
-							<td>Articles Readmore</td>
-							<td>
-								<input checked="checked" type="checkbox" name="full[]" data-bootstrap-switch data-off-color="danger" data-on-color="success" value="readmore">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div class="form-group form-actions">
-					<div class="col-sm-9 col-sm-offset-3">
-						<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> <?=SAVE?></button>
+<form action="themes/sendpages?management&option=templates" method="post">
+	<div class="flex flex-col gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title"><?=constant('LISTE_OF_TEMPLATE');?></h4>
+				</div>
+			</div>
+			<div class="p-6">
+				<div class="overflow-x-auto">
+					<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+						<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
+							<thead>
+								<tr>
+									<th><?=constant('PAGE_FULL_WIDE');?></th>
+									<th><?=constant('ACTIVATE');?></th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php
+							foreach ($scan as $k => $n):
+								$chcked = in_array($n, $pages) ? 'checked="checked"': '';
+								$name   = defined(strtoupper($n)) ? constant(strtoupper($n)) : $n;
+							?>
+								<tr>
+									<td><?=$name?></td>
+									<td>
+										<input <?=$chcked?> type="checkbox" name="full[]" data-bootstrap-switch data-off-color="danger" data-on-color="success" value="<?=$n?>">
+									</td>
+								</tr>
+							<?php
+							endforeach;
+							?>
+							<tr>
+								<td>News Readmore</td>
+								<td>
+									<input checked="checked" type="checkbox" name="full[]" data-bootstrap-switch data-off-color="danger" data-on-color="success" value="readmore">
+								</td>
+							</tr>
+						</tbody>
+						</table>
 					</div>
 				</div>
-			</form>
+			</div>
+			<div class="p-6">
+				<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
+					<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
+						<i class="fa fa-dot-circle-o"></i><?=constant('SAVE');?>
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
+</form>
 <?php
 endif;
 ?>

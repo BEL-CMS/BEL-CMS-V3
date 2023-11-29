@@ -88,7 +88,9 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 							endforeach;
 							?>
 						</tbody>
-			</table>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
