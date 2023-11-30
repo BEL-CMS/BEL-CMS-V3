@@ -1,4 +1,5 @@
 <?php
+use BelCMS\Requires\Common;
 /**
  * Bel-CMS [Content management system]
  * @version 3.0.0 [PHP8.2]
@@ -21,7 +22,7 @@ class Styles extends AdminPages
 	#########################################
 	var $admin  = true; // Admin suprême uniquement (Groupe 1);
 	var $active = true; // activation manuel;
-	var $models = 'ModelsStyles';
+	var $bdd = 'ModelsStyles';
 	#########################################
 	# Premiere page avec le rendu de la page index.php
 	#########################################
@@ -32,8 +33,9 @@ class Styles extends AdminPages
 	#########################################
 	# Recupere le styles.css de la page
 	#########################################
-	public function edit ($page)
+	public function edit ()
 	{
+		$page = Common::VarSecure($this->data[2]);
 		$return['data'] = $this->models->getStylesCss ($page);
 		$return['page'] = $page;
 		$this->set($return);
@@ -51,8 +53,9 @@ class Styles extends AdminPages
 	#########################################
 	# Recupere le styles.css du widget
 	#########################################
-	public function editWidgets ($widget)
+	public function editWidgets ()
 	{
+		$widget = Common::VarSecure($this->data[2]);
 		$return['data']   = $this->models->getStylesCssWidgets ($widget);
 		$return['widget'] = $widget;
 		$this->set($return);

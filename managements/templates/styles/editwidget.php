@@ -14,14 +14,16 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<form action="/styles/sendWidget?management&option=templates" method="post">
-	<div class="card">
-		<div class="card-header">
-			Styles
-		</div>
-		<div class="card-body">
-			<div class="form-group">
-				<label class="col-sm-12 control-label" for="checkbox"><?=TEXT?></label>
+<form action="styles/sendWidget?management&option=templates" method="post">
+	<div class="grid gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title"><?=constant('STYLES');?></h4>
+				</div>
+			</div>
+			<div class="p-6">
+				<div class="mt-2 mb-2">
 					<textarea rows="15" cols="35" name="content" style="width: 100%;">
 						<?php
 						echo $data;
@@ -29,10 +31,14 @@ endif;
 					</textarea>
 				</div>
 			</div>
-		</div>
-		<div class="card-footer">
-			<input type="hidden" name="widget" value="<?=$widget;?>">
-			<button type="submit" class="btn btn-primary"><?=SUBMIT?></button>
+			<div class="p-6">
+				<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
+					<input type="hidden" name="widget" value="<?=$widget;?>">
+					<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
+						<i class="fa fa-dot-circle-o"></i><?=constant('SAVE');?>
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </form>

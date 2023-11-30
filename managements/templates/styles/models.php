@@ -14,6 +14,8 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
+use BelCMS\Requires\Common;
+
 final class ModelsStyles
 {
 	#########################################
@@ -21,8 +23,8 @@ final class ModelsStyles
 	#########################################
 	public function getStylesCss ($name = null)
 	{
-		$filename = DIR_PAGES.$name.DS.'css'.DS.'styles.css';
-		$dirName  = DIR_PAGES.$name.DS.'css';
+		$filename = constant('DIR_PAGES').$name.DS.'css'.DS.'styles.css';
+		$dirName  = constant('DIR_PAGES').$name.DS.'css';
 		if (is_file($filename)) {
 			$fileContent = file_get_contents($filename, true);
 		} else {
@@ -40,8 +42,8 @@ final class ModelsStyles
 	public function sendEditCss ($data = null, $page = null)
 	{
 		if ($data != null && $page) {
-			$filename = DIR_PAGES.$page.DS.'css'.DS.'styles.css';
-			$dirName  = DIR_PAGES.$page.DS.'css';
+			$filename = constant('DIR_PAGES').$page.DS.'css'.DS.'styles.css';
+			$dirName  = constant('DIR_PAGES').$page.DS.'css';
 			if (!file_exists($dirName)) {
 				mkdir($dirName, 0777, true);
 			}
@@ -69,8 +71,8 @@ final class ModelsStyles
 	#########################################
 	public function getStylesCssWidgets ($name = null)
 	{
-		$filename = DIR_WIDGETS.$name.DS.'css'.DS.'styles.css';
-		$dirName  = DIR_WIDGETS.$name.DS.'css';
+		$filename = constant('DIR_WIDGETS').$name.DS.'css'.DS.'styles.css';
+		$dirName  = constant('DIR_WIDGETS').$name.DS.'css';
 		if (is_file($filename)) {
 			$fileContent = file_get_contents($filename, true);
 		} else {
@@ -88,8 +90,8 @@ final class ModelsStyles
 	public function sendEditCssWidget ($data = null, $page = null)
 	{
 		if ($data != null && $page) {
-			$filename = DIR_WIDGETS.$page.DS.'css'.DS.'styles.css';
-			$dirName  = DIR_WIDGETS.$page.DS.'css';
+			$filename = constant('DIR_WIDGETS').$page.DS.'css'.DS.'styles.css';
+			$dirName  = constant('DIR_WIDGETS').$page.DS.'css';
 			if (!file_exists($dirName)) {
 				mkdir($dirName, 0777, true);
 			}
