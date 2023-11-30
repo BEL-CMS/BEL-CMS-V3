@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -20,44 +20,37 @@ if ($data['status'] == 'open') {
 	$ckd = '';
 }
 ?>
-
-<form action="/unavailable/sendpostOpen?management&option=parameter"  method="post" class="form-horizontal form-label-left">
-	<div class="card card-info">
-		<div class="card-header">
-			<h3 class="card-title">Maintenance : Statut du site</h3>
-		</div>
-		<div class="card-body">
-			<label class="custom-switch">
-				<input value="open" type="checkbox" name="close" class="custom-switch-input" <?=$ckd?>>
-				<span class="custom-switch-indicator"></span>
-				<span class="custom-switch-description">Ouvert</span>
-			</label>
-		</div>
-		<div class="card-footer" style="margin-top: -15px;">
-			<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> <?=SEND?></button>
-		</div>
-	</div>
-</form>
-
-<form action="/unavailable/sendpost?management&parameter=true" enctype="multipart/form-data" method="post" class="form-horizontal form-label-left">
-	<div class="card card-secondary">
-		<div class="card-header">
-			<h3 class="card-title">Message de fermeture</h3>
-		</div>
-		<div class="form-group">
-			<label class="control-label col-md-12">Titre</label>
-			<div class="col-md-12">
-				<input type="text" name="title" class="form-control" value="<?=$data['title']?>">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="control-label col-md-12">Description</label>
-			<div class="col-md-12">
-				<textarea name="description" class="form-control" rows="3" placeholder=''><?=$data['description']?></textarea>
-			</div>
-		</div>
-		<div class="card-footer">
-			<button type="submit" class="btn btn-primary mb-5"><?=SEND?></button>
+<div class="grid lg:grid-cols-2 gap-6">
+	<div class="card">
+		<div class="card-header"><h4>Maintenance : Statut du site</h4></div>
+		<div class="p-6">
+			<form action="unavailable/send?management&option=parameter" method="post">
+				<div class="overflow-x-auto">
+					<div class="mt-2 mb-2">
+						<div class="flex items-center">
+                            <input type="checkbox" name="close" id="switch" class="form-switch square text-warning" <?=$ckd?>>
+							<label for="switch" class="ms-2"><?=constant('OPEN');?></label>
+                        </div>
+					</div>
+					<div class="mt-2 mb-2">
+						<label class="col-md-12 control-label" for="ban_author"><?=constant('NAME')?></label>
+						<input type="text" name="title" class="form-input" value="<?=$data['title']?>">
+					</div>
+					<div class="mt-2 mb-2">
+						<div class="flex">
+                            <div class="inline-flex items-center whitespace-nowrap px-3 rounded-s border border-e-0 border-gray-200 bg-gray-50 text-gray-500 dark:bg-gray-700 dark:border-gray-700 	dark:text-gray-400">
+								<?=constant('DESCRIPTION');?>
+                            </div>
+                            <textarea name="description" rows="4" class="form-textarea ltr:rounded-s-none rtl:rounded-e-none"><?=$data['description']?></textarea>
+                        </div>
+					</div>
+					<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
+						<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
+							<i class="fa fa-dot-circle-o"></i><?=constant('SAVE');?>
+						</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
-</form>
+</div>

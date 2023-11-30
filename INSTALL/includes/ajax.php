@@ -17,6 +17,7 @@
 		'mails_blacklist',
 		'mails_msg',
 		'mails_unsubscribe',
+		'maintenance',
 		'newsletter',
 		'newsletter_send',
 		'newsletter_tpl',

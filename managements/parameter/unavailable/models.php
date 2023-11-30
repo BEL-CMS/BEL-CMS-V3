@@ -14,6 +14,9 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+
 final class ModelsUnavailable
 {
 	#####################################
@@ -55,47 +58,48 @@ final class ModelsUnavailable
 		if ($sql->rowCount == 1) {
 			$return = array(
 				'type' => 'success',
-				'text' => EDIT_CLOSE_SUCCESS
+				'text' => constant('EDIT_CLOSE_SUCCESS')
 			);
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => EDIT_CLOSE_ERROR
+				'text' => constant('EDIT_CLOSE_ERROR')
 			);
 		}
 
 		return $return;
 	}
 
-	public function sendpost ($data)
+	public function send ($data)
 	{
-		$title = Common::VarSecure($data["title"], '');
-		$description = Common::VarSecure($data['description'], 'html');
+		if (isset($data["close"]) && ($data["close"] == 'on')) {
+			$edit = 'open';
+		} else {
+			$edit = 'close';
+		}
 		// SQL UPDATE
+		$sql = New BDD();
+		$sql->table('TABLE_MAINTENANCE');
+		$sql->where(array('name' => 'id', 'value' => 1));
+		$sql->update(array('value' => $edit));
 
+		$title = Common::VarSecure($data["title"], '');
 		$te = New BDD();
 		$te->table('TABLE_MAINTENANCE');
 		$te->where(array('name' => 'id', 'value' => 2));
 		$te->update(array('value' => $title));
 
+		$description = Common::VarSecure($data['description'], 'html');
 		$desc = New BDD();
 		$desc->table('TABLE_MAINTENANCE');
 		$desc->where(array('name' => 'id', 'value' => 3));
 		$desc->update(array('value' => $description));
 
 		// SQL RETURN NB UPDATE
-		if ($desc->rowCount == 1) {
-			$return = array(
-				'type' => 'success',
-				'text' => EDIT_CLOSE_SUCCESS
-			);
-		} else {
-			$return = array(
-				'type' => 'error',
-				'text' => EDIT_CLOSE_ERROR
-			);
-		}
-
+		$return = array(
+			'type' => 'success',
+			'text' => constant('EDIT_CLOSE_SUCCESS')
+		);
 		return $return;
 	}
 }

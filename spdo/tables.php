@@ -35,6 +35,7 @@ $tables = array(
 	'TABLE_MAILS'               => $DB_PREFIX.'mails',
 	'TABLE_MAILS_MSG'           => $DB_PREFIX.'mails_msg',
 	'TABLE_MAIL_UNSUBCRIBE'     => $DB_PREFIX.'mails_unsubscribe',
+	'TABLE_MAINTENANCE'         => $DB_PREFIX.'maintenance',
 	'TABLE_NEWSLETTER'          => $DB_PREFIX.'newsletter',
 	'TABLE_NEWSLETTE_SEND'      => $DB_PREFIX.'newsletter_send',
 	'TABLE_NEWSLETTER_TPL'      => $DB_PREFIX.'newsletter_tpl',

@@ -18,7 +18,7 @@ class Unavailable extends AdminPages
 {
 	var $admin     = true; // Admin suprême uniquement (Groupe 1);
 	var $active    = true;
-	var $models    = 'ModelsUnavailable';
+	var $bdd    = 'ModelsUnavailable';
 
 	public function index ()
 	{
@@ -27,16 +27,9 @@ class Unavailable extends AdminPages
 		$this->render('index');
 	}
 
-	public function sendpostOpen ()
+	public function send ()
 	{
-		$return = $this->models->openClose($_POST);
-		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('unavailable?management&option=parameter', 0);
-	}
-
-	public function sendpost ()
-	{
-		$return = $this->models->sendpost($_POST);
+		$return = $this->models->send($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('unavailable?management&option=parameter', 2);
 	}

@@ -20,8 +20,10 @@ $array = array(
 	#####################################
 	'DEFAULT_AVATAR'                      => 'assets/img/default_avatar.jpg',
 	'DEFAULT_COLOR_USERNAME'              => '#000',
-	'BOT'                                 => 'Bot',
-	#####################################
+	'BOT'                                 => 'Robot',
+	'NO_NAME'                             => 'Pas de Nom',
+	'ADMIN_ONLY'                          => 'Administrateur de Nv1 seulement',
+ 	#####################################
 	# Langue Français - COMMUN
 	#####################################
 	'SUCCESS'                             => 'Succès',

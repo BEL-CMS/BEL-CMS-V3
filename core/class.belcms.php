@@ -11,14 +11,14 @@
 
 namespace BelCMS\Core;
 use BelCMS\Core\Debug as debug;
-use BelCMS\Core\Visitors as Visitors;
-use BelCMS\PDO\BDD as BDD;
-use BelCMS\User\User as User;
-use BelCMS\Core\Dispatcher as Dispatcher;
-use BelCMS\Widgets\Widgets as Widgets;
+use BelCMS\Core\Visitors;
+use BelCMS\PDO\BDD;
+use BelCMS\User\User;
+use BelCMS\Core\Dispatcher;
+use BelCMS\Widgets\Widgets;
 use BelCMS\Templates\Templates as Template;
-use BelCMS\Core\GetHost as GetHost;
-use BelCMS\Core\Notification as Notification;
+use BelCMS\Core\GetHost;
+use BelCMS\Core\Notification;
 use Belcms\Managements\Managements;
 use BelCMS\Requires\Common;
 
@@ -71,6 +71,20 @@ final class BelCMS
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
 		new User;
+		$unavailable = new \Maintenance;
+		if ($unavailable->status() == 'close') {
+			if (User::isLogged()) {
+				if (in_array(1, $_SESSION['USER']->groups->all_groups)) {
+					Notification::alert($unavailable->description(), constant('WARNING'), false);
+				}
+			} else {
+				if (empty($_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'])) {
+					$_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'] = constant('NO_NAME');
+				}
+				require ROOT.DS.'maintenance'.DS.'tpl'.DS.'index.php';
+				die();
+			}
+		}
 		if (Dispatcher::isPage($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']) === true) {
 			$dir = constant('DIR_PAGES').strtolower($this->link).DS.'controller.php';
 			if (is_file($dir)) {
