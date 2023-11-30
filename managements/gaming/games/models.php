@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -14,6 +14,10 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
+use BelCMS\Requires\Common;
+use BelCMS\PDO\BDD;
+use BelCMS\Core\Config;
+
 final class ModelsGames
 {
 	#####################################
@@ -25,7 +29,8 @@ final class ModelsGames
 	#####################################
 	public function getGames ($id = null)
 	{
-		$sql = New BDD();
+		$return = (object) array();
+		$sql    = New BDD();
 		$sql->table('TABLE_PAGES_GAMES');
 
 		if ($id !== null && is_numeric($id)) {
@@ -36,11 +41,16 @@ final class ModelsGames
 			);
 			$sql->where($where);
 			$sql->queryOne();
-			return $sql->data;
+			$return = $sql->data;
 		} else {
 			$sql->queryAll();
-			return $sql->data;
+			if (empty($sql->data)) {
+				$return = (object) array();
+			} else {
+				$return = $sql->data;
+			}
 		}
+		return $return;
 	}
 	#####################################
 	# Ajoute un jeu
@@ -49,16 +59,7 @@ final class ModelsGames
 	{
 		$error  = 0;
 		$error1 = 0;
-		$dir = 'uploads/games/';
-		if (!file_exists($dir)) {
-			if (!mkdir($dir, 0777, true)) {
-				throw new Exception('Failed to create directory');
-			} else {
-				$fopen  = fopen($dir.'/index.html', 'a+');
-				$fclose = fclose($fopen);
-			}
-		}
-
+		$dir    = 'uploads/games/';
 		$extensions = array('.png', '.gif', '.jpg', '.jpeg');
 
 		if ($_FILES['banner']['size'] != 0) {
@@ -119,14 +120,7 @@ final class ModelsGames
 		$error  = 0;
 		$error1 = 0;
 		$dir = 'uploads/games/';
-		if (!file_exists($dir)) {
-			if (!mkdir($dir, 0777, true)) {
-				throw new Exception('Failed to create directory');
-			} else {
-				$fopen  = fopen($dir.'/index.html', 'a+');
-				$fclose = fclose($fopen);
-			}
-		}
+
 		$extensions = array('.png', '.gif', '.jpg', '.jpeg');
 
 		if ($_FILES['banner']['size'] != 0) {
@@ -143,9 +137,8 @@ final class ModelsGames
 					$return['type'] = 'warning';
 				}
 			}
-		} else {
-			$edit['banner'] = $data['banner2'];
 		}
+
 		if ($_FILES['ico']['size'] != 0) {
 			$extension = strrchr($_FILES['ico']['name'], '.');
 			if (!in_array($extension, $extensions)) {
@@ -160,8 +153,6 @@ final class ModelsGames
 					$return['type'] = 'warning';
 				}
 			}
-		} else {
-			$edit['ico'] = $data['ico2'];
 		}
 
 		/* Secure data before insert BDD */
@@ -171,11 +162,9 @@ final class ModelsGames
 		$sql = New BDD();
 		$sql->table('TABLE_PAGES_GAMES');
 		$sql->where(array('name'=>'id','value'=> $id));
-		$sql->insert($edit);
-		$sql->update();
-		$countRowUpdate = $sql->rowCount;
+		$sql->update($edit);
 
-		if ($countRowUpdate != 0) {
+		if ($sql->rowCount != 0) {
 			$return['msg']  = 'Vos informations ont été sauvegardées avec succès';
 			$return['type'] = 'success';
 		} else {
@@ -211,15 +200,51 @@ final class ModelsGames
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_GAME_SUCCESS
+					'text' => constant('DEL_GAME_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_GAME_ERROR
+					'text' => constant('DEL_GAME_ERROR')
 				);
 			}
 			return $return;
 		}
+	}
+
+	public function sendparameter($data = null)
+	{
+		if ($data !== false) {
+			$data['MAX_GAMING_PAGE'] = (int) $data['MAX_GAMING_PAGE'];
+			$opt                     = array('MAX_GAMING_PAGE' => $data['MAX_GAMING_PAGE']);
+			$data['admin']           = isset($data['admin']) ? $data['admin'] : array(1);
+			$data['groups']          = isset($data['groups']) ? $data['groups'] : array(1);
+			$upd['config']           = Common::transformOpt($opt, true);
+			$upd['active']           = isset($data['active']) ? 1 : 0;
+			$upd['access_admin']     = implode("|", $data['admin']);
+			$upd['access_groups']    = implode("|", $data['groups']);
+			// SQL UPDATE
+			$sql = New BDD();
+			$sql->table('TABLE_PAGES_CONFIG');
+			$sql->where(array('name' => 'name', 'value' => 'games'));
+			$sql->update($upd);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDIT_GAME_PARAM_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_GAME_PARAM_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
 	}
 }

@@ -11,6 +11,7 @@
 
 namespace BelCMS\Requires;
 use \DateTime as DateTime;
+use BelCMS\Core\GetHost;
 use \IntlDateFormatter as IntlDateFormatter;
 use BelCMS\PDO\BDD as BDD;
 use BelCMS\Core\Secure as Secure;
@@ -205,6 +206,9 @@ final class Common
 			$return = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		} else {
 			$return = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_CLIENT_IP']);
+		}
+		if (isset($_SERVER['SERVER_ADDR']) != empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$return = $_SERVER['SERVER_ADDR'];
 		}
 		// IP Local
 		if ($return == '::1') {
@@ -415,9 +419,10 @@ final class Common
 		$subject  = (isset($data['subject']) AND !empty($data['subject'])) ? $data['subject'] : 'Bel-CMS MAIL';
 		$content  = (isset($data['content']) AND !empty($data['content'])) ? $data['content'] : 'Testing Website mail';
 		$sendMail = (isset($data['sendMail']) AND !empty($data['sendMail'])) ? $data['sendMail'] : false;
+		$link     = (isset($data['link']) AND !empty($data['link'])) ? $data['link'] : '<a href="'.GetHost::getBaseUrl().'/Mails/unsubcribe">unsubcribe</a>';
+		$content .= $content.'<br><br><div style="background:#333333; color:#FFF;"><p>Cette alerte email vous a été envoyée par '.$fromName.'</p><p>Vous ne souhaitez plus recevoir cette alerte ? Désactivez-la, '.$fromName.'</p><br><br>';
 
 		if ($sendMail) {
-
 			if (Secure::isMail($sendMail)) {
 				$headers   = array();
 				$headers[] = "MIME-Version: 1.0";
@@ -815,7 +820,7 @@ final class Common
 		return $string;
 	}
 
-	public function cesureHref($d) 
+	public static function cesureHref($d) 
 	{
 		return '<a href="' . $d[1] . '" title="' . $d[1] . '" >[Lien]</a>';
 	}

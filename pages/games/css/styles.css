@@ -1,0 +1,43 @@
+#belcms_section_games {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    padding: 0 !important;
+}
+.belcms_section_games_row {
+    background: rgba(242, 242, 242, 1);
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    display: block;
+    clear: both;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.belcms_section_games_row h2 {
+    font-weight: bold;
+    text-align: left !important;
+    padding: 0 15px;
+    margin-top: 15px;
+}
+.belcms_section_games_img {
+    width: 100%;
+    display: block;
+    margin: auto;
+    max-height: 400px;
+    border-top-left-radius: calc(.25rem - 1px);
+    border-top-right-radius: calc(.25rem - 1px);
+}
+.belcms_section_games_infos ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    margin-top: 15px;
+    line-height: 30px;
+    height: 30px;
+    text-align: left !important;
+    padding-left: 15px;
+    text-decoration: none;
+}
+.belcms_section_games_infos ul li {
+    padding: 0 15px;
+    margin: 0;
+}

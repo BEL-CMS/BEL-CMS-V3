@@ -11,6 +11,7 @@
 use BelCMS\Core\BelCMS as BelCMS;
 use BelCMS\Core\Dispatcher;
 use Belcms\Management\Managements;
+use BelCMS\Ban\_Ban as Ban;
 #########################################
 # TimeZone et charset
 #########################################
@@ -22,10 +23,16 @@ date_default_timezone_set('Europe/Brussels');
 if(!isset($_SESSION)) {
 	session_start();
 }
+#########################################
+# Microtime pour le chargement de la page
+#########################################
 function getmicrotime(){
 	list($usec, $sec) = explode(" ",microtime());
 	return ((float)$usec + (float)$sec);
 }
+#########################################
+# Enregistre des éléments dans la $_SESSION
+#########################################
 $_SESSION['TIME_START']     = getmicrotime();
 $_SESSION['CMS_DEBUG']      = true; /* a mettre en false pour un site en ligne */
 $_SESSION['CONFIG_CMS']     = array();
@@ -40,10 +47,21 @@ define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', __DIR__);
 define('SHOW_ALL_REQUEST_SQL', false);
 #########################################
+# Install
+#########################################
+if (is_file(ROOT.DS.'INSTALL'.DS.'index.php')) {
+	header('Location: INSTALL/index.php');
+	die();
+}
+#########################################
 # Fichier requis
 #########################################
 require_once ROOT.DS.'requires'.DS.'constant.php';
 require_once ROOT.DS.'requires'.DS.'requires.all.php';
+#########################################
+# Bannissement
+#########################################
+new Ban();
 #########################################
 # Initialise le C.M.S
 #########################################

@@ -251,7 +251,7 @@ class User
 				'name'  => 'hash_key',
 				'value' => $hash_key
 			));
-			$user->fields(array('username','hash_key', 'mail', 'ip', 'valid', 'expire', 'token'));
+			$user->fields(array('username','hash_key', 'mail', 'ip', 'valid', 'expire', 'token', 'gold'));
 			$user->isObject(false);
 			$user->queryOne();
 			if (!empty($user->data)) {
@@ -301,13 +301,36 @@ class User
 				$user->isObject(false);
 				$user->queryOne();
 				$e = array('page' => (object) $user->data);
-				$return = (object) array_merge($a, $b, $c, $d, $e);
+				/* Return info de la table game */
+				$game = new BDD();
+				$game->table('TABLE_USERS_GAMING');
+				$game->where(array(
+					'name'  => 'hash_key',
+					'value' => $hash_key
+				));
+				$game->fields(array('name_game'));
+				$game->isObject(false);
+				$game->queryOne();
+				$f = array('games' => (object) $game->data);
+				$return = (object) array_merge($a, $b, $c, $d, $e, $f);
+				if (empty($game->data)) {
+					$return->games->name_game = (object) array();
+				} else if (!empty($game->data->name_game)) {
+					$return->games->name_game = explode("|", $game->data);
+				}
 				$return->user->color = User::colorUsername($hash_key);
 				$return->groups->all_groups[] = (int) $return->groups->user_group;
-				$groups  = explode("|", $return->groups->user_groups);
-				foreach ($groups as $k => $v) {
-					if (!in_array($v, $return->groups->all_groups)) {
-						$return->groups->all_groups[] = (int) $v;
+				$count = strpos($return->groups->user_groups,'|');
+				if ($count === false) {
+					$groups  = explode("|", $return->groups->user_groups);
+					foreach ($groups as $k => $v) {
+						if (!in_array($v, $return->groups->all_groups)) {
+							$return->groups->all_groups[] = (int) $v;
+						}
+					}
+				} else {
+					if (!in_array($return->groups->user_groups, $return->groups->all_groups)) {
+						$return->groups->all_groups[] = (int) $return->groups->user_groups;
 					}
 				}
 			} else {

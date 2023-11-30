@@ -134,7 +134,8 @@ switch ($_POST['table']) {
 			('', 'gallery', 1, '0', '1', ''),
 			('', 'managements', 1, '1', '1', ''),
 			('', 'news', 1, '1|0', '1', 'MAX_NEWS==2'),
-			('', 'mails', 1, '2', '1', NULL);";
+			('', 'mails', 1, '2', '1', NULL);
+			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5');";
 	break;
 
 	case 'config_tpl':
@@ -186,6 +187,17 @@ switch ($_POST['table']) {
 	  		`name` varchar(64) NOT NULL,
 	  		`dir` text NOT NULL,
 	  		`code` varchar(16) NOT NULL,
+	  		PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "games":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+	  		`id` int NOT NULL AUTO_INCREMENT,
+	  		`name` varchar(128) NOT NULL,
+	  		`banner` text NOT NULL,
+	  		`ico` text NOT NULL,
 	  		PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
@@ -495,7 +507,8 @@ switch ($_POST['table']) {
 			('', 0, 'team'),
 			('', 0, 'user'),
 			('', 0, 'news'),
-			('', 0, 'mails');";
+			('', 0, 'mails'),
+			('', 0, 'games');";
 	break;
 
 	case "page_survey":
@@ -548,6 +561,17 @@ switch ($_POST['table']) {
 			UNIQUE KEY `name` (`username`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
+	break;
+
+	case "users_gaming":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`hash_key` varchar(32) NOT NULL,
+			`name_game` text NOT NULL,
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `hash_key` (`hash_key`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
 	case "users_groups":

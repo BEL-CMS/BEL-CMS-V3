@@ -107,6 +107,7 @@ class BelCMS
 			'page_survey_author',
 			'page_survey_quest',
 			'users',
+			'users_gaming',
 			'users_groups',
 			'users_page',
 			'users_profils',

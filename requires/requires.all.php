@@ -37,6 +37,8 @@ $files = array (
 	ROOT.DS.'spdo'.DS.'spdo.class.php',
 	ROOT.DS.'core'.DS.'class.error.php',
 	ROOT.DS.'config'.DS.'class.config.php',
+	ROOT.DS.'ban'.DS.'index.php',
+	ROOT.DS.'maintenance'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.notification.php',
 	ROOT.DS.'core'.DS.'class.comment.php',
 	ROOT.DS.'core'.DS.'class.gesthost.php',
@@ -54,6 +56,7 @@ $files = array (
 	ROOT.DS.'templates'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.belcms.php',
 );
+
 foreach ($files as $include) {
 	try {
 		require $include;
