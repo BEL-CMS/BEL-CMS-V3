@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -13,6 +13,8 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+
+use BelCMS\Requires\Common;
 
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
 	if (function_exists('mysqli_connect')) {
@@ -83,100 +85,105 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 	$obj = json_decode($data);
 	$update = VERSION_CMS <= $obj->UPDATE ? '<span style="color:green;">Vous êtes à jour.</span>' : '<span style="color:red;">Veuillez mettre à jour le C.M.S</span>';
 ?>
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title">Information du serveur</h3>
-		<div class="card-tools">
-			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-				<i class="fas fa-minus"></i>
-			</button>
+<div class="flex flex-col gap-6">
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title"><?=constant('PAGES');?></h4>
+			</div>
 		</div>
-	</div>
-	<div class="card-body">
-		<table id="DataTableBelCMSADMIN" class="table table-vcenter table-condensed table-bordered">
-			<thead>
-				<th>Nom</td>
-				<th>Version</td>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Version du C.M.S</td>
-					<td><?=VERSION_CMS;?> <?=$update;?></td>
-				</tr>
-				<tr>
-					<td>Lien du C.M.S</td>
-					<td><a href="<?=$obj->BELCMS;?>" title="BEL-CMS"><?=$obj->BELCMS;?></a></td>
-				</tr>
-				<tr>
-					<td>Version du C.M.S Github</td>
-					<td><?=$obj->UPDATE;?></td>
-				</tr>
-				<tr>
-					<td>Nom de la machine</td>
-					<td><?=gethostname();?></td>
-				</tr>
-				<tr>
-					<td>Nom du serveur</td>
-					<td><?=$_SERVER['SERVER_NAME'];?></td>
-				</tr>
-				<tr>
-					<td>Capacité du HDD/SSD restant</td>
-					<td><?=$df;?></td>
-				</tr>
-				<tr>
-					<td>RAM Total aloué</td>
-					<td><?=$ram;?></td>
-				</tr>
-				<tr>
-					<td>Utilisation du CPU</td>
-					<td><?=get_server_load();?>%</td>
-				</tr>
-				<tr>
-					<td>Maximum de memoire aloué</td>
-					<td><?=$maxMemory;?> Ram</td>
-				</tr>
-				<tr>
-					<td>IP du serveur</td>
-					<td><?=$hostnameIP;?></td>
-				</tr>
-				<tr>
-					<td>SMTP</td>
-					<td><?=$smtp;?></td>
-				</tr>
-				<tr>
-					<td>SiteWeb Securise</td>
-					<td><?=$http;?></td>
-				</tr>
-				<tr>
-					<td>Version de PHP</td>
-					<td><?=$php;?></td>
-				</tr>
-				<tr>
-					<td>Liste des erreurs PHP</td>
-					<td><?=$phpError;?></td>
-				</tr>
-				<tr>
-					<td>mySQLI</td>
-					<td><?=$mysqli->server_version;?></td>
-				</tr>
-				<tr>
-					<td>Le serveur tourne sous</td>
-					<td><?=System::getOS()?></td>
-				</tr>
-				<tr>
-					<td>Maximum en Upload</td>
-					<td><?=$uploadMax;?> max</td>
-				</tr>
-				<tr>
-					<td>Heure local</td>
-					<td><?=$date;?></td>
-				</tr>
-				<tr>
-					<td>TimeZone</td>
-					<td><?=$timezone;?></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
+						<thead class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('INFOS');?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Version du C.M.S</td>
+								<td><?=VERSION_CMS;?> <?=$update;?></td>
+							</tr>
+							<tr>
+								<td>Lien du C.M.S</td>
+								<td><a href="<?=$obj->BELCMS;?>" title="BEL-CMS"><?=$obj->BELCMS;?></a></td>
+							</tr>
+							<tr>
+								<td>Version du C.M.S Github</td>
+								<td><?=$obj->UPDATE;?></td>
+							</tr>
+							<tr>
+								<td>Nom de la machine</td>
+								<td><?=gethostname();?></td>
+							</tr>
+							<tr>
+								<td>Nom du serveur</td>
+								<td><?=$_SERVER['SERVER_NAME'];?></td>
+							</tr>
+							<tr>
+								<td>Capacité du HDD/SSD restant</td>
+								<td><?=$df;?></td>
+							</tr>
+							<tr>
+								<td>RAM Total aloué</td>
+								<td><?=$ram;?></td>
+							</tr>
+							<tr>
+								<td>Utilisation du CPU</td>
+								<td><?=get_server_load();?>%</td>
+							</tr>
+							<tr>
+								<td>Maximum de memoire aloué</td>
+								<td><?=$maxMemory;?> Ram</td>
+							</tr>
+							<tr>
+								<td>IP du serveur</td>
+								<td><?=$hostnameIP;?></td>
+							</tr>
+							<tr>
+								<td>SMTP</td>
+								<td><?=$smtp;?></td>
+							</tr>
+							<tr>
+								<td>SiteWeb Securise</td>
+								<td><?=$http;?></td>
+							</tr>
+							<tr>
+								<td>Version de PHP</td>
+								<td><?=$php;?></td>
+							</tr>
+							<tr>
+								<td>Liste des erreurs PHP</td>
+								<td><?=$phpError;?></td>
+							</tr>
+							<tr>
+								<td>mySQLI</td>
+								<td><?=$mysqli->server_version;?></td>
+							</tr>
+							<tr>
+								<td>Le serveur tourne sous</td>
+								<td><?=System::getOS()?></td>
+							</tr>
+							<tr>
+								<td>Maximum en Upload</td>
+								<td><?=$uploadMax;?> max</td>
+							</tr>
+							<tr>
+								<td>Heure local</td>
+								<td><?=$date;?></td>
+							</tr>
+							<tr>
+								<td>TimeZone</td>
+								<td><?=$timezone;?></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <?php

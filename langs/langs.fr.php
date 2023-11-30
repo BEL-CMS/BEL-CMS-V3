@@ -23,6 +23,7 @@ $array = array(
 	'BOT'                                 => 'Robot',
 	'NO_NAME'                             => 'Pas de Nom',
 	'ADMIN_ONLY'                          => 'Administrateur de Nv1 seulement',
+	'INFOS'                               => 'Informations',
  	#####################################
 	# Langue Français - COMMUN
 	#####################################
