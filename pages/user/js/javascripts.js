@@ -38,24 +38,24 @@ jQuery(document).ready(function($){
     $dropimg = $('.image_preview'),
     $remover = $('[data-action="remove_current_image"]');
 
-$dropzone.on('dragover', function() {
-  $droptarget.addClass('dropping');
-  return false;
-});
+	$dropzone.on('dragover', function() {
+	$droptarget.addClass('dropping');
+	return false;
+	});
 
-$dropzone.on('dragend dragleave', function() {
-  $droptarget.removeClass('dropping');
-  return false;
-});
+	$dropzone.on('dragend dragleave', function() {
+	$droptarget.removeClass('dropping');
+	return false;
+	});
 
-$dropzone.on('drop', function(e) {
-  $droptarget.removeClass('dropping');
-  $droptarget.addClass('dropped');
-  $remover.removeClass('disabled');
-  e.preventDefault();
+	$dropzone.on('drop', function(e) {
+		$droptarget.removeClass('dropping');
+		$droptarget.addClass('dropped');
+		$remover.removeClass('disabled');
+		e.preventDefault();
   
-  var file = e.originalEvent.dataTransfer.files[0],
-      reader = new FileReader();
+  	var file = e.originalEvent.dataTransfer.files[0],
+  	 reader = new FileReader();
 
   reader.onload = function(event) {
     $dropimg.css('background-image', 'url(' + event.target.result + ')');

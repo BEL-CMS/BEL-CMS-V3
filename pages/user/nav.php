@@ -18,6 +18,7 @@ $link_user     = null;
 $link_safety   = null;
 $link_security = null;
 $link_social   = null;
+$link_games    = null;
 switch ($link_current) {
 	case 'user':
 		$link_user     = 'class="belcms_btn belcms_bg_blue"';
@@ -31,7 +32,8 @@ switch ($link_current) {
 	case 'social':
 		$link_social   = 'class="belcms_btn belcms_bg_blue"';
 	break;
-	default:
+	case 'games':
+		$link_games   = 'class="belcms_btn belcms_bg_blue"';
 	break;
 }
 ?>
@@ -49,6 +51,9 @@ switch ($link_current) {
 										</li>
 										<li>
 											<a <?=$link_social?> href="User/social">Liens Social</a>
+										</li>
+										<li>
+											<a <?=$link_games?> href="User/games">Games</a>
 										</li>
 										<li>
 											<a class="belcms_bg_red" href="User/logout">Déconnexion</a>

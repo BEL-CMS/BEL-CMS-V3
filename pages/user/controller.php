@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -27,18 +27,23 @@ endif;
 class User extends Pages
 {
 	var $useModels = 'User';
+
+	function __construct()
+	{
+		parent::__construct();
+		$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']->user->hash_key.'/';
+		if (!is_dir($dir)) {
+			mkdir($dir, 0777, true);
+		}
+		$fopen  = fopen($dir.'/index.html', 'a+');
+		fclose($fopen);
+	}
 	#########################################
 	# Index de la page utilisateur
 	#########################################
 	public function index ()
 	{
 		if (UserInfos::isLogged() === true) {
-			$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']->user->hash_key.'/';
-			if (!is_dir($dir)) {
-			    mkdir($dir, 0777, true);
-			}
-			$fopen  = fopen($dir.'/index.html', 'a+');
-			$fclose = fclose($fopen);
 			$_SESSION['USER'] = UserInfos::getInfosUserAll($_SESSION['USER']->user->hash_key);
 			$d['current'] ='user';
 			$d['user']    = $_SESSION['USER'];
@@ -307,5 +312,32 @@ class User extends Pages
 		$this->error = true;
 		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
 		$this->redirect('User', 2);
+	}
+	#########################################
+	# Page Games
+	#########################################
+	public function games ()
+	{
+		if (UserInfos::isLogged() === true) {
+			$d['current'] ='games';
+			$d['games'] = $this->models->getGames();
+			$this->set($d);
+			$this->render('games');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	public function sendGames ()
+	{
+		if(empty($_POST)) {
+			$return = $this->models->sendGames(null);
+		} else {
+			$return = $this->models->sendGames($_POST['game']);
+		}
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
+		$this->redirect('User/Games', 3);
 	}
 }

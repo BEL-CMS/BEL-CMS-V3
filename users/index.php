@@ -313,10 +313,12 @@ class User
 				$game->queryOne();
 				$f = array('games' => (object) $game->data);
 				$return = (object) array_merge($a, $b, $c, $d, $e, $f);
-				if (empty($game->data)) {
-					$return->games->name_game = (object) array();
-				} else if (!empty($game->data->name_game)) {
-					$return->games->name_game = explode("|", $game->data);
+				if (empty($game->data['name_game'])) {
+					$return->games->name_game = array();
+				} else if (!empty($game->data['name_game'])) {
+					$return->games->name_game = explode("|", $game->data['name_game']);
+				} else {
+					$return->games->name_game =  array();
 				}
 				$return->user->color = User::colorUsername($hash_key);
 				$return->groups->all_groups[] = (int) $return->groups->user_group;

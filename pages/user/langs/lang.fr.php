@@ -35,7 +35,6 @@ Common::constant(array(
 	'ENTER_NAME_PSEUDO'            => 'Enter votre nom / pseudo',
 	'YOUR_WEBSITE'                 => 'Votre site web (url)',
 	'ENTER_YOUR'                   => 'Entrer votre',
-	'EDIT_MAIL_PASS'               => 'Edition de e-mail & password',
 	'ERROR_API_KEY'                => 'Erreur PASS API',
 	'EMPTY_DATA'                   => 'Aucune données transmise',
 	'UNKNOW_USER_MAIL_PASS'        => 'Les champs nom d\'utilisateur & e-mail & mot de passe doivent être rempli',
@@ -50,6 +49,9 @@ Common::constant(array(
 	'MODIFY_SOCIAL_SUCCESS'        => 'Liens sociaux modifier avec succès',
 	'SEND_PASS_IS_OK'              => 'Le mot de passe a été enregistré',
 	'OLD_PASS_FALSE'               => 'L\'ancien mot de passe de conrespond pas',
+	'CHOICE_OF_GAMES'              => 'Choix des jeux',
+	'MODIFY_GAMES_SUCCESS'         => 'Liste des jeux, modifié avec succès',
+	'VIDEO_GAMES'                  => 'Jeux vidéos',
 	#####################################
 	# Fichier lang en français - Admin
 	#####################################

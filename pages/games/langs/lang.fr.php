@@ -20,7 +20,7 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - Games
 	#####################################
-	'GAMERS'             => 'joueurs',
-    'GAMER'              => 'joueur',
-	'NO_USER'            => 'Aucun utilisateur',
+	'GAMERS'               => 'joueurs',
+    'GAMER'                => 'joueur',
+	'NO_USER'              => 'Aucun utilisateur'
 )); 

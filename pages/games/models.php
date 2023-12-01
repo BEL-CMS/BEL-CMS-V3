@@ -12,7 +12,6 @@
 namespace Belcms\Pages\Models;
 use BelCMS\Core\Dispatcher;
 use BelCMS\PDO\BDD;
-use BelCMS\User\User;
 use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
@@ -45,27 +44,34 @@ final class Games
         if (!empty($returnGames)) {
             foreach ($returnGames as $k => $v) {
                 $getUser = New BDD();
-                $getUser->where(array(
-                    'name'  => 'name_game',
-                    'value' => $v['id']
-                ));
                 $getUser->table('TABLE_USERS_GAMING');
                 $getUser->isObject(false);
                 $getUser->queryAll();
-                if ($getUser->rowCount == false) {
-                    $returnGames[$k]['users'] = (object) array();
-                } else {
-                    $returnGames[$k]['users'] = (object) $getUser->data;
-                    foreach ($returnGames[$k]['users'] as $key => $value) {
-                        $returnGames[$k]['users']->$key = (object) $value;
+                $getData = $getUser->data;
+
+                if (!empty($getData)) {
+                    $userData = $getData;
+                }
+
+                foreach ($returnGames as $keyGame => $valueGame) {
+                    $valueGame['id'] = (int) $valueGame['id'];
+                    $return->$keyGame = (object) $valueGame;
+                    foreach ($userData as $key => $value) {
+                        if (strlen($value['name_game'] == 1)) {
+                            if ($valueGame['id'] == $value['name_game']) {
+                                $return->keyGame->user[] = (object) $value;
+                            }
+                        } else {
+                            $ex = explode('|', $value['name_game']);
+                            if (in_array($valueGame['id'], $ex)) {
+                                $return->$keyGame->user[] = (object) $value;
+                            }
+                        }
                     }
                 }
             }
         } else {
-            $returnGames = array();
-        }
-        foreach ($returnGames as $key => $name) {
-            $return->$key = (object) $name;
+            $return = array();
         }
 		unset($sql,$getUser);
 		return $return;

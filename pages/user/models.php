@@ -817,21 +817,55 @@ final class User
 	#########################################
 	# Recuperer tout les jeux depuis la BDD
 	#########################################
-	public function getGaming ()
+	public function getGames ()
 	{
 		$sql = New BDD();
-		$sql->table('TABLE_TEAM');
+		$sql->table('TABLE_PAGES_GAMES');
 		$sql->queryAll();
 		return $sql->data;
 	}
 	#########################################
 	# Récupère touts auteurs
 	#########################################
-	public function getTeamUsers ()
+	public function sendGames ($data = null)
 	{
+		$return = array();
 		$sql = New BDD();
-		$sql->table('TABLE_TEAM_USERS');
-		$sql->queryAll();
-		return $sql->data;
+		$sql->table('TABLE_USERS_GAMING');
+		$sql->where(array('name'=> 'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+		$sql->queryOne();
+		if ($sql->rowCount == 1) {
+			if ($data == null) {
+				$insert = new BDD();
+				$insert->table('TABLE_USERS_GAMING');
+				$insert->where(array('name'=> 'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+				$return['name_game'] = null;
+				$insert->update($return); 
+			} else {
+				$returnData = $sql->data;
+				$id = explode('|',$returnData->name_game);
+				$return = array_merge($data, $id);
+				$data   = array_unique($return); unset($return);
+				if (count($data) == 1) {
+					$return['name_game'] = $data;
+				} else {
+					$return['name_game'] = implode('|', $data);
+				}
+				$return['name_game'] = substr($return['name_game'], 0, -1);
+				$insert = new BDD();
+				$insert->table('TABLE_USERS_GAMING');
+				$insert->where(array('name'=> 'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+				$insert->update($return);
+			}
+		} else {
+			$insert = new BDD();
+			$insert->table('TABLE_USERS_GAMING');
+			$insert->where(array('name'=> 'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+			$insert->insert($data);
+		}
+		$return['msg']  = constant('MODIFY_GAMES_SUCCESS');
+		$return['type'] = 'success';
+		$return['ext']  = constant('VIDEO_GAMES');
+		return $return;
 	}
 }

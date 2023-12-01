@@ -22,13 +22,13 @@ endif;
 		} else {
 			$banner = '/assets/img/no_img_available_728.90.png';
 		}
-		$gamers = $value->count > 0 ? constant('GAMERS') : constant('GAMER')
+		$gamers = $value->count >= 2 ? constant('GAMERS') : constant('GAMER');
 	?>
 	<div class="belcms_section_games_row">
 		<div class="belcms_section_games_img">
 			<img class="belcms_section_games_img" src="<?=$banner;?>" alt="Banner_<?=$value->name;?>">
 		</div>
-		<h2><a href="" data-tooltip="Information <?=$value->name;?>" data-position="top"><?=$value->name;?></h2>
+		<h2><a href="" data="<?=$value->name;?>" class="belcms_tooltip_top"><?=$value->name;?></a></h2>
 		<div class="belcms_section_games_infos">
 			<ul>
 				<li>
@@ -42,5 +42,6 @@ endif;
 	</div>
 	<?php
 	endforeach;
+	echo $pagination;
 	?>
 </section>
