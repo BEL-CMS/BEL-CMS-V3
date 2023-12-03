@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -10,149 +10,104 @@
 */
 
 namespace BelCMS\Widgets;
-use BelCMS\PDO\BDD as BDD;
-
 class Widgets
 {
-	public      $render,
-				$models;
+	var 		$vars = array(),
+				$useModels;
+
+	public      $view,
+				$models,
+				$content;
 
 	protected   $name,
 				$title,
 				$pos;
 
-	public function __construct($var, $pos = null)
+	public function __construct()
 	{
-		$this->name  = $var->name;
-		$this->title = $var->title;
-		$this->pos   = $var->pos;
+		if (isset($this->useModels) and !empty($this->useModels)){
+			self::loadModel($this->useModels);
+		}
 	}
 	public function render ()
 	{
+		// Démarre la mémoire tampon
 		ob_start();
-
-		$set = self::getController();
-		$get = $set->render();
-		extract($get);
-	
-		$render = constant('DIR_WIDGETS').strtolower($this->name).DS.'index.php';
-
-		if (is_file($render)) {
-			include $render;
-		} else {
-			debug($render);
+		$this->content = self::getContent();
+		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.php';
+		$dir    = constant('DIR_WIDGETS').'widgets'.DS.'tpl'.DS.$this->pos.'.php';
+		// Si le fichier existe, on inclut le fichier custom depuis le template (/templates/NomDuTemplate/widgets/)
+		if (is_file($custom)) {
+			include $custom;
+		// Si pas, on essaye d'inclure le fichier par défaut (il doit exister normalement !)
+		} else if (is_file($dir)) {
+			include $dir;
+		// Vraiment, au cas où le fichier a été effacé, j'inclus une erreur
 		}
-
-		$content = ob_get_contents ();
-
+		// Met en le tampon dans une variable ($this->page);
+		$this->view = ob_get_contents();
+		// Verifie si le tampon est rempli, 
+		// Détruit les données du tampon de sortie
+		// et éteint la temporisation de sortie.
 		if (ob_get_length() != 0) {
 			ob_end_clean();
 		}
-
-		return $content;
 	}
-
-	public function getBoxGlobal ()
+	#########################################
+	# inclus le widgets pur HTML/PHP
+	#########################################
+	public function getContent ()
 	{
+		extract($this->vars);
 		ob_start();
-		echo self::getTopBox();
-		echo self::getBoxContent(self::render());
-		echo self::getBottomBox();
-		$content = ob_get_contents ();
-		if (ob_get_length() != 0) {
-			ob_end_clean();
-		}
-		return $content;
-	}
-
-	private function getTopBox ()
-	{
-		ob_start();
-		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.title.php';
+		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->name.DS.'index.php';
+		$dir    = constant('DIR_WIDGETS').DS.$this->name.DS.'index.php';
 		if (is_file($custom)) {
 			include $custom;
 		} else {
-			$class = 'belcms_widgets_title_'.$this->pos;
-			$box   = '<div class="'.$class.'>';
-			$box  .= '<h4>'.$this->title.'</h4>';
-			echo $box;
+			include $dir;
 		}
-		$content = ob_get_contents ();
+		$return = ob_get_contents();
 		if (ob_get_length() != 0) {
 			ob_end_clean();
 		}
-		return $content;
+		return $return;
 	}
-
-	private function getBottomBox ()
+	#########################################
+	# inclus le models
+	#########################################
+	public function loadModel ($name)
 	{
-		ob_start();
-		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.bottom.php';
-		if (is_file($custom)) {
-			include $custom;
+		$dir = constant('DIR_WIDGETS').strtolower($name).DS.'models.php';
+
+		if (is_file($dir)) {
+			require_once $dir;
+			$name = "Belcms\Widgets\Models\\".ucfirst($name)."\\".ucfirst($name);
+			$this->models = new $name();
 		} else {
-			echo '</div>';
+			$error_name   = constant('FILE_NO_FOUND_MODELS');
+			$error_text   = constant('FILE').' : <br>'.$dir.' '.constant('NOT_FOUND');
+			$this->error  = true;
+			$this->errorInfos = array('error', $error_text, $error_name, $full = true);
+			return false;
 		}
-		$content = ob_get_contents ();
-		if (ob_get_length() != 0) {
-			ob_end_clean();
-		}
-		return $content;
 	}
-
-	private function getBoxContent ($render = null)
+	#########################################
+	# récupere le fichier de langue
+	#########################################
+	public function loadLang ($name)
 	{
-		ob_start();
-		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.content.php';
-		if (is_file($custom)) {
-			include $custom;
-		} else {
-			$id = 'belcms_widgets_content_'.$this->pos;
-			$boxContent = '<div id="'.$id.'';
-			$boxContent .= $render;
-			$boxContent .= '</div>';
-			echo $boxContent;
+		$fileLoadlang = constant('DIR_WIDGETS').strtolower($name).DS.'langs'.DS.'lang.fr.php';
+		if (is_file($fileLoadlang)) {
+			require $fileLoadlang;
 		}
-		$content = ob_get_contents ();
-		if (ob_get_length() != 0) {
-			ob_end_clean();
-		}
-		return $content;
 	}
-
-	private function getController ()
+	#########################################
+	# Assemble les variable passé par,
+	# le controller en $this->set(array());
+	#########################################
+	public function set ($d)
 	{
-		if ($this->name != null) {
-			$controller = ucfirst($this->name);
-			$file = constant('DIR_WIDGETS').strtolower($this->name).DS.'controller.php';
-			try {
-				if (is_file($file)) {
-					require $file;
-					$nameController = 'Belcms\Widgets\Controller\\'.$controller;
-					$var = new $nameController(self::getModels());
-					return $var;
-				}
-			} catch (\Throwable $e) {
-				var_dump($e);
-			}
-		}
+		$this->vars = array_merge($this->vars,$d);
 	}
-
-	private function getModels ()
-	{
-		if ($this->name != null) {
-			$file = constant('DIR_WIDGETS').strtolower($this->name).DS.'models.php';
-			try {
-				if (is_file($file)) {
-					require $file;
-					$nameModels = 'Belcms\Widgets\Models\\'.ucfirst($this->name).'\Models';
-					$var = new $nameModels();
-					return $var;
-				}
-			} catch (\Throwable $e) {
-				var_dump($e);
-			}
-		}
-	}
-
 }

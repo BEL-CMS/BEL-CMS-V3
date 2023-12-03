@@ -10,7 +10,6 @@
  */
 
 namespace Belcms\Widgets\Controller;
-use Belcms\Widgets\Models\Users\Models as ModelsUsers;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -19,15 +18,8 @@ endif;
 
 class Users
 {
-	var $models;
-
-	public function __construct($models)
-	{
-		$this->models = $models;
-	}
-
 	public function render()
 	{
-		return array();
+		$this->render('index');
 	}
 }

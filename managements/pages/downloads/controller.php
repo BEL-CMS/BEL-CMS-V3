@@ -21,16 +21,22 @@ class Downloads extends AdminPages
 	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true;
 	var $bdd    = 'ModelsDownloads';
+
+	public function __construct()
+	{
+		parent::__construct();
+		$dir = 'uploads/downloads';
+		if (!file_exists($dir)) {
+			if (!mkdir($dir, 0777, true)) {
+				throw new Exception('Failed to create directory');
+			} else {
+				$fopen  = fopen($dir.'/index.html', 'a+');
+				fclose($fopen);
+			}
+		}
+	}
 	public function index ()
 	{
-		$downloads = ROOT.DS.'uploads'.DS.'downloads';
-		if (!is_dir($downloads)) {
-			mkdir($downloads, 0755, true);
-		}
-		$screen = ROOT.DS.'uploads'.DS.'downloads'.DS.'screen';
-		if (!is_dir($screen)) {
-			mkdir($screen, 0755, true);
-		}
 		$d['data']  = $this->models->getAllDl();
 		$d['count'] = count($d['data']);
 		$this->set($d);

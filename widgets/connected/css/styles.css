@@ -1,4 +1,4 @@
-#bel_cms_widgets_connected ul {
+						#bel_cms_widgets_connected ul {
 	display: block;
 	list-style: none;
 	border: none !important;
@@ -33,5 +33,3 @@
 		font-size: 80%;
 		font-style: italic;
 	}
-
-

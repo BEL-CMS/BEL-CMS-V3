@@ -26,14 +26,9 @@ if(!isset($_SESSION)) {
 #########################################
 # Microtime pour le chargement de la page
 #########################################
-function getmicrotime(){
-	list($usec, $sec) = explode(" ",microtime());
-	return ((float)$usec + (float)$sec);
-}
 #########################################
 # Enregistre des éléments dans la $_SESSION
 #########################################
-$_SESSION['TIME_START']     = getmicrotime();
 $_SESSION['CMS_DEBUG']      = true; /* a mettre en false pour un site en ligne */
 $_SESSION['CONFIG_CMS']     = array();
 $_SESSION['NB_REQUEST_SQL'] = 0;

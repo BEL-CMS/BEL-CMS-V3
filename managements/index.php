@@ -251,7 +251,6 @@ final class Managements
 						$Interaction->user($_SESSION['USER']->user->hash_key);
 						$Interaction->type('success');
 						$Interaction->title(constant('AUTHORIZED_ACCESS'));
-						$Interaction->date(date("Y-m-d H:i:s"));
 						$Interaction->text(constant('LOGGED_IN_TO_ADMIN'));
 						$Interaction->insert();
 						$_SESSION['LOGIN_MANAGEMENT'] = true;
@@ -261,7 +260,6 @@ final class Managements
 						$Interaction->user($_SESSION['USER']->user->hash_key);
 						$Interaction->type('error');
 						$Interaction->title(constant('UNAUTHORIZED_ACCESS'));
-						$Interaction->date(date("Y-m-d H:i:s"));
 						$Interaction->text(constant('TRY_TO_CONNECT_WHIT_ANOTHER_HASHKEY'));
 						$Interaction->insert();
 						$return['ajax'] = constant('HASHKEY_DOES_NOT_MATCH_YOURS');
@@ -271,7 +269,6 @@ final class Managements
 					$Interaction->user($_SESSION['USER']->user->hash_key);
 					$Interaction->type('error');
 					$Interaction->title(constant('UNAUTHORIZED_ACCESS'));
-					$Interaction->date(date("Y-m-d H:i:s"));
 					$Interaction->text(constant('ATTEMPTED_ACCESS_WHIT_WRONG_PASS'));
 					$Interaction->insert();
 					$return['ajax'] = constant('THE_PASS_IS_NOT_CORRECT');

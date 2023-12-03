@@ -22,7 +22,6 @@ class prefgen extends AdminPages
 
 	public function index ()
 	{
-		//debug($this, true);
 		$data['data'] = $this->models->getData();
 		$this->set($data);
 		$this->render('index');

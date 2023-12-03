@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -9,8 +9,8 @@
  * @author as Stive - stive@determe.be
  */
 
-use BelCMS\Requires\Common as Common;
-use BelCMS\User\User as User;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 use BelCMS\Core\Config as Groups;
 
 if (!defined('CHECK_INDEX')):
@@ -32,7 +32,15 @@ if ($var !== null):
 				$group = $key;
 			}
 		}
-		$infosUser->profils->avatar = is_file($infosUser->profils->avatar) ? $infosUser->profils->avatar :  constant('DEFAULT_AVATAR');
+		if (empty($infosUser->profils->avatar)) {
+			$infosUser->profils->avatar = constant('DEFAULT_AVATAR');
+		} else {
+			if (!empty($infosUser->profils->avatar)) {
+				$infosUser->profils->avatar = file_exists(ROOT.DS.$infosUser->profils->avatar) ? $infosUser->profils->avatar :  constant('DEFAULT_AVATAR');
+			} else {
+				$infosUser->profils->avatar = constant('DEFAULT_AVATAR');
+			}
+		}
 		?>
 			<li>
 				<img title="<?=$infosUser->user->username?>" src="<?=$infosUser->profils->avatar?>" alt="avatar_<?=$infosUser->user->username?>" style="max-width: 50px; max-height: 50px;">
@@ -50,4 +58,8 @@ if ($var !== null):
 	</ul>
 </div>
 <?php
+else:
+	?>
+	 no data
+	<?php 
 endif;

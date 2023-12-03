@@ -11,9 +11,9 @@
 
 $langs =  constant('DIR_LANGS').'langs.fr.php';
 require $langs;
-use BELCMS\User\User as UserInfos;
+use BELCMS\User\User;
 
-if (UserInfos::isLogged() === false):
+if (User::isLogged() === false):
 ?>
 <!doctype html>
 <html lang="fr">

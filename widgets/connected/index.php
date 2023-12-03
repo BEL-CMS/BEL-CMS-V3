@@ -9,8 +9,8 @@
  * @author as Stive - stive@determe.be
  */
 
-use BelCMS\Core\Visitors as Visitors;
-use BelCMS\User\User as User;
+use BelCMS\Core\Visitors;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -45,7 +45,7 @@ endif;
 						if ($visitor != null) {
 							$visitor = strtolower($v->visitor_user);
 							$pos = strpos($visitor, 'bot');
-							if ($pos === false) {
+							if ($pos == false) {
 								$visitor = constant('VISITOR');
 							} else {
 								$visitor = constant('BOT');

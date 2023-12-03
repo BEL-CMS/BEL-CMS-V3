@@ -15,8 +15,11 @@ use BelCMS\Core\GetHost;
 	<link rel="stylesheet" href="managements/assets/css/quick-events.css">
 	<link rel="stylesheet" href="assets/plugins/tinymce/skins/lightgray/skin.min.css">
 	<link rel="stylesheet" href="assets/plugins/fontawesome-6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="assets/plugins/colorpicker/css/bootstrap-colorpicker.css">
 	<script src="assets/js/jQuery/jquery-3.7.1.min.js"></script>
-	<script src="assets/plugins/tinymce/tinymce.min.js"></script>
+	<link rel="stylesheet" href="managements/assets/libs/quick-events.css">
+	<script src="assets/plugins/colorpicker/js/bootstrap-colorpicker.min.js"></script>
+
 	<script src="managements/assets/js/config.js"></script>
 	<script type="text/javascript">
 		document.onreadystatechange = function() {

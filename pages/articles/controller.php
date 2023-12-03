@@ -38,7 +38,6 @@ class Articles extends Pages
 		}
 		$this->set($set);
 		$this->render('index');
-		$this->render('index');
 	}
 
 	public function read ($id = null)

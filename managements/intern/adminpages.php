@@ -45,7 +45,7 @@ class AdminPages
 			}
 		}
 
-		if (isset($this->bdd) and !empty($this->bdd)){
+		if (isset($this->bdd) and !empty($this->bdd)) {
 			self::loadModel($this->bdd);
 		}
 	}

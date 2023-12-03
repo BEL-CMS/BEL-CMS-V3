@@ -15,11 +15,9 @@ use BelCMS\Core\Visitors;
 use BelCMS\PDO\BDD;
 use BelCMS\User\User;
 use BelCMS\Core\Dispatcher;
-use BelCMS\Widgets\Widgets;
 use BelCMS\Templates\Templates as Template;
 use BelCMS\Core\GetHost;
 use BelCMS\Core\Notification;
-use Belcms\Managements\Managements;
 use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
@@ -51,12 +49,10 @@ final class BelCMS
 
 	public function __construct ()
 	{
-		if ($this->view != 'countUnreadMessage') {
-			new Visitors;
-		}
+		new Visitors;
+		$this->widgets  = self::getWidgets ();
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
-		$this->widgets  = self::getWidgets();
 		$this->host     = GetHost::getBaseUrl();
 		$this->template = self::template ();
 	}
@@ -132,30 +128,6 @@ final class BelCMS
 		return $content;
 	}
 	##################################################
-	# Statistique par page, incrémentation.
-	##################################################
-	private function statsPages ()
-	{
-		$sql = new BDD;
-		$sql->table('TABLE_PAGE_STATS');
-		$sql->where(array(
-			'name' => 'page',
-			'value' => $this->link
-
-		));
-		$sql->queryOne();
-		if (!empty($sql->data)) {
-			$update['nb_view'] = $sql->data->nb_view +1;
-			$insert = new BDD;
-			$insert->table('TABLE_PAGE_STATS');
-			$insert->where(array(
-				'name' => 'page',
-				'value' => $this->link
-			));
-			$insert->update($update);
-		}
-	}
-	##################################################
 	# Récupère la widgets mis dans la variable.
 	# $this->widgets[x][nom] = array();
 	##################################################
@@ -163,25 +135,32 @@ final class BelCMS
 	{
 		$return  = array();
 		$listWidgetsActive = self::getWidgetsActive ();
-		foreach ($listWidgetsActive as $key => $value) {
+		foreach ($listWidgetsActive as $value) {
+			$dir = constant('DIR_WIDGETS').strtolower($value->name).DS.'controller.php';
+			if (is_file($dir)) {
+				require $dir;
+				$require = "Belcms\Widgets\Controller\\".ucfirst($value->name)."\\".ucfirst($value->name);
+				$widgets = new $require();
+				if (method_exists($widgets, 'index')) {
+					$widgets->index($value);
+					$view = $widgets->view;
+				}
+			} else {
+				return false;
+			}
 			switch ($value->pos) {
 				case 'top':
-					$widget = new Widgets ($value, 'top');
+					$return['top'][$value->name] = array('view' => $view);
 				break;
 				case 'right':
-					$widget = new Widgets ($value, 'right');
+					$return['right'][$value->name] = array('view' => $view);
 				break;
 				case 'bottom':
-					$widget = new Widgets ($value, 'bottom');
+					$return['bottom'][$value->name] = array('view' => $view);
 				break;
 				case 'left':
-					$widget = new Widgets ($value, 'left');
+					$return['left'][$value->name] = array('view' => $view);
 				break;
-			}
-			if (!empty($widget)) {
-				$return[$value->pos][$value->name] = $widget->getBoxGlobal();
-			} else {
-				$return[$value->pos][] = '';
 			}
 		}
 		return $return;
@@ -275,6 +254,30 @@ final class BelCMS
 			if ($this->langs == 'fr') {
 				require_once constant('DIR_LANGS').'langs'.DS.$this->langs.'.php';
 			}
+		}
+	}
+	##################################################
+	# Statistique par page, incrémentation.
+	##################################################
+	private function statsPages ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_PAGE_STATS');
+		$sql->where(array(
+			'name' => 'page',
+			'value' => $this->link
+
+		));
+		$sql->queryOne();
+		if (!empty($sql->data)) {
+			$update['nb_view'] = $sql->data->nb_view +1;
+			$insert = new BDD;
+			$insert->table('TABLE_PAGE_STATS');
+			$insert->where(array(
+				'name' => 'page',
+				'value' => $this->link
+			));
+			$insert->update($update);
 		}
 	}
 	#########################################

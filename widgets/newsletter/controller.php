@@ -9,26 +9,24 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace Belcms\Widgets\Controller;
-use Belcms\Widgets\Models\Newsletter\Models as ModelsNewsletters;
+namespace Belcms\Widgets\Controller\Newsletter;
+use BelCMS\Widgets\Widgets as BaseWidget;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Newsletter
+class Newsletter extends BaseWidget
 {
-	var $models;
-
-	public function __construct($models)
-	{
-		$this->models = $models;
-	}
-
-	public function render()
+	var $useModels = 'Newsletter';
+	public function index($var)
 	{
 		$d['count'] = $this->models->NbUser();
-		return $d;
+		$this->name  = $var->name;
+		$this->title = $var->title;
+		$this->pos   = $var->pos;
+		$this->set($d);
+		$this->render();
 	}
 }

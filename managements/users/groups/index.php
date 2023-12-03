@@ -41,7 +41,7 @@ foreach ($count as $key => $value) {
 						<?php
 						foreach ($groups as $k => $v):
 							$v['image'] = str_replace("/", constant('DS'), $v['image']);
-							$img = file_exists(ROOT.$v['image']) ? $v['image'] : '/assets/img/no_img_available_728.90.png';
+							$img = file_exists(ROOT.$v['image']) == true ? $v['image'] : '/assets/img/no_img_available_728.90.png';
 						?>
 							<tr>
 								<td><?=$k?></td>

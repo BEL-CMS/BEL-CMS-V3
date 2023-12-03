@@ -44,7 +44,7 @@ class Comments extends Pages
 			}
 		}
 
-		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : 'Comments';
+		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : 'news';
 		$this->redirect($referer, 3);
 	}
 }

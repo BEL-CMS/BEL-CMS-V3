@@ -31,12 +31,14 @@ class User extends Pages
 	function __construct()
 	{
 		parent::__construct();
-		$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']->user->hash_key.'/';
-		if (!is_dir($dir)) {
-			mkdir($dir, 0777, true);
+		if (UserInfos::isLogged() === true) {
+			$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']->user->hash_key.'/';
+			if (!is_dir($dir)) {
+				mkdir($dir, 0777, true);
+			}
+			$fopen  = fopen($dir.'/index.html', 'a+');
+			fclose($fopen);
 		}
-		$fopen  = fopen($dir.'/index.html', 'a+');
-		fclose($fopen);
 	}
 	#########################################
 	# Index de la page utilisateur

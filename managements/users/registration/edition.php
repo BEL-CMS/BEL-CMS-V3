@@ -69,7 +69,7 @@ endif;
 				</div>
 			</div>
 			<div class="p-6">
-				<form action="/registration/sendMainGroup?management&option=users" method="post" class="form-horizontal form-bordered">
+				<form action="registration/sendMainGroup?management&option=users" method="post" class="form-horizontal form-bordered">
 					<div class="form-group">
 						<label class="col-md-12 control-label" for="inputSuccess2">Groupe</label>
 						<select name="main" class="form-select" tabindex="-1">
@@ -100,7 +100,7 @@ endif;
 				</div>
 			</div>
 			<div class="card-body">
-				<form action="/registration/sendSecondGroup?management&option=users" method="post" class="p-6">
+				<form action="registration/sendSecondGroup?management&option=users" method="post" class="p-6">
 					<?php
 					foreach (Secures::getGroups() as $key => $value):
 						$title  = defined(strtoupper($value)) ? constant(strtoupper($value)) : $value;
@@ -137,7 +137,7 @@ endif;
 				</div>
 			</div>
 			<div class="p-6">
-				<form action="/registration/sendInfoPublic?management&option=users" enctype="multipart/form-data" method="post" class="form-horizontal form-bordered">
+				<form action="registration/sendInfoPublic?management&option=users" enctype="multipart/form-data" method="post" class="form-horizontal form-bordered">
 					<?php
 					$user->profils->birthday = Common::DatetimeSQL($user->profils->birthday, false, 'Y-m-d');
 					?>
@@ -214,7 +214,7 @@ endif;
 				</div>
 			</div>
 			<div class="p-6">
-				<form action="/registration/sendSocial?management&option=users" method="post">
+				<form action="registration/sendSocial?management&option=users" method="post">
 					<div class="form-group">
 						<?php
 						foreach ($user->social as $key => $value):

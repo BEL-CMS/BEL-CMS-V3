@@ -10,9 +10,9 @@
 */
 
 namespace BelCMS\Templates;
-use BelCMS\Core\Dispatcher as Dispatcher;
-use BelCMS\PDO\BDD as BDD;
-use BelCMS\Requires\Common as Common;
+use BelCMS\Core\Dispatcher;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 
 class Templates
 {
@@ -21,13 +21,14 @@ class Templates
 	public function __construct($var = null)
 	{
 		$this->configTPL    = $var;
+		$var->link          = ucfirst($var->link ?? '');
 		$fileLoadTpl        = constant('DIR_TPL').self::getNameTpl().DS.'template.php';
 		$fileLoadTplDefault = constant('DIR_TPL').'default'.DS.'template.php';
 		$var->css           = self::cascadingStyleSheets($var->link);
 		$var->javaScript    = self::javaScript($var->link);
 		$var->tags          = self::getTagsTPL();
 		$var->fullwide      = self::getFullWide();
-		if (is_file($fileLoadTpl)) {
+		if (is_file($fileLoadTpl) === true) {
 			require $fileLoadTpl;
 		} else {
 			require $fileLoadTplDefault;
@@ -63,10 +64,13 @@ class Templates
 			$return[$k] = trim($v);
 		}
 
-		if (in_array(strtolower(Dispatcher::page()), $return)) {
+		$page = strtolower(Dispatcher::page() ?? '');
+		$view = strtolower(Dispatcher::view() ?? '');
+
+		if (in_array($page, $return)) {
 			return true;
 		}
-		if (in_array(strtolower(Dispatcher::view()), $return)) {
+		if (in_array($view, $return)) {
 			return true;
 		}
 	}
@@ -145,8 +149,8 @@ class Templates
 		$files[] = 'assets/plugins/jquery-ui-1.13.2/themes/base/theme.css';
 		// NOTIFICATION */
 		$files[] = 'assets/css/belcms.notification.css';
-		/* FONTAWASOME 6.4.2 ALL */
-		$files[] = 'assets/plugins/fontawesome-6.4.2/css/all.min.css';
+		/* FONTAWASOME 6.5.1 ALL */
+		$files[] = 'assets/plugins/fontawesome-6.5.1/css/all.min.css';
 		/* HightLight */
 		$files[] = 'assets/plugins/highlight/styles/github-dark-dimmed.min.css';
 		/* custom css template */
@@ -188,8 +192,8 @@ class Templates
 		$files[] = 'assets/plugins/jquery-ui-1.13.2/jquery-ui.min.js';
 		/* Tinymce */
 		$files[] = 'assets/plugins/tinymce/tinymce.min.js';
-		/* FONTAWASOME 6.4.2 ALL */
-		$files[] = 'assets/plugins/fontawesome-6.4.2/js/all.min.js';
+		/* FONTAWASOME 6.5.1 ALL */
+		$files[] = 'assets/plugins/fontawesome-6.5.1/js/all.min.js';
 		/* HightLight */
 		$files[] = 'assets/plugins/highlight/highlight.min.js';
 		$files[] = 'assets/plugins/highlight/languages/apache.min.js';

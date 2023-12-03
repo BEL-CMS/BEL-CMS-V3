@@ -60,7 +60,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 					endif;
 					?>
 					<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
-					<input type="hidden" name="id" value="<?=$data->id_group?>">
+						<input type="hidden" name="id" value="<?=$data->id_group?>">
 						<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
 							<i class="fa fa-dot-circle-o"></i><?=constant('SAVE');?>
 						</button>
