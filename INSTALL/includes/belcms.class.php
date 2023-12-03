@@ -85,6 +85,7 @@ class BelCMS
 			'downloads',
 			'downloads_cat',
 			'emoticones',
+			'games',
 			'groups',
 			'interaction',
 			'mails',

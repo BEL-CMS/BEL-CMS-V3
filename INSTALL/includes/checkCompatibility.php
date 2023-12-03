@@ -14,7 +14,7 @@ require_once ROOT.'INSTALL'.DS.'includes'.DS.'checkCompatibility.php';
 function checkPhp ()
 {
 	$return = false;
-	if (version_compare(PHP_VERSION, '7.4.0') >= 0) {
+	if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
 		$return = true;
 	}
 	return $return;
