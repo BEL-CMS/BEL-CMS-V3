@@ -31,11 +31,13 @@ class Widgets
 	}
 	public function render ()
 	{
+		self::loadLang($this->useModels);
 		// Démarre la mémoire tampon
 		ob_start();
 		$this->content = self::getContent();
 		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->pos.'.php';
-		$dir    = constant('DIR_WIDGETS').'widgets'.DS.'tpl'.DS.$this->pos.'.php';
+		$dir    = constant('DIR_WIDGETS').'tpl'.DS.$this->pos.'.php';
+
 		// Si le fichier existe, on inclut le fichier custom depuis le template (/templates/NomDuTemplate/widgets/)
 		if (is_file($custom)) {
 			include $custom;
@@ -58,10 +60,11 @@ class Widgets
 	#########################################
 	public function getContent ()
 	{
+		self::loadLang($this->name);
 		extract($this->vars);
 		ob_start();
 		$custom = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'widgets'.DS.$this->name.DS.'index.php';
-		$dir    = constant('DIR_WIDGETS').DS.$this->name.DS.'index.php';
+		$dir    = constant('DIR_WIDGETS').$this->name.DS.'index.php';
 		if (is_file($custom)) {
 			include $custom;
 		} else {

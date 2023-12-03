@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -18,15 +18,15 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 class Survey extends BaseWidget
-{	var $useModels = 'Survey';
-	public function index ()
+{
+	var $useModels = 'Survey';
+	public function index ($var)
 	{
-		$set['data']  = $this->models->getLastSurvey();
-		if (!empty($set['data'])) {
-			$set['count'] = $this->models->countVote($set['data']->id);
-			$set['vote']  = $this->models->getNumberVote($set['data']->id);
-		}
-		$this->set($set);
-		$this->render('index');
+		$d['var'] = $this->models->getMsg();
+		$this->name  = $var->name;
+		$this->title = $var->title;
+		$this->pos   = $var->pos;
+		$this->set($d);
+		$this->render();
 	}
 }

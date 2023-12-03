@@ -19,16 +19,14 @@ endif;
 
 class Shoutbox extends BaseWidget
 {
-	var $models;
-
-	public function __construct($models)
-	{
-		$this->models = $models;
-	}
-
-	public function render()
+	var $useModels = 'ModelsShoutbox';
+	public function index ($var)
 	{
 		$d['var'] = $this->models->getMsg();
-		return $d;
+		$this->name  = $var->name;
+		$this->title = $var->title;
+		$this->pos   = $var->pos;
+		$this->set($d);
+		$this->render();
 	}
 }

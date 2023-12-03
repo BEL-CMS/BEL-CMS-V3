@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -9,7 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace Belcms\Widgets\Models;
+namespace Belcms\Widgets\Models\Survey;
 use BelCMS\PDO\BDD as BDD;
 
 if (!defined('CHECK_INDEX')):
