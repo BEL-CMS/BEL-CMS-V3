@@ -844,4 +844,11 @@ final class Common
 		$return = openssl_decrypt($string, "AES-128-ECB",$key);
 		return $return;
 	}
+
+	public static function deleteFile ($file)
+	{
+		if (file_exists($file)) {
+			@unlink($file);
+		}
+	}
 }

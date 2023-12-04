@@ -22,7 +22,7 @@ Bel-CMS need a LAMP hosting (Apache / PHP / MySQL).
 - Apache
 * mod_rewrite
 
-- PHP 8.2
+- PHP 8.0.0
 * short_open_tag
 * IntlDateFormatter
 * zip
@@ -34,12 +34,12 @@ Bel-CMS need a LAMP hosting (Apache / PHP / MySQL).
 * BDD PhpMyAdmin 5.2.1
 
 ## Use
-- PHP 8.2
+- PHP 8.3
 - MySQL UTF8
 - Apache 2.4.54.2
 - jQuery 3.7.1.min.js
 - TinyMCE 2.1 free edition
-- FontAwesome 6.4.2 free edition (17,7mo);
+- FontAwesome 6.5.1 free edition (17,7mo);
 
 ## Installation
 

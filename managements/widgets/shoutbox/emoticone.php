@@ -14,112 +14,108 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title">Liste des blog</h3>
-		<div class="card-tools">
-			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-				<i class="fas fa-minus"></i>
-			</button>
+<div class="flex flex-col gap-6">
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title"><?=constant('LIST_EMOTICONS');?></h4>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="card-body">
-			<div class="table-responsive col-lg-12 col-md-12 col-sm-12">
-				<table  class="DataTableBelCMS table table-vcenter table-condensed table-bordered">
-					<thead>
-						<tr>
-							<th>Emoticônes</th>
-							<th>Noms</th>
-							<th>Codes</th>
-							<th>Emplacements</th>
-						</tr>
-					</thead>
-					<tfoot>
-						<tr>
-							<th>Emoticônes</th>
-							<th>Noms</th>
-							<th>Codes</th>
-							<th>Emplacements</th>
-						</tr>
-					</tfoot>
-					<tbody>
-					<?php
-					foreach ($imo as $k => $v):
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
+						<thead class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th><?=constant('EMOTICONS');?></th>
+								<th><?=constant('NAME');?></th>
+								<th><?=constant('CODE');?></th>
+								<th><?=constant('EMOTICONS');?></th>
+								<th><?=constant('OPTIONS');?>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th><?=constant('EMOTICONS');?></th>
+								<th><?=constant('NAME');?></th>
+								<th><?=constant('CODE');?></th>
+								<th><?=constant('EMOTICONS');?></th>
+								<th><?=constant('OPTIONS');?>
+							</tr>
+						</tfoot>
+						<tbody>
+						<?php
+						foreach ($imo as $k => $v):
 						?>
-						<tr>
-							<td><img src="<?=$v->dir?>"></td>
-							<td><?=$v->name?></td>
-							<td><?=$v->code?></td>
-							<td><?=$v->dir?></td>
-							<td>
-								<a href="#" data-toggle="modal" data-target="#modal_<?=$v->id?>" class="btn btn-danger btn-small"><i class="fa fas fa-trash"></i></a>
-								<div class="modal fade" id="modal_<?=$v->id?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-											<h4 class="modal-title" id="exampleModalLabel"><?=$v->name?></h4>
+							<tr>
+								<td><img src="<?=$v->dir?>"></td>
+								<td><?=$v->name?></td>
+								<td><?=$v->code?></td>
+								<td><?=$v->dir?></td>
+								<td>
+									<button type="button" data-fc-target="delete-modal_<?=$v->id;?>" data-fc-type="modal" class="btn bg-danger btn-sm text-white"><i class="mgc_close_line text-base me-4"></i><?=constant('DELETE');?></button>
+
+									<div id="delete-modal_<?=$v->id;?>" class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden"> 
+										<div class="fc-modal-open:opacity-100 duration-500 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto flex flex-col bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
+											<div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
+												<h3 class="font-medium text-gray-800 dark:text-white text-lg"><?=constant('DELETE');?></h3>
+												<button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
+														data-fc-dismiss type="button">
+													<span class="material-symbols-rounded">close</span>
+												</button>
 											</div>
-											<div class="modal-body">Confirmer la suppression de l'emoticône : <?=$v->name?></div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-												<button onclick="window.location.href='/shoutbox/delimo/<?=$v->id?>?management&gaming=true'" type="button" class="btn btn-primary">Supprimer</button>
+											<div class="px-4 py-8 overflow-y-auto">
+												<p class="text-gray-800 dark:text-gray-200">
+													<?=constant('DEL_EMOTICONE');?> : <img src="<?=$v->dir;?>">
+												</p>
+											</div>
+											<div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
+												<button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button"><?=constant('CLOSE');?></button>
+												<a class="btn bg-primary text-white" onclick="window.location.href='shoutbox/delimo/<?=$v->id?>?management&option=widgets'"><?=constant('DELETE');?></a>
 											</div>
 										</div>
 									</div>
-								</div>
-							</td>
-						</tr>
-						<?php
-					endforeach;
-					?>
-					</tbody>
-				</table>  
+								</td>
+							</tr>
+							<?php
+						endforeach;
+						?>
+						</tbody>
+					</table>  
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title">Ajouter une Emoticône</h3>
-		<div class="card-tools">
-			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-				<i class="fas fa-minus"></i>
-			</button>
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title"><?=constant('ADD_EMOTICON');?></h4>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="card-body">
-			<form action="/shoutbox/sendemo?management&widgets=true" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
-				<div class="form-group">
-					<label class="col-sm-12 control-label">Nom de l'emoticône</label>
-					<div class="col-sm-12">
-						<div class="checkbox">
-							<input class="form-control" name="name" type="text" value="">
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<form action="shoutbox/sendemo?management&option=widgets" method="post" enctype="multipart/form-data">
+						<div class="mt-2 mb-2">
+							<label class="col-md-12 control-label" for="name"><?=constant('NAME_EMOTICONE')?></label>
+							<input required class="form-input" id="name" name="name" type="text" value="">
 						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-12 control-label">Upload</label>
-					<div class="col-sm-12">
-						<input type="file" id="last-name" name="dir" class="form-control col-md-7 col-xs-12">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-12 control-label">Code</label>
-					<div class="col-sm-12">
-						<div class="checkbox">
-							<input class="form-control" name="code" type="text" value="" placeholder="format court sans espace">
+						<div class="mt-2 mb-2">
+							<label class="col-md-12 control-label" for="upload"><?=constant('UPLOAD')?></label>
+							<input required type="file" id="upload" name="dir" class="form-input" accept="image/*">
 						</div>
-					</div>
+						<div class="mt-2 mb-2">
+							<label class="col-md-12 control-label" for="code"><?=constant('CODE')?></label>
+							<input required minlength="2" maxlength="6" size="6" class="form-input" id="code" name="code" type="text" value="" placeholder="format court sans espace">
+						</div>
+						<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
+							<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
+								<i class="fa fa-dot-circle-o"></i><?=constant('SAVE');?>
+							</button>
+						</div>
+					</form>
 				</div>
-				<div class="form-group">
-					<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-						<button type="submit" class="btn btn-success">Submit</button>
-					</div>
-				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 </div>

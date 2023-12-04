@@ -14,56 +14,28 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<form action="/shoutbox/sendparameter?widgets&management" method="post">
-	<div class="row">
-		<div class="col-md-3">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Paramètres Shoutbox</h3>
-					<div class="card-tools">
-						<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-							<i class="fas fa-minus"></i>
-						</button>
-					</div>
-				</div>
-				<div class="card-body">
-					<div class="form-group">
-						<label for="input-NB_MSG" class="col-sm-12 control-label">Activer le widget</label>
-						<div class="col-sm-12">
-							<input data-bootstrap-switch value="1" type="checkbox" <?=$config->active == 1 ? 'checked' : ''?> name="active">
+<div class="flex flex-col gap-6">
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title">Paramètres Shoutbox</h4>
+			</div>
+		</div>
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<form action="/shoutbox/sendparameter?management&option=widgets" method="post">
+						<div class="mt-2 mb-2">
+							<label class="col-md-12 control-label" for="name">Activer le widget</label>
+							<input value="1" name="active" <?=$config->active == 1 ? 'checked' : ''?> required class="form-input" id="name" name="name" type="text">
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-12 control-label">Nom personnalisé du widgets</label>
-						<div class="col-sm-12">
-							<div class="checkbox">
-								<input class="form-control" name="title" type="text" value="<?=$config->title?>">
-							</div>
+						<div class="mt-2 mb-2">
+							<label class="col-md-12 control-label">Nom personnalisé du widgets</label>
+							<input class="form-input" name="title" type="text" value="<?=$config->title?>">
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="input-NB_MSG" class="col-sm-12 control-label"><?=NB_MSG?></label>
-						<div class="col-sm-12">
-							<input id="input-NB_MSG" name="MAX_MSG" type="number" class="form-control" type="number" value="<?=$config->config['MAX_MSG']?>" min="5" max="25">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="input-JS" class="col-sm-12 control-label">Javascript</label>
-						<div class="col-sm-12">
-							<?php $chkjs = $config->config['JS'] == 1 ? 'checked' : ''; ?>
-							<div class="col-sm-12">
-								<input data-bootstrap-switch value="1" type="checkbox" <?=$config->active == 1 ? 'checked' : ''?> name="active">
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="input-CSS" class="col-sm-12 control-label"><?=CSS?></label>
-						<div class="col-sm-12">
-							<?php $chkcss = $config->config['CSS'] == 1 ? 'checked' : ''; ?>
-							<div class="col-sm-12">
-								<input data-bootstrap-switch value="1" type="checkbox" class="js-switch" <?=$chkcss?> name="CSS">
-							</div>
-						</div>
+						<div class="mt-2 mb-2">
+							<label class="col-md-12 control-label"><?=constant('NB_MSG');?></label>
+							<input id="input-NB_MSG" name="MAX_MSG" type="number" class="form-input" type="number" value="<?=$config->config['MAX_MSG']?>" min="5" max="25">
 					</div>
 				</div>
 			</div>

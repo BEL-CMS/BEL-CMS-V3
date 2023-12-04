@@ -9,6 +9,10 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -67,9 +71,9 @@ final class ModelsShoutbox
 			}
 			$sql->queryOne();
 			if (!empty($sql->data)) {
-				$author = $sql->data->hash_key;
-				$sql->data->username = Users::hashkeyToUsernameAvatar($author);
-				$sql->data->avatar   = Users::hashkeyToUsernameAvatar($author, 'avatar');
+				$user = User::getInfosUserAll($sql->data->hash_key);
+				$sql->data->username = $user->user->username;
+				$sql->data->avatar   = $user->profils->avatar;
 				$return = $sql->data;
 			}
 		}
@@ -219,22 +223,51 @@ final class ModelsShoutbox
 
 	public function sendemo ($data)
 	{
-		$return = Common::Upload('dir', 'emoticone');
+		$dir    = ROOT.DS.'uploads'.DS.'emoticones';
+		$return = Common::Upload('dir', $dir);
 		$return = array(
 			'type' => 'warning',
 			'text' => $return
 		);
-
-		$dir          = 'emoticone/';
-		$send['dir']  = '/uploads/'.$dir.$_FILES['dir']['name'];
+		$send['dir']  = '/uploads/emoticones/'.$_FILES['dir']['name'];
 		$send['name'] = Common::VarSecure($data['name']);
-		$send['code'] = Common::VarSecure($data['code']);
+		$send['code'] = Common::MakeConstant(Common::VarSecure($data['code']));
 		$send['name'] = $_FILES['dir']['name'];
 		// SQL INSERT
 		$sql = New BDD();
 		$sql->table('TABLE_EMOTICONES');
 		$sql->insert($send);
-		$sql->insert();
+
+		return $return;
+	}
+
+	public function deleteImo ($id)
+	{
+		// file DELETE
+		$sel = New BDD();
+		$sel->table('TABLE_EMOTICONES');
+		$sel->where(array('name' => 'id', 'value' => $id));
+		$sel->queryOne();
+		$data = $sel->data;
+		$file = ROOT.$data->dir;
+		Common::deleteFile($file);
+		// SQL DELETE
+		$sql = New BDD();
+		$sql->table('TABLE_EMOTICONES');
+		$sql->where(array('name' => 'id', 'value' => $id));
+		$sql->delete();
+		// SQL RETURN NB DELETE
+		if ($sql->rowCount <= 1) {
+			$return = array(
+				'type' => 'success',
+				'text' => constant('DEL_EMOTICON_SUCCESS')
+			);
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('DEL_EMOTICON_ERROR')
+			);
+		}
 
 		return $return;
 	}

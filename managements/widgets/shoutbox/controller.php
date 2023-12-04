@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Config;
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -16,18 +19,18 @@ endif;
 
 class Shoutbox extends AdminPages
 {
-	var $active    = true;
-	var $models    = 'ModelsShoutbox';
-
+	var $admin  = false; // Admin suprême uniquement (Groupe 1);
+	var $active = true; // activation manuel;
+	var $bdd    = 'ModelsShoutbox';
 	public function index ()
 	{
+		$menu[] = array(constant('HOME') => array('href'=>'shoutbox?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('EMOTICONS') => array('href'=>'shoutbox/emoticone?management&option=widgets','icon'=>'mgc_baby_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'shoutbox/parameter?management&option=widgets','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+		$menu[] = array(constant('DELETE_ALL_MSG') => array('href'=>'shoutbox/deleteall?management&option=widgets','icon'=>'mgc_delete_2_fill', 'color' => 'text-white bg-danger'));
 		$data['data']  = $this->models->getAllMsg();
 		$data['count'] = $this->models->getNbMsg();
 		$this->set($data);
-		$menu[] = array('Accueil'=> array('href'=>'/shoutbox?management&widgets','icon'=>'fa fa-home'));
-		$menu[] = array('Configuration'=> array('href'=>'/shoutbox/parameter?management&widgets','icon'=>'fa fa-cubes'));
-		$menu[] = array('Émoticônes'=> array('href'=>'/shoutbox/emoticone?management&widgets','icon'=>'fa fab fa-angellist'));
-		$menu[] = array('Effacer tout'=> array('href'=>'/shoutbox/deleteall?management&widgets','icon'=>'fa fa-ban'));
 		$this->render('index', $menu);
 	}
 
@@ -35,8 +38,7 @@ class Shoutbox extends AdminPages
 	{	
 		$data['imo'] = $this->models->getImo();
 		$this->set($data);
-		$menu[] = array('Accueil'=> array('href'=>'/shoutbox?management&widgets','icon'=>'fa fa-home'));
-		$menu[] = array('Configuration'=> array('href'=>'/shoutbox/parameter?management&widgets','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'shoutbox?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));;
 		$this->render('emoticone', $menu);
 	}
 
@@ -44,16 +46,27 @@ class Shoutbox extends AdminPages
 	{
 		$return = $this->models->sendemo ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/shoutbox/emoticone?management&widgets', 2);
+		$this->redirect('shoutbox/emoticone?management&option=widgets', 2);
 	}
 
-	public function edit ($id)
+	public function delimo ()
 	{
+		$id = (int) $this->data['2'];
+		if ($id > 0) {
+			$return = $this->models->deleteImo($id);
+			$this->error(get_class($this), $return['text'], $return['type']);
+			$this->redirect('shoutbox/emoticone?management&option=widgets', 2);
+		} else {
+			$this->redirect('shoutbox/emoticone?management&option=widgets', 1);
+		}
+	}
+
+	public function edit ()
+	{
+		$id = (int) $this->data['2'];
 		$data['data'] = $this->models->getMsg($id);
 		$this->set($data);
-		$menu[] = array('Accueil'=> array('href'=>'/shoutbox?management&widgets','icon'=>'fa fa-home'));
-		$menu[] = array('Configuration'=> array('href'=>'/shoutbox/parameter?management&widgets','icon'=>'fa fa-cubes'));
-		$menu[] = array('Effacer tout'=> array('href'=>'/shoutbox/deleteall?management&widgets','icon'=>'fa fa-ban'));
+		$menu[] = array(constant('HOME') => array('href'=>'shoutbox?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$this->render('edit', $menu);
 	}
 
@@ -61,32 +74,32 @@ class Shoutbox extends AdminPages
 	{
 		$return = $this->models->sendEdit($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('Shoutbox?management&widgets', 2);
+		$this->redirect('Shoutbox?management&option=widgets', 2);
 	}
 
 	public function delete ($id)
 	{
 		$return = $this->models->delete($id);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('Shoutbox?management&widgets', 2);
+		$this->redirect('Shoutbox?management&option=widgets', 2);
 	}
 
 	public function deleteall ()
 	{
 		$return = $this->models->deleteAll();
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('Shoutbox?management&widgets', 2);
+		$this->redirect('Shoutbox?management&option=widgets', 2);
 	}
 
 	public function parameter ()
 	{
-		$data['groups'] = BelCMSConfig::getGroups();
-		$data['config'] = BelCMSConfig::GetConfigWidgets(get_class($this));
-		$data['pages']  = Common::ScanDirectory(DIR_PAGES, true);
+		$data['groups'] = Config::getGroups();
+		$data['config'] = Config::GetConfigWidgets(get_class($this));
+		$data['pages']  = Common::ScanDirectory(constant('DIR_PAGES'), true);
 		$this->set($data);
-		$menu[] = array('Accueil'=> array('href'=>'/shoutbox?management&widgets','icon'=>'fa fa-home'));
-		$menu[] = array('Configuration'=> array('href'=>'/shoutbox/parameter?management&widgets','icon'=>'fa fa-cubes'));
-		$menu[] = array('Effacer tout'=> array('href'=>'/shoutbox/deleteall?management&widgets','icon'=>'fa fa-ban'));
+		$menu[] = array(constant('HOME') => array('href'=>'shoutbox?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('EMOTICONS') => array('href'=>'shoutbox/emoticone?management&option=widgets','icon'=>'mgc_baby_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('DELETE_ALL_MSG') => array('href'=>'shoutbox/deleteall?management&option=widgets','icon'=>'mgc_delete_2_fill', 'color' => 'text-white bg-danger'));
 		$this->render('parameter', $menu);
 	}
 
@@ -94,7 +107,7 @@ class Shoutbox extends AdminPages
 	{
 		$return = $this->models->sendparameter($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('Shoutbox?management&widgets', 2);
+		$this->redirect('Shoutbox?management&option=widgets', 2);
 	}
 
 }
