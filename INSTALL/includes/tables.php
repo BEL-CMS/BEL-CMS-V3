@@ -69,6 +69,7 @@ switch ($_POST['table']) {
 			`page` varchar(32) NOT NULL,
 			`page_sub` varchar(32) NOT NULL,
 			`page_id` int NOT NULL,
+			`comment` text,
 			`hash_key` varchar(32) NOT NULL,
 			`date_com` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
@@ -187,8 +188,33 @@ switch ($_POST['table']) {
 	  		`name` varchar(64) NOT NULL,
 	  		`dir` text NOT NULL,
 	  		`code` varchar(16) NOT NULL,
-	  		PRIMARY KEY (`id`)
+	  		PRIMARY KEY (`id`),
+			UNIQUE KEY `code` (`code`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `dir`, `code`) VALUES
+			('', 'happy', '/uploads/emoticones/happy.gif', ':happy:'),
+			('', 'rire', '/uploads/emoticones/D.gif', ':D'),
+			('', 'embarassed', '/uploads/emoticones/embarassed.gif', ':embarassed:'),
+			('', 'frown', '/uploads/emoticones/frown.gif', ':-('),
+			('', 'angry', '/uploads/emoticones/angry.gif', ':angry:'),
+			('', 'cool', '/uploads/emoticones/cool.gif', ':cool:'),
+			('', 'innocent', '/uploads/emoticones/innocent.gif', ':innocent:'),
+			('', 'kiss', '/uploads/emoticones/kiss.gif', ':kiss:'),
+			('', 'laugh', '/uploads/emoticones/laugh.gif', ':laugh:'),
+			('', 'money-mouth', '/uploads/emoticones/money-mouth.gif', ':money-mouth:'),
+			('', 'mouth', '/uploads/emoticones/mouth.gif', ':mouth:'),
+			('', 'ph34r', '/uploads/emoticones/ph34r.gif', ':ph34r:'),
+			('', 'sealed', '/uploads/emoticones/sealed.gif', ':sealed:'),
+			('', 'sleep', '/uploads/emoticones/sleep.gif', ':sleep:'),
+			('', 'smile', '/uploads/emoticones/smile.gif', ':smile:'),
+			('', 'smile 2', '/uploads/emoticones/smile_2.gif', ':smile_2:'),
+			('', 'cool_2', '/uploads/emoticones/cool_2.gif', ':cool_2:'),
+			('', 'cry', '/uploads/emoticones/cry.gif', ':cry:'),
+			('', 'surprised', '/uploads/emoticones/surprised.gif', ':surprised:'),
+			('', 'tongue-out', '/uploads/emoticones/tongue-out.gif', ':tongue-out:'),
+			('', 'undecided', '/uploads/emoticones/undecided', ':undecided:'),
+			('', 'wink', '/uploads/emoticones/wink.gif', ':wink:'),
+			('', 'yell', '/uploads/emoticones/yell.gif', ':yell:');";
 	break;
 
 	case "games":
@@ -200,6 +226,7 @@ switch ($_POST['table']) {
 	  		`ico` text NOT NULL,
 	  		PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		
 	break;
 
 	case 'groups':
@@ -650,7 +677,7 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`visitor_user` varchar(255) DEFAULT NULL,
-			`visitor_ip` varchar(32) DEFAULT NULL,
+			`visitor_ip` text NOT NULL,
 			`visitor_browser` varchar(255) DEFAULT NULL,
 			`visitor_hour` smallint NOT NULL DEFAULT '0',
 			`visitor_minute` smallint NOT NULL DEFAULT '0',
