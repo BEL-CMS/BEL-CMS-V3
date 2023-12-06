@@ -33,7 +33,7 @@ Common::constant(array(
 	'DEL_EMOTICON_ERROR'          => 'Erreur lors de la suppression de l\'émoticône',
 	'JS'                          => 'Javascript',
 	'CSS'                         => 'Cascading Style Sheets',
-	'NB_MSG'                      => 'Nombre de message',
+	'MAX_MSG'                     => 'Nombre de message',
 	'EMOTICONS'                   => 'Émoticônes',
 	'DELETE_ALL_MSG'              => 'Supprimer tous les messages',
 	'LIST_EMOTICONS'              => 'Lise des émoticônes',
@@ -42,4 +42,5 @@ Common::constant(array(
 	'CODE'                        => 'Code',
 	'DEL_EMOTICONE'               => 'Supprime l\'émoticône',
 	'LOCATIONS'                   => 'Emplacements',
+	'ARRANGEMENT'                 => 'Disposition',
 ));

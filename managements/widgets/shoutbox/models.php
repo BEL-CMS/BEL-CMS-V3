@@ -96,18 +96,18 @@ final class ModelsShoutbox
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_SHOUTBOX_SUCCESS
+					'text' => constant('EDIT_SHOUTBOX_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_SHOUTBOX_ERROR
+					'text' => constant('EDIT_SHOUTBOX_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 
@@ -128,18 +128,18 @@ final class ModelsShoutbox
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_SHOUTBOX_SUCCESS
+					'text' => constant('DEL_SHOUTBOX_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_SHOUTBOX_ERROR
+					'text' => constant('DEL_SHOUTBOX_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -155,12 +155,12 @@ final class ModelsShoutbox
 		if ($sql->rowCount <= 1) {
 			$return = array(
 				'type' => 'success',
-				'text' => DEL_ALL_SHOUTBOX_SUCCESS
+				'text' => constant('DEL_ALL_SHOUTBOX_SUCCESS')
 			);
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => DEL_ALL_SHOUTBOX_ERROR
+				'text' => constant('DEL_ALL_SHOUTBOX_ERROR')
 			);
 		}
 
@@ -172,13 +172,7 @@ final class ModelsShoutbox
 		$return = array();
 
 		if (!empty($data) && is_array($data)) {
-			if (!isset($data['JS'])) {
-				$data['JS'] = 0;
-			}
-			if (!isset($data['CSS'])) {
-				$data['CSS'] = 0;
-			}
-			$opt                  = array('MAX_MSG' => $data['MAX_MSG'], 'JS' => $data['JS'], 'CSS' => $data['CSS']);
+			$opt                  = array('MAX_MSG' => $data['MAX_MSG']);
 			$upd['config']        = Common::transformOpt($opt, true);
 			$upd['title']         = Common::VarSecure($data['title'], '');
 			$upd['groups_access'] = implode("|", $data['groups']);
@@ -198,23 +192,22 @@ final class ModelsShoutbox
 			$sql = New BDD();
 			$sql->table('TABLE_WIDGETS');
 			$sql->where(array('name' => 'name', 'value' => 'shoutbox'));
-			$sql->insert($upd);
-			$sql->update();
+			$sql->update($upd);
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_SHOUTBOX_PARAM_SUCCESS
+					'text' => constant('EDIT_SHOUTBOX_PARAM_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_SHOUTBOX_PARAM_ERROR
+					'text' => constant('EDIT_SHOUTBOX_PARAM_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 

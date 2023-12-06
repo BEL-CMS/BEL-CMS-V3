@@ -95,7 +95,7 @@ class Shoutbox extends AdminPages
 	{
 		$data['groups'] = Config::getGroups();
 		$data['config'] = Config::GetConfigWidgets(get_class($this));
-		$data['pages']  = Common::ScanDirectory(constant('DIR_PAGES'), true);
+		$data['pages']  = Common::ScanDirectory(constant('DIR_PAGES'));
 		$this->set($data);
 		$menu[] = array(constant('HOME') => array('href'=>'shoutbox?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('EMOTICONS') => array('href'=>'shoutbox/emoticone?management&option=widgets','icon'=>'mgc_baby_fill', 'color' => 'bg-success text-white'));
