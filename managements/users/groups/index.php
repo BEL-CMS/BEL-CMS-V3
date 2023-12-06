@@ -40,8 +40,12 @@ foreach ($count as $key => $value) {
 						<tbody>
 						<?php
 						foreach ($groups as $k => $v):
-							$v['image'] = str_replace("/", constant('DS'), $v['image']);
-							$img = file_exists(ROOT.$v['image']) == true ? $v['image'] : '/assets/img/no_img_available_728.90.png';
+							if (!empty($v['image']) and is_file(ROOT.DS.$v['image'])) {
+								$image = str_replace("/", constant('DS'), $v['image']);
+								$img = $image;
+							} else {
+								$img = '/assets/img/no_img_available_728.90.png';
+							}
 						?>
 							<tr>
 								<td><?=$k?></td>

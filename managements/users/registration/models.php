@@ -92,7 +92,9 @@ final class ModelsUsers
 		$update['user_groups'] = null;
 		if (!empty($data)) {
 			foreach ($data['second'] as $key => $value) {
-				$update['user_groups'] .= $value.'|';
+				if ($value != '2') { /* auto members */
+					$update['user_groups'] .= $value.'|';
+				}
 			}
 		}
 
