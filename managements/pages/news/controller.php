@@ -34,7 +34,8 @@ class News extends AdminPages
 
 	public function edit ($id)
 	{
-		$data['data'] = $this->models->getNews($this->data[2]);
+		$id = (int) $this->data[2];
+		$data['data'] = $this->models->getNews($id);
 		$this->set($data);
 		$menu[] = array(constant('HOME')   => array('href'=>'News?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD')    => array('href'=>'News/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));

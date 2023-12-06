@@ -40,7 +40,7 @@ final class ModelsNews
 		return $return;
 	}
 
-	public function getArticles ($id = false)
+	public function getNews ($id = false)
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_PAGES_NEWS');
