@@ -1,13 +1,17 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\Core\Secure;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -167,7 +171,6 @@ final class ModelsMarket
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET_CAT');
 			$sql->insert($send);
-			$sql->insert();
 
 			$return = array(
 				'type' => 'success',
@@ -246,9 +249,8 @@ final class ModelsMarket
 		// SQL UPDATE
 		$sql = New BDD();
 		$sql->table('TABLE_MARKET_CAT');
-		$sql->insert($send);
 		$sql->where(array('name' => 'id', 'value' => $id));
-		$sql->update();
+		$sql->update($send);
 		// SQL RETURN NB UPDATE == 1
 		if ($sql->rowCount == 1) {
 			$return = array(

@@ -32,6 +32,7 @@ final class Visitors
 			$visitorRefferer,
 			$visitedPage,
 			$visitedUser,
+			$visitor_ip,
 			$return;
 
 	function __construct ($json = null)
@@ -48,7 +49,8 @@ final class Visitors
 		$this->visitorDay      = date('d');
 		$this->visitorMonth    = date('m');
 		$this->visitorYear     = date('Y');
-		$this->visitorRefferer = gethostbyname(Common::GetIp());
+		$this->visitorRefferer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+		$this->visitor_ip      = Common::GetIp();
 		if (!empty($json)) {
 			$this->visitedUser = $json->hash_key;
 		} else {
@@ -63,13 +65,13 @@ final class Visitors
 			}
 		}
 		# data insert
-		$this->insertBdd();
+		self::insertBdd();
 	}
 
 	private function insertBdd () 
 	{
 		$insert['visitor_user']     = $this->visitedUser;
-		$insert['visitor_ip']       = Common::GetIp();
+		$insert['visitor_ip']       = $this->visitor_ip;
 		$insert['visitor_browser']  = $this->visitorBrowser;
 		$insert['visitor_hour']     = $this->visitorHour;
 		$insert['visitor_minute']   = $this->visitorMinute;
@@ -82,7 +84,7 @@ final class Visitors
 
 		$where[] = array(
 			'name' => 'visitor_ip',
-			'value'=> Common::GetIp(),
+			'value'=> $this->visitor_ip,
 			'op'    => ' = '
 		);
 		$where[] = array(
@@ -100,14 +102,13 @@ final class Visitors
 			'value'=> $this->visitorYear,
 			'op'    => ' = '
 		);
-
 		# table count <1
 		$sql = New BDD;
 		$sql->table('TABLE_VISITORS');
 		$sql->where($where);
 		$sql->count();
 		# Plus d'une fois dans la BDD (multiple page ouverte)
-		if ($sql->data > 1) {
+		if ($sql->data >= 1) {
 			$sql = New BDD;
 			$sql->table('TABLE_VISITORS');
 			$sql->where($where);

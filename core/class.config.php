@@ -52,7 +52,7 @@ final class Config
 		$return = null;
 
 		if ($widget != null) {
-			$widget = strtolower(trim(strtolower($widget)));
+			$widget = trim(strtolower($widget));
 			$sql = New BDD;
 			$sql->table('TABLE_WIDGETS');
 			$sql->where(array('name' => 'name', 'value' => $widget));
@@ -92,6 +92,21 @@ final class Config
 
 		}
 
+		return $return;
+	}
+
+	public static function getGroupsForID ($id = null)
+	{
+		$id = (int) $id;
+		$return = constant('UNKNOWN');
+		$sql = New BDD;
+		$sql->where(array('name' => 'id_group', 'value' => $id));
+		$sql->table('TABLE_GROUPS');
+		$sql->fields(array('name', 'id_group', 'color', 'image'));
+		$sql->queryOne();
+		if (!empty($sql->data)) {
+			$return = $sql->data;
+		}
 		return $return;
 	}
 }

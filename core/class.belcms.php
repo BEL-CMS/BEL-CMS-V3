@@ -49,7 +49,10 @@ final class BelCMS
 
 	public function __construct ()
 	{
-		new Visitors;
+		$this->link = Dispatcher::page($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']);
+		if ($this->link != 'Mails') {
+			new Visitors;
+		}
 		$this->widgets  = self::getWidgets ();
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();

@@ -14,47 +14,49 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<form action="/market/sendCategorie?management&pages" enctype="multipart/form-data" method="post" class="form-horizontal">
-	<div class="card">
-		<div class="card-header">
-			<h3 class="card-title">Ajout une câtégorie</h3>
-			<div class="card-tools">
-				<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-					<i class="fas fa-minus"></i>
-				</button>
-			</div>
-		</div>
-		<div class="card-body">
-			<div class="form-group">
-				<label class="col-sm-12 control-label" for="input-name"><?=NAME?></label>
-				<div class="col-sm-12">
-					<input name="name" type="text" class="form-control" id="input-name" required="required">
+<form action="market/sendCategorie?management&option=pages" method="post" enctype="multipart/form-data">
+	<div class="grid 2xl:grid-cols-2 grid-cols-1 gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title"><?=constant('ADD');?> - <?=constant('CAT');?></h4>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Accès aux groupes</label>
-				<div class="col-sm-10">
+			<div class="p-6">
+				<div class="overflow-x-auto">
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
+						<input name="name" type="text" class="form-input" value="" required="required">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title">Accès aux groupes</h4>
+				</div>
+			</div>
+			<div class="p-6">
+				<div class="overflow-x-auto">
 					<?php
 					$visitor = constant('VISITORS');
-					$groups->$visitor = 0;
+					$groups->{$visitor} = array('id'=> 0);
 					foreach ($groups as $k => $v):
-						$checked = null;
-						$checked = $v['id'] == '1' ? 'checked readonly' : $checked;
-						?>
-						<div class="form-group">
-							<div class="icheck-primary d-inline">
-								<input class="col-8" data-bootstrap-switch name="admin[]" value="<?=$v['id']?>" type="checkbox" <?=$checked?>>
-								<label class="col-4 control-label" for="<?=$v['id']?>"><?=$k?></label>
-							</div>
-						</div>
-						<?php
+					$checked = $v['id'] == 1 ? 'checked readonly' : '';
+					?>
+					<div class="flex items-center mb-2">
+						<input <?=$checked;?> name="groups[]" value="<?=$v['id']?>" type="checkbox" id="form_<?=$v['id']?>" class="form-switch square text-success">
+						<label for="form_<?=$v['id']?>" class="ms-2"><?=$k?></label>
+					</div>
+					<?php
 					endforeach;
 					?>
 				</div>
 			</div>
-			<div class="card-footer">
-				<button type="submit" class="btn btn-primary"><?=SUBMIT?></button>
-			</div>
 		</div>
+	</div>
+	<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
+		<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i><?=constant('SUBMIT')?></button>
 	</div>
 </form>

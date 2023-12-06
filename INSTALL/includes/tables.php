@@ -376,6 +376,30 @@ switch ($_POST['table']) {
 		(3, 'description', 'Le site est temporairement inaccessible en raison d’activités de maintenance planifiées...');";
 	break;
 
+	case "market":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(128) NOT NULL,
+			`description` text,
+			`amount` int NOT NULL DEFAULT '0',
+			`remaining` int NOT NULL DEFAULT '0',
+			`screen` text,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "market_cat":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(128) NOT NULL,
+			`groups` text,
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `name` (`name`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
 	case "newsletter":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (

@@ -1,13 +1,15 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -21,17 +23,17 @@ class Market extends AdminPages
 	#########################################
 	var $admin  = true; // Admin suprême uniquement (Groupe 1);
 	var $active = true; // activation manuel;
-	var $models = 'ModelsMarket';
+	var $bdd    = 'ModelsMarket';
 	#########################################
 	# Premiere page avec le rendu de la page index.php
 	#########################################
 	public function index ()
 	{
-		$menu[] = array(HOME       => array('href'=>'/market?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array(PAYMENT    => array('href'=>'/market/payment?management&pages','icon'=>'fa fa-solid fa-comment-dollar'));
-		$menu[] = array(ADD        => array('href'=>'/market/add?management&pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CATEGORIES => array('href'=>'/market/categories?management&pages','icon'=>'fa fa-cogs'));
-		$menu[] = array(CONFIG     => array('href'=>'/market/parameter?management&pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('PAYMENT') => array('href'=>'market/payment?management&option=pages','icon'=>'mgc_currency_euro_2_fill', 'color' => 'btn bg-info text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'market/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CAT') => array('href'=>'market/categories?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'market/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$data['data'] = $this->models->getBuy();
 		foreach ($data['data'] as $key => $value):
 			$data['data'][$key]->cat = $this->models->getCat($value->id);
@@ -44,12 +46,20 @@ class Market extends AdminPages
 	#########################################
 	public function add ()
 	{
-		$menu[] = array(HOME       => array('href'=>'/market?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array(CATEGORIES => array('href'=>'/market/categories?management&pages','icon'=>'fa fa-cogs'));
-		$menu[] = array(CONFIG     => array('href'=>'/market/parameter?management&pages','icon'=>'fa fa-cubes'));
-		$data['cat'] = $this->models->getAllCat();
-		$this->set($data);
-		$this->render('add', $menu);
+		$cat = $this->models->getAllCat();
+		if (!empty($cat)) {
+			$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+			$data['cat'] = $this->models->getAllCat();
+			$this->set($data);
+			$this->render('add', $menu);
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('NO_CAT')
+			);
+			$this->error(get_class($this), $return['text'], $return['type']);
+			$this->redirect('market/addcat?management&option=pages', 2);
+		}
 	}
 	#########################################
 	# Page Ajouter un objet / une vente enregistrement en BDD
@@ -58,7 +68,7 @@ class Market extends AdminPages
 	{
 		$return = $this->models->sendBuy ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/market?management&pages', 2);
+		$this->redirect('market?management&option=pages', 2);
 	}
 	#########################################
 	# Supprime une catégorie
@@ -67,7 +77,7 @@ class Market extends AdminPages
 	{
 		$return = $this->models->delcat ($data);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/market/categories?management&pages', 2);
+		$this->redirect('market/categories?management&option=pages', 2);
 	}
 
 	#########################################
@@ -75,10 +85,17 @@ class Market extends AdminPages
 	#########################################
 	public function categories ()
 	{
-		$menu[] = array(HOME   => array('href'=>'/market?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array(ADD    => array('href'=>'/market/addcat?management&pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CONFIG => array('href'=>'/market/parameter?management&pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD_CAT') => array('href'=>'market/addcat?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-warning text-white'));
+		$groups = config::getGroups();
 		$data['cat'] = $this->models->getAllCat();
+		foreach ($data['cat'] as $k => $v) {
+			$v->groups_name = explode('|', $v->groups);
+			foreach ($v->groups_name as $k2 => $v2) {
+				$g = Config::getGroupsForID($v2);
+				$v->groups_name[$k2] = defined($g->name) ? constant($g->name) : $g->name;
+			}
+		}
 		$this->set($data);
 		$this->render('cat', $menu);
 	}
@@ -87,20 +104,20 @@ class Market extends AdminPages
 	#########################################
 	public function addcat ()
 	{
-		$menu[] = array(HOME   => array('href'=>'/market?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array(ADD    => array('href'=>'/add/addcat?management&pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CONFIG => array('href'=>'/market/parameter?management&pages','icon'=>'fa fa-cubes'));
-		$d['groups'] = BelCMSConfig::getGroups();
+		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$d['groups'] = Config::getGroups();
 		$this->set($d);
 		$this->render('addcat', $menu);
 	}
 	#########################################
 	# Editer une Catégorie
 	#########################################
-	public function editcat ($id)
+	public function editcat ()
 	{
-		$d['data']   = current($this->models->getCat($id));
-		$d['groups'] = BelCMSConfig::getGroups();
+		$id = (int) $this->data[2];
+		$d['data']   = $this->models->getCat($id);
+		debug($d);
+		$d['groups'] = Config::getGroups();
 		$this->set($d);
 		$this->render('editcat');
 	}
@@ -111,7 +128,7 @@ class Market extends AdminPages
 	{
 		$return = $this->models->sendeditcat ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/market?management&pages', 2);
+		$this->redirect('market/categories?management&option=pages', 2);
 	}
 	#########################################
 	# Ajouter une Catégorie en BDD
@@ -146,10 +163,9 @@ class Market extends AdminPages
 	#########################################
 	public function payment ()
 	{
-		$menu[] = array(HOME       => array('href'=>'/market?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array(ADD        => array('href'=>'/market/add?management&pages','icon'=>'fa fa-plus'));
-		$menu[] = array(CATEGORIES => array('href'=>'/market/categories?management&pages','icon'=>'fa fa-cogs'));
-		$menu[] = array(CONFIG     => array('href'=>'/market/parameter?management&pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('CAT') => array('href'=>'market/categories?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'market/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('payment', $menu);
 	}
 }

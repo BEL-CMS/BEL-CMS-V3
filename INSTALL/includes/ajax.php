@@ -19,6 +19,8 @@
 		'mails_msg',
 		'mails_unsubscribe',
 		'maintenance',
+		'market',
+		'market_cat',
 		'newsletter',
 		'newsletter_send',
 		'newsletter_tpl',
