@@ -1,0 +1,65 @@
+#belcms_section_market_main {
+    display: block;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+#belcms_section_market_content {
+    display: flex;
+    flex-wrap: wrap;
+    flex: auto;
+    flex: 1 0 21%;
+}
+.belcms_section_market_object {
+    flex: auto;
+    background-color: #FFF;
+    flex: initial;
+    margin: 0 1%;
+    padding: 2px;
+    border-radius: 4px;
+}
+.belcms_section_market_object img {
+    display: block;
+    width: 250px;
+    height: 165px;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    opacity: 0.8;
+    transition: opacity .2s ease-out;
+}
+.belcms_section_market_object img:hover {
+    opacity: 1;
+    transition: opacity .2s linear;
+}
+.belcms_section_market_infos {
+    display: block;
+    overflow: hidden;
+    padding: 10px 15px;
+}
+.belcms_section_market_infos > a {
+    display: block;
+    float: left;
+    text-decoration: none;
+    font-weight: bold;
+    color: #0c0c0c;
+}
+.belcms_section_market_infos > span {
+    display: block;
+    font-weight: bold;
+    float: right;
+    color: greenyellow;
+}
+.belcms_section_market_date {
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 0 15px;
+}
+.belcms_section_market_date i {
+    font-size: 10px;
+    float: left;
+}
+.belcms_section_market_date span {
+    float: right;
+    color: red;
+}
+

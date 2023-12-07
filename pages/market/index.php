@@ -14,46 +14,39 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<section id="belcms_market">
-	<div class="card">
-		<h5 class="card-header">Shop</h5>
-		<div class="card-body">
-			<div class="accordion accordion-flush" id="accordionFlushExample">
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="flush-headingOne">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"></button>
-					</h2>
-					<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-						<div class="accordion-body">
-							<table class="table">
-								<tbody>
-									<th>
-										<td>Image</td>
-										<td>Nom</td>
-										<td>Prix</td>
-										<td>Disponible</td>
-									</th>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="flush-headingTwo">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">Accordion Item #2</button>
-					</h2>
-					<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-						<div class="accordion-body">ffg</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="flush-headingThree">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">Accordion Item #3</button>
-					</h2>
-					<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-						<div class="accordion-body">"""""</div>
-					</div>
-				</div>
+<section id="belcms_section_market_main">
+	<div id="belcms_section_market_content">
+		<div class="belcms_section_market_object">
+			<a href="#" title=""><img src="uploads/market/b1359907059_25230.jpg" alt=""></a>
+			<div class="belcms_section_market_infos">
+				<a href="#" title="#">Jeux-Vidéo</a>
+				<span>25.00 €</span>
+			</div>
+			<div class="belcms_section_market_date">
+				<i>01-12-2023</i>
+				<span>Illimité</span>
+			</div>
+		</div>
+		<div class="belcms_section_market_object">
+			<a href="#" title=""><img src="uploads/market/b1598613437_7623.jpg" alt=""></a>
+			<div class="belcms_section_market_infos">
+				<a href="#" title="#">Ocean</a>
+				<span>1500.00 €</span>
+			</div>
+			<div class="belcms_section_market_date">
+				<i>01-12-2023</i>
+				<span>6 restants</span>
+			</div>
+		</div>
+		<div class="belcms_section_market_object">
+			<a href="#" title=""><img src="uploads/market/b1612104885_46384.jpg" alt=""></a>
+			<div class="belcms_section_market_infos">
+				<a href="#" title="#">Oiseau</a>
+				<span>10.50 €</span>
+			</div>
+			<div class="belcms_section_market_date">
+				<i>01-12-2023</i>
+				<span>2 réstant</span>
 			</div>
 		</div>
 	</div>

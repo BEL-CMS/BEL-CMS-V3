@@ -398,9 +398,20 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(128) NOT NULL,
+			`screen` text NOT NULL,
 			`groups` text,
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `name` (`name`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "market_img":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`id_market` int NOT NULL,
+			`img` text NOT NULL,
+			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 

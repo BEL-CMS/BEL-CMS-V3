@@ -21,6 +21,7 @@
 		'maintenance',
 		'market',
 		'market_cat',
+		'market_img',
 		'newsletter',
 		'newsletter_send',
 		'newsletter_tpl',
