@@ -28,4 +28,8 @@ Common::constant(array(
 	'NO_CAT'          => 'Aucune câtégorie, veuillez en ajouté une.',
 	'ADD_CAT'         => 'Ajouter une catégorie',
 	'EDIT_CATEGORY'   => 'Éditer la catégorie',
+	'ADD_BUY'         => 'Ajout d\'une vente',
+	'EDIT_BUY'        => 'Editer une vente',
+	'SCREEN'          => 'Image',
+	'UNLIMITED'       => 'Illimité',
 ));

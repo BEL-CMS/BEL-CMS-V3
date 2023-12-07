@@ -62,7 +62,7 @@ final class ModelsMarket
 			$send['cat']         = isset($data['cat']) ? Secure::isString($data['cat']) : null; 
 			if (isset($_FILES['screen'])):
 				$screen = Common::Upload('screen', 'uploads/market', array('.png', '.gif', '.jpg', '.jpeg'));
-				if ($screen = UPLOAD_FILE_SUCCESS):
+				if ($screen = constant('UPLOAD_FILE_SUCCESS')):
 					$send['screen'] = 'uploads'.DS.'uploads/market'.DS.$_FILES['screen']['name'];
 				endif;
 			else:
@@ -75,29 +75,28 @@ final class ModelsMarket
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET');
-			$sql->insert($send);
 			$where = array(
 				'name'  => 'id',
 				'value' => $data['id']
 			);
 			$sql->where($where);
-			$sql->update();
+			$sql->update($send);
 			// SQL RETURN NB INSERT
 			if ($sql->rowCount == 1):
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_SUCCESS
+					'text' => constant('SEND_SUCCESS')
 				);
 			else:
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_ERROR
+					'text' => constant('SEND_ERROR')
 				);
 			endif;
 		else:
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		endif;
 
@@ -126,8 +125,8 @@ final class ModelsMarket
 			$send['remaining']   = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
 			if (isset($_FILES['screen'])) {
 				$screen = Common::Upload('screen', 'uploads/market', array('.png', '.gif', '.jpg', '.jpeg'));
-				if ($screen = UPLOAD_FILE_SUCCESS) {
-					$send['screen'] = 'uploads'.DS.'uploads/market'.DS.$_FILES['screen']['name'];
+				if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
+					$send['screen'] = 'uploads'.DS.'market'.DS.$_FILES['screen']['name'];
 				}
 			} else {
 				$send['screen'] = '';
@@ -141,18 +140,18 @@ final class ModelsMarket
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_SUCCESS
+					'text' => constant('SEND_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_ERROR
+					'text' => constant('SEND_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 
@@ -174,7 +173,7 @@ final class ModelsMarket
 
 			$return = array(
 				'type' => 'success',
-				'text' => ADD_CAT_SUCCESS
+				'text' => constant('ADD_CAT_SUCCESS')
 			);
 		endif;
 		return $return;
@@ -221,18 +220,18 @@ final class ModelsMarket
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => DEL_SUCCESS
+					'text' => constant('DEL_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => DEL_ERROR
+					'text' => constant('DEL_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
@@ -255,15 +254,51 @@ final class ModelsMarket
 		if ($sql->rowCount == 1) {
 			$return = array(
 				'type' => 'success',
-				'text' => SEND_SUCCESS
+				'text' => constant('SEND_SUCCESS')
 			);
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => DEL_ERROR
+				'text' => constant('DEL_ERROR')
 			);
 		}
 
+		return $return;
+	}
+
+	public function sendparameter($data = null)
+	{
+		if ($data !== false) {
+			$data['NB_BUY']       = (int) $data['NB_BUY'];
+			$opt                  = array('NB_BUY' => $data['NB_BUY']);
+			$data['admin']        = isset($data['admin']) ? $data['admin'] : array(1);
+			$data['groups']       = isset($data['groups']) ? $data['groups'] : array(1);
+			$upd['config']        = Common::transformOpt($opt, true);
+			$upd['active']        = isset($data['active']) ? 1 : 0;
+			$upd['access_admin']  = implode("|", $data['admin']);
+			$upd['access_groups'] = implode("|", $data['groups']);
+			// SQL UPDATE
+			$sql = New BDD();
+			$sql->table('TABLE_PAGES_CONFIG');
+			$sql->where(array('name' => 'name', 'value' => 'market'));
+			$sql->update($upd);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDIT_DL_PARAM_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_DL_PARAM_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
 		return $return;
 	}
 }

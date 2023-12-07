@@ -33,6 +33,14 @@ endif;
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
 							</tr>
 						</thead>
+						<tfoot class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('ID');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('GROUPS');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
+							</tr>
+						</tfoot>
 						<tbody>
 						<?php
 						foreach ($cat as $k => $v):
@@ -64,7 +72,7 @@ endif;
 											</div>
 											<div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
 												<button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button"><?=constant('CLOSE');?></button>
-												<a class="btn bg-primary text-white" onclick="window.location.href='/market/delcat/<?=$v->id;?>?management&option=pages'"><?=constant('DELETE');?></a>
+												<a class="btn bg-primary text-white" onclick="window.location.href='market/delcat/<?=$v->id;?>?management&option=pages'"><?=constant('DELETE');?></a>
 											</div>
 										</div>
 									</div>

@@ -135,8 +135,9 @@ switch ($_POST['table']) {
 			('', 'gallery', 1, '0', '1', ''),
 			('', 'managements', 1, '1', '1', ''),
 			('', 'news', 1, '1|0', '1', 'MAX_NEWS==2'),
-			('', 'mails', 1, '2', '1', NULL);
-			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5');";
+			('', 'mails', 1, '2', '1', NULL),
+			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
+			('', 'market', 1, '1|0', '1', 'NB_BUY==6');";
 	break;
 
 	case 'config_tpl':
@@ -385,6 +386,9 @@ switch ($_POST['table']) {
 			`amount` int NOT NULL DEFAULT '0',
 			`remaining` int NOT NULL DEFAULT '0',
 			`screen` text,
+			`author` varchar(32) NOT NULL,
+			`date_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`cat` int DEFAULT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;

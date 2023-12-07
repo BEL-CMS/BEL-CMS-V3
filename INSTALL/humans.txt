@@ -19,7 +19,7 @@
     Name: https://determe.be
                    [...]                         
 /* SITE */                        
-	Last update: 2023/11/25
+	Last update: 2023/12/07
 	Standards: HTML5, CSS3
 	Components: jQuery, jQuery Ui
 	Software: Visual Studio Code used for the development
