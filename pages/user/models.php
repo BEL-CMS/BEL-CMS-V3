@@ -217,7 +217,7 @@ final class User
 				$return['type'] = 'blue';
 			}
 		}
-		$insertProfil['info_text'] = Common::VarSecure($data['info_text'], null);
+		$insertProfil['info_text'] = Common::VarSecure($data['info_text'], 'html');
 		$insertProfil['info_text'] = empty($insertProfil['info_text']) ? '<p></p>' : $insertProfil['info_text'];
 
 		$sql = New BDD();
@@ -664,6 +664,8 @@ final class User
 						$dataInsertProfils['country']  = Secure::isString($data['country']);
 						$dataInsertProfils['websites'] = Secure::isUrl($data['websites']);
 						$dataInsertProfils['gender']   = Secure::isString($data['gender']);
+						$dataInsertProfils['info_text'] = Common::VarSecure($data['info_text'], 'html');
+						$dataInsertProfils['info_text'] = empty($dataInsertProfils['info_text']) ? '<p></p>' : $dataInsertProfils['info_text'];
 
 						$sql = New BDD();
 						$sql->table('TABLE_USERS_PROFILS');

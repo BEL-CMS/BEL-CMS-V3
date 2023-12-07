@@ -12,9 +12,10 @@
 namespace Belcms\Pages\Controller;
 use BelCMS\Core\Config;
 use Belcms\Pages\Pages;
-use BelCMS\Core\Notification as Notification;
-use BelCMS\Core\Secures as Secures;
-use BelCMS\User\User as User;
+use BelCMS\Core\Notification;
+use BelCMS\Core\Secures;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -34,15 +35,16 @@ class Members extends Pages
 		$this->render('index');
 	}
 
-	public function view ($page,$view,$id)
+	public function profil ()
 	{
+		$name = Common::VarSecure($this->data[2], null);
 		$data['groups'] = Secures::getGroups();
-		$data['data']   = $this->models->getViewUser($id);
+		$data['data']   = $this->models->getViewUser($name);
 		if (empty($data['data'])) {
-			Notification::warning('L\'utilisateur demandé n\'existe pas');
+			Notification::warning('L\'utilisateur demandé n\'existe pas', constant('USER'));
 		} else {
 			$this->set($data);
-			$this->render('view');
+			$this->render('profil');
 		}
 	}
 

@@ -131,25 +131,17 @@ final class Members
 	public function getViewUser ($name)
 	{
 		$return = array();
-
 		if (!empty($name)) {
 			$name = trim($name);
-
 			$sql = New BDD;
 			$sql->table('TABLE_USERS');
 			$sql->where(array('name' => 'username', 'value' => $name));
 			$sql->queryOne();
 			$data = $sql->data;
-
 			if (!empty($data)) {
-				$data->main_groups = explode('|', $data->main_groups);
-				if (empty($data->avatar) OR !is_file($data->avatar)) {
-					$data->avatar = 'assets/img/default_avatar.jpg';
-				}
-				$return = $data;
+				$return = User::getInfosUserAll($data->hash_key);
 			}
 		}
-
 		return $return;
 	}
 }

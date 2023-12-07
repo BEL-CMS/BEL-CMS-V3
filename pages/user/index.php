@@ -71,6 +71,11 @@ if (UserInfos::isLogged() === true):
 						<h3 class="belcms_h3_input_lf">Votre Site-Web :</h3>
 						<input placeholder="Site-Web" class="bel_cms_input" name="websites" type="text" value="<?=$user->profils->websites?>" pattern="https?://.+">
 					</div>
+					<div>
+						<h3 class="belcms_h3_input_lf">Votre Bio :</h3>
+						<textarea name="info_text" class="bel_cms_textarea_simple"><?=$user->profils->info_text?></textarea>
+					</div>
+					<br>
 					<button type="submit" class="belcms_btn"><?=constant('CONFIRM')?></button>
 				</form>
 			</div>

@@ -46,7 +46,9 @@ endif;
 			<div class="belcms_section_members_main_avatar">
 				<img src="<?=$avatar;?>" alt="avatar_<?=$a->user->username;?>">
 			</div>
-			<h4 class="belcms_section_members_main_users_h4 align_center"><?=$a->user->username;?></h4>
+			<h4 class="belcms_section_members_main_users_h4 align_center">
+				<a href="Members/profil/<?=$a->user->username;?>"><?=$a->user->username;?></a>
+			</h4>
 			<ul class="bel_cms_section_members_main_ul align_center">
 				<li data-tooltip="Lien" data-position="bottom" <?=$linkA;?>>
 					<a href="<?=$link;?>" target="_blank"><i class="fa-solid fa-link"></i></a>
