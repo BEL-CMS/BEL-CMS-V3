@@ -35,12 +35,6 @@ endif;
 						<textarea name="description" id="input-description" class="bel_cms_textarea_simple"></textarea>
 					</div>
 					<div class="mt-2 mb-2">
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
-							<?=constant('SCREEN');?> (<?=Common::ConvertSize(Common::GetMaximumFileUploadSize())?> max)
-						</label>
-						<input name="image" type="file" class="form-input">
-					</div>
-					<div class="mt-2 mb-2">
 						<div class="relative">
 							<input type="text" name="amount" id="input-with-leading-and-trailing-icon" min="0" name="input-with-leading-and-trailing-icon" class="form-input ps-11 pe-14" placeholder="0.00">
 							<div class="absolute inset-y-0 start-4 flex items-center pointer-events-none z-20">
@@ -58,6 +52,7 @@ endif;
 					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('CATEGORIES');?></label>
 						<select name="idcat" class="form-select">
+							<option><?=constant('NO_CATEGORY');?></option>
 						<?php
 						foreach ($cat as $b):
 						?>

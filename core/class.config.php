@@ -97,6 +97,14 @@ final class Config
 
 	public static function getGroupsForID ($id = null)
 	{
+		if ($id == 0) {
+			return (object) array(
+				'name'     => constant('VISITORS'),
+				'id_group' => 0,
+				'image'    => '',
+				'color'    => ''
+			);
+		}
 		$id = (int) $id;
 		$return = constant('UNKNOWN');
 		$sql = New BDD;

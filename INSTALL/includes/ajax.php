@@ -20,6 +20,7 @@
 		'mails_unsubscribe',
 		'maintenance',
 		'market',
+		'market_address',
 		'market_cat',
 		'market_img',
 		'newsletter',

@@ -385,7 +385,6 @@ switch ($_POST['table']) {
 			`description` text,
 			`amount` int NOT NULL DEFAULT '0',
 			`remaining` int NOT NULL DEFAULT '0',
-			`screen` text,
 			`author` varchar(32) NOT NULL,
 			`date_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`cat` int DEFAULT NULL,
@@ -399,9 +398,28 @@ switch ($_POST['table']) {
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(128) NOT NULL,
 			`screen` text NOT NULL,
-			`groups` text,
+			`user_groups` text,
+			`img` varchar(128) DEFAULT NULL,
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `name` (`name`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "market_address":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`hash_key` varchar(32) NOT NULL,
+			`name` varchar(64) NOT NULL,
+			`first_name` varchar(64) NOT NULL,
+			`address` text,
+			`number` int NOT NULL,
+			`postal_code` int DEFAULT NULL,
+			`city` text,
+			`country` text,
+			`phone` text NOT NULL,
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `hash_key` (`hash_key`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 

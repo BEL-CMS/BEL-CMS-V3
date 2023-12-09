@@ -5,7 +5,7 @@ use BelCMS\Core\GetHost;
 <html lang="fr">
 <head>
 	<meta charset="utf-8">
-	<base href="<?=GetHost::getBaseUrl();?>">
+	<base href="<?=GetHost::curPageURL();?>">
 	<title>Administration</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="managements/assets/css/app.min.css" rel="stylesheet" type="text/css">
@@ -15,11 +15,9 @@ use BelCMS\Core\GetHost;
 	<link rel="stylesheet" href="managements/assets/css/quick-events.css">
 	<link rel="stylesheet" href="assets/plugins/tinymce/skins/lightgray/skin.min.css">
 	<link rel="stylesheet" href="assets/plugins/fontawesome-6.4.2/css/all.min.css">
-	<link rel="stylesheet" href="assets/plugins/colorpicker/css/bootstrap-colorpicker.css">
+	<link rel="stylesheet" href="managements/assets/libs/dropzone/min/dropzone.min.css">
 	<script src="assets/js/jQuery/jquery-3.7.1.min.js"></script>
 	<link rel="stylesheet" href="managements/assets/libs/quick-events.css">
-	<script src="assets/plugins/colorpicker/js/bootstrap-colorpicker.min.js"></script>
-
 	<script src="managements/assets/js/config.js"></script>
 	<script type="text/javascript">
 		document.onreadystatechange = function() {
@@ -35,7 +33,7 @@ use BelCMS\Core\GetHost;
 </head>
 <body>
 	<div id="loading">
-		<div><img src="assets/images/loader_7.gif"><p><?=constant('DOWNLOADS_IS_PROGRESS');?></p></div>
+		<div><img src="assets/img/loader_7.gif"><p><?=constant('DOWNLOADS_IS_PROGRESS');?></p></div>
 	</div>
 	<div class="flex wrapper">
 		<div class="app-menu">
@@ -285,13 +283,14 @@ use BelCMS\Core\GetHost;
 		</div>
 	</div>
 	  
-	<script src="/assets/plugins/tinymce/tinymce.min.js"></script>
-	<script src="/assets/plugins/DataTables-1.13.06/datatables.min.js"></script>
-	<script src="/managements/assets/js/datatables.fr.js"></script>
-	<script src="/managements/assets/libs/simplebar/simplebar.min.js"></script>
-	<script src="/managements/assets/libs/feather-icons/feather.min.js"></script>
-	<script src="/managements/assets/libs/@frostui/tailwindcss/frostui.js"></script>
-	<script src="/assets/js/belcms.core.js"></script>
-	<script src="/managements/assets/js/app.js"></script>
+	<script src="assets/plugins/tinymce/tinymce.min.js"></script>
+	<script src="assets/plugins/DataTables-1.13.06/datatables.min.js"></script>
+	<script src="managements/assets/js/datatables.fr.js"></script>
+	<script src="managements/assets/libs/simplebar/simplebar.min.js"></script>
+	<script src="managements/assets/libs/feather-icons/feather.min.js"></script>
+	<script src="managements/assets/libs/@frostui/tailwindcss/frostui.js"></script>
+	<script src="managements/assets/libs/dropzone/min/dropzone-amd-module.min.js"></script>
+	<script src="assets/js/belcms.core.js"></script>
+	<script src="managements/assets/js/app.js"></script>
 	</body>
 </html>

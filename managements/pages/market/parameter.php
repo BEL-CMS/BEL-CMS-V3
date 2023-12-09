@@ -30,10 +30,10 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 							<label class="ms-1.5" for="active"><?=constant('MARKET_PAGE_ACTIVE');?></label>
 						</div>
 						<div>
-							<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2" for="<?=constant('NB_BUY')?>">
-							<?=constant('NB_BUY')?></label>
+							<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2" for="<?=constant('NB_BUY_PAGE')?>">
+							<?=constant('NB_BUY_PAGE')?></label>
 							<div class="col-sm-12">
-								<input id="input-NB_BUY" name="NB_BUY" type="number" class="form-input" type="number" value="<?=$config->config['MAX_DL']?>" min="1" max="16">
+								<input id="<?=constant('NB_BUY_PAGE')?>" name="NB_BUY" type="number" class="form-input" type="number" value="<?=$config->config['NB_BUY']?>" min="1" max="16">
 							</div>
 						</div>
 					</div>

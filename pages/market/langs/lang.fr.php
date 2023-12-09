@@ -21,5 +21,27 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - Market
 	#####################################
-	'SHOP' => 'Boutique',
+	'SHOP'            	  => 'Boutique',
+	'REMAINING'       	  => 'Restant',
+	'UNLIMITED'       	  => 'Illimité',
+	'PRICE'           	  => 'Prix',
+	'ADD_DATE'        	  => 'Date de l\'ajout',
+	'ADDED_TO_CART'   	  => 'Ajouté au panier',
+	'YOUR_INFORMATON' 	  => 'Vos informations',
+	'YOUR_NAME'       	  => 'Votre Nom',
+	'FIRST_NAME'      	  => 'Votre prénom',
+	'PHONE'           	  => 'Numéro de téléphone',
+	'YOUR_ADRESS'     	  => 'Rue',
+	'NUMBER'          	  => 'Numéro',
+	'POSTAL_CODE'     	  => 'Code postal',
+	'CITY'            	  => 'Ville',
+	'COUNTRY'         	  => 'Pays',
+	'UPDATE_ADDRESS'  	  => 'Mise à jour de l\'adresse',
+	'ADRESS_CODE'     	  => '* Votre profil d\'adresse est crypté en base de données',
+	'CART_TOTALS'     	  => 'Totaux du panier',
+	'NUMBER_OF_PURCHASES' => 'Nombre d\'achats',
+	'CART_SUBTOTAL'       => 'Sous-total du panier',
+	'SHIPPING_TOTAL'      => 'Frais de livraison',
+	'TOTAL'               => 'Total',
+	'PROCEED_TO_CHECKOUT' => 'Passer à la caisse',
 ));

@@ -53,7 +53,7 @@ endif;
 							<?php
 							foreach ($data as $k => $v):
 								$v->remaining = empty($v->remaining) ? constant('UNLIMITED') : $v->remaining;
-								$cat          = empty($v->cat->name) ? null : $v->cat->name;
+								$cat          = empty($v->cat->name) ? constant('NO_CATEGORY') : $v->cat->name;
 								$user         = User::getInfosUserAll($v->author);
 								$username     = $user->user->username;
 								?>
@@ -65,6 +65,7 @@ endif;
 									<td><?=$v->remaining;?></td>
 									<td><?=$cat;?></td>
 									<td>
+										<button class="btn btn-sm bg-success text-white" onclick="window.location.href='market/addImgBuy/<?=$v->id;?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('ADD_IMG');?></button>
 										<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='market/editbuy/<?=$v->id;?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
 										<button type="button" data-fc-target="delete-modal_<?=$v->id?>" data-fc-type="modal" class="btn bg-danger btn-sm text-white"><i class="mgc_close_line text-base me-4"></i><?=constant('DELETE');?></button>
 										<div id="delete-modal_<?=$v->id?>" class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden"> 

@@ -1,4 +1,5 @@
 <?php
+use BelCMS\Requires\Common;
 /**
  * Bel-CMS [Content management system]
  * @version 3.0.0 [PHP8.2]
@@ -15,39 +16,59 @@ if (!defined('CHECK_INDEX')):
 endif;
 ?>
 <section id="belcms_section_market_main">
+	<?php if (isset($cat) and !empty($cat)): ?>
+	<div id="belcms_section_market_cat">
+		<ul>
+			<?php
+			foreach ($cat as $cat_id => $cat_value):
+			?>
+				<li><a data="<?=$cat_value->name;?>" class="belcms_tooltip_bottom" href="#"><img src="<?=$cat_value->img;?>" alt=""></a></li>
+			<?php
+			endforeach;
+			?>
+		</ul>
+	</div>
+	<?php endif; ?>
 	<div id="belcms_section_market_content">
+		<?php
+		foreach ($buy as $buy_id => $buy_value):
+			$countImg = count($buy_value->img);
+			if ($countImg == 1) {
+				$img = $buy_value->img[0];
+			} else {
+				$countImg = (int) rand(0, $countImg);
+				$countImg = $countImg -1;
+				if ($countImg == '-1') {
+					$countImg = 0;
+				}
+				$img = $buy_value->img[$countImg]->img;
+			}
+			if ($buy_value->remaining == 0) {
+				$buy_value->remaining = constant('UNLIMITED');
+			}
+		?>
 		<div class="belcms_section_market_object">
-			<a href="#" title=""><img src="uploads/market/b1359907059_25230.jpg" alt=""></a>
+			<a href="Market/Buy/<?=$buy_value->id;?>" title="<?=$buy_value->name;?>">
+				<img src="<?=$img;?>" alt="img_<?=$buy_value->name;?>">
+			</a>
 			<div class="belcms_section_market_infos">
-				<a href="#" title="#">Jeux-Vidéo</a>
-				<span>25.00 €</span>
+				<a href="#" title="#"><?=$buy_value->name;?></a>
+				<span><?=$buy_value->amount;?>&ensp;€</span>
 			</div>
 			<div class="belcms_section_market_date">
-				<i>01-12-2023</i>
-				<span>Illimité</span>
+				<i><?=Common::TransformDate($buy_value->date_add, 'MEDIUM', 'NONE');?></i>
+				<span><i><?=constant('REMAINING');?>&ensp;<?=$buy_value->remaining;?></i></span>
 			</div>
 		</div>
-		<div class="belcms_section_market_object">
-			<a href="#" title=""><img src="uploads/market/b1598613437_7623.jpg" alt=""></a>
-			<div class="belcms_section_market_infos">
-				<a href="#" title="#">Ocean</a>
-				<span>1500.00 €</span>
-			</div>
-			<div class="belcms_section_market_date">
-				<i>01-12-2023</i>
-				<span>6 restants</span>
-			</div>
-		</div>
-		<div class="belcms_section_market_object">
-			<a href="#" title=""><img src="uploads/market/b1612104885_46384.jpg" alt=""></a>
-			<div class="belcms_section_market_infos">
-				<a href="#" title="#">Oiseau</a>
-				<span>10.50 €</span>
-			</div>
-			<div class="belcms_section_market_date">
-				<i>01-12-2023</i>
-				<span>2 réstant</span>
-			</div>
-		</div>
+		<?php endforeach; ?>
 	</div>
 </section>
+<?php
+if (!empty($pagination)):
+?>
+	<div class="bel_cms_index_footer">
+		<?=$pagination?>
+	</div>
+<?php
+endif;
+?>

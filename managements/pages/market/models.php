@@ -59,19 +59,7 @@ final class ModelsMarket
 			$send['description'] = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
 			$send['amount']      = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
 			$send['remaining']   = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
-			$send['cat']         = isset($data['cat']) ? Secure::isString($data['cat']) : null; 
-			if (isset($_FILES['screen'])):
-				$screen = Common::Upload('screen', 'uploads/market', array('.png', '.gif', '.jpg', '.jpeg'));
-				if ($screen = constant('UPLOAD_FILE_SUCCESS')):
-					$send['screen'] = 'uploads'.DS.'uploads/market'.DS.$_FILES['screen']['name'];
-				endif;
-			else:
-				if (!empty($send['screen'])):
-					$send['screen'] = $data['screen'];
-				else:
-					$send['screen'] = '';
-				endif;
-			endif;
+			$send['cat']         = isset($data['cat']) ? Secure::isString($data['cat']) : null;
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET');
@@ -123,19 +111,11 @@ final class ModelsMarket
 			$send['description'] = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
 			$send['amount']      = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
 			$send['remaining']   = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
-			if (isset($_FILES['screen'])) {
-				$screen = Common::Upload('screen', 'uploads/market', array('.png', '.gif', '.jpg', '.jpeg'));
-				if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
-					$send['screen'] = 'uploads'.DS.'market'.DS.$_FILES['screen']['name'];
-				}
-			} else {
-				$send['screen'] = '';
-			}
+			$send['author']      = $_SESSION['USER']->user->hash_key; 
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET');
 			$sql->insert($send);
-			$sql->insert();
 			// SQL RETURN NB INSERT
 			if ($sql->rowCount == 1) {
 				$return = array(
@@ -157,6 +137,48 @@ final class ModelsMarket
 
 		return $return;
 	}
+
+	public function sendimg ($data = null) 
+	{
+		$dir = ROOT.'/uploads/market/'.$data.'/';
+		if (!file_exists($dir)) {
+			if (!mkdir($dir, 0777, true)) {
+				throw new Exception('Failed to create directory');
+			} else {
+				$fopen  = fopen($dir.'/index.html', 'a+');
+				fclose($fopen);
+			}
+		}
+		$screen = Common::Upload('file', $dir, array('.png', '.gif', '.jpg', '.jpeg', '.ico','.PNG', '.GIF', '.JPG', '.JPEG', '.ICO'));
+
+		if ($screen == constant('UPLOAD_FILE_SUCCESS')) {
+			$dirPath = '/uploads/market/'.$data.'/'.$_FILES['file']['name'];
+			$send['img']       = $dirPath;
+			$send['id_market'] = $data;
+			// SQL INSERT
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET_IMG');
+			$sql->insert($send);
+			$return = constant('UPLOAD_FILE_SUCCESS');
+		} else {
+			$return = array('msg' => $screen);
+		}
+
+		return $return;
+	}
+
+
+	public function getImg ($id = null)
+	{
+		if ($id != null) {
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET_IMG');
+			$sql->fields(array('img'));
+			$sql->where(array('name' => 'id_market', 'value' => $id));
+			$sql->queryAll();
+			return $sql->data;
+		}
+	}
 	#########################################
 	# Ajoute une catégorie
 	#########################################
@@ -165,7 +187,17 @@ final class ModelsMarket
 		$return = null;
 		$send['name']        = Common::VarSecure($data['name'], ''); // autorise que du texte
 		$data['groups']      = isset($data['groups']) ? $data['groups'] : array(1);
-		$send['groups']      = implode("|", $data['groups']);
+		$send['user_groups'] = implode("|", $data['groups']);
+
+		if (isset($_FILES['img'])) {
+			$screen = Common::Upload('img', 'uploads/market/cat', array('.png', '.gif', '.jpg', '.jpeg', '.ico', '.bmp'));
+			if ($screen == constant('UPLOAD_FILE_SUCCESS')) {
+				$send['img'] = '/uploads/market/cat/'.$_FILES['img']['name'];
+			}
+		} else {
+			$send['img'] = '';
+		}
+
 		if (is_array($data)):
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET_CAT');
@@ -241,9 +273,27 @@ final class ModelsMarket
 	#########################################
 	public function sendeditcat ($data)
 	{
-		$id             = (int) $data['id'];
-		$send['name']   = Common::VarSecure($data['name'], null);
-		$send['groups'] = implode('|', $data['groups']);
+		$id                  = (int) $data['id'];
+		$send['name']        = Common::VarSecure($data['name'], null);
+		if (isset($data['groups']) and in_array(0, $data['groups'])) {
+			$send['user_groups'] = 0;
+		} else {
+			if (isset($data['groups'])) {
+				$send['user_groups'] = implode('|', $data['groups']);
+				if (is_array($send['user_groups']) and !in_array('1', $send['user_groups'])) {
+					$send['user_groups'] = '1|'.$send['user_groups']; 
+				} else {
+					$send['user_groups'] = 1;
+				}
+			} else {
+				$send['user_groups'] = 1;
+			}
+		}
+
+		if ($_FILES['img']['error'] == 0) {
+			Common::Upload('img', 'uploads/market/cat', array('.png', '.gif', '.jpg', '.jpeg', '.ico', '.bmp'));
+			$send['img'] = '/uploads/market/cat/'.$_FILES['img']['name'];
+		}
 
 		// SQL UPDATE
 		$sql = New BDD();
@@ -251,15 +301,15 @@ final class ModelsMarket
 		$sql->where(array('name' => 'id', 'value' => $id));
 		$sql->update($send);
 		// SQL RETURN NB UPDATE == 1
-		if ($sql->rowCount == 1) {
+		if ($sql->rowCount == true) {
 			$return = array(
 				'type' => 'success',
-				'text' => constant('SEND_SUCCESS')
+				'text' => constant('EDIT_PARAM_SUCCESS')
 			);
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => constant('DEL_ERROR')
+				'text' => constant('SEND_BDD_PARTIEL')
 			);
 		}
 
@@ -285,18 +335,18 @@ final class ModelsMarket
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => constant('EDIT_DL_PARAM_SUCCESS')
+					'text' => constant('EDIT_PARAM_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => constant('EDIT_DL_PARAM_ERROR')
+					'text' => constant('EDIT_PARAM_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => constant('ERROR_NO_DATA')
+				'text' => constant('DEL_BDD_ERROR')
 			);
 		}
 		return $return;

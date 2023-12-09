@@ -11,6 +11,7 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -22,8 +23,47 @@ class Market extends Pages
 	var $useModels = 'Market';
 	public function index ()
 	{
-		$data['data'] = $this->models->getCat();
+		$data['cat'] = $this->models->getCat();
+		$data['buy'] = $this->models->getBuy();
 		$this->set($data);
 		$this->render('index');
+	}
+
+	public function buy ()
+	{
+		$id = (int) $this->data[2];
+		$data['buy'] = $this->models->getBuy($id);
+		$this->set($data);
+		$this->render('buy');
+	}
+
+	public function buyconfirm ()
+	{
+		$id = (int) $this->data[2];
+		$this->render('buyconfirm');
+	}
+
+	public function adress ()
+	{
+		if (User::isLogged() === false) {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		} else {
+			$data['adress'] = $this->models->getAdress();
+			$this->set($data);
+			$this->render('adress');
+		}
+	}
+
+	public function sendadress ()
+	{
+		if (User::isLogged() === false) {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		} else {
+			//$this->render('adress');
+		}
 	}
 }

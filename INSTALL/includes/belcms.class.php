@@ -95,6 +95,7 @@ class BelCMS
 			'maintenance',
 			'market',
 			'market_cat',
+			'market_address',
 			'market_img',
 			'newsletter',
 			'newsletter_send',

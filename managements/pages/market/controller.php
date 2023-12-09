@@ -10,6 +10,7 @@
  */
 
 use BelCMS\Core\Config;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -34,6 +35,15 @@ class Market extends AdminPages
 		parent::__construct();
 		$dir = 'uploads/market';
 		if (!file_exists($dir)) {
+			if (!mkdir($dir, 0777, true)) {
+				throw new Exception('Failed to create directory');
+			} else {
+				$fopen  = fopen($dir.'/index.html', 'a+');
+				fclose($fopen);
+			}
+		}
+		$dirCat = 'uploads/market/cat';
+		if (!file_exists($dirCat)) {
 			if (!mkdir($dir, 0777, true)) {
 				throw new Exception('Failed to create directory');
 			} else {
@@ -70,13 +80,32 @@ class Market extends AdminPages
 		$this->render('add', $menu);
 	}
 	#########################################
-	# Page Ajouter un objet / une vente enregistrement en BDD
+	# Page Ajouter un objet,
+	# une vente enregistrement en BDD.
 	#########################################
 	public function sendadd ()
 	{
 		$return = $this->models->sendBuy ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('market?management&option=pages', 2);
+	}
+	#########################################
+	# Page Ajouter des images à une vente.
+	#########################################
+	public function addImgBuy ()
+	{
+		$set['id'] = (int) $this->data['2'];
+		$this->set($set);
+		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$this->render('img', $menu);
+	}
+	#########################################
+	# Ajouter en BDD et UPLOADS les images.
+	#########################################
+	public function sendimg ()
+	{
+		$id = (int) $_GET['id'];
+		return json_encode($this->models->sendImg ($id));
 	}
 	#########################################
 	# Supprime une catégorie
@@ -99,7 +128,7 @@ class Market extends AdminPages
 		$groups = config::getGroups();
 		$data['cat'] = $this->models->getAllCat();
 		foreach ($data['cat'] as $k => $v) {
-			$v->groups_name = explode('|', $v->groups);
+			$v->groups_name = explode('|', $v->user_groups);
 			foreach ($v->groups_name as $k2 => $v2) {
 				$g = Config::getGroupsForID($v2);
 				$v->groups_name[$k2] = defined($g->name) ? constant($g->name) : $g->name;
@@ -125,7 +154,6 @@ class Market extends AdminPages
 	{
 		$id = (int) $this->data[2];
 		$d['data']   = $this->models->getCat($id);
-		debug($d);
 		$d['groups'] = Config::getGroups();
 		$this->set($d);
 		$this->render('editcat');
@@ -155,6 +183,7 @@ class Market extends AdminPages
 	{
 		$id = (int) $this->data[2];
 		$data['data'] = $this->models->getBuy($id);
+		$data['img']  = $this->models->getImg($id);
 		$data['cat']  = $this->models->getAllCat();
 		$this->set($data);
 		$this->render('editbuy');	
@@ -186,7 +215,7 @@ class Market extends AdminPages
 		$data['groups'] = Config::getGroups();
 		$data['config'] = Config::GetConfigPage(get_class($this));
 		$this->set($data);
-		$menu[] = array(constant('HOME') => array('href'=>'downloads?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$this->render('parameter', $menu);
 	}
 	#########################################
@@ -196,6 +225,6 @@ class Market extends AdminPages
 	{
 		$return = $this->models->sendparameter($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('downloads?management&option=pages', 2);
+		$this->redirect('market?management&option=pages', 2);
 	}
 }
