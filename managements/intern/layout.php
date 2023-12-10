@@ -199,7 +199,7 @@ use BelCMS\Core\GetHost;
 				</ul>
 				<div class="my-10 mx-5">
             		<div class="help-box p-6 bg-black/5 text-center rounded-md">
-                		<a href="<?=GetHost::getBaseUrl();?>" class="btn btn-sm bg-secondary text-white">Retour au site</a>
+                		<a href="<?=GetHost::curPageURL();?>" class="btn btn-sm bg-secondary text-white">Retour au site</a>
             		</div>
        			</div>
 			</div>

@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Comment;
 use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
@@ -17,6 +18,11 @@ if (!defined('CHECK_INDEX')):
 endif;
 if ($buy->remaining == 0) {
 	$buy->remaining = constant('UNLIMITED');
+} else {
+	$buy->remaining = $buy->remaining - $buy->buy;
+}
+if ($buy->remaining <= 0) {
+	$buy->remaining = '0'.constant('FINISH_BUY');
 }
 ?>
 <section id="belcms_section_market_buy">
@@ -45,11 +51,16 @@ if ($buy->remaining == 0) {
 			<li><span><?=constant('NAME');?></span><i><?=$buy->name;?></i></li>
 			<li><span><?=constant('PRICE');?></span><i><?=$buy->amount;?> €</i></li>
 			<li><span><?=constant('REMAINING');?></span><i><?=$buy->remaining;?></i></li>
+			<li><span><?=constant('VIEW_BUY');?></span><i><?=$buy->view;?> Vu</i></li>
+			<li><span><?=constant('NB_BUY');?></span><i><?=$buy->buy;?> <?=constant('NB_BUY_OBJECT');?></i></li>
 			<li><span><?=constant('ADD_DATE');?></span><i><?=Common::TransformDate($buy->date_add, 'FULL', 'FULL');?></i></li>
 		</ul>
 		<div id="belcms_section_market_buy">
-			<a href="market/buyConfirm/<?=$buy->id;?>" class="belcms_btn belcms_bg_grey"><?=constant('ADDED_TO_CART');?></a>
+			<a href="market/buyConfirm/<?=$buy->id;?>?add=true" class="belcms_btn belcms_bg_grey"><?=constant('ADDED_TO_CART');?></a>
 		</div>
 	</div>
 </section>
+<?php
+$comments = new Comment;
+$comments->html();
 

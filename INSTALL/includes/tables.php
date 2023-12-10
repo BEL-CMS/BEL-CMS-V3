@@ -372,9 +372,9 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
-		(1, 'status', 'open'),
-		(2, 'title', 'Le site est temporairement inaccessible'),
-		(3, 'description', 'Le site est temporairement inaccessible en raison d’activités de maintenance planifiées...');";
+			(1, 'status', 'open'),
+			(2, 'title', 'Le site est temporairement inaccessible'),
+			(3, 'description', 'Le site est temporairement inaccessible en raison d’activités de maintenance planifiées...');";
 	break;
 
 	case "market":
@@ -388,6 +388,10 @@ switch ($_POST['table']) {
 			`author` varchar(32) NOT NULL,
 			`date_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`cat` int DEFAULT NULL,
+			`view` int NOT NULL DEFAULT '0',
+			`buy` int NOT NULL DEFAULT '0',
+			`tva` tinyint NOT NULL DEFAULT '0',
+			`delivery_price` int DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
@@ -420,6 +424,19 @@ switch ($_POST['table']) {
 			`phone` text NOT NULL,
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `hash_key` (`hash_key`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "market_transaction":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`hash_key` varchar(32) NOT NULL,
+			`adress` int NOT NULL,
+			`id_buy` int NOT NULL,
+			`amount` tinyint NOT NULL,
+			`pending` text,
+			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 

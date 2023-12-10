@@ -23,6 +23,8 @@
 		'market_address',
 		'market_cat',
 		'market_img',
+		'market_transaction',
+		'market_order',
 		'newsletter',
 		'newsletter_send',
 		'newsletter_tpl',

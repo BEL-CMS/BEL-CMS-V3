@@ -44,4 +44,12 @@ Common::constant(array(
 	'SHIPPING_TOTAL'      => 'Frais de livraison',
 	'TOTAL'               => 'Total',
 	'PROCEED_TO_CHECKOUT' => 'Passer à la caisse',
+	'VIEW_BUY'            => 'Nombre de fois visité',
+	'NB_BUY'              => 'Nombre de vente',
+	'NB_BUY_OBJECT'       => 'A été vendu',
+	'FINISH_BUY'          => 'Toutes les ventes ont été effectuées',
+	'SHOPPING_CART'       => 'Panier',
+	'TAXE_TOTAL'          => 'Taxe',
+	'DISCOUNT_COUPON'     => 'Coupon de réduction',
+	'ORDER'               => 'Commande',
 ));

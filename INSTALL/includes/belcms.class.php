@@ -97,6 +97,7 @@ class BelCMS
 			'market_cat',
 			'market_address',
 			'market_img',
+			'market_transaction',
 			'newsletter',
 			'newsletter_send',
 			'newsletter_tpl',

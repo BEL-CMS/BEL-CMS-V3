@@ -124,6 +124,33 @@ final class Market
 		endif;
 	}
 
+	##################################################
+	# Statistique, incrémentation.
+	##################################################
+	public function buyViewPlusOne ($id = null)
+	{
+		if ($id !== null) {
+			$sql = new BDD;
+			$sql->table('TABLE_MARKET');
+			$sql->where(array(
+				'name' => 'id',
+				'value' => $id
+
+			));
+			$sql->queryOne();
+			if (!empty($sql->data)) {
+				$update['view'] = $sql->data->view +1;
+				$insert = new BDD;
+				$insert->table('TABLE_MARKET');
+				$insert->where(array(
+					'name' => 'id',
+					'value' => $id
+				));
+				$insert->update($update);
+			}
+		}
+	}
+
 	#########################################
 	# Récupère adresse
 	#########################################
@@ -137,5 +164,97 @@ final class Market
 		);
 		$sql->where($where);
 		$sql->queryOne();
+	}
+	#########################################
+	# Récupere l'achat / les achats
+	#########################################
+	public function buyView ($id = null)
+	{
+		if ($id !== null) {
+			$sql = new BDD;
+			$sql->table('');
+		}
+	}
+	#########################################
+	# Confirmation de l'achat
+	#########################################
+	public function getBuyConfirm ($id = null)
+	{
+		if ($id !== null and is_int($id)) {
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET');
+			if ($id != null && is_numeric($id)) {
+				$where = array(
+					'name'  => 'id',
+					'value' => $id
+				);
+				$sql->where($where);
+				$sql->queryOne();
+				$data = $sql->data;
+				if (!empty($data)) {
+					$sqlImg = New BDD();
+					$sqlImg->table('TABLE_MARKET_IMG');
+					$sqlImg->limit(1);
+					$whereImg = array(
+						'name'  => '`id_market`',
+						'value' => $data->id
+					);
+					$sqlImg->where($whereImg);
+					$sqlImg->queryAll();
+					$img = $sqlImg->data;
+					if ($sqlImg->rowCount == 0) {
+						$sql->data->img = array('assets/img/no_screen.png');
+					} else {
+						$sql->data->img = $img;
+					}
+				} else {
+					$sql->data->img = array('assets/img/no_screen.png');
+				}
+			}
+			if (!empty($sql->data)):
+				return $sql->data;
+			else:
+				return array();
+			endif;
+		}
+	}
+	#########################################
+	# Ajout l'achat en attente
+	#########################################
+	public function buyAdd($id = null) {
+		if ($id != null && is_numeric($id)) {
+			$insert['hash_key'] = $_SESSION['USER']->user->hash_key;
+			$insert['id_command'] = $id;
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET_ORDER');
+			$sql->insert($insert);
+		}
+	}
+	#########################################
+	# Récupère les achats en attente de paiement
+	#########################################
+	public function getSales() {
+		$n = 0;
+		$return = array();
+		$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key);
+		$sql = New BDD();
+		$sql->table('TABLE_MARKET_ORDER');
+		$sql->queryAll();
+		if (!empty($sql->data)) {
+			foreach ($sql->data as $k => $v) {
+				$n = $n + 1;
+				$return[$v->id_command] = $v;
+				$return[$v->id_command]->number = $n;
+				$whereBuy = array('name' => 'id', 'value' => $v->id_command);
+				$sqlBuy = New BDD();
+				$sqlBuy->table('TABLE_MARKET');
+				$sqlBuy->where($whereBuy);
+				$sqlBuy->queryOne();
+				$data = $sqlBuy->data;
+
+				$return[$v->id_command]->infos = $data;
+			}
+		}
+		return $return;
 	}
 }

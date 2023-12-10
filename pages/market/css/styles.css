@@ -232,3 +232,89 @@
 	background-color: red !important;
 	color: #CCC !important;
 }
+
+@media screen and (max-width: 360px) and (min-width: 320px)  {
+	#belcms_section_market_infos {
+		display: block;
+	}
+	#belcms_section_market_description,
+	#belcms_section_market_img {
+		display: block;
+		width: 100%;
+	}
+	#belcms_section_market_content ul {
+		display: none;
+	}
+	#belcms_section_market_buy {
+		margin: 10px auto !important;
+	}
+}
+/*     Confirm Achat      */
+#belcms_section_market_confirm_content {
+	display: flex;
+	box-shadow: 2px 2px 11px 0 rgba(0,0,0,.1);
+}
+#belcms_market_buy_confirm_infos {
+	padding: 0 20px;
+}
+#belcms_market_buy_confirm_detailed {
+	width: 40%;
+	max-width: 400px;
+}
+#belcms_market_buy_confirm {
+	display: block;
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden;
+}
+#belcms_market_buy_confirm_infos {
+	width: 60%;
+	max-width: calc(100% -400px);
+}
+#belcms_market_buy_confirm_infos ul {
+	display: block;
+	list-style: none;
+	background-color: #f5f5f5;
+	padding: 20px;
+	border: 2px solid #eee;
+	border-radius: 2px;
+	overflow: hidden;
+}
+#belcms_market_buy_confirm_infos ul li {
+	display: block;;
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+#belcms_market_buy_confirm_infos ul li > a,
+#belcms_market_buy_confirm_infos ul li > div {
+	display: block;
+	float: left;
+	margin-right: 15px;
+}
+#belcms_market_buy_confirm_infos ul li > div:last-child {
+	margin-right: 0;
+}
+#belcms_market_buy_confirm_infos ul li > div h3 {
+	font-weight: bold;
+}
+.belcms_market_buy_confirm_infos_img img {
+	display: block;
+	float: left;
+	width: 100px;
+	height: 100px;
+}
+#belcms_market_buy_confirm_title {
+	font-weight: bold;
+	text-align: center;
+	padding: 0.75rem;
+	background-color: #f5f5f5;
+	border: 2px solid #eee;
+	border-radius: 2px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+#belcms_market_buy_confirm_title h2 {
+	font-size: 1rem;
+	text-transform: uppercase;
+	color: #414141;
+}

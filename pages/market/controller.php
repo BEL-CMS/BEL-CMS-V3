@@ -33,6 +33,9 @@ class Market extends Pages
 	{
 		$id = (int) $this->data[2];
 		$data['buy'] = $this->models->getBuy($id);
+		if (!empty($data['buy'])) {
+			$this->models->buyViewPlusOne($id);
+		}
 		$this->set($data);
 		$this->render('buy');
 	}
@@ -40,6 +43,11 @@ class Market extends Pages
 	public function buyconfirm ()
 	{
 		$id = (int) $this->data[2];
+		if (isset($_GET['add']) and $_GET['add'] == 'true') {
+			$this->models->buyAdd($id);
+		}
+		$get['order'] = $this->models->getSales($id);
+		$this->set($get);
 		$this->render('buyconfirm');
 	}
 
