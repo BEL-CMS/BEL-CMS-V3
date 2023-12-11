@@ -450,6 +450,19 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
+	case "market_sold":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`id_command` int NOT NULL,
+			`date_of_finish` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`number` int NOT NULL DEFAULT '0',
+			`code` tinytext NOT NULL,
+			`comments` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
 	case "newsletter":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (

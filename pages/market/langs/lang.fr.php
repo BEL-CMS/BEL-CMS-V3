@@ -52,4 +52,6 @@ Common::constant(array(
 	'TAXE_TOTAL'          => 'Taxe',
 	'DISCOUNT_COUPON'     => 'Coupon de réduction',
 	'ORDER'               => 'Commande',
+	'PRODUCT'             => 'Produit',
+	'QUANTITY'            => 'Quantité',
 ));

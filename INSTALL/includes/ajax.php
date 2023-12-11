@@ -24,6 +24,7 @@
 		'market_cat',
 		'market_img',
 		'market_transaction',
+		'market_sold',
 		'market_order',
 		'newsletter',
 		'newsletter_send',
