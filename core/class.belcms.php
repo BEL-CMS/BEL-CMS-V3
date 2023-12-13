@@ -56,7 +56,7 @@ final class BelCMS
 		$this->widgets  = self::getWidgets ();
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
-		$this->host     = GetHost::getBaseUrl();
+		$this->host     = GetHost::curPageURL();
 		$this->template = self::template ();
 	}
 	##################################################

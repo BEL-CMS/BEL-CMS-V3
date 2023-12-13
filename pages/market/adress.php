@@ -19,7 +19,7 @@ endif;
 
 ?>
 <section id="belcms_section_market_adress">
-    <form action="market/sendadress">
+    <form action="market/sendadress" method="post">
         <div class="belcms_grid_7">
             <h1><?=constant('YOUR_INFORMATON');?></h1>
             <div class="belcms_section_market_adress_row">
@@ -35,13 +35,13 @@ endif;
                     <select name="country" class="belcms_mb_5">
                         <?php
                         foreach (contryList() as $k => $v):
-                            echo '<option value="'.$v.'">'.$v.'</option>';
+                            echo '<option value="'.$k.'">'.$v.'</option>';
                         endforeach;
                         ?>
 					</select>
                     <input class="belcms_mb_5" type="text" name="city" placeholder="<?=constant('CITY');?>" value="">
                     <div id="belcms_section_market_buy">
-			            <a href="market/sendAdress" class="belcms_btn belcms_bg_grey"><?=constant('UPDATE_ADDRESS');?></a>
+			            <input type="submit" class="belcms_btn belcms_bg_grey" value="<?=constant('UPDATE_ADDRESS');?>">
                     </div>
                 </div>
             </div>

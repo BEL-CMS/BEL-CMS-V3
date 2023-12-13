@@ -459,8 +459,51 @@ switch ($_POST['table']) {
 			`number` int NOT NULL DEFAULT '0',
 			`code` tinytext NOT NULL,
 			`comments` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+			`infinite_date` float DEFAULT '0',
+			`price` int DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "market_tva":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`country` varchar(2) NOT NULL DEFAULT 'FR',
+			`price` tinyint NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
+			('', 'BE', 21),
+			('', 'BG', 20),
+			('', 'CZ', 21),
+			('', 'DK', 25),
+			('', 'DE', 19),
+			('', 'EE', 20),
+			('', 'IE', 23),
+			('', 'EL', 24),
+			('', 'ES', 21),
+			('', 'FR', 20),
+			('', 'HR', 25),
+			('', 'IT', 22),
+			('', 'CY', 19),
+			('', 'LV', 21),
+			('', 'LT', 21),
+			('', 'LU', 17),
+			('', 'HU', 27),
+			('', 'MT', 18),
+			('', 'NL', 21),
+			('', 'AT', 20),
+			('', 'PL', 23),
+			('', 'PT', 23),
+			('', 'RO', 19),
+			('', 'SI', 22),
+			('', 'SK', 20),
+			('', 'FI', 24),
+			('', 'SE', 25),
+			('', 'UK', 20),
+			('', 0, 21);";
 	break;
 
 	case "newsletter":

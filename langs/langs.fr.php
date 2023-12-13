@@ -24,6 +24,7 @@ $array = array(
 	'NO_NAME'                             => 'Pas de Nom',
 	'ADMIN_ONLY'                          => 'Administrateur de Nv1 seulement',
 	'INFOS'                               => 'Informations',
+	'ALERT_INFOS'                         => 'Alert ! Information requis',
  	#####################################
 	# Langue Français - COMMUN
 	#####################################

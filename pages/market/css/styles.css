@@ -355,9 +355,6 @@
 #belcms_market_buy_confirm_table tbody tr td.justify {
 	text-align: justify !important;
 }
-#belcms_market_buy_confirm_form_sold {
-	display: flex;
-}
 #belcms_market_buy_confirm_form_sold input[type="submit"],
 #belcms_market_buy_confirm_form_sold input[type="text"] {
 	float: left;
@@ -381,4 +378,8 @@
 	color: #fafafa;
 	border-right: 1px solid #ebebeb;
 	cursor: pointer;
+}
+.input_right {
+	display: block;
+	float: right !important;
 }

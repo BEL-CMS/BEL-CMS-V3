@@ -13,6 +13,8 @@ namespace Belcms\Pages\Models;
 use BelCMS\PDO\BDD as BDD; 
 use BelCMS\Core\Config;
 use BelCMS\Core\Dispatcher;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -164,17 +166,39 @@ final class Market
 		);
 		$sql->where($where);
 		$sql->queryOne();
+		return $sql->data;
+	}
+
+	#########################################
+	# Récupère adresse
+	#########################################
+	public function updateAdress ($data = null)
+	{
+		$insert['hash_key']    = $_SESSION['USER']->user->hash_key;
+		$insert['name']        = Common::crypt($data['name'], $insert['hash_key']);
+		$insert['first_name']  = Common::crypt($data['first_name'], $insert['hash_key']);
+		$insert['address']     = Common::crypt($data['address'], $insert['hash_key']);
+		$insert['number']      = Common::crypt($data['number'], $insert['hash_key']);
+		$insert['postal_code'] = Common::crypt($data['postal_code'], $insert['hash_key']);
+		$insert['city']        = Common::crypt($data['city'], $insert['hash_key']);
+		$insert['country']     = Common::crypt($data['country'], $insert['hash_key']);
+		$insert['phone']       = Common::crypt($data['phone'], $insert['hash_key']);
+		$sql = new BDD();
+		$sql->table('TABLE_MARKET_ADRESS');
+		$sql->insert($insert);
+		if ($sql->rowCount == true) {
+			$return['text'] = constant('ADD_ADRESS_OK');
+			$return['type'] = 'success';
+		} else {
+			$return['text'] = constant('ADD_ADRESS_NOK');
+			$return['type'] = 'error'; 
+		}
+		return $return;
 	}
 	#########################################
 	# Récupere l'achat / les achats
 	#########################################
-	public function buyView ($id = null)
-	{
-		if ($id !== null) {
-			$sql = new BDD;
-			$sql->table('');
-		}
-	}
+
 	#########################################
 	# Confirmation de l'achat
 	#########################################
@@ -228,6 +252,20 @@ final class Market
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET_ORDER');
 			$sql->insert($insert);
+			// waiting for payment
+			$wherePurchase = array('name' => 'author', 'value'=> $_SESSION['USER']->user->hash_key);
+			$sqlPurchase = New BDD();
+			$sqlPurchase->table('TABLE_PURCHASE');
+			$sqlPurchase->where($wherePurchase);
+			$sqlPurchase->queryOne();
+			$returnPurchase = $sqlPurchase->data;
+			if (empty($returnPurchase)) {
+				$insertPurchase['author'] = $_SESSION['USER']->user->hash_key;
+				$insertPurchase['id_purchase'] = md5(uniqid(rand(), true));
+				$sqlPurchase = New BDD();
+				$sqlPurchase->table('TABLE_PURCHASE');
+				$sqlPurchase->insert($insertPurchase);
+			}
 		}
 	}
 	#########################################
@@ -251,10 +289,153 @@ final class Market
 				$sqlBuy->where($whereBuy);
 				$sqlBuy->queryOne();
 				$data = $sqlBuy->data;
-
 				$return[$v->id_command]->infos = $data;
+				$sqlImg = New BDD();
+				$sqlImg->table('TABLE_MARKET_IMG');
+				$sqlImg->limit(1);
+				$whereImg = array(
+					'name'  => 'id_market',
+					'value' => $v->id_command
+				);
+				$sqlImg->where($whereImg);
+				$sqlImg->queryOne();
+				$img = $sqlImg->data->img;
+				if (!is_file(ROOT.$img)) {
+					$return[$v->id_command]->img = 'assets/img/no_screen.png';
+				} else {
+					$return[$v->id_command]->img = $img;
+				}
 			}
 		}
 		return $return;
+	}
+
+	public function updateSold ($data = null)
+	{
+		if ($data == null) {
+			$return['text'] = constant('ERROR_UNKNOW');
+			$return['type'] = 'error'; 
+			return $return;
+		}
+		if (isset($_SESSION['MARKET']['SOLD'])) {
+			$return['text'] = constant('SOLD_OK_STOP');
+			$return['type'] = 'error'; 	
+			return $return;
+		}
+		$data = Common::VarSecure($data, null);
+		$return = array();
+		$where = array('name' => 'code', 'value' => $data);
+		$sql = New BDD();
+		$sql->table('TABLE_MARKET_SOLD');
+		$sql->queryOne();
+		if ($sql->rowCount == true) {
+			$sqlreturn = $sql->data;
+			if ($sqlreturn->number <= 0) {
+				$return['text'] = constant('SOLD_NOK_FINISH_NUMBER');
+				$return['type'] = 'error'; 	
+				return $return;
+			}
+			if ($sqlreturn->infinite_date == 0) {
+				$origin = new \DateTimeImmutable('NOW');
+				$dateFinish = $sqlreturn->date_of_finish;
+				$dateFinish = new \DateTimeImmutable($dateFinish);
+				if ($origin > $dateFinish) {
+					$return['text'] = constant('SOLD_NOK_FINISH');
+					$return['type'] = 'error'; 	
+					return $return;
+				}
+			}
+			$_SESSION['MARKET']['SOLD'] = array('name' => $sqlreturn->comments, 'value' => $sqlreturn->price);
+			$return['text'] = $sqlreturn->comments;
+			$return['type'] = 'success';
+		} else {
+			$return['text'] = constant('SOLD_NOK');
+			$return['type'] = 'error'; 
+		}
+		return $return;	
+	}
+
+	public function updateCart ($data = null)
+	{
+		$i = 1;
+		if ($data == null) {
+			$return['text'] = constant('ERROR_UNKNOW');
+			$return['type'] = 'error'; 
+			return $return;
+		}
+		foreach ($data as $k => $v) {
+			$where = array('name' => '`id_command`', 'value' => $k);
+			$sqlDel = New BDD();
+			$sqlDel->table('TABLE_MARKET_ORDER');
+			$sqlDel->where($where);
+			$sqlDel->delete();
+		}
+
+		foreach ($data as $k => $v) {
+			$number = (int) $v['number'];
+			for ($i = 1; $i <= $number; $i++) {
+				self::buyAdd($k);
+			}
+		}
+		if (isset($_SESSION['MARKET']['SOLD'])) {
+			unset($_SESSION['MARKET']['SOLD']);
+		}
+
+		$return['text'] = constant('UPDATE_BUY');
+		$return['type'] = 'success';
+		return $return;
+	}
+
+	public function getTva ($country = null)
+	{
+		if ($country != null) {
+			$where = array('name' => '`country`', 'value' => $country);
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET_TVA');
+			$sql->where($where);
+			$sql->queryOne();
+			$return = $sql->data;
+			if (empty($return)) {
+				$whereBase = array('name'=> 'country','value'=> 0);
+				$base = New BDD();
+				$base->table('TABLE_MARKET_TVA');
+				$base->where($whereBase);
+				$base->queryOne();
+				return $base->data->price;
+			} else {
+				return $return->price;
+			}
+		} else {
+			$whereBase = array('name'=> 'country','value'=> 0);
+			$base = New BDD();
+			$base->table('TABLE_MARKET_TVA');
+			$base->where($whereBase);
+			$base->queryOne();
+			return $base->data->price;
+		}
+	}
+
+	public function getPayPal ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_PAYPAL');
+		$sql->queryAll();
+		if (!empty($sql->data)) {
+			foreach ($sql->data as $key => $value) {
+				Common::Constant($value->name, $value->value);
+			}
+		}
+	}
+
+	public function getPurchase ()
+	{
+		if (User::isLogged() !== false) {
+			$where = array('name' => 'author', 'value'=> $_SESSION['USER']->user->hash_key);
+			$sqlPurchase = New BDD();
+			$sqlPurchase->table('TABLE_PURCHASE');
+			$sqlPurchase->where($where);
+			$sqlPurchase->queryOne();
+			return $sqlPurchase->data->id_purchase;
+		}
 	}
 }

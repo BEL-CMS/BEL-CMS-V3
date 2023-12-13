@@ -26,6 +26,7 @@
 		'market_transaction',
 		'market_sold',
 		'market_order',
+		'market_tva',
 		'newsletter',
 		'newsletter_send',
 		'newsletter_tpl',
