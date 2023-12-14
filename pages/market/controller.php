@@ -48,16 +48,18 @@ class Market extends Pages
 
 	public function buyconfirm ()
 	{
-		if (isset($this->data[2])) {
+		if (isset($this->data[2]) and !empty($this->data[2])) {
 			$id = (int) $this->data[2];
 			if (isset($_GET['add']) and $_GET['add'] == 'true') {
 				$this->models->buyAdd($id);
 			}
 		} else {
-			if (empty($this->models->getSales())) {
-				$this->redirect('Market', 3);
+			$get = $this->models->getSales();
+			if (empty($get)) {
+				$this->redirect('Market', 5);
 				$this->error = true;
-				$this->errorInfos = array('warning', constant('REQUIRE_BUY'), constant('INFO'), false);
+				$this->errorInfos = array('warning', constant('EMPTY_SHOPPING_CAT'), constant('INFO'), false);
+				return false;
 			}
 		}
 		$get['order']    = $this->models->getSales();
@@ -84,11 +86,11 @@ class Market extends Pages
 					} else {
 						$country = Common::decrypt($country, $_SESSION['USER']->user->hash_key);
 						$tva = $this->models->getTva($country);
-						$get['tva'] = $tva;
+						$get['order'][$key]->tva = $tva;
 					}
 				}
 			} else {
-				$get['tva'] = 0;
+				$get['order'][$key]->tva = 0;
 			}
 		}
 		$this->set($get);
@@ -172,14 +174,20 @@ class Market extends Pages
 		}
 	}
 
-	public function validate ()
+	public function PayPalValidate ()
 	{
-		debug($this);
+		debug($_POST);
+		$this->models->updateValidate($_POST);
 	}
 
 	public function status ()
 	{
 		debug($this);
 		$this->render('status');
+	}
+
+	public function payPalError ()
+	{
+		debug($this);
 	}
 }

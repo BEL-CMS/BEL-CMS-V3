@@ -15,32 +15,45 @@ if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-$nbBuy     = (int) 0;
-$nbPrice   = (int) 0;
-$nbTotal   = (int) 0;
-$nbDelivry = (int) 0;
+$_SESSION['PAYPAL']['UNIQUE_ID'] = md5(uniqid(rand(), true));
+$activeTVA             = false;
+$nbBuy                 = (int) 0;
+$nbTotal               = (int) 0;
+$nbPriceBuyDelivry     = (int) 0;
+$nbSubTotal            = (int) 0;
+$tvaPriceTotal         = (int) 0;
 foreach ($order as $k => $v) {
 	$a = $v->infos->remaining - $v->infos->buy;
 	if ($v->number > $a) {
 		$nbBuy     = (int) $nbBuy + (int) $a;
 		$order[$k]->number = $a;
-		$nbPrice   = $a * $v->infos->amount;
-		$nbDelivry = $nbBuy * $v->infos->delivery_price;
 	} else if ($v->number <= $a) {
 		$nbBuy     = (int) $v->number + $nbBuy;
 		$order[$k]->number = $v->number;
-		$nbPrice   = $v->number * $v->infos->amount;
-		$nbDelivry = $nbBuy * $v->infos->delivery_price;
 	}
-	$nbTotal = $nbTotal + $nbPrice + $nbDelivry;
+	$nbPriceBuyDelivry = $order[$k]->number * $v->infos->delivery_price;
+	$nbSubTotal = $order[$k]->number * $v->infos->amount;
+	$nbTotal = $nbTotal + $nbSubTotal;
 	if ($v->infos->tva == 1) {
-		$order[$k]->tva = $nbPrice /100 * $tva;
-		$nbTotal = $nbTotal + $order[$k]->tva;
+		$order[$k]->tvaUniquePrice = $v->infos->amount /100 * $v->tva;
+		$tvaPriceTotal  = $order[$k]->tvaUniquePrice * $order[$k]->number;
+		$tvaPriceTotal  = round($tvaPriceTotal,2);
+		$activeTVA = true;
 	} else {
-		$order[$k]->tva = 0;
+		$order[$k]->tvaUniquePrice = $order[$k]->tvaUniquePrice + 0;
+		$tvaPriceTotal = $tvaPriceTotal + 0;
+		if ($activeTVA !== true) {
+			$activeTVA = false;
+		}
+	}
+	$nbPriceTotal = $nbTotal + $tvaPriceTotal;
+	if (isset($_SESSION['MARKET']['SOLD'])) {
+		$nbPriceTotal = $nbPriceTotal - $_SESSION['MARKET']['SOLD']['value'];
+	}
+	if ($v->infos->delivery_price != 0) {
+		$nbPriceTotal = $nbPriceTotal + $v->infos->delivery_price;
 	}
 }
-
 if (constant('PAYPAL_SANDBOX') == true) {
 	$clientIDPaypal = constant('PAYPAL_SANDBOX_CLIENT_ID');
 } else {
@@ -51,67 +64,92 @@ if (!empty($_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'])) {
 } else {
 	$name = $_SESSION['CONFIG_CMS']['HOST'];
 }
-$currency = "EUR"; 
 ?>
-<script src="https://www.paypal.com/sdk/js?client-id=<?=$clientIDPaypal;?>&currency=<?=$currency;?>"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<?=$clientIDPaypal;?>&currency=<?=constant('PAYPAL_CURRENCY');?>&intent=capture"></script>
 <script type="text/javascript">
 paypal.Buttons({
-    createOrder: (data, actions) => {
+    createOrder: function(data, actions) {
         return actions.order.create({
-            "purchase_units": [{
-                "custom_id": "<?=$purchase;?>",
-                "description": "<?=$name;?>",
-                "amount": {
-                    "currency_code": "<?=$currency; ?>",
-                    "value": <?=$nbTotal;?>,
+            purchase_units: [
+            {
+                reference_id: "<?=$purchase;?>",
+                description: "<?=$name;?>",
+                custom_id: "<?=$_SESSION['PAYPAL']['UNIQUE_ID'];?>",
+                amount: {
+                    "currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
+                    "value": <?=$nbPriceTotal;?>,
                     "breakdown": {
                         "item_total": {
-                            "currency_code": "<?=$currency;?>",
+                            "currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
                             "value": <?=$nbTotal;?>
-                        }
+						},
+					<?php
+					if (isset($_SESSION['MARKET']['SOLD'])) {
+					?>
+					    "discount": {
+                        	"currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
+                        	"value": "<?=$_SESSION['MARKET']['SOLD']['value'];?>"
+						},
+					<?php
                     }
-                }
+					if ($v->infos->delivery_price != 0) {
+					?>
+						"shipping": {
+							"currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
+							"value": <?=$v->infos->delivery_price;?>
+						},
+					<?php
+					}
+					?>
+						"tax_total": {
+							"value": "<?=$tvaPriceTotal;?>",
+            				"currency_code": "<?=constant('PAYPAL_CURRENCY');?>"
+						}
+                	}
+                },
+                <?=cartItem($order);?>
             }]
-        });
+        })
     },
-    // Finalize the transaction after payer approval
-    onApprove: (data, actions) => {
-        return actions.order.capture().then(function(orderData) {
-            setProcessing(true);
-            var postData = {paypal_order_check: 1, order_id: orderData.id};
-            fetch('/Market/validate', {
-                method: 'POST',
-                headers: {'Accept': 'application/json'},
-                body: encodeFormData(postData)
-            })
-            .then((response) => response.json())
-            .then((result) => {
-                if(result.status == 1){
-                    window.location.href = "/Market/status?checkout_ref_id="+result.ref_id;
-					alert(result.ref_id);
-                }
-                setProcessing(false);
-            })
-            .catch(error => console.log(error));
-        });
-    }
-}).render('#paypal-button-container');
+		onApprove: function(data, actions) {
+		return actions.order.capture().then(function(orderData) {
+			// Full available details
+			console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+			// Show a success message within this page, e.g.
+			const element = document.getElementById('alrt_bel_cms');
+			element.innerHTML = '';
+			element.innerHTML = '<?=constant('THANK_YOU_FOR_PAYMENT');?>';
 
-const encodeFormData = (data) => {
-  var form_data = new FormData();
-  for ( var key in data ) {
-    form_data.append(key, data[key]);
-  }
-  return form_data;   
-}
-const setProcessing = (isProcessing) => {
-    if (isProcessing) {
-        document.querySelector(".overlay").classList.remove("hidden");
-    } else {
-        document.querySelector(".overlay").classList.add("hidden");
-    }
-}
-</script>   
+			$.ajax({
+				type: 'post',
+				url: "/Market/PayPalValidate",
+				data: orderData,
+				success: function(data) {
+					console.log(data);
+					/*
+					setTimeout(function() {
+						document.location.href=data.redirect;
+					}, 3000);
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(chr.responseText);
+				},
+				beforeSend:function() {
+					$('body').append('<div id="alrt_bel_cms">Chargement...</div>');
+				},
+				complete: function() {
+					bel_cms_alert_box_end(3);
+				}
+			});
+		});
+	},
+	onError(err) {
+		//window.location.href = "/Market/PayPalError";
+		console.log(err);
+	}
+}).render('#paypal-button-container');
+</script>
 <section id="belcms_market_buy_confirm">
 	<div id="belcms_section_market_confirm_content">
 		<div id="belcms_market_buy_confirm_infos">
@@ -167,12 +205,12 @@ const setProcessing = (isProcessing) => {
                 <h3><?=constant('CART_TOTALS');?></h3>
                 <table>
                     <tr><td><?=constant('NUMBER_OF_PURCHASES');?><td><td><?=$nbBuy;?></td></tr>
-                    <tr><td><?=constant('CART_SUBTOTAL');?><td><td><?=$nbPrice;?> €</td></tr>
-                    <tr><td><?=constant('SHIPPING_TOTAL');?><td><td><?=$nbDelivry;?> €</td></tr>
+                    <tr><td><?=constant('CART_SUBTOTAL');?><td><td><?=$nbSubTotal;?> €</td></tr>
+                    <tr><td><?=constant('SHIPPING_TOTAL');?><td><td><?=$nbPriceBuyDelivry;?> €</td></tr>
 					<?php
-					if ($v->infos->tva == 1):
+					if ($activeTVA === true):
 					?>
-					<tr><td><?=constant('TAXE_TOTAL');?><td><td><?=$value->tva;?> €</td></tr>
+					<tr><td><?=constant('TAXE_TOTAL');?><td><td><?=$tvaPriceTotal;?> €</td></tr>
 					<?php
 					endif;
 					?>
@@ -181,13 +219,31 @@ const setProcessing = (isProcessing) => {
 					?>
 					<tr><td><?=constant('COUPON');?><td><td>- <?=$_SESSION['MARKET']['SOLD']['value'];?> €</td></tr>
 					<?php
-					$nbTotal = $nbTotal - $_SESSION['MARKET']['SOLD']['value'];
 					endif;
 					?>
-                    <tr><td><?=constant('TOTAL');?><td><td><?=$nbTotal;?> €</td></tr>
+                    <tr><td><?=constant('TOTAL');?><td><td><?=$nbPriceTotal;?> €</td></tr>
                 </table>
 				<div id="paypal-button-container"></div>
             </div>
 		</div>
 	</div>
 </section>
+<?php
+function cartItem ($order)
+{
+	$return = 'items: [{'.PHP_EOL;
+	foreach ($order as $k => $v):
+		$return .= '"name": "'.$v->infos->name.'",'.PHP_EOL;
+		$return .= '"unit_amount": {value: "'.$v->infos->amount.'", currency_code: "'.constant('PAYPAL_CURRENCY').'"},'.PHP_EOL;
+		$return .= '"quantity": "'.$v->number.'",'.PHP_EOL;
+		$return .= 'sku: "'.$v->infos->id_purchase.'",'.PHP_EOL;
+		$return .= '"tax_total": {'.PHP_EOL;
+		$return .= '"value": "'.$v->tvaUniquePrice.'",'.PHP_EOL;
+		$return .= '"currency_code": "'.constant('PAYPAL_CURRENCY').'"'.PHP_EOL;
+		$return .= '}'.PHP_EOL;
+	endforeach;
+	$return = substr($return, 0, -1);
+	$return = $return.'}]'.PHP_EOL;
+	return $return;
+}
+?>

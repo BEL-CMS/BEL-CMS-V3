@@ -70,4 +70,6 @@ Common::constant(array(
 	'UPDATE_BUY'             => 'mise à jour du panier avec succès',
 	'COUNTRY_REQUIRE'        => 'Le Pays est obligatoire pour le calcul du pannier',
 	'NO_VALIDATION'          => 'Aucune validation !<br>redirection vers la boutique dans 3s',
+	'THANK_YOU_FOR_PAYMENT'  => 'Merci pour votre paiement',
+	'EMPTY_SHOPPING_CAT'     => 'Panier vide <br> redirection vers la boutique dans 5s',
 ));

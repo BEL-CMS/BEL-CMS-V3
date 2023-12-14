@@ -438,4 +438,21 @@ final class Market
 			return $sqlPurchase->data->id_purchase;
 		}
 	}
+
+	public function updateValidate ($data = null)
+	{
+		// $_SESSION['PAYPAL']['UNIQUE_ID']
+		if (User::isLogged() !== false and $data != null) {
+			if ($data['status'] == 'COMPLETED') {
+				$update['id_paypal'] = Common::VarSecure($data['id']);
+				$dataPurchase  = $data['purchase_units'][0];
+				$update['pay'] = $dataPurchase['amount']['value'].' '.$dataPurchase['amount']['currency_code'];
+				$where = array('name' => 'id_purchase', 'value'=> $dataPurchase['custom_id']);
+				$sqlPurchase = New BDD();
+				$sqlPurchase->table('TABLE_PURCHASE');
+				$sqlPurchase->where($where);
+				$sqlPurchase->update($update);
+			}
+		}
+	}
 }
