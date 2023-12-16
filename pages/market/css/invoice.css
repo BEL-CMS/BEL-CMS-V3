@@ -1,0 +1,115 @@
+/*     Facture      */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+	background: #e7e9ed;
+	font-size: 14px;
+}
+.center {
+    text-align: center !important;
+}
+.right {
+    text-align: right !important;
+}
+#belcms_market_invoice {
+    margin: 15px auto;
+    padding: 70px;
+    max-width: 850px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+header {
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    padding: 0 20px;
+    padding-bottom: 20px;
+}
+header h1 {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+header span {
+    display: block;
+    float: right;
+    font-size: 1.75rem;
+}
+#belcms_market_invoice_date_number {
+    display: block;
+    overflow: hidden;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+}
+#belcms_market_invoice_date_number span {
+    display: block;
+    float: left;
+}
+#belcms_market_invoice_date_number span:last-child {
+    float: right;
+}
+#belcms_market_invoice_infos_users {
+    display: block;
+    overflow: hidden;
+    padding: 10px 20px ;
+}
+#belcms_market_invoiced_to {
+    display: block;
+    float: left;
+}
+#belcms_market_pay_to h2,
+#belcms_market_invoiced_to h2 {
+    font-weight: bold;
+    font-size: 1rem;
+}
+#belcms_market_pay_to p,
+#belcms_market_invoiced_to p {
+    display: block;
+    overflow: hidden;
+    margin: 0;
+    line-height: 16px;
+}
+#belcms_market_pay_to {
+    float: right;
+    text-align: right;
+}
+#belcms_market_invoice_table {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin: auto;
+}
+#belcms_market_invoice_table table {
+    display: table;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+#belcms_market_invoice_table thead {
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+}
+#belcms_market_invoice_table thead tr {
+    border-bottom: 2px solid #ccc;
+}
+#belcms_market_invoice_table thead th {
+    text-align: left;
+    font-weight: bold;
+    padding: 10px 5px;
+}
+#belcms_market_invoice_table tbody tr {
+    border: 1px solid #ccc;
+}
+#belcms_market_invoice_table tbody tr td {
+    padding: 10px 5px;
+}
+#belcms_market_invoice_table tfoot {
+    background-color: #f8f9fa;
+}

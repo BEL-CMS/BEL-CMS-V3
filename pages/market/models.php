@@ -261,7 +261,7 @@ final class Market
 			$returnPurchase = $sqlPurchase->data;
 			if (empty($returnPurchase)) {
 				$insertPurchase['author'] = $_SESSION['USER']->user->hash_key;
-				$insertPurchase['id_purchase'] = md5(uniqid(rand(), true));
+				$insertPurchase['id_purchase'] = $_SESSION['PAYPAL']['UNIQUE_ID'];
 				$sqlPurchase = New BDD();
 				$sqlPurchase->table('TABLE_PURCHASE');
 				$sqlPurchase->insert($insertPurchase);
@@ -345,7 +345,7 @@ final class Market
 					return $return;
 				}
 			}
-			$_SESSION['MARKET']['SOLD'] = array('name' => $sqlreturn->comments, 'value' => $sqlreturn->price);
+			$_SESSION['MARKET']['SOLD'] = array('id' => $sqlreturn->id, 'name' => $sqlreturn->comments, 'value' => $sqlreturn->price);
 			$return['text'] = $sqlreturn->comments;
 			$return['type'] = 'success';
 		} else {
@@ -372,7 +372,7 @@ final class Market
 		}
 
 		foreach ($data as $k => $v) {
-			$number = (int) $v['number'];
+			$number = (int) $v;
 			for ($i = 1; $i <= $number; $i++) {
 				self::buyAdd($k);
 			}
@@ -441,17 +441,79 @@ final class Market
 
 	public function updateValidate ($data = null)
 	{
-		// $_SESSION['PAYPAL']['UNIQUE_ID']
-		if (User::isLogged() !== false and $data != null) {
+		$unique_id = $_SESSION['PAYPAL']['UNIQUE_ID'];
+		$dataVerif = $data['purchase_units']['0']['custom_id'];
+		if ($data['status'] == 'COMPLETED') {
+			// La vente / reduction / taxe / livraison / total / sub-total
+			$purchase = $data['purchase_units'][0];
+			$purchaseBreak = $purchase['amount']['breakdown'];
+			$totalPay = $purchase['amount']['value'];
+			$SubTotal = $purchaseBreak['item_total']['value'];
+			$shipping = $purchaseBreak['shipping']['value'] . '&nbsp;' .$purchaseBreak['shipping']['currency_code'];
+			$handling = $purchaseBreak['handling']['value'] . '&nbsp;' .$purchaseBreak['handling']['currency_code'];
+			$taxe     = $purchaseBreak['tax_total']['value'] . '&nbsp;' .$purchaseBreak['tax_total']['currency_code'];
+			$discount = $purchaseBreak['discount']['value'] . '&nbsp;' .$purchaseBreak['discount']['currency_code'];
+			// liste des achats
+			$item = '';
+			foreach ($purchase['items'] as $key => $value) {
+				$item .= 'name='.$value['name'].',';
+				$item .= 'value='.$value['unit_amount']['value'].',';
+				$item .= 'currency_code='.$value['unit_amount']['currency_code'].',';
+				$item .= 'quantity='.$value['quantity'].'|';
+			}
+			$item = substr($item, 0, -1);
+			// date de la transaction fini
+			$dateTime = new \DateTime('NOW');
+			$dateTime = date_format($dateTime,'Y-d-m H:i:s'); 
+			$update['date_purchase'] = 'NOW()';
+			// le status (0 / non payé ou erreur / 1 = payé / 2 en attende de validation / 3 livraison en cours / 4 livré)
+			$update['status']        = 1;
+			$update['id_paypal']     = Common::crypt($data['id'], $_SESSION['USER']->user->hash_key);
+			$update['total_pay']     = $totalPay;
+			$update['sub_total']     = $SubTotal;
+			$update['shipping']      = $shipping;
+			$update['handling']      = $handling;
+			$update['taxe']          = $taxe;
+			$update['discount']      = $discount;
+			$update['item']          = $item;
+			// Adresse de paypal
+			$infosUser = $data['payer'];
+			$update['given_name']  = Common::crypt($infosUser['name']['given_name'], $_SESSION['USER']->user->hash_key);
+			$update['surname']     = Common::crypt($infosUser['name']['surname'], $_SESSION['USER']->user->hash_key);
+			$update['mail_paypal'] = Common::crypt($infosUser['email_address'], $_SESSION['USER']->user->hash_key);
+			$update['address']     = Common::crypt($infosUser['address']['country_code'], $_SESSION['USER']->user->hash_key);
+		}  
+		if (User::isLogged() === true and $unique_id == $dataVerif) {
 			if ($data['status'] == 'COMPLETED') {
-				$update['id_paypal'] = Common::VarSecure($data['id']);
 				$dataPurchase  = $data['purchase_units'][0];
-				$update['pay'] = $dataPurchase['amount']['value'].' '.$dataPurchase['amount']['currency_code'];
 				$where = array('name' => 'id_purchase', 'value'=> $dataPurchase['custom_id']);
 				$sqlPurchase = New BDD();
 				$sqlPurchase->table('TABLE_PURCHASE');
 				$sqlPurchase->where($where);
 				$sqlPurchase->update($update);
+				if ($sqlPurchase->rowCount == 1) {
+					if (isset($_SESSION['MARKET']['SOLD'])) {
+						$whereSold = array('name' => 'id', 'value' => $_SESSION['MARKET']['SOLD']['id']);
+						$sqlSold = New BDD();
+						$sqlSold->table('TABLE_MARKET_SOLD');
+						$sqlSold->where($whereSold);
+						$sqlSold->queryOne();
+						$number = $sqlSold->data->number;
+						if ($number != 0) {
+							$updateSold['number'] = $number - 1;
+							$sqlminSold = New BDD();
+							$sqlminSold->table('TABLE_MARKET_SOLD');
+							$sqlminSold->where($whereSold);
+							$sqlminSold->update($updateSold);
+						}
+						unset($_SESSION['MARKET']['SOLD']);
+					}
+					$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key);
+					$sqlDel = New BDD();
+					$sqlDel->table('TABLE_MARKET_ORDER');
+					$sqlDel->where($where);
+					$sqlDel->delete();
+				}
 			}
 		}
 	}

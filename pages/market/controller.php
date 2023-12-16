@@ -48,6 +48,11 @@ class Market extends Pages
 
 	public function buyconfirm ()
 	{
+
+		if (!isset($_SESSION['PAYPAL']['UNIQUE_ID']) and empty($_SESSION['PAYPAL']['UNIQUE_ID'])) {
+			$_SESSION['PAYPAL']['UNIQUE_ID'] = md5(uniqid(rand(), true));
+		}
+
 		if (isset($this->data[2]) and !empty($this->data[2])) {
 			$id = (int) $this->data[2];
 			if (isset($_GET['add']) and $_GET['add'] == 'true') {
@@ -176,14 +181,12 @@ class Market extends Pages
 
 	public function PayPalValidate ()
 	{
-		debug($_POST);
 		$this->models->updateValidate($_POST);
 	}
 
-	public function status ()
+	public function invoice ()
 	{
-		debug($this);
-		$this->render('status');
+		$this->render('invoice');
 	}
 
 	public function payPalError ()

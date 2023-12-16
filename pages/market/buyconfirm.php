@@ -15,7 +15,6 @@ if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-$_SESSION['PAYPAL']['UNIQUE_ID'] = md5(uniqid(rand(), true));
 $activeTVA             = false;
 $nbBuy                 = (int) 0;
 $nbTotal               = (int) 0;
@@ -109,37 +108,26 @@ paypal.Buttons({
                 },
                 <?=cartItem($order);?>
             }]
-        })
-    },
-		onApprove: function(data, actions) {
+        });
+    },onApprove: function(data, actions) {
 		return actions.order.capture().then(function(orderData) {
-			// Full available details
-			console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-			// Show a success message within this page, e.g.
-			const element = document.getElementById('alrt_bel_cms');
-			element.innerHTML = '';
-			element.innerHTML = '<?=constant('THANK_YOU_FOR_PAYMENT');?>';
-
+			//console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
 			$.ajax({
 				type: 'post',
 				url: "/Market/PayPalValidate",
 				data: orderData,
 				success: function(data) {
-					console.log(data);
-					/*
+					$('#alrt_bel_cms').addClass("success").empty().append("<?=constant('THANK_YOU_FOR_PAYMENT');?>");
 					setTimeout(function() {
-						document.location.href=data.redirect;
-					}, 3000);
-					*/
+						document.location.href="/market/Invoice?echo";
+					}, 3500);
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(chr.responseText);
 				},
 				beforeSend:function() {
-					$('body').append('<div id="alrt_bel_cms">Chargement...</div>');
-				},
-				complete: function() {
-					bel_cms_alert_box_end(3);
+					$('body').append('<div id="alrt_bel_cms"><?=constant('PAYMENT_IN_PROGRESS');?></div>');
+					$('#alrt_bel_cms').animate({ top: 0 }, 500);
 				}
 			});
 		});
@@ -183,8 +171,7 @@ paypal.Buttons({
 						<td class="justify"><h3><?=$value->infos->name;?></h3>
 						<td class="center"><?=$value->infos->amount;?> €</td>
 						<td>
-							<input pattern="[0-9]*" min="1" max="<?=$value->infos->remaining;?>" type="number" value="<?=$value->number;?>" name="id[<?=$value->id_command;?>][number]">
-							<input type="hidden" name="id[<?=$value->id_command;?>]">
+							<input pattern="[0-9]*" min="0" max="<?=$value->infos->remaining;?>" type="number" value="<?=$value->number;?>" name="number[<?=$value->id_command;?>]">
 						</td>
 						<td class="right"><?=$nbBuyCart;?> €</td>
 					</tr>
@@ -236,7 +223,7 @@ function cartItem ($order)
 		$return .= '"name": "'.$v->infos->name.'",'.PHP_EOL;
 		$return .= '"unit_amount": {value: "'.$v->infos->amount.'", currency_code: "'.constant('PAYPAL_CURRENCY').'"},'.PHP_EOL;
 		$return .= '"quantity": "'.$v->number.'",'.PHP_EOL;
-		$return .= 'sku: "'.$v->infos->id_purchase.'",'.PHP_EOL;
+		$return .= '"sku":"'.$v->infos->id_purchase.'",'.PHP_EOL;
 		$return .= '"tax_total": {'.PHP_EOL;
 		$return .= '"value": "'.$v->tvaUniquePrice.'",'.PHP_EOL;
 		$return .= '"currency_code": "'.constant('PAYPAL_CURRENCY').'"'.PHP_EOL;
