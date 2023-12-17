@@ -13,6 +13,7 @@ namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
 use BelCMS\Requires\Common;
 use BelCMS\User\User;
+use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -138,11 +139,11 @@ class Market extends Pages
 			if ($return === true) {
 				$this->error = true;
 				$this->errorInfos = array($return['type'], $return['text'], constant('SHOP'), false);
-				$this->redirect('Market/buyconfirm', 5);
+				$this->redirect('Market/buyconfirm', 3);
 			} else {
 				$this->error = true;
 				$this->errorInfos = array($return['type'], $return['text'], constant('SHOP'), false);
-				$this->redirect('Market/buyconfirm', 5);		
+				$this->redirect('Market/buyconfirm', 3);		
 			}
 		}
 	}
@@ -158,7 +159,7 @@ class Market extends Pages
 			$return = $this->models->updateCart($data);
 			$this->error = true;
 			$this->errorInfos = array($return['type'], $return['text'], constant('SHOP'), false);
-			$this->redirect('Market/buyconfirm', 3);
+			$this->redirect('Market/buyconfirm', 2);
 		}
 	}
 
@@ -184,9 +185,36 @@ class Market extends Pages
 		$this->models->updateValidate($_POST);
 	}
 
+	public function billing ()
+	{
+		if (User::isLogged() === false) {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		} else {
+			$config =  Config::GetConfigPage('market');
+			$set['pagination'] = $this->pagination($config->config['NB_BILLING'], 'market', constant('TABLE_PURCHASE'));
+			$data['billing'] = $this->models->getBilling();
+			$this->set($data);
+			$this->render('billing');
+		}
+	}
+
 	public function invoice ()
 	{
-		$this->render('invoice');
+		if (isset($this->data[2]) and !empty($this->data[2])) {
+			$id = (string) $this->data[2];
+		}
+		if (User::isLogged() === false) {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		} else {
+			$data['adress']  = $this->models->getAdress();
+			$data['billing'] = $this->models->getBilling($id);
+			$this->set($data);
+			$this->render('invoice');
+		}
 	}
 
 	public function payPalError ()

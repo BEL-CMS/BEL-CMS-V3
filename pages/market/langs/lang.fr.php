@@ -73,4 +73,16 @@ Common::constant(array(
 	'THANK_YOU_FOR_PAYMENT'  => 'Merci pour votre paiement',
 	'PAYMENT_IN_PROGRESS'    => 'Paiement en cours…',
 	'EMPTY_SHOPPING_CAT'     => 'Panier vide <br> redirection vers la boutique dans 5s',
+	'MY_ORDERS'              => 'Mes commandes',
+	'VIEW_YOUR_HISTORY'      => 'Consultez votre historique et suivez les commandes en cours. Accédez à vos bons de commande.',
+	'ORDER_NUMBER'           => 'Numéro de commande',
+	'ETAT'                   => 'État',
+	'ETAT_0'                 => 'Contacter L\'administrateur',
+	'ETAT_1'                 => 'Paiement effectué',
+	'ETAT_2'                 => 'En préparation',
+	'ETAT_3'                 => 'En livraison',
+	'ETAT_4'                 => 'Finalisée',
+	'DESCRIPTION'            => 'Description',
+	'AMOUNT'                 => 'Montant',
+
 ));

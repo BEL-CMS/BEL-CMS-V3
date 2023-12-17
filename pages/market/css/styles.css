@@ -383,3 +383,67 @@
 	display: block;
 	float: right !important;
 }
+/*     Liste des Achats      */
+#belcms_billing {
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+#belcms_billing h2 {
+	display: block;
+	margin-bottom: 5px;
+	line-height: 22px;
+	font-weight: bold;
+}
+#belcms_billing i {
+	display: block;
+	margin-bottom: 20px;
+}
+#belcms_billing_table {
+	display: table;
+	width: 100%;
+	border: 1px solid #ebebeb;
+}
+#belcms_billing_table thead tr {
+	background-color: #fafafa;
+	border: 1px solid #ebebeb;
+}
+#belcms_billing_table thead tr th {
+	font-weight: bold;
+	border-bottom: 2px solid #ebebeb;
+	padding: 5px 10px;
+}
+#belcms_billing_table tbody tr {
+	border-bottom: 1px solid #ebebeb;
+}
+#belcms_billing_table tbody tr td {
+	padding: 5px 10px;
+}
+.etat_0,
+.etat_1,
+.etat_2,
+.etat_3,
+.etat_4 {	
+	display: inline !important;
+	width: auto;	
+	border-radius: 4px;
+	padding: 2px 10px;
+	background: red;
+	color: #FFF;
+}
+.etat_1 {
+	background: #91a8d1;
+	color: #292929;
+}
+.etat_2 {
+	background: #46b5ac;
+	color: #292929;
+}
+.etat_3 {
+	background: #f1c05a;
+	color: #292929;
+}
+.etat_4 {
+	background: #88b14b;
+	color: #FFF;
+}

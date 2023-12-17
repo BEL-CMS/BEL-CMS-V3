@@ -164,8 +164,18 @@ final class Market
 			'name'  => 'hash_key ',
 			'value' => $_SESSION['USER']->user->hash_key
 		);
+		$hash = $_SESSION['USER']->user->hash_key;
 		$sql->where($where);
 		$sql->queryOne();
+		$data = $sql->data;
+		$data->name        = Common::decrypt($data->name, $hash);
+		$data->first_name  = Common::decrypt($data->first_name, $hash);
+		$data->address     = Common::decrypt($data->address, $hash);
+		$data->number      = Common::decrypt($data->number, $hash);
+		$data->postal_code = Common::decrypt($data->postal_code, $hash);
+		$data->city        = Common::decrypt($data->city, $hash);
+		$data->country     = Common::decrypt($data->country, $hash);
+		$data->phone       = Common::decrypt($data->phone, $hash);
 		return $sql->data;
 	}
 
@@ -482,7 +492,7 @@ final class Market
 			$update['surname']     = Common::crypt($infosUser['name']['surname'], $_SESSION['USER']->user->hash_key);
 			$update['mail_paypal'] = Common::crypt($infosUser['email_address'], $_SESSION['USER']->user->hash_key);
 			$update['address']     = Common::crypt($infosUser['address']['country_code'], $_SESSION['USER']->user->hash_key);
-		}  
+		}
 		if (User::isLogged() === true and $unique_id == $dataVerif) {
 			if ($data['status'] == 'COMPLETED') {
 				$dataPurchase  = $data['purchase_units'][0];
@@ -516,5 +526,55 @@ final class Market
 				}
 			}
 		}
+	}
+
+	public function getBilling ($id = null)
+	{
+		if ($id != null and is_int($id)) {
+			$where = array('name' => 'id_purchase', 'value'=> $id);
+		} else {
+			$config = Config::GetConfigPage('market');
+			if (isset($config->config['NB_BILLING'])) {
+				$nbpp = (int) $config->config['NB_BILLING'];
+			} else {
+				$nbpp = (int) 10;
+			}
+			$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
+			$where = array('name' => 'author', 'value'=> $_SESSION['USER']->user->hash_key);
+		}
+
+		if (User::isLogged() === true) {
+			$sql = New BDD();
+			$sql->table('TABLE_PURCHASE');
+			if ($id != null and is_int($id)) {
+				$where = array('name' => 'id_purchase', 'value'=> $id);
+			} else {
+				$where = array('name' => 'author', 'value'=> $_SESSION['USER']->user->hash_key);
+			}
+			$sql->where($where);
+			if ($id != null and is_string($id)) {
+				$sql->queryOne();
+				$data = $sql->data;
+				$data->id_paypal   = Common::decrypt($data->id_paypal, $_SESSION['USER']->user->hash_key);
+				$data->given_name  = Common::decrypt($data->given_name, $_SESSION['USER']->user->hash_key);
+				$data->surname     = Common::decrypt($data->surname, $_SESSION['USER']->user->hash_key);
+				$data->mail_paypal = Common::decrypt($data->mail_paypal, $_SESSION['USER']->user->hash_key);
+				$data->address     = Common::decrypt($data->address, $_SESSION['USER']->user->hash_key);
+			} else {
+				$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+				$sql->limit(array(0 => $page, 1 => $nbpp), true);
+				$sql->queryAll();
+				$data = $sql->data;
+				foreach ($data as $k => $v) {
+					$data[$k]->id_paypal   = Common::decrypt($v->id_paypal, $_SESSION['USER']->user->hash_key);
+					$data[$k]->given_name  = Common::decrypt($v->given_name, $_SESSION['USER']->user->hash_key);
+					$data[$k]->surname     = Common::decrypt($v->surname, $_SESSION['USER']->user->hash_key);
+					$data[$k]->mail_paypal = Common::decrypt($v->mail_paypal, $_SESSION['USER']->user->hash_key);
+					$data[$k]->address 	   = Common::decrypt($v->address, $_SESSION['USER']->user->hash_key);
+				}
+			}
+		}
+
+		return $data;
 	}
 }

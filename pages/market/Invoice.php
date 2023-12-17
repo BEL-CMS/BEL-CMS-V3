@@ -17,6 +17,8 @@ if (!defined('CHECK_INDEX')):
 endif;
 $genered = new DateTime('NOW');
 $genered = date_format($genered,'d-m-Y , H:i:s'); 
+debug($billing, false);
+debug($adress, false);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,13 +36,13 @@ $genered = date_format($genered,'d-m-Y , H:i:s');
 				<h1>Bel-CMS</h1><span>Facture</span>
 			</header>
 			<div id="belcms_market_invoice_date_number">
-				<span><b>Date</b>: 2023-12-16 18:08:43</span>
-				<span><b>Facture N°</b>: 74bc4f8b1195ed4479a2ef1a35d6f94a</span>
+				<span><b>Date</b>: <?=Common::TransformDate($billing->date_purchase, 'MEDIUM', 'LONG');?></span>
+				<span><b>Facture N°</b>: <?=$billing->id_purchase;?></span>
 			</div>
 			<div id="belcms_market_invoice_infos_users">
 				<div id="belcms_market_invoiced_to">
 					<h2>Facture De :</h2>
-					<p>Determe Stive</p>
+					<p><?=$billing->given_name;?> <?=$billing->surname;?> 
 					<p>Rue du Wairchat, 94</p>
 					<p>6240, Farciennes</p>
 					<p>Belgique</p>
@@ -56,21 +58,24 @@ $genered = date_format($genered,'d-m-Y , H:i:s');
 				<table>
 					<thead>
 						<tr>
-							<th>Service</th>
-							<th>Description</th>
-							<th class="center">Prix</th>
-							<th class="center">QTY</th>
-							<th class="right">Montant</th>
+							<th><?=constant('PRODUCT');?></th>
+							<th><?=constant('DESCRIPTION');?></th>
+							<th class="center"><?=constant('PRICE');?></th>
+							<th class="center"><?=constant('QUANTITY');?></th>
+							<th class="right"><?=constant('AMOUNT');?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>teste teste etste</td>
-							<td>Je suis une description</td>
-							<td class="center">25.00 €</td>
-							<td class="center">3</td>
-							<td class="right">75.00 €</td>
-						</tr>
+						<?php
+						$item = explode(',',$billing->item);
+						foreach ($item as $key => $value):
+							$getExplode = explode('=', $value);
+							$getItem[$key][$getExplode[0]] = $getExplode[1];
+						endforeach;
+						?>
+						<?php
+						debug($getItem, false);
+						?>
 					</tbody>
 					<tfoot>
 						<tr>

@@ -17,10 +17,10 @@ if (!defined('CHECK_INDEX')):
 endif;
 $activeTVA             = false;
 $nbBuy                 = (int) 0;
-$nbTotal               = (int) 0;
 $nbPriceBuyDelivry     = (int) 0;
 $nbSubTotal            = (int) 0;
 $tvaPriceTotal         = (int) 0;
+$delivrytotal          = (int) 0;
 foreach ($order as $k => $v) {
 	$a = $v->infos->remaining - $v->infos->buy;
 	if ($v->number > $a) {
@@ -30,28 +30,29 @@ foreach ($order as $k => $v) {
 		$nbBuy     = (int) $v->number + $nbBuy;
 		$order[$k]->number = $v->number;
 	}
-	$nbPriceBuyDelivry = $order[$k]->number * $v->infos->delivery_price;
-	$nbSubTotal = $order[$k]->number * $v->infos->amount;
-	$nbTotal = $nbTotal + $nbSubTotal;
+	$nbSubTotal = $nbSubTotal + ($order[$k]->number * $v->infos->amount);
 	if ($v->infos->tva == 1) {
-		$order[$k]->tvaUniquePrice = $v->infos->amount /100 * $v->tva;
-		$tvaPriceTotal  = $order[$k]->tvaUniquePrice * $order[$k]->number;
+		$tvaUniquePrice = ($v->infos->amount /100) * $v->tva;
+		$tvaPriceTotal  = $tvaPriceTotal + ($tvaUniquePrice * $order[$k]->number);
 		$tvaPriceTotal  = round($tvaPriceTotal,2);
 		$activeTVA = true;
 	} else {
-		$order[$k]->tvaUniquePrice = $order[$k]->tvaUniquePrice + 0;
 		$tvaPriceTotal = $tvaPriceTotal + 0;
 		if ($activeTVA !== true) {
 			$activeTVA = false;
 		}
 	}
-	$nbPriceTotal = $nbTotal + $tvaPriceTotal;
-	if (isset($_SESSION['MARKET']['SOLD'])) {
-		$nbPriceTotal = $nbPriceTotal - $_SESSION['MARKET']['SOLD']['value'];
-	}
 	if ($v->infos->delivery_price != 0) {
-		$nbPriceTotal = $nbPriceTotal + $v->infos->delivery_price;
+		$delivry = $v->number * $v->infos->delivery_price;
+		$delivrytotal = $delivrytotal + $delivry;
+	} else {
+		$delivrytotal = $delivrytotal + 0;
 	}
+	$nbPriceTotal = $nbSubTotal + $tvaPriceTotal + $delivrytotal;
+}
+debug($delivrytotal, false);
+if (isset($_SESSION['MARKET']['SOLD'])) {
+	$nbPriceTotal = $nbPriceTotal - $_SESSION['MARKET']['SOLD']['value'];
 }
 if (constant('PAYPAL_SANDBOX') == true) {
 	$clientIDPaypal = constant('PAYPAL_SANDBOX_CLIENT_ID');
@@ -80,33 +81,36 @@ paypal.Buttons({
                     "breakdown": {
                         "item_total": {
                             "currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
-                            "value": <?=$nbTotal;?>
+                            "value": <?=$nbSubTotal;?>
 						},
-					<?php
-					if (isset($_SESSION['MARKET']['SOLD'])) {
-					?>
-					    "discount": {
-                        	"currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
-                        	"value": "<?=$_SESSION['MARKET']['SOLD']['value'];?>"
-						},
-					<?php
-                    }
-					if ($v->infos->delivery_price != 0) {
-					?>
-						"shipping": {
-							"currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
-							"value": <?=$v->infos->delivery_price;?>
-						},
-					<?php
-					}
-					?>
-						"tax_total": {
-							"value": "<?=$tvaPriceTotal;?>",
-            				"currency_code": "<?=constant('PAYPAL_CURRENCY');?>"
+						<?php
+						if (isset($_SESSION['MARKET']['SOLD'])) {
+						?>
+							"discount": {
+								"currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
+								"value": "<?=$_SESSION['MARKET']['SOLD']['value'];?>"
+							},
+						<?php
 						}
-                	}
+						if ($delivrytotal != 0) {
+						?>
+							"shipping": {
+								"currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
+								"value": <?=$delivrytotal;?>
+							},
+						<?php
+						}
+						if ($tvaPriceTotal != 0) {
+						?>
+							"tax_total": {
+								"value": "<?=$tvaPriceTotal;?>",
+								"currency_code": "<?=constant('PAYPAL_CURRENCY');?>"
+							}
+						<?php
+						}
+						?>
+					}
                 },
-                <?=cartItem($order);?>
             }]
         });
     },onApprove: function(data, actions) {
@@ -193,7 +197,7 @@ paypal.Buttons({
                 <table>
                     <tr><td><?=constant('NUMBER_OF_PURCHASES');?><td><td><?=$nbBuy;?></td></tr>
                     <tr><td><?=constant('CART_SUBTOTAL');?><td><td><?=$nbSubTotal;?> €</td></tr>
-                    <tr><td><?=constant('SHIPPING_TOTAL');?><td><td><?=$nbPriceBuyDelivry;?> €</td></tr>
+                    <tr><td><?=constant('SHIPPING_TOTAL');?><td><td><?=$delivrytotal;?> €</td></tr>
 					<?php
 					if ($activeTVA === true):
 					?>
