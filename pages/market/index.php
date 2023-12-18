@@ -34,7 +34,7 @@ endif;
 		foreach ($buy as $buy_id => $buy_value):
 			$countImg = count($buy_value->img);
 			if ($countImg == 1) {
-				$img = $buy_value->img[0];
+				$img = $buy_value->img[0]->img;
 			} else {
 				$countImg = (int) rand(0, $countImg);
 				$countImg = $countImg -1;

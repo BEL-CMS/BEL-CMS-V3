@@ -59,7 +59,7 @@ final class Market
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_MARKET');
-		if ($id != null && is_numeric($id)):
+		if ($id != null && is_numeric($id)) {
 			$where = array(
 				'name'  => 'id',
 				'value' => $id
@@ -85,7 +85,7 @@ final class Market
 			} else {
 				$sql->data->img = array('assets/img/no_screen.png');
 			}
-		else:
+		} else {
 			$config = Config::GetConfigPage('market');
 			if (isset($config->config['NB_BUY'])) {
 				$nbpp = (int) $config->config['NB_BUY'];
@@ -118,12 +118,12 @@ final class Market
 					}
 				}
 			}
-		endif;
-		if (!empty($sql->data)):
+		}
+		if (!empty($sql->data)) {
 			return $sql->data;
-		else:
+		} else {
 			return array();
-		endif;
+		}
 	}
 
 	##################################################
@@ -282,17 +282,23 @@ final class Market
 	# Récupère les achats en attente de paiement
 	#########################################
 	public function getSales() {
-		$n = 0;
 		$return = array();
 		$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key);
 		$sql = New BDD();
 		$sql->table('TABLE_MARKET_ORDER');
+		$sql->where($where);
 		$sql->queryAll();
 		if (!empty($sql->data)) {
 			foreach ($sql->data as $k => $v) {
-				$n = $n + 1;
 				$return[$v->id_command] = $v;
-				$return[$v->id_command]->number = $n;
+				if (!isset($return[$v->id_command]->number)) {
+					$whereCount = array('name' => 'id_command', 'value' => $v->id_command);
+					$sqlCount = New BDD();
+					$sqlCount->table('TABLE_MARKET_ORDER');
+					$sqlCount->where($whereCount);
+					$sqlCount->count();
+					$return[$v->id_command]->number = $sqlCount->data;
+				}
 				$whereBuy = array('name' => 'id', 'value' => $v->id_command);
 				$sqlBuy = New BDD();
 				$sqlBuy->table('TABLE_MARKET');
@@ -475,7 +481,7 @@ final class Market
 			// date de la transaction fini
 			$dateTime = new \DateTime('NOW');
 			$dateTime = date_format($dateTime,'Y-d-m H:i:s'); 
-			$update['date_purchase'] = 'NOW()';
+			$update['date_purchase'] = $dateTime;
 			// le status (0 / non payé ou erreur / 1 = payé / 2 en attende de validation / 3 livraison en cours / 4 livré)
 			$update['status']        = 1;
 			$update['id_paypal']     = Common::crypt($data['id'], $_SESSION['USER']->user->hash_key);
@@ -496,11 +502,12 @@ final class Market
 		if (User::isLogged() === true and $unique_id == $dataVerif) {
 			if ($data['status'] == 'COMPLETED') {
 				$dataPurchase  = $data['purchase_units'][0];
-				$where = array('name' => 'id_purchase', 'value'=> $dataPurchase['custom_id']);
+				$where = array('name' => 'id_purchase', 'value'=> $unique_id);
 				$sqlPurchase = New BDD();
 				$sqlPurchase->table('TABLE_PURCHASE');
 				$sqlPurchase->where($where);
 				$sqlPurchase->update($update);
+				debug($sqlPurchase);
 				if ($sqlPurchase->rowCount == 1) {
 					if (isset($_SESSION['MARKET']['SOLD'])) {
 						$whereSold = array('name' => 'id', 'value' => $_SESSION['MARKET']['SOLD']['id']);

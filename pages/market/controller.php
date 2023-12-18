@@ -30,6 +30,8 @@ class Market extends Pages
 	var $useModels = 'Market';
 	public function index ()
 	{
+		$config =  Config::GetConfigPage('market');
+		$data['pagination'] = $this->pagination($config->config['NB_BUY'], 'market', constant('TABLE_MARKET'));
 		$data['cat'] = $this->models->getCat();
 		$data['buy'] = $this->models->getBuy();
 		$this->set($data);
@@ -49,8 +51,7 @@ class Market extends Pages
 
 	public function buyconfirm ()
 	{
-
-		if (!isset($_SESSION['PAYPAL']['UNIQUE_ID']) and empty($_SESSION['PAYPAL']['UNIQUE_ID'])) {
+		if (!isset($_SESSION['PAYPAL']['UNIQUE_ID']) or empty($_SESSION['PAYPAL']['UNIQUE_ID'])) {
 			$_SESSION['PAYPAL']['UNIQUE_ID'] = md5(uniqid(rand(), true));
 		}
 

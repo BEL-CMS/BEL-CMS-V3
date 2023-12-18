@@ -19,6 +19,8 @@ $genered = new DateTime('NOW');
 $genered = date_format($genered,'d-m-Y , H:i:s'); 
 debug($billing, false);
 debug($adress, false);
+$logo = !empty(constant('PAYPAL_LOGO')) ? '<img src="'.constant('PAYPAL_LOGO').'">': '';
+$adressV = explode('|', constant('PAYPAL_ADRESS'));
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -33,7 +35,7 @@ debug($adress, false);
 	<body>
 		<section id="belcms_market_invoice">
 			<header>
-				<h1>Bel-CMS</h1><span>Facture</span>
+				<?=$logo;?><h1><?=$_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'];?> </h1><span>Facture</span>
 			</header>
 			<div id="belcms_market_invoice_date_number">
 				<span><b>Date</b>: <?=Common::TransformDate($billing->date_purchase, 'MEDIUM', 'LONG');?></span>
@@ -41,17 +43,19 @@ debug($adress, false);
 			</div>
 			<div id="belcms_market_invoice_infos_users">
 				<div id="belcms_market_invoiced_to">
-					<h2>Facture De :</h2>
-					<p><?=$billing->given_name;?> <?=$billing->surname;?> 
-					<p>Rue du Wairchat, 94</p>
-					<p>6240, Farciennes</p>
-					<p>Belgique</p>
+					<h2><?=constant('INVOICE_FROM');?></h2>
+					<p><?=$adress->name;?> <?=$adress->first_name;?> 
+					<p><?=$adress->address;?></p>
+					<p><?=$adress->postal_code;?>, <?=$adress->city;?></p>
+					<p><?=$adress->country;?></p>
 				</div>
 				<div id="belcms_market_pay_to">
-					<h2>Payer à :</h2>
-					<p>Bel-CMS</p>
-					<p>https://bel-cms.dev</p>
-					<p>Belgique</p>
+					<h2><?=constant('PAY_TO');?></h2>
+					<p><?=$_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'];?></p>
+					<p><?=$adressV[0];?></p>
+					<p><?=$adressV[1];?></p>
+					<p><?=$_SESSION['CONFIG_CMS']['HOST'];?></p>
+					<p><?=constant('PAYPAL_COUNTRY');?></p>
 				</div>
 			</div>
 			<div id="belcms_market_invoice_table">

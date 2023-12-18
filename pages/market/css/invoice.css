@@ -30,17 +30,27 @@ header {
     border-bottom: 1px solid #ccc;
     padding: 0 20px;
     padding-bottom: 20px;
+    height: 45px;
+    vertical-align: middle;
+}
+header img {
+    float: left;
+    width: 45px;
+    height: 45px;
+    border-radius: 4px;
 }
 header h1 {
     display: block;
     float: left;
     margin: 0;
     padding: 0;
+    line-height: 45px;
 }
 header span {
     display: block;
     float: right;
     font-size: 1.75rem;
+    line-height: 45px;
 }
 #belcms_market_invoice_date_number {
     display: block;

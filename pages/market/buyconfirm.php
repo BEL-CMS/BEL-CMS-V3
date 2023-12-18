@@ -18,7 +18,7 @@ endif;
 $activeTVA             = false;
 $nbBuy                 = (int) 0;
 $nbPriceBuyDelivry     = (int) 0;
-$nbSubTotal            = (int) 0;
+$item_total            = (int) 0;
 $tvaPriceTotal         = (int) 0;
 $delivrytotal          = (int) 0;
 foreach ($order as $k => $v) {
@@ -30,27 +30,27 @@ foreach ($order as $k => $v) {
 		$nbBuy     = (int) $v->number + $nbBuy;
 		$order[$k]->number = $v->number;
 	}
-	$nbSubTotal = $nbSubTotal + ($order[$k]->number * $v->infos->amount);
 	if ($v->infos->tva == 1) {
-		$tvaUniquePrice = ($v->infos->amount /100) * $v->tva;
-		$tvaPriceTotal  = $tvaPriceTotal + ($tvaUniquePrice * $order[$k]->number);
+		$order[$k]->tvaUniquePrice = ($v->infos->amount /100) * $v->tva;
+		$tvaPriceTotal  = $tvaPriceTotal + ($order[$k]->tvaUniquePrice * $order[$k]->number);
 		$tvaPriceTotal  = round($tvaPriceTotal,2);
 		$activeTVA = true;
 	} else {
+		$order[$k]->tvaUniquePrice = 0;
 		$tvaPriceTotal = $tvaPriceTotal + 0;
 		if ($activeTVA !== true) {
 			$activeTVA = false;
 		}
 	}
 	if ($v->infos->delivery_price != 0) {
-		$delivry = $v->number * $v->infos->delivery_price;
+		$delivry = $order[$k]->number * $v->infos->delivery_price;
 		$delivrytotal = $delivrytotal + $delivry;
 	} else {
 		$delivrytotal = $delivrytotal + 0;
 	}
-	$nbPriceTotal = $nbSubTotal + $tvaPriceTotal + $delivrytotal;
+	$item_total   = $item_total + ($order[$k]->number * $v->infos->amount);
+	$nbPriceTotal = $item_total + $tvaPriceTotal + $delivrytotal;
 }
-debug($delivrytotal, false);
 if (isset($_SESSION['MARKET']['SOLD'])) {
 	$nbPriceTotal = $nbPriceTotal - $_SESSION['MARKET']['SOLD']['value'];
 }
@@ -81,7 +81,7 @@ paypal.Buttons({
                     "breakdown": {
                         "item_total": {
                             "currency_code": "<?=constant('PAYPAL_CURRENCY');?>",
-                            "value": <?=$nbSubTotal;?>
+                            "value": <?=$item_total;?>
 						},
 						<?php
 						if (isset($_SESSION['MARKET']['SOLD'])) {
@@ -111,6 +111,7 @@ paypal.Buttons({
 						?>
 					}
                 },
+				<?=cartItem($order);?>
             }]
         });
     },onApprove: function(data, actions) {
@@ -123,7 +124,7 @@ paypal.Buttons({
 				success: function(data) {
 					$('#alrt_bel_cms').addClass("success").empty().append("<?=constant('THANK_YOU_FOR_PAYMENT');?>");
 					setTimeout(function() {
-						document.location.href="/market/Invoice?echo";
+						//document.location.href="/market/Invoice?echo";
 					}, 3500);
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
@@ -192,12 +193,12 @@ paypal.Buttons({
 			</form>
 		</div>
 		<div id="belcms_market_buy_confirm_detailed">
-            <div id="belcms_cart_totals">
-                <h3><?=constant('CART_TOTALS');?></h3>
-                <table>
-                    <tr><td><?=constant('NUMBER_OF_PURCHASES');?><td><td><?=$nbBuy;?></td></tr>
-                    <tr><td><?=constant('CART_SUBTOTAL');?><td><td><?=$nbSubTotal;?> €</td></tr>
-                    <tr><td><?=constant('SHIPPING_TOTAL');?><td><td><?=$delivrytotal;?> €</td></tr>
+			<div id="belcms_cart_totals">
+				<h3><?=constant('CART_TOTALS');?></h3>
+				<table>
+					<tr><td><?=constant('NUMBER_OF_PURCHASES');?><td><td><?=$nbBuy;?></td></tr>
+					<tr><td><?=constant('CART_SUBTOTAL');?><td><td><?=$item_total;?> €</td></tr>
+					<tr><td><?=constant('SHIPPING_TOTAL');?><td><td><?=$delivrytotal;?> €</td></tr>
 					<?php
 					if ($activeTVA === true):
 					?>
@@ -212,29 +213,32 @@ paypal.Buttons({
 					<?php
 					endif;
 					?>
-                    <tr><td><?=constant('TOTAL');?><td><td><?=$nbPriceTotal;?> €</td></tr>
-                </table>
+					<tr><td><?=constant('TOTAL');?><td><td><?=$nbPriceTotal;?> €</td></tr>
+				</table>
 				<div id="paypal-button-container"></div>
-            </div>
+			</div>
 		</div>
 	</div>
 </section>
 <?php
 function cartItem ($order)
 {
-	$return = 'items: [{'.PHP_EOL;
+	$i = 0;
+	$return = 'items: ['.PHP_EOL;
 	foreach ($order as $k => $v):
-		$return .= '"name": "'.$v->infos->name.'",'.PHP_EOL;
-		$return .= '"unit_amount": {value: "'.$v->infos->amount.'", currency_code: "'.constant('PAYPAL_CURRENCY').'"},'.PHP_EOL;
-		$return .= '"quantity": "'.$v->number.'",'.PHP_EOL;
-		$return .= '"sku":"'.$v->infos->id_purchase.'",'.PHP_EOL;
-		$return .= '"tax_total": {'.PHP_EOL;
-		$return .= '"value": "'.$v->tvaUniquePrice.'",'.PHP_EOL;
-		$return .= '"currency_code": "'.constant('PAYPAL_CURRENCY').'"'.PHP_EOL;
-		$return .= '}'.PHP_EOL;
+		$return .= '{'.PHP_EOL;
+		$return .= 'name: "'.$v->infos->name.'",'.PHP_EOL;
+		$return .= 'unit_amount: {'.PHP_EOL;
+		$return .= '	currency_code: "'.constant('PAYPAL_CURRENCY').'",'.PHP_EOL;
+		$return .= '	value: "'.$v->infos->amount.'"'.PHP_EOL;
+		$return .= '},'.PHP_EOL;
+		$return .= 'tax: {'.PHP_EOL;
+		$return .= '	currency_code: "'.constant('PAYPAL_CURRENCY').'",'.PHP_EOL;
+		$return .= '	value: "'.$v->tvaUniquePrice.'"'.PHP_EOL;
+		$return .= '},'.PHP_EOL;
+		$return .= 'quantity: "'.$v->number.'",'.PHP_EOL;
+		$return .= '},'.PHP_EOL;
 	endforeach;
-	$return = substr($return, 0, -1);
-	$return = $return.'}]'.PHP_EOL;
+	$return .= '],'.PHP_EOL;
 	return $return;
 }
-?>
