@@ -263,6 +263,7 @@ final class Market
 			$sql->table('TABLE_MARKET_ORDER');
 			$sql->insert($insert);
 			// waiting for payment
+			/*
 			$wherePurchase = array('name' => 'author', 'value'=> $_SESSION['USER']->user->hash_key);
 			$sqlPurchase = New BDD();
 			$sqlPurchase->table('TABLE_PURCHASE');
@@ -276,6 +277,7 @@ final class Market
 				$sqlPurchase->table('TABLE_PURCHASE');
 				$sqlPurchase->insert($insertPurchase);
 			}
+			*/
 		}
 	}
 	#########################################
@@ -465,10 +467,27 @@ final class Market
 			$purchaseBreak = $purchase['amount']['breakdown'];
 			$totalPay = $purchase['amount']['value'];
 			$SubTotal = $purchaseBreak['item_total']['value'];
-			$shipping = $purchaseBreak['shipping']['value'] . '&nbsp;' .$purchaseBreak['shipping']['currency_code'];
-			$handling = $purchaseBreak['handling']['value'] . '&nbsp;' .$purchaseBreak['handling']['currency_code'];
-			$taxe     = $purchaseBreak['tax_total']['value'] . '&nbsp;' .$purchaseBreak['tax_total']['currency_code'];
-			$discount = $purchaseBreak['discount']['value'] . '&nbsp;' .$purchaseBreak['discount']['currency_code'];
+			if (isset($purchaseBreak['shipping'])) {
+				$shipping = $purchaseBreak['shipping']['value'] . '&nbsp;' .$purchaseBreak['shipping']['currency_code'];
+			} else {
+				$shipping = '0&nbsp;'.constant('PAYPAL_CURRENCY');
+			}
+			if (isset($purchaseBreak['handling'])) {
+				$handling = $purchaseBreak['handling']['value'] . '&nbsp;' .$purchaseBreak['handling']['currency_code'];
+			} else {
+				$handling = '0&nbsp;'.constant('PAYPAL_CURRENCY');
+			}
+			if (isset($purchaseBreak['tax_total'])) {
+				$taxe = $purchaseBreak['tax_total']['value'] . '&nbsp;' .$purchaseBreak['tax_total']['currency_code'];
+			} else {
+				$taxe = '0&nbsp;'.constant('PAYPAL_CURRENCY');
+
+			}
+			if (isset($purchaseBreak['discount'])) {
+				$discount = $purchaseBreak['discount']['value'] . '&nbsp;' .$purchaseBreak['discount']['currency_code'];
+			} else {
+				$discount = '0&nbsp;'.constant('PAYPAL_CURRENCY');
+			}
 			// liste des achats
 			$item = '';
 			foreach ($purchase['items'] as $key => $value) {
@@ -476,38 +495,33 @@ final class Market
 				$item .= 'value='.$value['unit_amount']['value'].',';
 				$item .= 'currency_code='.$value['unit_amount']['currency_code'].',';
 				$item .= 'quantity='.$value['quantity'].'|';
+				$buyAdd[] = array('name' => $value['name'], 'qty' => $value['quantity']); 
 			}
-			$item = substr($item, 0, -1);
-			// date de la transaction fini
-			$dateTime = new \DateTime('NOW');
-			$dateTime = date_format($dateTime,'Y-d-m H:i:s'); 
-			$update['date_purchase'] = $dateTime;
+			$item = substr($item, 0, -1); // retire le derner "|" 
+			$insert['author']        = $_SESSION['USER']->user->hash_key;
+			$insert['id_purchase']   = $dataVerif;
 			// le status (0 / non payé ou erreur / 1 = payé / 2 en attende de validation / 3 livraison en cours / 4 livré)
-			$update['status']        = 1;
-			$update['id_paypal']     = Common::crypt($data['id'], $_SESSION['USER']->user->hash_key);
-			$update['total_pay']     = $totalPay;
-			$update['sub_total']     = $SubTotal;
-			$update['shipping']      = $shipping;
-			$update['handling']      = $handling;
-			$update['taxe']          = $taxe;
-			$update['discount']      = $discount;
-			$update['item']          = $item;
+			$insert['status']        = 1;
+			$insert['id_paypal']     = Common::crypt($data['id'], $_SESSION['USER']->user->hash_key);
+			$insert['total_pay']     = $totalPay;
+			$insert['sub_total']     = $SubTotal;
+			$insert['shipping']      = $shipping;
+			$insert['handling']      = $handling;
+			$insert['taxe']          = $taxe;
+			$insert['discount']      = $discount;
+			$insert['item']          = $item;
 			// Adresse de paypal
 			$infosUser = $data['payer'];
-			$update['given_name']  = Common::crypt($infosUser['name']['given_name'], $_SESSION['USER']->user->hash_key);
-			$update['surname']     = Common::crypt($infosUser['name']['surname'], $_SESSION['USER']->user->hash_key);
-			$update['mail_paypal'] = Common::crypt($infosUser['email_address'], $_SESSION['USER']->user->hash_key);
-			$update['address']     = Common::crypt($infosUser['address']['country_code'], $_SESSION['USER']->user->hash_key);
+			$insert['given_name']  = Common::crypt($infosUser['name']['given_name'], $_SESSION['USER']->user->hash_key);
+			$insert['surname']     = Common::crypt($infosUser['name']['surname'], $_SESSION['USER']->user->hash_key);
+			$insert['mail_paypal'] = Common::crypt($infosUser['email_address'], $_SESSION['USER']->user->hash_key);
+			$insert['address']     = Common::crypt($infosUser['address']['country_code'], $_SESSION['USER']->user->hash_key);
 		}
 		if (User::isLogged() === true and $unique_id == $dataVerif) {
 			if ($data['status'] == 'COMPLETED') {
-				$dataPurchase  = $data['purchase_units'][0];
-				$where = array('name' => 'id_purchase', 'value'=> $unique_id);
-				$sqlPurchase = New BDD();
+				$sqlPurchase  = New BDD();
 				$sqlPurchase->table('TABLE_PURCHASE');
-				$sqlPurchase->where($where);
-				$sqlPurchase->update($update);
-				debug($sqlPurchase);
+				$sqlPurchase->insert($insert);
 				if ($sqlPurchase->rowCount == 1) {
 					if (isset($_SESSION['MARKET']['SOLD'])) {
 						$whereSold = array('name' => 'id', 'value' => $_SESSION['MARKET']['SOLD']['id']);
@@ -525,13 +539,36 @@ final class Market
 						}
 						unset($_SESSION['MARKET']['SOLD']);
 					}
-					$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key);
-					$sqlDel = New BDD();
-					$sqlDel->table('TABLE_MARKET_ORDER');
-					$sqlDel->where($where);
-					$sqlDel->delete();
+					self::negBuy($buyAdd);
+				}
+				$where = array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key);
+				$sqlDel = New BDD();
+				$sqlDel->table('TABLE_MARKET_ORDER');
+				$sqlDel->where($where);
+				$sqlDel->delete();
+				if (isset($_SESSION['PAYPAL'])) {
+					unset($_SESSION['PAYPAL']);
 				}
 			}
+		}
+	}
+
+	private function negBuy ($data)
+	{
+		foreach ($data as $key => $value) {
+			$value['name'] = str_replace ("'", "\'", $value['name']);
+			$where = array('name' => 'name', 'value' => $value['name']);
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET');
+			$sql->where($where);
+			$sql->queryOne();
+			$number = $sql->data->buy;
+			$number = $number + $value['qty'];
+			$update['buy'] = $number;
+			$sqlUpdate = New BDD();
+			$sqlUpdate->table('TABLE_MARKET');
+			$sqlUpdate->where($where);
+			$sqlUpdate->update($update);
 		}
 	}
 

@@ -31,7 +31,6 @@ endif;
 							<tr>
 								<th><?=constant('NAME');?></th>
 								<th><?=constant('DATE_OF_RELEASE');?></th>
-								<th><?=constant('AUTHOR');?></th>
 								<th><?=constant('COST');?></th>
 								<th><?=constant('REMAINING');?></th>
 								<th><?=constant('CATEGORIES');?></th>
@@ -42,7 +41,6 @@ endif;
 							<tr>
 								<th><?=constant('NAME');?></th>
 								<th><?=constant('DATE_OF_RELEASE');?></th>
-								<th><?=constant('AUTHOR');?></th>
 								<th><?=constant('COST');?></th>
 								<th><?=constant('REMAINING');?></th>
 								<th><?=constant('CATEGORIES');?></th>
@@ -56,13 +54,13 @@ endif;
 								$cat          = empty($v->cat->name) ? constant('NO_CATEGORY') : $v->cat->name;
 								$user         = User::getInfosUserAll($v->author);
 								$username     = $user->user->username;
+								$nbRemaining  = $v->remaining - $v->buy;
 								?>
 								<tr>
 									<td><?=$v->name;?></td>
 									<td><?=$v->date_add;?></td>
-									<td><?=$username;?></td>
 									<td><?=$v->amount;?> €</td>
-									<td><?=$v->remaining;?></td>
+									<td><?=$nbRemaining;?></td>
 									<td><?=$cat;?></td>
 									<td>
 										<button class="btn btn-sm bg-success text-white" onclick="window.location.href='market/addImgBuy/<?=$v->id;?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('ADD_IMG');?></button>

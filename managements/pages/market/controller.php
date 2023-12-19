@@ -61,6 +61,7 @@ class Market extends AdminPages
 		$menu[] = array(constant('PAYMENT') => array('href'=>'market/payment?management&option=pages','icon'=>'mgc_currency_euro_2_fill', 'color' => 'btn bg-info text-white'));
 		$menu[] = array(constant('ADD') => array('href'=>'market/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 		$menu[] = array(constant('CAT') => array('href'=>'market/categories?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('DISCOUNT_COUPON') => array('href'=>'market/discount?management&option=pages','icon'=>'mgc_barcode_line', 'color' => 'bg-danger/25 text-danger'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'market/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$data['data'] = $this->models->getBuy();
 		foreach ($data['data'] as $key => $value):
@@ -205,6 +206,8 @@ class Market extends AdminPages
 		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('CAT') => array('href'=>'market/categories?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'market/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+		$data['data'] = $this->models->getPayment ();
+		$this->set($data);
 		$this->render('payment', $menu);
 	}
 	#########################################
@@ -227,4 +230,55 @@ class Market extends AdminPages
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('market?management&option=pages', 2);
 	}
+	#########################################
+	# Get Coupon
+	#########################################
+	public function discount ()
+	{
+		$menu[] = array(constant('HOME') => array('href'=>'market?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD_DISCOUNT') => array('href'=>'market/addDiscnount?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-warning text-white'));
+		$return['discount'] = $this->models->getDiscount();
+		$this->set($return);
+		$this->render('discount', $menu);
+	}
+	#########################################
+	# ajouter un coupon de réduction
+	#########################################
+	public function addDiscnount ()
+	{
+		$menu[] = array(constant('HOME') => array('href'=>'market/discount?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$this->render('addDiscount', $menu);
+	}
+
+	public function sendaddDiscount ()
+	{
+		$return = $this->models->sendaddDiscount($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('market/discount?management&option=pages', 2);
+	}
+
+	public function editDiscount ()
+	{
+		$menu[] = array(constant('HOME') => array('href'=>'market/discount?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$id = (int) $this->data[2];
+		$return['discount'] = $this->models->editDiscount($id);
+		$this->set($return);
+		$this->render('editDiscount', $menu);
+	}
+
+	public function sendEditDiscount ()
+	{
+		$return = $this->models->sendEditDiscount($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('market/discount?management&option=pages', 2);
+	}
+
+	public function delDiscount ()
+	{
+		$id = (int) $this->data[2];
+		$return = $this->models->sendDelDiscount($id);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('market/discount?management&option=pages', 2);
+	}
+
 }

@@ -137,7 +137,7 @@ switch ($_POST['table']) {
 			('', 'news', 1, '1|0', '1', 'MAX_NEWS==2'),
 			('', 'mails', 1, '2', '1', NULL),
 			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
-			('', 'market', 1, '1|0', '1', 'NB_BUY==6');";
+			('', 'market', 1, '1|0', '1', 'NB_BUY==1{||}NB_BILLING==10');";
 	break;
 
 	case 'config_tpl':
@@ -427,19 +427,6 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
-	case "market_transaction":
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL AUTO_INCREMENT,
-			`hash_key` varchar(32) NOT NULL,
-			`adress` int NOT NULL,
-			`id_buy` int NOT NULL,
-			`amount` tinyint NOT NULL,
-			`pending` text,
-			PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-	break;
-
 	case "market_img":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -698,6 +685,53 @@ switch ($_POST['table']) {
 			`name` text NOT NULL,
 			`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "paypal":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(64) NOT NULL,
+			`value` text NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
+			('', 'PAYPAL_SANDBOX', 'false'),
+			('', 'PAYPAL_SANDBOX_CLIENT_ID', ''),
+			('', 'PAYPAL_SANDBOX_CLIENT_SECRET', ''),
+			('', 'PAYPAL_PROD_CLIENT_ID', ''),
+			('', 'PAYPAL_PROD_CLIENT_SECRET', ''),
+			('', 'PAYPAL_CURRENCY', 'EUR'),
+			('', 'PAYPAL_LOGO', ''),
+			('', 'PAYPAL_COUNTRY', ''),
+			('', 'PAYPAL_ADRESS', '');";
+	break;
+
+	case "paypal_purchase":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`author` varchar(32) NOT NULL,
+			`date_purchase` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`status` varchar(1) DEFAULT '0',
+			`id_purchase` varchar(32) NOT NULL,
+			`id_paypal` varchar(64) DEFAULT NULL,
+			`total_pay` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+			`sub_total` text,
+			`shipping` text,
+			`handling` text,
+			`taxe` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+			`discount` text,
+			`item` text,
+			`given_name` text,
+			`surname` text,
+			`mail_paypal` text NOT NULL,
+			`address` text NOT NULL,
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `purchase` (`id_purchase`),
+			UNIQUE KEY `id_paypal` (`id_paypal`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 

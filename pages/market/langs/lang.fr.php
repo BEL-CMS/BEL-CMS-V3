@@ -86,5 +86,6 @@ Common::constant(array(
 	'AMOUNT'                 => 'Montant',
 	'INVOICE_FROM'           => 'Facture De :',
 	'PAY_TO'                 => 'Payer à :',
+	'INVOICE_NO'             => 'Facture N°',
 
 ));

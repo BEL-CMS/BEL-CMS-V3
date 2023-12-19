@@ -70,7 +70,6 @@ class Market extends Pages
 			}
 		}
 		$get['order']    = $this->models->getSales();
-		$get['purchase'] = $this->models->getPurchase();
 		foreach ($get['order'] as $key => $value) {
 			if ($value->infos->tva == 1) {
 				$adress = $this->models->getAdress();

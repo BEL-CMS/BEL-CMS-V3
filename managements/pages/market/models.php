@@ -351,4 +351,142 @@ final class ModelsMarket
 		}
 		return $return;
 	}
+
+	public function getDiscount ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_MARKET_SOLD');
+		$sql->queryAll();
+		return $sql->data;
+	}
+
+	public function sendaddDiscount ($data)
+	{
+		if (empty($data['code']) and empty($data['auto_code'])) {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('CODE_ERROR')
+			);
+			return $return;
+		}
+		if (!empty($data['code']) or !empty($data['auto_code'])) {
+			$update['price'] = !empty($data['code']) ? $data['price'] : 0;
+		}
+		$update['code'] = empty($data['auto_code']) ? $data['code'] : $data['auto_code'];
+		if (!empty($data['date_of_finish'])) {
+			$update['date_of_finish'] = $data['date_of_finish']; 
+		}
+		$update['number'] = (int) $data['number'];
+		$update['infinite_date'] = $data['infinite_date'];
+		$update['comments'] = Common::VarSecure($data['comments'], null);
+
+		$sql = New BDD();
+		$sql->table('TABLE_MARKET_SOLD');
+		$sql->insert($update);
+		if ($sql->rowCount == 1) {
+			$return = array(
+				'type' => 'success',
+				'text' => constant('SEND_SOLD_SUCCESS')
+			);
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('SEND_SOLD_ERROR')
+			);
+		}
+		return $return;
+	}
+
+	public function editDiscount ($id = null)
+	{
+		if ($id != null and is_int($id)) {
+			$where = array('name' => 'id', 'value' => $id);
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET_SOLD');
+			$sql->where($where);
+			$sql->queryOne();
+			return $sql->data;	
+		}
+	}
+
+	public function sendEditDiscount ($data = null)
+	{
+		if (is_array($data)) {
+			if (empty($data['code']) and empty($data['auto_code'])) {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('CODE_ERROR')
+				);
+				return $return;
+			}	
+			if (!empty($data['code']) or !empty($data['auto_code'])) {
+				$update['price'] = !empty($data['code']) ? $data['price'] : 0;
+			}
+			$update['code'] = empty($data['auto_code']) ? $data['code'] : $data['auto_code'];
+			if (!empty($data['date_of_finish'])) {
+				$update['date_of_finish'] = $data['date_of_finish']; 
+			}
+			$update['number'] = (int) $data['number'];
+			$update['infinite_date'] = $data['infinite_date'];
+			$update['comments'] = Common::VarSecure($data['comments'], null);
+
+			$where = array('name' => 'id', 'value' => $data['id']);
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET_SOLD');
+			$sql->where($where);
+			$sql->update($update);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('SEND_SOLD_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('SEND_SOLD_ERROR')
+				);
+			}
+			return $return;
+		}
+	}
+
+	public function sendDelDiscount ($id = null)
+	{
+		if ($id !== null && is_numeric($id)) {
+			// SECURE DATA
+			$delete = (int) $id;
+			// SQL DELETE
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET_SOLD');
+			$sql->where(array('name'=>'id','value' => $delete));
+			$sql->delete();
+			// SQL RETURN NB DELETE
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('DEL_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('DEL_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+
+	public function getPayment ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_PURCHASE');
+		$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+		$sql->queryAll();
+		return $sql->data;
+	}
 }

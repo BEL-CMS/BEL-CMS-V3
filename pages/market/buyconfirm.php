@@ -64,6 +64,8 @@ if (!empty($_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'])) {
 } else {
 	$name = $_SESSION['CONFIG_CMS']['HOST'];
 }
+$dateTime = new \DateTime('NOW');
+$dateTime = date_format($dateTime,'Y-d-m H:i:s'); 
 ?>
 <script src="https://www.paypal.com/sdk/js?client-id=<?=$clientIDPaypal;?>&currency=<?=constant('PAYPAL_CURRENCY');?>&intent=capture"></script>
 <script type="text/javascript">
@@ -72,7 +74,6 @@ paypal.Buttons({
         return actions.order.create({
             purchase_units: [
             {
-                reference_id: "<?=$purchase;?>",
                 description: "<?=$name;?>",
                 custom_id: "<?=$_SESSION['PAYPAL']['UNIQUE_ID'];?>",
                 amount: {
@@ -124,7 +125,7 @@ paypal.Buttons({
 				success: function(data) {
 					$('#alrt_bel_cms').addClass("success").empty().append("<?=constant('THANK_YOU_FOR_PAYMENT');?>");
 					setTimeout(function() {
-						//document.location.href="/market/Invoice?echo";
+						document.location.href="/market/Invoice/<?=$_SESSION['PAYPAL']['UNIQUE_ID'];?>?echo";
 					}, 3500);
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
@@ -138,7 +139,7 @@ paypal.Buttons({
 		});
 	},
 	onError(err) {
-		//window.location.href = "/Market/PayPalError";
+		window.location.href = "/Market/PayPalError";
 		console.log(err);
 	}
 }).render('#paypal-button-container');
