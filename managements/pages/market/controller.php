@@ -249,14 +249,18 @@ class Market extends AdminPages
 		$menu[] = array(constant('HOME') => array('href'=>'market/discount?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$this->render('addDiscount', $menu);
 	}
-
+	#########################################
+	# Ajouter en BDD la réduction
+	#########################################
 	public function sendaddDiscount ()
 	{
 		$return = $this->models->sendaddDiscount($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('market/discount?management&option=pages', 2);
 	}
-
+	#########################################
+	# Editer le coupon de réduction
+	#########################################
 	public function editDiscount ()
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'market/discount?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
@@ -265,14 +269,18 @@ class Market extends AdminPages
 		$this->set($return);
 		$this->render('editDiscount', $menu);
 	}
-
+	#########################################
+	# Update la BDD le coupon de réduction
+	#########################################
 	public function sendEditDiscount ()
 	{
 		$return = $this->models->sendEditDiscount($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('market/discount?management&option=pages', 2);
 	}
-
+	#########################################
+	# Supprime le coupon de réduction par ID
+	#########################################
 	public function delDiscount ()
 	{
 		$id = (int) $this->data[2];
@@ -280,5 +288,32 @@ class Market extends AdminPages
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('market/discount?management&option=pages', 2);
 	}
+	#########################################
+	# Change le status de livraison en Attente
+	#########################################
+	public function attLivriason ()
+	{
+		$id = (int) $this->data[2];
+		$return = $this->models->sendAttLivraison($id);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('market/payment?management&option=pages', 2);
+	}
+	#########################################
+	# Change le status de livraison en Attente
+	#########################################
+	public function livraisonOk ()
+	{
+		$id = (int) $this->data[2];
+		$return = $this->models->sendLivraisonOk($id);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('market/payment?management&option=pages', 2);
+	}
 
+	public function delInvoice ()
+	{
+		$id = (int) $this->data[2];
+		$return = $this->models->delLivraison($id);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('market/payment?management&option=pages', 2);
+	}
 }

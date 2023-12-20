@@ -489,4 +489,75 @@ final class ModelsMarket
 		$sql->queryAll();
 		return $sql->data;
 	}
+
+	public function sendAttLivraison ($id = null)
+	{
+		if ($id != null and is_int($id)) {
+			$update['status'] = 2;
+			$where = array('name' => 'id', 'value' => $id);
+			$sql = New BDD();
+			$sql->table('TABLE_PURCHASE');
+			$sql->where($where);
+			$sql->update($update);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('MARKET_UPDATE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('MARKET_UPDATE_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'alert',
+				'text' => constant('MARKET_ERROR_ID')
+			);
+		}
+		return $return;
+	}
+
+	public function sendLivraisonOk ($id = null)
+	{
+		if ($id != null and is_int($id)) {
+			$update['status'] = 3;
+			$where = array('name' => 'id', 'value' => $id);
+			$sql = New BDD();
+			$sql->table('TABLE_PURCHASE');
+			$sql->where($where);
+			$sql->update($update);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('MARKET_UPDATE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('MARKET_UPDATE_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'alert',
+				'text' => constant('MARKET_ERROR_ID')
+			);
+		}
+		return $return;
+	}
+
+	public function delLivraison ($id = null)
+	{
+		if ($id != null and is_int($id)) {
+
+		} else {
+			$return = array(
+				'type' => 'alert',
+				'text' => constant('MARKET_ERROR_ID')
+			);
+		}
+		return $return;
+	}
 }

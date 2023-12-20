@@ -92,11 +92,11 @@ debug($data, false);
 										$status = '<i class="etat_4">'.constant('ETAT_4').'</i>';
 									break;
 								endswitch;
-								$option  = '<a class="opt_sts" href="#"><i class="mgc_shopping_cart_2_fill"></i></a>';
-								$option .= '<a class="opt_sts" href="#"><i class="mgc_service_line"></i></a>';
-								$option .= '<a class="opt_sts" href="#"><i class="mgc_document_line"></i></a>';
-								$option .= '<a class="opt_sts" href="#"><i class="mgc_exit_fill"></i></a>';
-								$option .= '<a class="opt_sts" href="#"><i class="mgc_delete_2_fill"></i></a>';
+								$option  = '<a class="opt_sts belcms_tooltip_top" data="Contacté le client" href="/Mails/New?user='.$author.'"><i class="mgc_service_line"></i></a>';
+								$option .= '<a class="opt_sts belcms_tooltip_top" data="Changer en attente de livraison" href="Market/attLivriason/'.$value->id.'?management&option=pages"><i class="mgc_shopping_cart_2_fill"></i></a>';
+								$option .= '<a class="opt_sts belcms_tooltip_top" data="livraison effectuée" href="Market/livraisonOk/'.$value->id.'?management&option=pages"><i class="mgc_exit_fill"></i></a>';
+								$option .= '<a class="opt_sts belcms_tooltip_top" data="Facture du client" target="_blank" href="market/Invoice/'.$value->id_purchase.'?echo"><i class="mgc_document_line"></i></a>';
+								$option .= '<a class="opt_sts belcms_tooltip_top" data="Effacer l\'achat" href=""market/delInvoice/'.$value->id_purchase.'?echo""><i class="mgc_delete_2_fill"></i></a>';
 							?>
 							<tr>
 								<td><?=$author;?></td>
