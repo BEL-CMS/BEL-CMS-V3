@@ -38,6 +38,19 @@ class Market extends Pages
 		$this->render('index');
 	}
 
+	public function category ()
+	{
+		$id = (int) $this->data[2];
+		$data['buy'] = $this->models->getBuyCat($id);
+		if (count((array) $data['buy']) == 0) {
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('NO_BUY_CATEGORY'), constant('SHOP'), false);
+			return false;
+		}
+		$this->set($data);
+		$this->render('category');
+	}
+
 	public function buy ()
 	{
 		$id = (int) $this->data[2];

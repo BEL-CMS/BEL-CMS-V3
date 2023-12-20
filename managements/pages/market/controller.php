@@ -316,4 +316,13 @@ class Market extends AdminPages
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('market/payment?management&option=pages', 2);
 	}
+
+	public function detail ()
+	{
+		$menu[] = array(constant('HOME') => array('href'=>'market/payment?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$id = (int) $this->data[2];
+		$return['detail'] = $this->models->detail($id);
+		$this->set($return);
+		$this->render('detail', $menu);
+	}
 }

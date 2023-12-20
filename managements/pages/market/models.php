@@ -551,12 +551,58 @@ final class ModelsMarket
 	public function delLivraison ($id = null)
 	{
 		if ($id != null and is_int($id)) {
-
+			$sql = New BDD();
+			$sql->table('TABLE_PURCHASE');
+			$sql->where(array('name'=>'id','value' => $id));
+			$sql->delete();
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('MARKET_DELETE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('MARKET_DELETE_ERROR')
+				);
+			}
 		} else {
 			$return = array(
 				'type' => 'alert',
 				'text' => constant('MARKET_ERROR_ID')
 			);
+		}
+		return $return;
+	}
+
+	public function detail ($id = null)
+	{
+		$return = (object) array();
+		if ($id != null and is_int($id)) {
+			$sql = New BDD();
+			$sql->table('TABLE_PURCHASE');
+			$sql->where(array('name'=>'id','value' => $id));
+			$sql->queryOne();
+			$purchase = $sql->data;
+
+			$sqlAdress = New BDD();
+			$sqlAdress->table('TABLE_MARKET_ADRESS');
+			$sqlAdress->where(array('name' => 'hash_key', 'value' => $purchase->author));
+			$sqlAdress->queryOne();
+			$adress = $sqlAdress->data;
+
+			$adress->name        = Common::decrypt($adress->name, $adress->hash_key);
+			$adress->first_name  = Common::decrypt($adress->first_name, $adress->hash_key);
+			$adress->address     = Common::decrypt($adress->address, $adress->hash_key);
+			$adress->number      = Common::decrypt($adress->number, $adress->hash_key);
+			$adress->postal_code = Common::decrypt($adress->postal_code, $adress->hash_key);
+			$adress->city        = Common::decrypt($adress->city, $adress->hash_key);
+			$adress->country     = Common::decrypt($adress->country, $adress->hash_key);
+			$adress->phone       = Common::decrypt($adress->phone, $adress->hash_key);
+
+			$return = $purchase;
+			$return->adress = $adress;
+
 		}
 		return $return;
 	}

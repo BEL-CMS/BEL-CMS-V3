@@ -16,19 +16,6 @@ if (!defined('CHECK_INDEX')):
 endif;
 ?>
 <section id="belcms_section_market_main">
-	<?php if (isset($cat) and !empty($cat)): ?>
-	<div id="belcms_section_market_cat">
-		<ul>
-			<?php
-			foreach ($cat as $cat_id => $cat_value):
-			?>
-				<li><a data="<?=$cat_value->name;?>" class="belcms_tooltip_bottom" href="Market/category/<?=$cat_value->id;?>"><img src="<?=$cat_value->img;?>" alt=""></a></li>
-			<?php
-			endforeach;
-			?>
-		</ul>
-	</div>
-	<?php endif; ?>
 	<div id="belcms_section_market_content">
 		<?php
 		foreach ($buy as $buy_id => $buy_value):

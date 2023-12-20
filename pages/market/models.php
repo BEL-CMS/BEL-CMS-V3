@@ -126,6 +126,56 @@ final class Market
 		}
 	}
 
+	public function getBuyCat ($id = null)
+	{
+		if ($id != null && is_numeric($id)) {
+			$where = array(
+				'name'  => 'cat',
+				'value' => $id
+			);
+			$config = Config::GetConfigPage('market');
+			if (isset($config->config['NB_BUY'])) {
+				$nbpp = (int) $config->config['NB_BUY'];
+			} else {
+				$nbpp = (int) 6;
+			}
+			$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
+			$sql = New BDD();
+			$sql->table('TABLE_MARKET');
+			$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+			$sql->where($where);
+			$sql->limit(array(0 => $page, 1 => $nbpp), true);
+			$sql->queryAll();
+			if (count($sql->data) != 0) {
+				foreach ($sql->data as $key => $value) {
+					if (!empty($value->id)) {
+						$sqlImg = New BDD();
+						$sqlImg->table('TABLE_MARKET_IMG');
+						$whereImg = array(
+							'name'  => '`id_market`',
+							'value' => $value->id
+						);
+						$sqlImg->where($whereImg);
+						$sqlImg->queryAll();
+						$img = $sqlImg->data;
+						if ($sqlImg->rowCount == 0) {
+							$sql->data[$key]->img = array('assets/img/no_screen.png');
+						} else {
+							$sql->data[$key]->img = $img;
+						}
+					} else {
+						$sql->data[$key]->img = array('assets/img/no_screen.png');
+					}
+				}
+			}
+		}
+		if (!empty($sql->data)) {
+			return $sql->data;
+		} else {
+			return array();
+		}
+	}
+
 	##################################################
 	# Statistique, incrémentation.
 	##################################################

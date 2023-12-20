@@ -14,6 +14,8 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
+include_once ROOT.DS.'pages'.DS.'market'.DS.'langs'.DS.'lang.fr.php';
+
 use BelCMS\Requires\Common;
 
 Common::constant(array(
@@ -64,5 +66,8 @@ Common::constant(array(
 	'ID_PAYPAL'             => 'ID PayPal',
 	'MARKET_UPDATE_SUCCESS' => 'Mise à jour effectuée avec succès',
 	'MARKET_UPDATE_ERROR'   => 'Une erreur est survenue durant la mise à jour',
-	'MARKET_ERROR_ID'       => 'L\'erreur ne devrait pas se produire !<br>changement uniquement par ID (Nombre entier)', 
+	'MARKET_ERROR_ID'       => 'L\'erreur ne devrait pas se produire !<br>changement uniquement par ID (Nombre entier)',
+	'MARKET_DELETE_SUCCESS' => 'Suppression de la vente effectuée avec succès',
+	'MARKET_DELETE_ERROR'   => 'Erreur lors de la suppression de la vente "ID" correct ?',
+	'BILL_TO'               => 'Facturer à:',
 )); 

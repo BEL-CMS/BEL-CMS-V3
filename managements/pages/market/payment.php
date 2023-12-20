@@ -32,7 +32,6 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-debug($data, false);
 ?>
 <div class="flex flex-col gap-6">
 	<div class="card">
@@ -47,6 +46,7 @@ debug($data, false);
 					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
 						<thead>
 							<tr>
+								<th><?=constant('ID');?></th>
 								<th><?=constant('NAME');?></th>
 								<th><?=constant('DATE_OF_RELEASE');?></th>
 								<th><?=constant('COST');?></th>
@@ -57,6 +57,7 @@ debug($data, false);
 						</thead>
 						<tfoot>
 							<tr>
+								<th><?=constant('ID');?></th>
 								<th><?=constant('NAME');?></th>
 								<th><?=constant('DATE_OF_RELEASE');?></th>
 								<th><?=constant('COST');?></th>
@@ -99,6 +100,7 @@ debug($data, false);
 								$option .= '<a class="opt_sts belcms_tooltip_top" data="Effacer l\'achat" href=""market/delInvoice/'.$value->id_purchase.'?echo""><i class="mgc_delete_2_fill"></i></a>';
 							?>
 							<tr>
+								<td><a class="belcms_tooltip_top" data="Voir le paiement" href="Market/detail/<?=$value->id;?>?management&option=pages"><i class="mgc_profile_fill"></i> <?=$value->id;?></a></td>
 								<td><?=$author;?></td>
 								<td><?=$date;?></td>
 								<td><?=$value->total_pay;?></td>
