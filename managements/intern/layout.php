@@ -239,7 +239,7 @@ use BelCMS\Core\GetHost;
                     </button>
                 </div>
 				<?php 
-				$avatar = empty($_SESSION['USER']->profils->avatar) or is_file($_SESSION['USER']->profils->avatar) ? constant('DEFAULT_AVATAR') : $_SESSION['USER']->profils->avatar;
+				$avatar = empty($_SESSION['USER']->profils->avatar) ? constant('DEFAULT_AVATAR') : $_SESSION['USER']->profils->avatar;
 				?>
                 <div class="relative">
                     <button data-fc-type="dropdown" data-fc-placement="bottom-end" type="button" class="nav-link fc-dropdown">
@@ -282,7 +282,10 @@ use BelCMS\Core\GetHost;
             
 		</div>
 	</div>
-	  
+
+	<script src="assets/plugins/tooltip/popper.min.js"></script>
+	<script src="assets/plugins/tooltip/tippy-bundle.umd.min.js"></script>
+	<script src="assets/plugins/tooltip/tooltip.js"></script>
 	<script src="assets/plugins/tinymce/tinymce.min.js"></script>
 	<script src="assets/plugins/DataTables-1.13.06/datatables.min.js"></script>
 	<script src="managements/assets/js/datatables.fr.js"></script>
