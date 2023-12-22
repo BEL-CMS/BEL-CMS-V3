@@ -88,5 +88,6 @@ Common::constant(array(
 	'PAY_TO'                 => 'Payer à :',
 	'INVOICE_NO'             => 'Facture N°',
 	'NO_BUY_CATEGORY'        => 'Aucun achat dans cette catégorie',
-
+	'DOWNLOADS_PAGE'         => 'Page de téléchargements',
+	'INVOICE'                => 'Facture',
 ));

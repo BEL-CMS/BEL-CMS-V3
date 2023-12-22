@@ -70,4 +70,5 @@ Common::constant(array(
 	'MARKET_DELETE_SUCCESS' => 'Suppression de la vente effectuée avec succès',
 	'MARKET_DELETE_ERROR'   => 'Erreur lors de la suppression de la vente "ID" correct ?',
 	'BILL_TO'               => 'Facturer à:',
+	'OBJECT'                => 'Objet',
 )); 

@@ -40,6 +40,7 @@ final class ModelsMarket
 			$sql->where($where);
 			$sql->queryOne();
 		else:
+			$sql->orderby(array(array('name' => 'date_add', 'type' => 'DESC')));
 			$sql->queryAll();
 		endif;
 		if (!empty($sql->data)):
@@ -60,6 +61,93 @@ final class ModelsMarket
 			$send['amount']      = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
 			$send['remaining']   = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
 			$send['cat']         = isset($data['cat']) ? Secure::isString($data['cat']) : null;
+
+			if (!empty($_FILES['unit']['name'])) {
+				$dir = ROOT.DS.'uploads'.DS.'market';
+				$dirBDD = '/uploads/market/';
+				if ($_FILES['unit']['error'] != 4) {
+					$file    = md5(uniqid(rand(), true));
+					$sizeMax = Common::GetMaximumFileUploadSize();
+					$size    = filesize($_FILES['unit']['tmp_name']);
+		
+					if (!file_exists($dir)) {
+						mkdir($dir, 0777);
+					}
+		
+					if (!is_writable($dir)) {
+						chmod($dir, 0777);
+					}
+		
+					$extensions = array(
+						'.png',
+						'.bmp',
+						'.gif',
+						'.jpg',
+						'.ico',
+						'.svg',
+						'.tiff',
+						'.webp',
+						'.jpeg',
+						'.doc',
+						'.txt',
+						'.pdf',
+						'.rar',
+						'.zip',
+						'.7zip',
+						'.exe',
+						'.tar',
+						'.psd',
+						'.jar',
+						'.avi',
+						'.mpg',
+						'.mpeg',
+						'.av4',
+						'.ac3',
+						'.docx',
+						'.doc',
+						'.mp3',
+						'.mp4',
+						'.svg',
+						'.tif',
+						'.tiff',
+						'.txt',
+						'.3gp',
+						'.3g2',
+						'.xml',
+						'.xls',
+						'.xlsx',
+						'.ppt',
+						'.pptx',
+						'.pkg',
+						'.iso',
+					);
+		
+					$extension = strrchr($_FILES['unit']['name'], '.');
+					$extension = strtolower($extension);
+					if (!in_array($extension, $extensions)):
+						$err = constant('UPLOAD_ERROR_FILE');
+					endif;
+		
+					if ($size>$sizeMax):
+						$err = constant('UPLOAD_ERROR_SIZE');
+					endif;
+		
+					if (!isset($err)):
+						if (move_uploaded_file($_FILES['unit']['tmp_name'], $dir .'/'. ($file).$extension)):
+							$return = constant('UPLOAD_FILE_SUCCESS');
+							$send['unit'] = $dirBDD.($file).$extension;
+						else:
+							$return = constant('UPLOAD_ERROR');
+						endif;
+					else:
+						$return = $err;
+					endif;
+				} else {
+					$return = 'UPLOAD_NONE';
+				}
+				$return;
+			}
+
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET');
@@ -112,6 +200,106 @@ final class ModelsMarket
 			$send['amount']      = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
 			$send['remaining']   = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
 			$send['author']      = $_SESSION['USER']->user->hash_key; 
+			$send['hash_dls']    = md5(uniqid(rand(), true));
+
+			if (!empty($_FILES['unit']['name'])) {
+				$dir = ROOT.DS.'uploads'.DS.'market';
+				$dirBDD = '/uploads/market/';
+				if ($_FILES['unit']['error'] != 4) {
+					$file    = md5(uniqid(rand(), true));
+					$sizeMax = Common::GetMaximumFileUploadSize();
+					$size    = filesize($_FILES['unit']['tmp_name']);
+		
+					if (!file_exists($dir)) {
+						mkdir($dir, 0777);
+					}
+		
+					if (!is_writable($dir)) {
+						chmod($dir, 0777);
+					}
+		
+					$extensions = array(
+						'.png',
+						'.bmp',
+						'.gif',
+						'.jpg',
+						'.ico',
+						'.svg',
+						'.tiff',
+						'.webp',
+						'.jpeg',
+						'.doc',
+						'.txt',
+						'.pdf',
+						'.rar',
+						'.zip',
+						'.7zip',
+						'.exe',
+						'.tar',
+						'.psd',
+						'.jar',
+						'.avi',
+						'.mpg',
+						'.mpeg',
+						'.av4',
+						'.ac3',
+						'.docx',
+						'.doc',
+						'.mp3',
+						'.mp4',
+						'.svg',
+						'.tif',
+						'.tiff',
+						'.txt',
+						'.3gp',
+						'.3g2',
+						'.xml',
+						'.xls',
+						'.xlsx',
+						'.ppt',
+						'.pptx',
+						'.pkg',
+						'.iso',
+					);
+		
+					$extension = strrchr($_FILES['unit']['name'], '.');
+					$extension = strtolower($extension);
+					if (!in_array($extension, $extensions)):
+						$err = constant('UPLOAD_ERROR_FILE');
+					endif;
+		
+					if ($size>$sizeMax):
+						$err = constant('UPLOAD_ERROR_SIZE');
+					endif;
+		
+					if (!isset($err)):
+						if (move_uploaded_file($_FILES['unit']['tmp_name'], $dir .'/'. ($file).$extension)):
+							$return = constant('UPLOAD_FILE_SUCCESS');
+							$send['unit'] = $dirBDD.($file).$extension;
+						else:
+							$return = constant('UPLOAD_ERROR');
+						endif;
+					else:
+						$return = $err;
+					endif;
+				} else {
+					$return = 'UPLOAD_NONE';
+				}
+				$return;
+			}
+
+			if (!empty($return)) {
+				$success = constant('SEND_SUCCESS').'<br>'.$return;
+			} else {
+				$success = constant('SEND_SUCCESS');
+			}
+
+			if (!empty($return)) {
+				$warning = constant('SEND_SUCCESS').'<br>'.$return;
+			} else {
+				$warning = constant('SEND_ERROR');
+			}
+
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_MARKET');
@@ -120,7 +308,7 @@ final class ModelsMarket
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => constant('SEND_SUCCESS')
+					'text' => $success
 				);
 			} else {
 				$return = array(

@@ -54,7 +54,7 @@ endif;
 								$cat          = empty($v->cat->name) ? constant('NO_CATEGORY') : $v->cat->name;
 								$user         = User::getInfosUserAll($v->author);
 								$username     = $user->user->username;
-								$nbRemaining  = $v->remaining - $v->buy;
+								$nbRemaining  = (int) $v->remaining - (int) $v->buy;
 								?>
 								<tr>
 									<td><?=$v->name;?></td>

@@ -24,6 +24,7 @@ if ($buy->remaining == 0) {
 if ($buy->remaining <= 0) {
 	$buy->remaining = '0'.constant('FINISH_BUY');
 }
+$link = empty($buy->unit) ? 'market/buyConfirm/'.$buy->id.'?add=true' : 'market/buyConfirm/'.$buy->id.'?add=true&f=true';
 ?>
 <section id="belcms_section_market_buy">
 	<div id="belcms_section_market_infos">
@@ -31,10 +32,15 @@ if ($buy->remaining <= 0) {
 			<div id="gallery-wrapper" class="flex justify-center">
 			<?php
 			foreach ($buy->img as $key => $img):
+				if (is_object($img)) {
+					$screen = $img->img;
+				} else {
+					$screen = $img;
+				}
 			?>
 				<div class="belcms_section_market_img_block">
-					<a class="image-popup" href="<?=$img->img;?>">
-						<img src="<?=$img->img;?>">
+					<a class="image-popup" href="<?=$screen;?>">
+						<img src="<?=$screen;?>">
 					</a>
 				</div>
 			<?php
@@ -56,7 +62,7 @@ if ($buy->remaining <= 0) {
 			<li><span><?=constant('ADD_DATE');?></span><i><?=Common::TransformDate($buy->date_add, 'FULL', 'FULL');?></i></li>
 		</ul>
 		<div id="belcms_section_market_buy">
-			<a href="market/buyConfirm/<?=$buy->id;?>?add=true" class="belcms_btn belcms_bg_grey"><?=constant('ADDED_TO_CART');?></a>
+			<a href="<?=$link;?>" class="belcms_btn belcms_bg_grey"><?=constant('ADDED_TO_CART');?></a>
 		</div>
 	</div>
 </section>

@@ -15,6 +15,7 @@ if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+debug($billing, false);
 ?>
 <section id="belcms_billing">
 	<h2><?=constant('MY_ORDERS');?></h2>
@@ -58,7 +59,16 @@ endif;
 				<td><?=$value->id_purchase;?></td>
 				<td><?=$status;?></td>
 				<td><?=$value->total_pay;?> €</td>
-				<td><a href="Market/Invoice/<?=$value->id_purchase;?>?echo"><i class="fa-solid fa-file-invoice-dollar"></i></a></td>
+				<td>
+					<a class="belcms_tooltip_top" data="<?=constant('INVOICE');?>" href="Market/Invoice/<?=$value->id_purchase;?>?echo"><i class="fa-solid fa-file-invoice-dollar"></i></a>
+					<?php
+					if ($value->link === true):
+					?>
+						&ensp;<a class="belcms_tooltip_top" data="<?=constant('DOWNLOADS_PAGE');?>" href="Market/dls"><i class="fa-solid fa-download"></i></a>
+					<?php
+					endif;
+					?>
+				</td>
 			</tr>
 			<?php
 			endforeach;

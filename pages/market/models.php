@@ -307,6 +307,7 @@ final class Market
 	#########################################
 	public function buyAdd($id = null) {
 		if ($id != null && is_numeric($id)) {
+			// Enregistre en BDD les achats effectué
 			$insert['hash_key'] = $_SESSION['USER']->user->hash_key;
 			$insert['id_command'] = $id;
 			$sql = New BDD();
@@ -328,6 +329,28 @@ final class Market
 				$sqlPurchase->insert($insertPurchase);
 			}
 			*/
+		}
+	}
+
+	public function deleteLink ($id = null)
+	{
+		$sqlMarket = New BDD();
+		$sqlMarket->table('TABLE_MARKET');
+		$sqlMarket->where(array('name' => 'id', 'value' => $id));
+		$sqlMarket->queryOne();
+		$sqlMarket = $sqlMarket->data;
+		$test = New BDD();
+		$test->table('TABLE_MARKET_LINKS');
+		$whereLink[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+		$whereLink[] = array('name' => 'link', 'value' => $sqlMarket->unit);
+		$test->where($whereLink);
+		$test->queryOne();
+		$test = $test->data;
+		if (!empty($test)) {
+			$del = New BDD();
+			$del->table('TABLE_MARKET_LINKS');
+			$del->where($whereLink);
+			$del->delete();
 		}
 	}
 	#########################################
@@ -367,12 +390,18 @@ final class Market
 				);
 				$sqlImg->where($whereImg);
 				$sqlImg->queryOne();
-				$img = $sqlImg->data->img;
-				if (!is_file(ROOT.$img)) {
-					$return[$v->id_command]->img = 'assets/img/no_screen.png';
+				$data = $sqlImg->data;
+				if ($data !== false) {
+					$img = $sqlImg->data->img;
+					if (!is_file(ROOT.$img)) {
+						$return[$v->id_command]->img = 'assets/img/no_screen.png';
+					} else {
+						$return[$v->id_command]->img = $img;
+					}
 				} else {
-					$return[$v->id_command]->img = $img;
+					$return[$v->id_command]->img = 'assets/img/no_screen.png';
 				}
+
 			}
 		}
 		return $return;
@@ -443,6 +472,7 @@ final class Market
 			$number = (int) $v;
 			for ($i = 1; $i <= $number; $i++) {
 				self::buyAdd($k);
+				self::deleteLink($k);
 			}
 		}
 		if (isset($_SESSION['MARKET']['SOLD'])) {
@@ -545,13 +575,22 @@ final class Market
 				$item .= 'value='.$value['unit_amount']['value'].',';
 				$item .= 'currency_code='.$value['unit_amount']['currency_code'].',';
 				$item .= 'quantity='.$value['quantity'].'|';
-				$buyAdd[] = array('name' => $value['name'], 'qty' => $value['quantity']); 
+				$buyAdd[] = array('name' => $value['name'], 'qty' => $value['quantity']);
 			}
-			$item = substr($item, 0, -1); // retire le derner "|" 
+			$sku = null;
+			foreach ($purchase['items'] as $key => $value) {
+				$sku .= !empty($value['sku']) ? $value['sku'].'|' : '';
+				self::addLinksDls($value['sku']);
+			}
+			if (empty($sku) != 0) {
+				$insert['status'] = 1;
+				$sku = substr($sku, 0, -1); // retire le derner "|"
+			} else {
+				$insert['status'] = 3;
+			}
 			$insert['author']        = $_SESSION['USER']->user->hash_key;
 			$insert['id_purchase']   = $dataVerif;
 			// le status (0 / non payé ou erreur / 1 = payé / 2 en attende de validation / 3 livraison en cours / 4 livré)
-			$insert['status']        = 1;
 			$insert['id_paypal']     = Common::crypt($data['id'], $_SESSION['USER']->user->hash_key);
 			$insert['total_pay']     = $totalPay;
 			$insert['sub_total']     = $SubTotal;
@@ -560,6 +599,7 @@ final class Market
 			$insert['taxe']          = $taxe;
 			$insert['discount']      = $discount;
 			$insert['item']          = $item;
+			$insert['hash_dls']      = $sku;
 			// Adresse de paypal
 			$infosUser = $data['payer'];
 			$insert['given_name']  = Common::crypt($infosUser['name']['given_name'], $_SESSION['USER']->user->hash_key);
@@ -598,6 +638,31 @@ final class Market
 				$sqlDel->delete();
 				if (isset($_SESSION['PAYPAL'])) {
 					unset($_SESSION['PAYPAL']);
+				}
+			}
+		}
+	}
+
+	private function addLinksDls ($sku = null)
+	{
+		if ($sku != null)
+		{
+			$data = explode('|', $sku);
+			foreach ($data as $value) {
+				$where = array('name' => 'hash_dls', 'value' => $value);
+				$sql  = New BDD();
+				$sql->table('TABLE_MARKET');
+				$sql->where($where);
+				$sql->queryOne();
+				$return = $sql->data;
+				if ($return->unit != null) {
+					$insert['author'] = $_SESSION['USER']->user->hash_key;
+					$insert['link']   = Common::VarSecure($return->unit, null);
+					$insert['downloads'] = 0;
+					$insert['key_dl'] = Common::VarSecure($return->hash_dls);
+					$sqlInsert = New BDD();
+					$sqlInsert->table('TABLE_MARKET_LINKS');
+					$sqlInsert->insert($insert);
 				}
 			}
 		}
@@ -654,6 +719,14 @@ final class Market
 				$data->surname     = Common::decrypt($data->surname, $_SESSION['USER']->user->hash_key);
 				$data->mail_paypal = Common::decrypt($data->mail_paypal, $_SESSION['USER']->user->hash_key);
 				$data->address     = Common::decrypt($data->address, $_SESSION['USER']->user->hash_key);
+				$sqlGetLink = New BDD();
+				$sqlGetLink->table('TABLE_MARKET_LINKS');
+				$sqlGetLink->where(array('name' => 'key_dl', 'value' => trim($data->hash_dls, '|')));
+				$sqlGetLink->queryOne();
+				$getLink = $sqlGetLink->data;
+				if (!empty($getLink) and !empty($sqlGetLink->data->link)) {
+					$data->link = true;
+				}
 			} else {
 				$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
 				$sql->limit(array(0 => $page, 1 => $nbpp), true);
@@ -665,6 +738,14 @@ final class Market
 					$data[$k]->surname     = Common::decrypt($v->surname, $_SESSION['USER']->user->hash_key);
 					$data[$k]->mail_paypal = Common::decrypt($v->mail_paypal, $_SESSION['USER']->user->hash_key);
 					$data[$k]->address 	   = Common::decrypt($v->address, $_SESSION['USER']->user->hash_key);
+					$sqlGetLink = New BDD();
+					$sqlGetLink->table('TABLE_MARKET_LINKS');
+					$sqlGetLink->where(array('name' => 'key_dl', 'value' => trim($v->hash_dls, '|')));
+					$sqlGetLink->queryOne();
+					$getLink = $sqlGetLink->data;
+					if (!empty($getLink) and !empty($sqlGetLink->data->link)) {
+						$data[$k]->link = true;
+					}
 				}
 			}
 		}

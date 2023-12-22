@@ -22,6 +22,9 @@ $item_total            = (int) 0;
 $tvaPriceTotal         = (int) 0;
 $delivrytotal          = (int) 0;
 foreach ($order as $k => $v) {
+	if ($v->infos->remaining == 0) {
+		$v->infos->remaining = 999;
+	}
 	$a = $v->infos->remaining - $v->infos->buy;
 	if ($v->number > $a) {
 		$nbBuy     = (int) $nbBuy + (int) $a;
@@ -233,6 +236,7 @@ function cartItem ($order)
 		$return .= '	currency_code: "'.constant('PAYPAL_CURRENCY').'",'.PHP_EOL;
 		$return .= '	value: "'.$v->infos->amount.'"'.PHP_EOL;
 		$return .= '},'.PHP_EOL;
+		$return .= 'sku: "'.$v->infos->hash_dls.'",'.PHP_EOL;
 		$return .= 'tax: {'.PHP_EOL;
 		$return .= '	currency_code: "'.constant('PAYPAL_CURRENCY').'",'.PHP_EOL;
 		$return .= '	value: "'.$v->tvaUniquePrice.'"'.PHP_EOL;

@@ -30,7 +30,9 @@ foreach ($a as $value) {
 }
 foreach ($b as $key => $value) {
 	foreach($value as $k => $v) {
-		$items[$v[0]][] = $v[1];
+		if (isset($v[1])) {
+			$items[$v[0]][] = $v[1];
+		}
 	}
 }
 $logo = !empty(constant('PAYPAL_LOGO')) ? '<img src="'.constant('PAYPAL_LOGO').'">': '';
