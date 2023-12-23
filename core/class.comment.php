@@ -36,8 +36,8 @@ final class Comment
 		$sql->table('TABLE_COMMENTS');
 		$where[] = array('name' => 'page', 'value' => $dispatcher->link[0]);
 		$where[] = array('name' => 'page_sub', 'value' => $dispatcher->link[1]);
-		if (isset($dispatcher->link[3]) and !empty($dispatcher->link[3])) {
-			$where[] = array('name' => 'page_id', 'value' => $dispatcher->link[3]);
+		if (isset($dispatcher->link[2]) and !empty($dispatcher->link[2])) {
+			$where[] = array('name' => 'page_id', 'value' => $dispatcher->link[2]);
 		}
 		$sql->where($where);
 		$sql->queryAll();
@@ -89,10 +89,9 @@ final class Comment
 			';
 		if (UserInfos::isLogged() === true) {
 			$dispatcher = new Dispatcher();
-			$dispatcher->link;
 			$links = $dispatcher->link[0].'/'.$dispatcher->link[1].'/';
-			if (isset($dispatcher->link[3]) and !empty($dispatcher->link[3])) {
-				$links .= $dispatcher->link[3];
+			if (isset($dispatcher->link[2]) and !empty($dispatcher->link[2])) {
+				$links .= $dispatcher->link[2];
 			}
 			if ($_SESSION['USER']->user->hash_key !== false) {
 				$html .= '<form action="Comments/Send" method="post" enctype="multipart/form-data"><input name="url" type="hidden" value="'.$links.'"><textarea name="text"></textarea><button type="submit" class="belcms_btn belcms_bg_black">Envoyer</button></form>';
