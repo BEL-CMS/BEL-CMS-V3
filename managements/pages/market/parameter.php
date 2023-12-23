@@ -36,6 +36,13 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 								<input id="<?=constant('NB_BUY_PAGE')?>" name="NB_BUY" type="number" class="form-input" type="number" value="<?=$config->config['NB_BUY']?>" min="1" max="16">
 							</div>
 						</div>
+						<div>
+							<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2" for="<?=constant('NB_BUY_PAGE')?>">
+							<?=constant('NB_BILLING')?></label>
+							<div class="col-sm-12">
+								<input id="<?=constant('NB_BILLING')?>" name="NB_BILLING" type="number" class="form-input" type="number" value="<?=$config->config['NB_BILLING']?>" min="1" max="16">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

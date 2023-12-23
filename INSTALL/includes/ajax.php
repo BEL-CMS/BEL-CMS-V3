@@ -22,6 +22,7 @@
 		'market',
 		'market_address',
 		'market_cat',
+		'market_link',
 		'market_img',
 		'market_sold',
 		'market_order',

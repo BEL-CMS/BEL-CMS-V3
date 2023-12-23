@@ -137,7 +137,7 @@ switch ($_POST['table']) {
 			('', 'news', 1, '1|0', '1', 'MAX_NEWS==2'),
 			('', 'mails', 1, '2', '1', NULL),
 			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
-			('', 'market', 1, '1|0', '1', 'NB_BUY==1{||}NB_BILLING==10');";
+			('', 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10');";
 	break;
 
 	case 'config_tpl':
@@ -437,6 +437,19 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
+	case "market_link":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`author` varchar(32) NOT NULL,
+			`id_purchase` text,
+			`link` text,
+			`downloads` int DEFAULT NULL,
+			`key_dl` varchar(32) DEFAULT NULL,
+			PRIMARY KEY (`id`)
+	  	) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
 	case "market_sold":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -729,6 +742,7 @@ switch ($_POST['table']) {
 			`surname` text,
 			`mail_paypal` text NOT NULL,
 			`address` text NOT NULL,
+			`hash_dls` text DEFAULT NULL,
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `purchase` (`id_purchase`),
 			UNIQUE KEY `id_paypal` (`id_paypal`)

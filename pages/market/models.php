@@ -218,14 +218,16 @@ final class Market
 		$sql->where($where);
 		$sql->queryOne();
 		$data = $sql->data;
-		$data->name        = Common::decrypt($data->name, $hash);
-		$data->first_name  = Common::decrypt($data->first_name, $hash);
-		$data->address     = Common::decrypt($data->address, $hash);
-		$data->number      = Common::decrypt($data->number, $hash);
-		$data->postal_code = Common::decrypt($data->postal_code, $hash);
-		$data->city        = Common::decrypt($data->city, $hash);
-		$data->country     = Common::decrypt($data->country, $hash);
-		$data->phone       = Common::decrypt($data->phone, $hash);
+		if (!empty($data)) {
+			$data->name        = Common::decrypt($data->name, $hash);
+			$data->first_name  = Common::decrypt($data->first_name, $hash);
+			$data->address     = Common::decrypt($data->address, $hash);
+			$data->number      = Common::decrypt($data->number, $hash);
+			$data->postal_code = Common::decrypt($data->postal_code, $hash);
+			$data->city        = Common::decrypt($data->city, $hash);
+			$data->country     = Common::decrypt($data->country, $hash);
+			$data->phone       = Common::decrypt($data->phone, $hash);
+		}
 		return $sql->data;
 	}
 
@@ -415,15 +417,14 @@ final class Market
 			return $return;
 		}
 		if (isset($_SESSION['MARKET']['SOLD'])) {
-			$return['text'] = constant('SOLD_OK_STOP');
-			$return['type'] = 'error'; 	
-			return $return;
+			unset($_SESSION['MARKET']['SOLD']);
 		}
 		$data = Common::VarSecure($data, null);
 		$return = array();
 		$where = array('name' => 'code', 'value' => $data);
 		$sql = New BDD();
 		$sql->table('TABLE_MARKET_SOLD');
+		$sql->where($where);
 		$sql->queryOne();
 		if ($sql->rowCount == true) {
 			$sqlreturn = $sql->data;
@@ -442,7 +443,7 @@ final class Market
 					return $return;
 				}
 			}
-			$_SESSION['MARKET']['SOLD'] = array('id' => $sqlreturn->id, 'name' => $sqlreturn->comments, 'value' => $sqlreturn->price);
+			$_SESSION['MARKET']['SOLD'] = array('id' => $sqlreturn->id, 'name' => $sqlreturn->comments, 'value' => $sqlreturn->price, 'predefined' => $sqlreturn->code);
 			$return['text'] = $sqlreturn->comments;
 			$return['type'] = 'success';
 		} else {
@@ -580,7 +581,7 @@ final class Market
 			$sku = null;
 			foreach ($purchase['items'] as $key => $value) {
 				$sku .= !empty($value['sku']) ? $value['sku'].'|' : '';
-				self::addLinksDls($value['sku']);
+				self::addLinksDls($value['sku'], $dataVerif);
 			}
 			if (empty($sku) != 0) {
 				$insert['status'] = 1;
@@ -643,7 +644,7 @@ final class Market
 		}
 	}
 
-	private function addLinksDls ($sku = null)
+	private function addLinksDls ($sku = null, $id = null)
 	{
 		if ($sku != null)
 		{
@@ -656,16 +657,90 @@ final class Market
 				$sql->queryOne();
 				$return = $sql->data;
 				if ($return->unit != null) {
-					$insert['author'] = $_SESSION['USER']->user->hash_key;
-					$insert['link']   = Common::VarSecure($return->unit, null);
-					$insert['downloads'] = 0;
-					$insert['key_dl'] = Common::VarSecure($return->hash_dls);
+					$insert['id_purchase'] = Common::VarSecure($id, null);
+					$insert['author']      = $_SESSION['USER']->user->hash_key;
+					$insert['link']        = Common::VarSecure($return->unit, null);
+					$insert['downloads']   = 0;
+					$insert['key_dl']      = Common::VarSecure($return->hash_dls);
 					$sqlInsert = New BDD();
 					$sqlInsert->table('TABLE_MARKET_LINKS');
 					$sqlInsert->insert($insert);
 				}
 			}
 		}
+	}
+
+	public function getDls ($id = null)
+	{
+		$return = array();
+		if ($id != null)
+		{
+			$sqlGetDls  = New BDD();
+			$sqlGetDls->table('TABLE_MARKET_LINKS');
+			$where[] = array('name' => 'id_purchase', 'value' => $id);
+			$where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+			$sqlGetDls->where($where);
+			$sqlGetDls->queryAll();
+			if (!empty($sqlGetDls->data)) {
+				foreach ($sqlGetDls->data as $value) {
+					$return[] = $value;
+				}
+			}
+		}
+		return $return;
+	}
+
+	public function getDlsreal ($id = null)
+	{
+		$link      = '';
+		$updateKey = '';
+		if ($id != null)
+		{
+			$sqlGetDls  = New BDD();
+			$sqlGetDls->table('TABLE_MARKET_LINKS');
+			$where[] = array('name' => 'key_dl', 'value' => $id);
+			$where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+			$sqlGetDls->where($where);
+			$sqlGetDls->queryOne();
+			$data = $sqlGetDls->data;
+
+			if (!empty($data)) {
+				$link = $data->link;
+				$update['key_dl'] = md5(uniqid(rand(), true));
+				$update['downloads'] = $data->downloads + 1;
+				$sqlChange  = New BDD();
+				$sqlChange->table('TABLE_MARKET_LINKS');
+				$whereChange[] = array('name' => 'key_dl', 'value' => $id);
+				$whereChange[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+				$sqlChange->where($whereChange);
+				$sqlChange->update($update);
+
+				$wherePurchase = array('name' => 'id_purchase', 'value'=> $data->id_purchase);
+				$updatePurchase = New BDD();
+				$updatePurchase->table('TABLE_PURCHASE');
+				$updatePurchase->where($wherePurchase);
+				$updatePurchase->queryOne();
+				$updatePurchase = $updatePurchase->data;
+				$ex = explode('|', $updatePurchase->hash_dls);
+
+				foreach ($ex as $key => $value) {
+					if ($value == $id) {
+						$updateKey = array($update['key_dl']);
+					} else {
+						$updateKey = array($value);
+					}
+				}
+
+				$imp['hash_dls'] = implode('|', $updateKey);
+				$imp['status']   = 4;
+				$wherePurchaseUP = array('name' => 'id_purchase', 'value'=> $data->id_purchase);
+				$updatePurchaseUP = New BDD();
+				$updatePurchaseUP->table('TABLE_PURCHASE');
+				$updatePurchaseUP->where($wherePurchaseUP);
+				$updatePurchaseUP->update($imp);
+			}
+		}
+		return $link;
 	}
 
 	private function negBuy ($data)
@@ -721,7 +796,7 @@ final class Market
 				$data->address     = Common::decrypt($data->address, $_SESSION['USER']->user->hash_key);
 				$sqlGetLink = New BDD();
 				$sqlGetLink->table('TABLE_MARKET_LINKS');
-				$sqlGetLink->where(array('name' => 'key_dl', 'value' => trim($data->hash_dls, '|')));
+				$sqlGetLink->where(array('name' => 'key_dl', 'value' => $data->hash_dls));
 				$sqlGetLink->queryOne();
 				$getLink = $sqlGetLink->data;
 				if (!empty($getLink) and !empty($sqlGetLink->data->link)) {
@@ -740,7 +815,7 @@ final class Market
 					$data[$k]->address 	   = Common::decrypt($v->address, $_SESSION['USER']->user->hash_key);
 					$sqlGetLink = New BDD();
 					$sqlGetLink->table('TABLE_MARKET_LINKS');
-					$sqlGetLink->where(array('name' => 'key_dl', 'value' => trim($v->hash_dls, '|')));
+					$sqlGetLink->where('WHERE `id_purchase` LIKE "'.$data[$k]->id_purchase.'"');
 					$sqlGetLink->queryOne();
 					$getLink = $sqlGetLink->data;
 					if (!empty($getLink) and !empty($sqlGetLink->data->link)) {

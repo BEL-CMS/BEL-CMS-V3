@@ -21,6 +21,7 @@ $nbPriceBuyDelivry     = (int) 0;
 $item_total            = (int) 0;
 $tvaPriceTotal         = (int) 0;
 $delivrytotal          = (int) 0;
+$delivryMax            = (int) 0;
 foreach ($order as $k => $v) {
 	if ($v->infos->remaining == 0) {
 		$v->infos->remaining = 999;
@@ -34,10 +35,27 @@ foreach ($order as $k => $v) {
 		$order[$k]->number = $v->number;
 	}
 	if ($v->infos->tva == 1) {
-		$order[$k]->tvaUniquePrice = ($v->infos->amount /100) * $v->tva;
-		$tvaPriceTotal  = $tvaPriceTotal + ($order[$k]->tvaUniquePrice * $order[$k]->number);
-		$tvaPriceTotal  = round($tvaPriceTotal,2);
-		$activeTVA = true;
+		if (isset($_SESSION['MARKET']['SOLD'])) {
+			if ($_SESSION['MARKET']['SOLD']['predefined'] == 'NO_TAXE' or $_SESSION['MARKET']['SOLD']['predefined'] == 'NO_TAXE_NO_DELIVRY')
+			{
+				$order[$k]->tvaUniquePrice = 0;
+				$tvaPriceTotal = $tvaPriceTotal + 0;
+				if ($activeTVA !== true) {
+					$activeTVA = false;
+				}
+			} else {
+				$order[$k]->tvaUniquePrice = ($v->infos->amount /100) * $v->tva;
+				$tvaPriceTotal  = $tvaPriceTotal + ($order[$k]->tvaUniquePrice * $order[$k]->number);
+				$tvaPriceTotal  = round($tvaPriceTotal,2);
+				$activeTVA = true;
+			}
+		} else {
+			$order[$k]->tvaUniquePrice = 0;
+			$tvaPriceTotal = $tvaPriceTotal + 0;
+			if ($activeTVA !== true) {
+				$activeTVA = false;
+			}	
+		}
 	} else {
 		$order[$k]->tvaUniquePrice = 0;
 		$tvaPriceTotal = $tvaPriceTotal + 0;
@@ -46,8 +64,26 @@ foreach ($order as $k => $v) {
 		}
 	}
 	if ($v->infos->delivery_price != 0) {
-		$delivry = $order[$k]->number * $v->infos->delivery_price;
-		$delivrytotal = $delivrytotal + $delivry;
+		$delivryMax = $delivryMax + $v->infos->delivery_price;
+		if ($delivryMax > $v->infos->delivery_price) {
+			$delivryMax = $v->infos->delivery_price;
+		}
+		if (isset($_SESSION['MARKET']['SOLD'])) {
+			if ($_SESSION['MARKET']['SOLD']['predefined'] == 'ONE_LIVRAISON') {
+				$delivrytotal = $delivryMax;
+			} else {
+				if (isset($_SESSION['MARKET']['SOLD'])) {
+					if ($_SESSION['MARKET']['SOLD']['predefined'] == 'NO_DELIVRY' or $_SESSION['MARKET']['SOLD']['predefined'] == 'NO_TAXE_NO_DELIVRY') {
+						$delivrytotal = $delivrytotal + 0;
+					} else {
+						$delivry = $order[$k]->number * $v->infos->delivery_price;
+						$delivrytotal = $delivrytotal + $delivry;
+					}
+				} else {
+					$delivrytotal = $delivrytotal + 0;
+				}
+			}
+		}
 	} else {
 		$delivrytotal = $delivrytotal + 0;
 	}

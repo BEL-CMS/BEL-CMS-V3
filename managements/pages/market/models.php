@@ -30,6 +30,7 @@ final class ModelsMarket
 	#########################################
 	public function getBuy ($id = null)
 	{
+		$data = (object) array();
 		$sql = New BDD();
 		$sql->table('TABLE_MARKET');
 		if ($id != null && is_numeric($id)):
@@ -39,12 +40,21 @@ final class ModelsMarket
 			);
 			$sql->where($where);
 			$sql->queryOne();
+			$data = $sql->data;
+			$data->cat = self::getNameCat($data->cat);
 		else:
 			$sql->orderby(array(array('name' => 'date_add', 'type' => 'DESC')));
 			$sql->queryAll();
+			$data = $sql->data;
 		endif;
-		if (!empty($sql->data)):
-			return $sql->data;
+		if (!empty($data)):
+			foreach ($data as $key => $value) {
+				$value = (array) $value;
+				if (array_key_exists('cat', (array) $value)) {
+					$data[$key]->cat = (string) self::getNameCat($value['cat']);
+				}
+			}
+			return $data;
 		else:
 			return array();
 		endif;
@@ -56,11 +66,14 @@ final class ModelsMarket
 	{
 		if ($data['id'] != null && is_numeric($data['id'])):
 			// SECURE DATA
-			$send['name']        = Common::VarSecure($data['name'], ''); // autorise que du texte
-			$send['description'] = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
-			$send['amount']      = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
-			$send['remaining']   = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
-			$send['cat']         = isset($data['cat']) ? Secure::isString($data['cat']) : null;
+			$send['name']           = Common::VarSecure($data['name'], ''); // autorise que du texte
+			$send['description']    = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
+			$send['amount']         = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
+			$send['remaining']      = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
+			$send['cat']            = isset($data['cat']) ? Secure::isString($data['cat']) : null;
+			$send['tva']            = isset($data['tva']) ? 1 : 0;
+			$send['delivery_price'] = (int) $data['delivry'];
+			$send['cat']            = (int) $data['idcat'];
 
 			if (!empty($_FILES['unit']['name'])) {
 				$dir = ROOT.DS.'uploads'.DS.'market';
@@ -120,6 +133,7 @@ final class ModelsMarket
 						'.pptx',
 						'.pkg',
 						'.iso',
+						'.torrent'
 					);
 		
 					$extension = strrchr($_FILES['unit']['name'], '.');
@@ -179,6 +193,18 @@ final class ModelsMarket
 		return $return;
 	}
 	#########################################
+	# Récupère le nom de la catégorie
+	#########################################
+	private function getNameCat ($id = null): string
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_MARKET_CAT');
+		$sql->where(array('name' => 'id', 'value' => $id));
+		$sql->queryOne();
+		$return = $sql->data;
+		return $return->name;
+	}
+	#########################################
 	# Récupère toutes les catégories
 	#########################################
 	public function getAllCat ()
@@ -195,12 +221,15 @@ final class ModelsMarket
 	{
 		if ($data !== false) {
 			// SECURE DATA
-			$send['name']        = Common::VarSecure($data['name'], ''); // autorise que du texte
-			$send['description'] = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
-			$send['amount']      = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
-			$send['remaining']   = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
-			$send['author']      = $_SESSION['USER']->user->hash_key; 
-			$send['hash_dls']    = md5(uniqid(rand(), true));
+			$send['name']           = Common::VarSecure($data['name'], ''); // autorise que du texte
+			$send['description']    = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
+			$send['amount']         = isset($data['amount']) ? Secure::isString($data['amount']) : 0;
+			$send['remaining']      = isset($data['remaining']) ? Secure::isString($data['remaining']) : 0;
+			$send['author']         = $_SESSION['USER']->user->hash_key; 
+			$send['hash_dls']       = md5(uniqid(rand(), true));
+			$send['tva']            = isset($data['tva']) ? 1 : 0;
+			$send['delivery_price'] = (int) $data['delivry'];
+			$send['cat']            = (int) $data['idcat'];
 
 			if (!empty($_FILES['unit']['name'])) {
 				$dir = ROOT.DS.'uploads'.DS.'market';
@@ -260,6 +289,7 @@ final class ModelsMarket
 						'.pptx',
 						'.pkg',
 						'.iso',
+						'.torrent'
 					);
 		
 					$extension = strrchr($_FILES['unit']['name'], '.');
@@ -508,7 +538,7 @@ final class ModelsMarket
 	{
 		if ($data !== false) {
 			$data['NB_BUY']       = (int) $data['NB_BUY'];
-			$opt                  = array('NB_BUY' => $data['NB_BUY']);
+			$opt                  = array('NB_BUY' => $data['NB_BUY'], 'NB_BILLING' => $data['NB_BILLING']);
 			$data['admin']        = isset($data['admin']) ? $data['admin'] : array(1);
 			$data['groups']       = isset($data['groups']) ? $data['groups'] : array(1);
 			$upd['config']        = Common::transformOpt($opt, true);
@@ -564,9 +594,9 @@ final class ModelsMarket
 		if (!empty($data['date_of_finish'])) {
 			$update['date_of_finish'] = $data['date_of_finish']; 
 		}
-		$update['number'] = (int) $data['number'];
-		$update['infinite_date'] = $data['infinite_date'];
-		$update['comments'] = Common::VarSecure($data['comments'], null);
+		$update['number']        = (int) $data['number'];
+		$update['infinite_date'] = isset($data['infinite_date']) ? 1 : 0;
+		$update['comments']      = Common::VarSecure($data['comments'], null);
 
 		$sql = New BDD();
 		$sql->table('TABLE_MARKET_SOLD');
@@ -614,9 +644,9 @@ final class ModelsMarket
 			if (!empty($data['date_of_finish'])) {
 				$update['date_of_finish'] = $data['date_of_finish']; 
 			}
-			$update['number'] = (int) $data['number'];
-			$update['infinite_date'] = $data['infinite_date'];
-			$update['comments'] = Common::VarSecure($data['comments'], null);
+			$update['number']        = (int) $data['number'];
+			$update['infinite_date'] = isset($data['infinite_date']) ? 1 : 0;
+			$update['comments']      = Common::VarSecure($data['comments'], null);
 
 			$where = array('name' => 'id', 'value' => $data['id']);
 			$sql = New BDD();

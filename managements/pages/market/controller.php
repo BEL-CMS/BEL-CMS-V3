@@ -64,9 +64,6 @@ class Market extends AdminPages
 		$menu[] = array(constant('DISCOUNT_COUPON') => array('href'=>'market/discount?management&option=pages','icon'=>'mgc_barcode_line', 'color' => 'bg-danger/25 text-danger'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'market/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$data['data'] = $this->models->getBuy();
-		foreach ($data['data'] as $key => $value):
-			$data['data'][$key]->cat = $this->models->getCat($value->id);
-		endforeach;
 		$this->set($data);
 		$this->render('index', $menu);
 	}

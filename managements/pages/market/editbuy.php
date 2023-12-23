@@ -54,18 +54,31 @@ endif;
 						<input min="0" value="<?=$data->remaining;?>" placeholder="0" name="remaining" type="number" class="form-input" id="input-number">
 					</div>
 					<div class="mt-2 mb-2">
+						<div class="flex items-center">
+                            <input type="checkbox" class="form-switch square text-secondary" name="tva" value="true">
+                            <label for="formSwitch10" class="ms-2"><?=constant('ACTIVE_TVA');?></label>
+                        </div>
+					</div>
+					<div class="mt-2 mb-2">
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('DELIVRY_PRICE');?></label>
+						<input value="0" min="0" placeholder="0" name="delivry" type="number" class="form-input" id="input-number">
+					</div>
+					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('CATEGORIES');?></label>
 						<select name="idcat" class="form-select">
 							<option><?=constant('NO_CATEGORY');?></option>
 						<?php
-						foreach ($cat as $b):
-							if ($b == $data->cat):
+						foreach ($cat as $k => $b):
+							if ($b->name == $data->cat):
 								?>
-								<option value="<?=$data->cat;?>"></option>
+								<option selected="selected" value="<?=$data->id;?>"><?=$b->name;?></option>
+							<?php
+							else:
+							?>
+								<option value="<?=$b->id?>"><?=$b->name?></option>
 							<?php
 							endif;
 							?>
-							<option value="<?=$b->id?>"><?=$b->name?></option>
 						<?php
 						endforeach;
 						?>

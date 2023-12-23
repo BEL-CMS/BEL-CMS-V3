@@ -43,6 +43,10 @@ endif;
                         <input class="form-radio text-info" type="radio" id="formRadio3" name="auto_code" value="ONE_LIVRAISON">
                         <label class="ms-1.5" for="formRadio3"><?=constant('ONE_LIVRAISON');?></label>
                     </div>
+                    <div class="mt-2 mb-2">
+                        <input class="form-radio text-info" type="radio" id="formRadio4" name="auto_code" value="NO_TAXE_NO_DELIVRY">
+                        <label class="ms-1.5" for="formRadio4"><?=constant('NO_TAXE_NO_DELIVRY');?></label>
+                    </div>
 					<div class="mt-2 mb-2">
 						<div class="flex">
 							<div class="inline-flex items-center whitespace-nowrap px-3 rounded-s border border-e-0 border-gray-200 bg-gray-50 text-gray-500 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-400"><?=constant('DESCRIPTION');?></div>
@@ -64,7 +68,7 @@ endif;
 			<div class="p-6">
 				<div class="overflow-x-auto">
                     <div class="mt-2 mb-2">
-						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NUMBER');?></label>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NUMBER_USE');?></label>
 						<input name="number" type="number" min="1" value="1" class="form-input" id="input-name" required="required">
 					</div>
 					<div class="mt-2 mb-2">

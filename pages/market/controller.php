@@ -64,6 +64,7 @@ class Market extends Pages
 
 	public function buyconfirm ()
 	{
+		$error = false;
 		if (!isset($_SESSION['PAYPAL']['UNIQUE_ID']) or empty($_SESSION['PAYPAL']['UNIQUE_ID'])) {
 			$_SESSION['PAYPAL']['UNIQUE_ID'] = md5(uniqid(rand(), true));
 		}
@@ -82,38 +83,49 @@ class Market extends Pages
 				return false;
 			}
 		}
-		$get['order']    = $this->models->getSales();
+		$get['order'] = $this->models->getSales();
 		foreach ($get['order'] as $key => $value) {
 			if ($value->infos->tva == 1) {
 				$adress = $this->models->getAdress();
-				if (!isset($adress) and empty($adress)) {
+				if ($adress === false) {
 					if (User::isLogged() === false) {
 						$this->redirect('User/login&echo', 3);
 						$this->error = true;
 						$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 					} else {
-						$this->redirect('Market/adress', 5);
+						$error = true;
 						$this->error = true;
-						$this->errorInfos = array('warning', constant('ADRESS_REQUIRE'), constant('ALERT_INFOS'), false);
-					}	
+						$this->errorInfos = array('warning', constant('COUNTRY_REQUIRE'), constant('ALERT_INFOS'), false);
+						$this->redirect('Market/adress', 5);
+					}
 				} else {
-					$country = $adress->country;
-					if (empty($country)) {
+					if (isset($adress) and !empty($adress->country)) {
+						$country = $adress->country;
+						if (empty($country)) {
+							$this->redirect('Market/adress', 5);
+							$this->error = true;
+							$this->errorInfos = array('warning', constant('COUNTRY_REQUIRE'), constant('ALERT_INFOS'), false);
+							$error = true;
+						} else {
+							$country = Common::decrypt($country, $_SESSION['USER']->user->hash_key);
+							$tva = $this->models->getTva($country);
+							$get['order'][$key]->tva = $tva;
+						}
+					} else {
 						$this->redirect('Market/adress', 5);
 						$this->error = true;
 						$this->errorInfos = array('warning', constant('COUNTRY_REQUIRE'), constant('ALERT_INFOS'), false);
-					} else {
-						$country = Common::decrypt($country, $_SESSION['USER']->user->hash_key);
-						$tva = $this->models->getTva($country);
-						$get['order'][$key]->tva = $tva;
+						die();
 					}
 				}
 			} else {
 				$get['order'][$key]->tva = 0;
 			}
 		}
-		$this->set($get);
-		$this->render('buyconfirm');
+		if ($error === false) {
+			$this->set($get);
+			$this->render('buyconfirm');
+		}
 	}
 
 	public function adress ()
@@ -123,7 +135,7 @@ class Market extends Pages
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		} else {
-			$this->redirect('Market/buyconfirm', 0);
+			$this->render('adress');
 		}
 	}
 
@@ -207,10 +219,54 @@ class Market extends Pages
 		} else {
 			$config =  Config::GetConfigPage('market');
 			$set['pagination'] = $this->pagination($config->config['NB_BILLING'], 'market', constant('TABLE_PURCHASE'));
-			$data['billing'] = $this->models->getBilling();
+			$data['billing']   = $this->models->getBilling();
+			if (empty($data['billing'])) {
+				$this->error = true;
+				$this->errorInfos = array('warning', constant('NO_SALES_IN_DATABASE'), constant('INFO'), false);
+			}
 			$this->set($data);
 			$this->render('billing');
 		}
+	}
+
+	public function dls ()
+	{
+		if (User::isLogged() === false) {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		} else {
+			$id = Common::VarSecure($this->data[2], null);
+			$data['dls'] = $this->models->getDls($id);
+			$this->set($data);
+			$this->render('dls');
+		}
+	}
+
+	public function dlsLinks ()
+	{
+		$id = Common::VarSecure($this->data[2], null);
+		$data = $this->models->getDlsreal($id);
+		if (empty($data)) {
+			$this->redirect('market/billing', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('INVALID_DL'), constant('INFO'), false);
+			return false;
+		}
+		if (stristr($data, 'http') === true or stristr($data, 'https')) {
+			$this->error = true;
+			$this->errorInfos = array('success', constant('DOWNLOADING'), constant('INFO'), false);
+			$this->link($data['dls'], 0);
+		} else {
+			$this->error = true;
+			$this->errorInfos = array('success', constant('DOWNLOADING'), constant('INFO'), false);
+			$this->redirect($data, 0);
+		}
+		?>
+		<script type="text/javascript">
+			setTimeout("location.href = 'market/billing';", 2500);
+		</script>
+	 	<?php
 	}
 
 	public function invoice ()

@@ -71,4 +71,9 @@ Common::constant(array(
 	'MARKET_DELETE_ERROR'   => 'Erreur lors de la suppression de la vente "ID" correct ?',
 	'BILL_TO'               => 'Facturer à:',
 	'OBJECT'                => 'Objet',
+	'NUMBER_USE'            => 'Nombre de fois, utilisable',
+	'ACTIVE_TVA'            => 'Activer la T.V.A',
+	'DELIVRY_PRICE'         => 'Livraison prix',
+	'NO_TAXE_NO_DELIVRY'    => 'Pas de taxe, ni de livraison',
+	'NB_BILLING'            => 'Nombre d\'achats à afficher'
 )); 

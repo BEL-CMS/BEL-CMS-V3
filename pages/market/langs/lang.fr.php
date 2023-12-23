@@ -90,4 +90,12 @@ Common::constant(array(
 	'NO_BUY_CATEGORY'        => 'Aucun achat dans cette catégorie',
 	'DOWNLOADS_PAGE'         => 'Page de téléchargements',
 	'INVOICE'                => 'Facture',
+	'NO_SALES_IN_DATABASE'   => 'Aucune vente en base de données',
+	'LINK_UNIQUE'            => 'Lien de téléchargement à clé unique, revenez sur cette page pour régénérer une clé de téléchargement.',
+	'NB_DOWNLOADS'           => 'Nombre de téléchargement',
+	'LINK_DL'                => 'Lien de téléchargement',
+	'ID_BUY'                 => 'ID de l\'achat',
+	'LINK_HERE'              => 'Lien de téléchargement ici',
+	'INVALID_DL'             => 'Lien de téléchargement invalide',
+	'DOWNLOADING'            => 'Téléchargement en cours...'
 ));
