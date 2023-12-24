@@ -660,6 +660,7 @@ final class Common
 			}
 
 			$extension = strrchr($_FILES[$name]['name'], '.');
+			$extension = strtolower($extension);
 			if (!in_array($extension, $extensions)):
 				$err = constant('UPLOAD_ERROR_FILE');
 			endif;
