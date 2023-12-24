@@ -33,21 +33,21 @@ class Market extends AdminPages
 	public function __construct()
 	{
 		parent::__construct();
-		$dir = 'uploads/market';
+		$dir = ROOT.DS.'uploads/market';
 		if (!file_exists($dir)) {
 			if (!mkdir($dir, 0777, true)) {
-				throw new Exception('Failed to create directory');
+				throw new \Exception('Failed to create directory');
 			} else {
 				$fopen  = fopen($dir.'/index.html', 'a+');
 				fclose($fopen);
 			}
 		}
-		$dirCat = 'uploads/market/cat';
+		$dirCat = ROOT.DS.'uploads/market/cat';
 		if (!file_exists($dirCat)) {
-			if (!mkdir($dir, 0777, true)) {
-				throw new Exception('Failed to create directory');
+			if (!mkdir($dirCat, 0777, true)) {
+				throw new \Exception('Failed to create directory');
 			} else {
-				$fopen  = fopen($dir.'/index.html', 'a+');
+				$fopen  = fopen($dirCat.'/index.html', 'a+');
 				fclose($fopen);
 			}
 		}

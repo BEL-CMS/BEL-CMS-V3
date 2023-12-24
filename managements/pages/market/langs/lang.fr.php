@@ -75,5 +75,6 @@ Common::constant(array(
 	'ACTIVE_TVA'            => 'Activer la T.V.A',
 	'DELIVRY_PRICE'         => 'Livraison prix',
 	'NO_TAXE_NO_DELIVRY'    => 'Pas de taxe, ni de livraison',
-	'NB_BILLING'            => 'Nombre d\'achats à afficher'
+	'NB_BILLING'            => 'Nombre d\'achats à afficher',
+	'NO_CATEGORY'           => 'Aucune catégorie'
 )); 

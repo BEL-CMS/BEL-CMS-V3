@@ -323,7 +323,7 @@ class User
 				$return->user->color = User::colorUsername($hash_key);
 				$return->groups->all_groups[] = (int) $return->groups->user_group;
 				$count = strpos($return->groups->user_groups,'|');
-				if ($count === false) {
+				if ($count == true) {
 					$groups  = explode("|", $return->groups->user_groups);
 					foreach ($groups as $k => $v) {
 						if (!in_array($v, $return->groups->all_groups)) {

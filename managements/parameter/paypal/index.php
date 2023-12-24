@@ -127,11 +127,11 @@ $cp = explode(',', $adress[1]);
                 <div class="flex flex-col gap-3">
                     <div class="mb-2 mt-2">
                         <label class="mb-2 block"><?=constant('CLIENT_ID');?></label>
-                        <input type="text" class="form-input" name="prod_client_id">
+                        <input type="text" class="form-input" name="prod_client_id" value="<?=$data['PAYPAL_PROD_CLIENT_ID'];?>">
                     </div>
                     <div class="mb-2 mt-2">
                         <label class="mb-2 block"><?=constant('CLIENT_SECRET');?></label>
-                        <input type="text" class="form-input" name="prod_client_secret">
+                        <input type="text" class="form-input" name="prod_client_secret" value="<?=$data['PAYPAL_PROD_CLIENT_SECRET'];?>">
                     </div>
                 </div>
             </div>

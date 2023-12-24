@@ -745,3 +745,34 @@ nav#bel_cms_comment {
 	margin-bottom: 10px;
 	width: 100%;
 }
+/*-------------------------------------------------------------------------------------------------*/
+/*	Market
+---------------------------------------------------------------------------------------------------*/
+.etat_0,
+.etat_1,
+.etat_2,
+.etat_3,
+.etat_4 {	
+	display: inline !important;
+	width: auto;	
+	border-radius: 4px;
+	padding: 2px 10px;
+	background: red;
+	color: #FFF;
+}
+.etat_1 {
+	background: #91a8d1;
+	color: #292929;
+}
+.etat_2 {
+	background: #46b5ac;
+	color: #292929;
+}
+.etat_3 {
+	background: #f1c05a;
+	color: #292929;
+}
+.etat_4 {
+	background: #88b14b;
+	color: #FFF;
+}

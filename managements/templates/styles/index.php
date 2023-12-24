@@ -79,6 +79,7 @@ $dirWidgets = Common::ScanDirectory(constant('DIR_WIDGETS'));
 				<?php
 				foreach ($dirWidgets as $key => $value):
 					$name = Common::translate($value);
+					if ($value != 'tpl'):
 					?>
 					<tr>
 						<td><strong><?=$name;?></strong></td>
@@ -88,9 +89,10 @@ $dirWidgets = Common::ScanDirectory(constant('DIR_WIDGETS'));
 							</div>
 						</td>
 					</tr>
-					<?php
-					endforeach;
-					?>
+				<?php
+					endif;
+				endforeach;
+				?>
 				</tbody>
 			</table>
 		</div>

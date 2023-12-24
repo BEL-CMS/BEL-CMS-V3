@@ -37,6 +37,16 @@ foreach ($b as $key => $value) {
 }
 $logo = !empty(constant('PAYPAL_LOGO')) ? '<img src="'.constant('PAYPAL_LOGO').'">': '';
 $adressV = explode('|', constant('PAYPAL_ADRESS'));
+
+if (empty($adress)) {
+	$adress = (object) array();
+	$adress->name        = $_SESSION['USER']->user->username;
+	$adress->first_name  = '';
+	$adress->address     = '';
+	$adress->postal_code = '';
+	$adress->country     = '';
+	$adress->city        = '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">

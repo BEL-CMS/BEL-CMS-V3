@@ -202,7 +202,11 @@ final class ModelsMarket
 		$sql->where(array('name' => 'id', 'value' => $id));
 		$sql->queryOne();
 		$return = $sql->data;
-		return $return->name;
+		if (!empty($return)) {
+			return $return->name;
+		} else {
+			return '';
+		}
 	}
 	#########################################
 	# Récupère toutes les catégories
@@ -808,15 +812,26 @@ final class ModelsMarket
 			$sqlAdress->where(array('name' => 'hash_key', 'value' => $purchase->author));
 			$sqlAdress->queryOne();
 			$adress = $sqlAdress->data;
-
-			$adress->name        = Common::decrypt($adress->name, $adress->hash_key);
-			$adress->first_name  = Common::decrypt($adress->first_name, $adress->hash_key);
-			$adress->address     = Common::decrypt($adress->address, $adress->hash_key);
-			$adress->number      = Common::decrypt($adress->number, $adress->hash_key);
-			$adress->postal_code = Common::decrypt($adress->postal_code, $adress->hash_key);
-			$adress->city        = Common::decrypt($adress->city, $adress->hash_key);
-			$adress->country     = Common::decrypt($adress->country, $adress->hash_key);
-			$adress->phone       = Common::decrypt($adress->phone, $adress->hash_key);
+			if (empty($adress)) {
+				$adress = (object) array();
+				$adress->name        = '';
+				$adress->first_name  = '';
+				$adress->address     = '';
+				$adress->number      = '';
+				$adress->postal_code = '';
+				$adress->city        = '';
+				$adress->country     = '';
+				$adress->phone       = '';
+			} else {
+				$adress->name        = !empty($adress->name)        ? Common::decrypt($adress->name, $adress->hash_key) : '';
+				$adress->first_name  = !empty($adress->first_name)  ? Common::decrypt($adress->first_name, $adress->hash_key) : '';
+				$adress->address     = !empty($adress->address)     ? Common::decrypt($adress->address, $adress->hash_key) : '';
+				$adress->number      = !empty($adress->number)      ? Common::decrypt($adress->number, $adress->hash_key) : '';
+				$adress->postal_code = !empty($adress->postal_code) ? Common::decrypt($adress->postal_code, $adress->hash_key) : '';
+				$adress->city        = !empty($adress->city)        ? Common::decrypt($adress->city, $adress->hash_key) : '';
+				$adress->country     = !empty($adress->country)     ? Common::decrypt($adress->country, $adress->hash_key) : '';
+				$adress->phone       = !empty($adress->phone)       ? Common::decrypt($adress->phone, $adress->hash_key) : '';			
+			}
 
 			$return = $purchase;
 			$return->adress = $adress;

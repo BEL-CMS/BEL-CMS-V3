@@ -29,7 +29,11 @@ foreach ($a as $value) {
 }
 foreach ($b as $key => $value) {
 	foreach($value as $k => $v) {
-		$items[$v[0]][] = $v[1];
+        if (isset($v[1])) {
+		    $items[$v[0]][] = $v[1];
+        } else {
+            $items[$v[0]][] = '';
+        }
 	}
 }
 ?>

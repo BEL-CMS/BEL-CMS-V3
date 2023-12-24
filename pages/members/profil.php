@@ -17,7 +17,7 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 $maingroup = config::getGroupsForID($data->groups->user_group);
-if (!file_exists($data->profils->avatar)) {
+if (!file_exists($data->profils->avatar ?? '')) {
 	$avatar = constant('DEFAULT_AVATAR');
 } else {
 	$avatar = $data->profils->avatar;
@@ -38,6 +38,7 @@ if (!empty($data->profils->gender)) {
 } else {
 	$gender = constant('NOSPEC');
 }
+$birthday = !empty($data->profils->birthday) ? Common::TransformDate($data->profils->birthday, 'LONG', 'NONE') : constant('NO_SPEC');
 ?>
 <section id="belcms_members_profil">
 	<div class="belcms_grid_full">
@@ -76,7 +77,7 @@ if (!empty($data->profils->gender)) {
 					</li>
 					<li>
 						<p>Date anniversaire</p>
-						<p><?=Common::TransformDate($data->profils->birthday, 'LONG', 'NONE');?></p>
+						<p><?=$birthday;?></p>
 					</li>
 				</ul>
 			</div>
@@ -94,7 +95,7 @@ if (!empty($data->profils->gender)) {
 						<div class="belcms_grid_6"><?=$gender;?></div>
 					</li>
 					<li>
-						<div class="belcms_grid_6"><i class="fa-solid fa-globe"></i>&ensp;<?=constant('WEBSITE');?></div>
+						<div class="belcms_grid_6"><i class="fa-solid fa-globe"></i>&ensp;<?=constant('COUNTRY');?></div>
 						<div class="belcms_grid_6"><?=$data->profils->country;?></div>
 					</li>
 					<li>

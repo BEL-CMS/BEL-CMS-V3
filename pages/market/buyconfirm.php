@@ -93,7 +93,7 @@ foreach ($order as $k => $v) {
 if (isset($_SESSION['MARKET']['SOLD'])) {
 	$nbPriceTotal = $nbPriceTotal - $_SESSION['MARKET']['SOLD']['value'];
 }
-if (constant('PAYPAL_SANDBOX') == true) {
+if (constant('PAYPAL_SANDBOX') == 'true') {
 	$clientIDPaypal = constant('PAYPAL_SANDBOX_CLIENT_ID');
 } else {
 	$clientIDPaypal = constant('PAYPAL_PROD_CLIENT_ID');
@@ -164,7 +164,7 @@ paypal.Buttons({
 				success: function(data) {
 					$('#alrt_bel_cms').addClass("success").empty().append("<?=constant('THANK_YOU_FOR_PAYMENT');?>");
 					setTimeout(function() {
-						document.location.href="/market/Invoice/<?=$_SESSION['PAYPAL']['UNIQUE_ID'];?>?echo";
+						document.location.href="/market/billing/";
 					}, 3500);
 				},
 				error: function (xhr, ajaxOptions, thrownError) {

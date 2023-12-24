@@ -22,5 +22,7 @@ Common::constant(array(
 	#####################################
 	'GAMERS'               => 'joueurs',
     'GAMER'                => 'joueur',
-	'NO_USER'              => 'Aucun utilisateur'
+	'NO_USER'              => 'Aucun utilisateur',
+	'NO_GAMES_SAVED'       => 'Aucun jeu enregistré.',
+	'GAME'                 => 'Jeu',
 )); 

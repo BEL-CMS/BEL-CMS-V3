@@ -38,7 +38,7 @@ final class ModelsPayPal
         $return = array();
         if ($data != null and is_array($data))
         {
-            $update['PAYPAL_SANDBOX']               = $data['sanbox'] == 'true' ? 'true' : 'false';
+            $update['PAYPAL_SANDBOX']               = isset($data['sanbox']) ? 'true' : 'false';
             $update['PAYPAL_SANDBOX_CLIENT_ID']     = Common::VarSecure($data['paypal_sandbox_client_id'], null);
             $update['PAYPAL_SANDBOX_CLIENT_SECRET'] = Common::VarSecure($data['paypal_sandbox_client_secret'], null);
             $update['PAYPAL_PROD_CLIENT_ID']        = Common::VarSecure($data['prod_client_id'], null);

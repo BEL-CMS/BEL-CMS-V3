@@ -115,7 +115,7 @@ final class User
 						'valid'             => (int) 1,
 						'expire'            => (int) 0,
 						'token'             => '',
-						'god'               => (int) 0
+						'gold'              => (int) 0
 					);	
 					$insert = New BDD();
 					$insert->table('TABLE_USERS');
