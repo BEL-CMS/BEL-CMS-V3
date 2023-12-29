@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -21,7 +21,7 @@ endif;
 
 class Downloads extends Pages
 {
-	var $useModels = 'Downloads';
+	var $useModels = 'DgetDownloadsownloads';
 
 	public function index ()
 	{	
@@ -89,10 +89,11 @@ class Downloads extends Pages
 		$id = $this->data[2];
 		if ($id != null && is_numeric($id)) {
 			if ($this->models->ifAccess($id) == true) {
-				if (stristr($this->models->getDownloads($id), 'http') === true or stristr($this->models->getDownloads($id), 'https')) {
-					$this->link($this->models->getDownloads($id), 0);
+				$download = $this->models->getDownloads($id);
+				if (stristr($download, 'http') === true or stristr($download, 'https')) {
+					$this->link($download, 0);
 				} else {
-					$this->redirect($this->models->getDownloads($id), 0);
+					$this->redirect($download, 0);
 				}
 				$this->error = true;
 				$this->errorInfos = array('success', constant('DOWNLOADING'), constant('INFO'), false);
