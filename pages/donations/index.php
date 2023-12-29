@@ -25,7 +25,7 @@ if (User::isLogged()) {
 }
 ?>
 <section id="section_donation">
-    <form action="Donation/send" method="post">
+    <form action="Donations/send" method="post">
         <div id="section_donation_form_number">
             <span><i class="fa-solid fa-euro-sign"></i></span><input name="donate" min="5" id="number_donate" type="number" value="5">
         </div>

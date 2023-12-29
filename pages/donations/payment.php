@@ -85,12 +85,12 @@ if ($type == 'paypal'):
 				return actions.order.capture().then(function(orderData) {
 					$.ajax({
 						type: 'post',
-						url: "/Donation/Validate",
+						url: "/Donations/Validate",
 						data: orderData,
 						success: function(data) {
 							$('#alrt_bel_cms').addClass("success").empty().append("<?=constant('THANK_YOU_FOR_DONATE');?>");
 							setTimeout(function() {
-								document.location.href="/Donation";
+								document.location.href="/Donations";
 							}, 3500);
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
@@ -104,7 +104,7 @@ if ($type == 'paypal'):
 				});
 			},
 			onError(err) {
-				window.location.href = "/Donation/PayPalError";
+				window.location.href = "/Donations/PayPalError";
 				console.log(err);
 			}
 		}).render('#paypal-button-container');

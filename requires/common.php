@@ -656,7 +656,12 @@ final class Common
 			if ($ext !== false) {
 				$extensions = $ext;
 			} else {
-				$extensions = array('.png', '.gif', '.jpg', '.ico', '.jpeg', '.doc', '.txt', '.pdf', '.rar', '.zip', '.7zip');
+				$extensions = array(
+				'.png', '.bmp', '.gif', '.jpg', '.ico', '.svg', '.tiff', '.webp', '.jpeg', '.doc', '.txt', '.pdf', '.rar',
+				'.zip', '.7zip', '.exe', '.tar', '.psd', '.jar','.avi', '.mpg', '.mpeg', '.av4', '.ac3', '.docx', '.doc', '.mp3',
+				'.mp4', '.svg', '.tif', '.tiff', '.txt', '.3gp', '.3g2', '.xml', '.xls', '.xlsx', '.ppt', '.pptx', '.pkg',
+				'.iso', '.torrent'
+				);
 			}
 
 			$extension = strrchr($_FILES[$name]['name'], '.');

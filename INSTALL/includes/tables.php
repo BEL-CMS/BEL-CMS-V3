@@ -137,7 +137,8 @@ switch ($_POST['table']) {
 			('', 'news', 1, '1|0', '1', 'MAX_NEWS==2'),
 			('', 'mails', 1, '2', '1', NULL),
 			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
-			('', 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10');";
+			('', 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10'),
+			('', 'donations', 1, '1|0', '1', '');";
 	break;
 
 	case 'config_tpl':
@@ -157,7 +158,7 @@ switch ($_POST['table']) {
 	  		`name` varchar(128) NOT NULL,
 	  		`description` text,
 	  		`idcat` int NOT NULL,
-	  		`size` varchar(8) NOT NULL,
+	  		`size` varchar(64) NOT NULL,
 	  		`uploader` varchar(32) NOT NULL,
 			`date` datetime DEFAULT CURRENT_TIMESTAMP,
 	  		`ext` text NOT NULL,
@@ -536,6 +537,36 @@ switch ($_POST['table']) {
 			`template` varchar(128) NOT NULL,
 			`author` varchar(32) NOT NULL,
 			`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "donations":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+			`last_name` text,
+			`adress` text,
+			`iban` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+			`bic` varchar(16) NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "donations_receive":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` text,
+			`surname` text,
+			`mail` text,
+			`id_purchase` text NOT NULL,
+			`sold` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+			`msg` text,
+			`valid` tinyint(1) DEFAULT '0',
+			`date_paie` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`type` text,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;

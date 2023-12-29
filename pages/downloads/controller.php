@@ -21,7 +21,7 @@ endif;
 
 class Downloads extends Pages
 {
-	var $useModels = 'DgetDownloadsownloads';
+	var $useModels = 'Downloads';
 
 	public function index ()
 	{	

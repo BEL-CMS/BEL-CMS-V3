@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -26,7 +26,7 @@ endif;
 			</div>
 			<div class="p-6">
 				<div class="overflow-x-auto">
-				<div class="mt-2 mb-2">
+					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
 						<input name="name" type="text" class="form-input" value="<?=$data->name?>" required="required">
 					</div>

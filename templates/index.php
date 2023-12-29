@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -140,6 +140,20 @@ class Templates
 	#########################################
 	public function cascadingStyleSheets ($var)
 	{
+		$dir = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom';
+		$custom = $dir.'/styles.css';
+		if (!file_exists($dir)) {
+			if (!mkdir($dir, 0777, true)) {
+				throw new \Exception('Failed to create directory');
+			} else {
+				$fopen  = fopen($dir.'/styles.css', 'a+');
+				fclose($fopen);
+			}
+		}
+		if (!file_exists($custom)) {
+			$fopen  = fopen($dir.'/styles.css', 'a+');
+			fclose($fopen);
+		}
 		$files          = array();
 		$return         = '';
 		/* GLOBAL STYLE */
@@ -153,6 +167,9 @@ class Templates
 		$files[] = 'assets/plugins/fontawesome-6.5.1/css/all.min.css';
 		/* HightLight */
 		$files[] = 'assets/plugins/highlight/styles/github-dark-dimmed.min.css';
+		/* glightbox */
+		$files[] = 'assets/plugins/glightbox/css/glightbox.min.css';
+		$files[] = 'assets/plugins/glightbox/css/plyr.min.css';
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/custom.css')) {
 			$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/custom.css?';
@@ -170,6 +187,8 @@ class Templates
 				$files[] = 'widgets/'.strtolower($v->name).'/css/styles.css';
 			}
 		}
+
+		$files[] = $custom;
 
 		foreach ($files as $v) {
 			$return .= '	<link href="'.$v.'" rel="stylesheet" type="text/css" media="all">'.PHP_EOL;
@@ -207,6 +226,8 @@ class Templates
 		$files[] = 'assets/plugins/tooltip/popper.min.js';
 		$files[] = 'assets/plugins/tooltip/tippy-bundle.umd.min.js';
 		$files[] = 'assets/plugins/tooltip/tooltip.js';
+		/* glightbox */
+		$files[] = 'assets/plugins/glightbox/js/glightbox.min.js';
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js')) {
 			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js';

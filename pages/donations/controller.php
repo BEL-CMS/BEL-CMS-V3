@@ -17,9 +17,9 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Donation extends Pages
+class Donations extends Pages
 {
-	var $useModels = 'Donation';
+	var $useModels = 'Donations';
 
 	public function __construct()
 	{
@@ -62,6 +62,6 @@ class Donation extends Pages
     {
         $this->error = true;
         $this->errorInfos = array('error', constant('PAYPAL_ERROR'), constant('DONATIONS'), false);
-        $this->redirect('Donation', 3);
+        $this->redirect('Donations', 3);
     }
 }

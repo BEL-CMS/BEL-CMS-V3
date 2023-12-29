@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.0 [PHP8.2]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -13,20 +13,21 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
 ?>
-<form action="Articles/sendparameter?management&option=pages" method="post">
+<form action="/donations/sendparameter?management&option=pages" method="post">
 	<div class="flex flex-col gap-6">
 		<div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
 			<div class="card">
 				<div class="card-header">
-					<h4><?=constant('ARTICLES_ACTIVE');?></h4>
+					<h4><?=constant('DONATION_ACTIVE');?></h4>
 				</div>
 				<div class="p-6">
 					<div>
 						<div class="flex items-center opacity-60">
 							<input class="form-switch" <?=$config->active == 1 ? 'checked' : ''?> name="active" type="checkbox"  value="1" role="switch" id="active">
-							<label class="ms-1.5" for="active"><?=constant('ARTICLES_PAGE_ACTIVE');?></label>
+							<label class="ms-1.5" for="active"><?=constant('DONS_PAGE_ACTIVE');?></label>
 						</div>
 					</div>
 				</div>
@@ -77,7 +78,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 					?>
 				</div>
 			</div>
-			<button type="submit" class="btn bg-primary text-white"><?=constant('SEND');?></button>
+			<button type="submit" class="btn bg-primary text-white"><?=constant('TO_REGISTER');?></button>
 		</div>
 	</div>
 </form>

@@ -8,6 +8,8 @@
 		'config',
 		'config_pages',
 		'config_tpl',
+		'donations',
+		'donations_receive',
 		'downloads',
 		'downloads_cat',
 		'emoticones',

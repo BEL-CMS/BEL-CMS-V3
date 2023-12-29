@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -23,6 +23,12 @@ date_default_timezone_set('Europe/Brussels');
 if(!isset($_SESSION)) {
 	session_start();
 }
+#########################################
+# MicroTime loading
+#########################################
+$temps = microtime(); // Timestamp actuel avec microsecondes
+$temps = explode(' ', $temps);
+$_SESSION['SESSION_START'] = $temps[1] + $temps[0];
 #########################################
 # Microtime pour le chargement de la page
 #########################################
@@ -66,15 +72,17 @@ if (Dispatcher::isManagement() === true) {
 	new Managements ();
 } else {
 	$belcms = new BelCMS;
-	$belcms->typeMime;
-	header('Content-Type: <?=$belcms->typeMime;?> charset=utf-8');
+	$typeMime = $belcms->typeMime;
 	if (isset($_GET['echo'])) {
+		header('Content-Type: text/plain; charset=UTF-8');
 		echo $belcms->page;
-	} else if ($belcms->typeMime == 'text/html') {
+	} else if ($typeMime == 'text/html') {
+		header('Content-Type: text/html; charset=UTF-8');
 		echo $belcms->template;
-	} else if ($belcms->typeMime == 'application/json') {
+	} else if ($typeMime == 'application/json') {
+		header('Content-Type: application/json; charset=UTF-8');
 		echo json_encode($belcms->page);
-	} else if ($belcms->typeMime == 'text/plain') {
+	} else if ($typeMime == 'text/plain') {
 		echo $belcms->page;
 	}
 }

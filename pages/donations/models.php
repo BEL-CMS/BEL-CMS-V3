@@ -25,7 +25,7 @@ endif;
 # TABLE_DONATIONS_REVEIVE
 # TABLE_PAYPAL
 #####################################
-final class Donation
+final class Donations
 {
 	public function getPayPal ()
 	{
