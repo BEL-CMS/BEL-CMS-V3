@@ -1,5 +1,4 @@
 <?php
-use BelCMS\Requires\Common;
 /**
  * Bel-CMS [Content management system]
  * @version 3.0.0 [PHP8.2]
@@ -9,6 +8,8 @@ use BelCMS\Requires\Common;
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -24,6 +25,7 @@ class Themes extends AdminPages
 	public function index ()
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'themes?management&option=templates','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('DEFAULT_PAGE') => array('href'=>'themes/default?management&option=templates','icon'=>'mgc_department_fill', 'color' => 'bg-warning text-white'));
 		$menu[] = array(constant('DIMENSION') => array('href'=>'themes/dim?management&option=templates','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 
 		$actual = $this->models->getTplActive();
@@ -103,5 +105,41 @@ class Themes extends AdminPages
 		$return = $this->models->sendPages($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('themes/dim?management&option=templates', 2);	
+	}
+
+	public function default ()
+	{
+		if (isset($_SESSION['CONFIG_CMS'])) {
+			unset($_SESSION['CONFIG_CMS']);
+			new BelCMS\Config\Config();
+		}
+		if (empty($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE'])) {
+			$data['default'] = 'news';
+		} else {
+			$data['default'] = $_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE'];
+		}
+		if (!empty($_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'])) {
+			$dir = ROOT.DS.'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing.php';
+			$data['landing'] = true;
+		} else {
+			$data['landing'] = false;
+		}
+
+		$scan = Common::ScanDirectory('pages', true);
+		foreach ($scan as $a) {
+			if ($a != 'managements') {
+				$d[] = trim($a);
+			}
+		}
+		$data['scan']   = $d;
+		$this->set($data);
+		$this->render('default');
+	}
+
+	public function sendlanding ()
+	{
+		$return = $this->models->sendPrimayPage ($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('themes?management&option=templates', 2);
 	}
 }

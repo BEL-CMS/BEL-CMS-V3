@@ -20,14 +20,19 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - Pages thèmes
 	#####################################
-	'NAME_TPL'          => 'Nom du thème',
-	'CREATOR'           => 'Créateur',
-	'DESCRIPTION'       => 'Description',
-	'VERSION'           => 'Version',
-	'DATE'              => 'Date',
-	'PAGE_FULL_WIDE'    => 'Page sans widgets à gauche et à droite',
-	'LISTE_OF_TEMPLATE' => 'Liste des thèmes',
-	'ENABLE'            => 'Activer',
-	'ALREADY_ACTIVE'    => 'Déjà actif',
-	'DIMENSION'         => 'Dimension',
+	'NAME_TPL'            => 'Nom du thème',
+	'CREATOR'             => 'Créateur',
+	'DESCRIPTION'         => 'Description',
+	'VERSION'             => 'Version',
+	'DATE'                => 'Date',
+	'PAGE_FULL_WIDE'      => 'Page sans widgets à gauche et à droite',
+	'LISTE_OF_TEMPLATE'   => 'Liste des thèmes',
+	'ENABLE'              => 'Activer',
+	'ALREADY_ACTIVE'      => 'Déjà actif',
+	'DIMENSION'           => 'Dimension',
+	'DEFAULT_PAGE'        => 'Page par défaut',
+	'LANDING_PAGE_DETECT' => 'Page landing détecté, voulez, vous l\'activer ?',
+	'HELP_LANDING'        => 'La page Home (landing) est actif quand rien est défini dans url<br>exemple : https://bel-cms.dev/ ou en local http://localhost/',
+	'ACTIVE_LANDIN_PAGE'  => 'Page Landing activé',
+	'DEFAULT_PAGE_SAVED'  => 'Page par défaut enregistrée'
 ));

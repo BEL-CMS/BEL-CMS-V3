@@ -84,7 +84,13 @@ final class BelCMS
 				die();
 			}
 		}
-		if (Dispatcher::isPage($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']) === true) {
+		if ($this->link == 'landing') {
+			$dirLanding = ROOT.DS.'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing.php';
+			if (is_file($dirLanding)) {
+				require_once $dirLanding;
+				die();
+			}
+		}
 			$dir = constant('DIR_PAGES').strtolower($this->link).DS.'controller.php';
 			if (is_file($dir)) {
 				require_once $dir;
@@ -119,10 +125,6 @@ final class BelCMS
 				$content = ob_get_contents();
 				echo $content;
 			}
-		} else {
-			require constant('DIR_ERROR').'404.html';
-			$content = ob_get_contents();
-		}
 
 		if (ob_get_length() != 0) {
 			ob_end_clean();

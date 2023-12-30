@@ -112,4 +112,27 @@ final class ModelsThemes
 		$return = explode(',', $data->value);
 		return $return;
 	}
+
+	public function sendPrimayPage ($data)
+	{
+		if (isset($data['landing']) and $data['landing'] == '1') {
+			$update['value'] = 'landing';
+		} else {
+			$update['value'] = Common::VarSecure($data['page']);
+		}
+		$sql = New BDD;
+		$sql->table('TABLE_CONFIG');
+		$sql->where(array('name'=>'name','value'=> 'CMS_DEFAULT_PAGE'));
+		$sql->update($update);
+		if ($sql->rowCount == true) {
+			if ($update['value'] == 'landing') {
+				$return = array('type' => 'success', 'text' => constant('ACTIVE_LANDIN_PAGE'), 'title' => 'Templates');
+			} else {
+				$return = array('type' => 'success', 'text' => constant('DEFAULT_PAGE_SAVED'), 'title' => 'Templates');
+			}
+		} else {
+			$return = array('type' => 'error', 'text' => constant('EDIT_PARAM_ERROR'), 'title' => 'Templates');
+		}
+		return $return;
+	}
 }

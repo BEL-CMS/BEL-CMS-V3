@@ -46,7 +46,18 @@ final class Dispatcher
 	#########################################
 	public static function page ($page = null)
 	{
+
 		if ($page === null) {
+			/*
+			if (isset($_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE']) AND !empty($_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'])) {
+				$dir = ROOT.DS.'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing.php';
+				if (is_file($dir)) {
+					$page = 'landing';
+				}
+			} else {
+				$page = 'news';
+			}
+			*/
 			$page = 'news';
 		}
 		$return = null;
