@@ -74,7 +74,7 @@ if (Dispatcher::isManagement() === true) {
 	$belcms = new BelCMS;
 	$typeMime = $belcms->typeMime;
 	if (isset($_GET['echo'])) {
-		header('Content-Type: text/plain; charset=UTF-8');
+		header('Content-Type: text/html; charset=UTF-8');
 		echo $belcms->page;
 	} else if ($typeMime == 'text/html') {
 		header('Content-Type: text/html; charset=UTF-8');

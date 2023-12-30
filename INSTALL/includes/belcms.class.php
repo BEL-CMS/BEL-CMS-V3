@@ -270,13 +270,21 @@ function insertUserBDD ()
 	return $return;
 }
 
-function rmAllDir($strDirectory){
-	$dir_iterator = new RecursiveDirectoryIterator($strDirectory);
-	$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::CHILD_FIRST);
-	foreach($iterator as $fichier){
-		$fichier->isDir() ? @rmdir($fichier) : @unlink($fichier);
+function recursive_delete($dir) {
+	$d = dir($dir);  
+	if (is_dir($dir) && !is_link($dir)) {
+	  if ($d = opendir($dir)) {
+		while (($entry = readdir($d)) !== false) {
+		  if ($entry == '.' || $entry == '..') continue;
+		  $path = $dir .'/'. $entry;
+		  if (is_file($path)) unlink($path);
+		  if (is_dir($path)) recursive_delete($path);
+		}
+		closedir($d);
+	  }
+	  return rmdir($dir);
 	}
-	@rmdir($strDirectory);
+	return unlink($dir);
 }
 
 function getIp () {

@@ -140,20 +140,7 @@ class Templates
 	#########################################
 	public function cascadingStyleSheets ($var)
 	{
-		$dir = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom';
-		$custom = $dir.'/styles.css';
-		if (!file_exists($dir)) {
-			if (!mkdir($dir, 0777, true)) {
-				throw new \Exception('Failed to create directory');
-			} else {
-				$fopen  = fopen($dir.'/styles.css', 'a+');
-				fclose($fopen);
-			}
-		}
-		if (!file_exists($custom)) {
-			$fopen  = fopen($dir.'/styles.css', 'a+');
-			fclose($fopen);
-		}
+		$dir = ROOT.DS.'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom';
 		$files          = array();
 		$return         = '';
 		/* GLOBAL STYLE */
@@ -187,8 +174,6 @@ class Templates
 				$files[] = 'widgets/'.strtolower($v->name).'/css/styles.css';
 			}
 		}
-
-		$files[] = $custom;
 
 		foreach ($files as $v) {
 			$return .= '	<link href="'.$v.'" rel="stylesheet" type="text/css" media="all">'.PHP_EOL;

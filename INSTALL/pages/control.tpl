@@ -18,9 +18,11 @@ $intl_msg      = checkIntl() === false ? 'Le mod IntlDateFormatter est nécessai
 $pdo_class     = checkPDO() === false ? 'error' : 'success';
 $pdo_msg       = checkPDO() === false ? 'La class PDO est nécessaire.' : 'Aucun souci, vous avez bien la class PDO actif';
 $config        = checkWriteConfig() === false ? 'error' : 'success';
-$config_msg    = checkWriteConfig() === false ? 'Veuille créer ou mettre le dossier config en chmod 777 sur le FTP' : 'Le dossier config a bien été créé.';
+$config_msg    = checkWriteConfig() === false ? 'Veuille créer ou mettre le dossier config en chmod 755 sur le FTP' : 'Le dossier config a bien été créé.';
 $uploads        = checkWriteUploads() === false ? 'error' : 'success';
-$uploads_msg    = checkWriteUploads() === false ? 'Veuille créer ou mettre le dossier uploads en chmod 777 sur le FTP' : 'Le dossier uploads a bien été créé.';
+$uploads_msg    = checkWriteUploads() === false ? 'Veuille créer ou mettre le dossier uploads en chmod 755 sur le FTP' : 'Le dossier uploads a bien été créé.';
+$custom        = checkWriteCustom() === false ? 'error' : 'success';
+$custom_msg    = checkWriteCustom() === false ? 'Veuille créer ou mettre le dossier templates/default/custom en chmod 755 sur le FTP' : 'Le dossier custom a bien été créé.';
 ?>
 						<ul>
 							<li>
@@ -113,6 +115,14 @@ $uploads_msg    = checkWriteUploads() === false ? 'Veuille créer ou mettre le d
 										<div class="belcms_notification_msg"><?=$uploads_msg;?></div>
 									</div>
 								</li>
+								<li>
+									<div class="belcms_notification">
+										<header class="belcms_notification_header <?=$custom;?>">
+											<span>Création du dossier custom</span>
+										</header>
+										<div class="belcms_notification_msg"><?=$custom_msg;?></div>
+									</div>
+								</li>
 							</ul>
 						</div>
 						<ul id="menu">
@@ -120,7 +130,7 @@ $uploads_msg    = checkWriteUploads() === false ? 'Veuille créer ou mettre le d
 								<a href="index.php">Précédent</a>
 							</li>
 							<?php
-							if (checkPhp() && checkPDO() && checkIntl()):
+							if (checkPhp() && checkPDO() && checkIntl() && checkWriteConfig() && checkWriteUploads() && checkWriteCustom()):
 								echo '	<li id="next">
 											<a href="?page=sql">Suivant</a>
 										</li>';	

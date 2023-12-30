@@ -46,5 +46,10 @@ if ($insert === true): ?>
 	</div>
 </div>
 <?php endif;
-rmAllDir(ROOT.DS.'INSTALL');
-redirect(GetHost::getBaseUrl(), 5);
+chmod(ROOT.DS.'INSTALL', 0777);
+recursive_delete(ROOT.DS.'INSTALL');
+chmod(ROOT.DS.'default'.DS.'custom', 0777);
+?>
+<script type="text/javascript">
+	setTimeout("location.href = '<?=$_SESSION['HTTP_HOST'];?>';", 5000);
+</script>

@@ -47,10 +47,10 @@ function checkWriteConfig ()
 {
 	$dir = ROOT.DS.'config';
 	if (!is_dir($dir)) {
-	    mkdir($dir, 0777, true);
+	    mkdir($dir, 0755, true);
 	}
 	$write = substr(sprintf('%o', fileperms(ROOT.'config')), -4);
-	if ($write == 0777) {
+	if ($write == '0755') {
 		return true;
 	} else {
 		if (is_writable($dir) === true) {
@@ -64,10 +64,27 @@ function checkWriteUploads ()
 {
 	$dir = ROOT.DS.'uploads';
 	if (!is_dir($dir)) {
-	    mkdir($dir, 0777, true);
+	    mkdir($dir, 0755, true);
 	}
 	$write = substr(sprintf('%o', fileperms($dir)), -4);
-	if ($write == 0777) {
+	if ($write == '0755') {
+		return true;
+	} else {
+		if (is_writable($dir) === true) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+function checkWriteCustom ()
+{
+	$dir = ROOT.DS.'templates'.DS.'default'.DS.'custom';
+	if (!is_dir($dir)) {
+	    mkdir($dir, 0755, true);
+	}
+	$write = substr(sprintf('%o', fileperms($dir)), -4);
+	if ($write == '0755') {
 		return true;
 	} else {
 		if (is_writable($dir) === true) {
