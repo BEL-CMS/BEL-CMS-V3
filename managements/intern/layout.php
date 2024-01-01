@@ -12,12 +12,12 @@ use BelCMS\Core\GetHost;
 	<link href="managements/assets/css/icons.min.css" rel="stylesheet" type="text/css">
 	<link href="assets/plugins/DataTables-1.13.06/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="managements/assets/css/magnific-popup.css">
-	<link rel="stylesheet" href="managements/assets/css/quick-events.css">
 	<link rel="stylesheet" href="assets/plugins/tinymce/skins/lightgray/skin.min.css">
-	<link rel="stylesheet" href="assets/plugins/fontawesome-6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="assets/plugins/fontawesome-6.5.1/css/all.min.css">
 	<link rel="stylesheet" href="managements/assets/libs/dropzone/min/dropzone.min.css">
 	<script src="assets/js/jQuery/jquery-3.7.1.min.js"></script>
-	<link rel="stylesheet" href="managements/assets/libs/quick-events.css">
+	<link rel="stylesheet" href="assets/plugins/quick-events/quick-events.css">
+	<script src="assets/plugins/quick-events/languages/lang.js"></script>
 	<script src="managements/assets/js/config.js"></script>
 	<script type="text/javascript">
 		document.onreadystatechange = function() {
@@ -295,5 +295,7 @@ use BelCMS\Core\GetHost;
 	<script src="managements/assets/libs/dropzone/min/dropzone-amd-module.min.js"></script>
 	<script src="assets/js/belcms.core.js"></script>
 	<script src="managements/assets/js/app.js"></script>
+	<script src="assets/plugins/quick-events/jquery.magnific-popup.js"></script>
+	<script src="assets/plugins/quick-events/quick-events.js"></script>
 	</body>
 </html>

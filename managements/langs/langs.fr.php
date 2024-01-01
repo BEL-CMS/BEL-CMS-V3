@@ -43,4 +43,5 @@ Common::constant(array(
 	'DEL_SUCCESS'                 => 'Effacement effectué avec succès.',
 	'DEL_ERROR'                   => 'Erreur lors de la suppression',
 	'ERROR_NO_DATA'               => 'Aucune donnée transmise',
+	'CATEGORY'                    => 'Catégories',
 ));

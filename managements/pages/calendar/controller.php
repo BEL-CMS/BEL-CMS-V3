@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -18,22 +18,24 @@ class Calendar extends AdminPages
 {
 	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true;
-	var $models = 'ModelsCalendar';
+	var $bdd = 'ModelsCalendar';
 
 	public function index ()
 	{
-		$menu[] = array('Accueil'      => array('href'=>'/calendar?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array('Ajouter'      => array('href'=>'/calendar/add?management&pages','icon'=>'fa fa-plus'));
-		$menu[] = array('Catégories'   => array('href'=>'/calendar/addcat?management&pages','icon'=>'fa fa-cogs'));
-		$menu[] = array('Configuration'=> array('href'=>'/calendar/parameter?management&pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'calendar?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'calendar/add?management&option=pages','icon'=>'mgc_add_circle_line', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CATEGORY') => array('href'=>'calendar/addcat?management&option=pages','icon'=>'mgc_codepen_line', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'calendar/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+		$data['data'] = $this->models->getEvents();
+		$this->set($data);
 		$this->render('index', $menu);
 	}
 
 	public function add ()
 	{
-		$menu[] = array('Accueil'      => array('href'=>'/calendar?management&pages','icon'=>'fa fa-home'));
-		$menu[] = array('Catégories'   => array('href'=>'/calendar/cat?management&pages','icon'=>'fa fa-cogs'));
-		$menu[] = array('Configuration'=> array('href'=>'/calendar/parameter?management&pages','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'calendar?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('CATEGORY') => array('href'=>'calendar/addcat?management&option=pages','icon'=>'mgc_codepen_line', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'calendar/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('add', $menu);
 	}
 
@@ -41,7 +43,7 @@ class Calendar extends AdminPages
 	{
 		$return = $this->models->sendadd ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/calendar?management&pages', 2);
+		$this->redirect('calendar?management&option=pages', 2);
 	}
 
 	public function addcat ()
@@ -53,7 +55,7 @@ class Calendar extends AdminPages
 	{
 		$return = $this->models->sendnewcat ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/calendar?management&pages', 2);
+		$this->redirect('calendar?management&option=pages', 2);
 	}
 
 	public function getEvents ()

@@ -40,7 +40,7 @@ class AdminPages
 			self::pageOff();
 			Notification::error('Page fermer manuellement, via le fichier : controller.<br>Veuillez le réactiver via le FTP manuellement la variable $active sur true');
 		} else if ($this->admin === true) {
-			if (in_array(1, $_SESSION['USER']->groups->all_groups)) {
+			if (!in_array(1, $_SESSION['USER']->groups->all_groups)) {
 				self::superAdmin();
 			}
 		}
@@ -130,7 +130,7 @@ class AdminPages
 		ob_start();
 		?>
 			<?php
-				Notification::error('La page demander n\'est accesible qu\'aux administrateur de niveau 1', 'Page');
+				Notification::error(constant('NO_ACCESS_ADMIN'), 'Page');
 				$this->render = ob_get_contents();
 
 			if (ob_get_length() != 0) {

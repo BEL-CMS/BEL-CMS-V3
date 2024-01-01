@@ -9,6 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
@@ -111,14 +114,14 @@ final class ModelsCalendar
 			$event->month = date('n', strtotime($db_event['start_date']));
 			$event->year  = date('Y', strtotime($db_event['start_date']));
 			if (!$db_event['end_date'] || ($db_event['end_date'] == '0000-00-00')) {
-				$event->duration = 1; // If end_time is blank -> event's duration = 1 (day).	
+				$event->duration = 1;	
 			} else {
-				if (date('Ymd', strtotime($db_event['start_date'])) == date('Ymd', strtotime($db_event['end_date']))) { // If start date and end date are same day -> event's duration = 1 (day).
+				if (date('Ymd', strtotime($db_event['start_date'])) == date('Ymd', strtotime($db_event['end_date']))) {
 					$event->duration = 1;
 				} else {
 					$start_day = date('Y-m-d', strtotime($db_event['start_date']));
 					$end_day = date('Y-m-d', strtotime($db_event['end_date']));
-					$event->duration = ceil(abs(strtotime($end_day) - strtotime($start_day)) / 86400) + 1; // Get event's duration = days between start date and end date.
+					$event->duration = ceil(abs(strtotime($end_day) - strtotime($start_day)) / 86400) + 1;
 				}
 			}
 			$event->time        = $db_event['end_time'] ? $db_event['start_time'] . ' - ' . $db_event['end_time'] : $db_event['start_time'];

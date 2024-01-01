@@ -109,24 +109,28 @@ final class BDD
 	#########################################
 	# function order
 	#########################################
-	public function orderby ($data = false)
+	public function orderby ($data = false, $custom = false)
 	{
 		if ($data) {
-			if (is_array($data) AND !is_object($data)) {
-				$tmp = array();
-				foreach ($data as $k => $v) {
-					if (is_array($v)) {
-						$tmp[] = $v['name'].' '.strtoupper($v['type']);
-					}
-				}
-				if (!empty($tmp)) {
-					$this->orderby = ' ORDER BY '.implode(',', $tmp);
-				}
+			if ($custom === true) {
+				$this->orderby = $data;
 			} else {
-				if (!is_object($data)) {
-					$this->orderby = ' ORDER BY id '.$data;
+				if (is_array($data) AND !is_object($data)) {
+					$tmp = array();
+					foreach ($data as $k => $v) {
+						if (is_array($v)) {
+							$tmp[] = $v['name'].' '.strtoupper($v['type']);
+						}
+					}
+					if (!empty($tmp)) {
+						$this->orderby = ' ORDER BY '.implode(',', $tmp);
+					}
 				} else {
-					$this->orderby = ' ORDER BY '.$data->name.' '.$data->type;
+					if (!is_object($data)) {
+						$this->orderby = ' ORDER BY id '.$data;
+					} else {
+						$this->orderby = ' ORDER BY '.$data->name.' '.$data->type;
+					}
 				}
 			}
 		} else {
