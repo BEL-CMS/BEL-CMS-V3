@@ -15,6 +15,7 @@
 		'emoticones',
 		'games',
 		'groups',
+		'guestbook',
 		'interaction',
 		'mails',
 		'mails_blacklist',

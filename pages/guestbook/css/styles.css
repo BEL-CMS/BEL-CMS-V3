@@ -1,0 +1,72 @@
+#section_guestbook {
+    display: block;
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 30px;
+}
+#section_guestbook > h2 {
+    display: block;
+    font-size: 24px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    text-align: center;
+}
+#section_guestbook > a {
+    display: table;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+#list_guestbook {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+.list_guestbook_row {
+    display: inline-flex;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    background: #f9f9f9;
+}
+.list_guestbook_row div {
+    display: block;
+    padding: 10px 15px;
+    width: 100%;
+}
+.list_guestbook_row.title > div {
+    font-weight: bold;
+    text-align: left;
+}
+.list_guestbook_avatar {
+    width: 80px !important;
+}
+.list_guestbook_avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+}
+.list_guestbook_message span {
+    display: block;
+    width: 100%;
+}
+.list_guestbook_author {
+    width: 100px !important;
+    text-align: left;
+}
+.list_guestbook_message {
+    width: 100%;
+}
+.list_guestbook_message span:nth-child() {
+    margin-top: 5px;
+}
+#section_guestbook label {
+    text-align: left !important;
+    float: left;
+    padding-left: 15px;
+}
+#form_guestbook > div {
+    margin-bottom: 15px;
+}

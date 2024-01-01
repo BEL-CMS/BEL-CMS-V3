@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -36,4 +36,11 @@ Common::constant(array(
 	'DEL_BDD_ERROR'               => 'Erreur lors du transfert en base de données',
 	'SEND_BDD_PARTIEL'            => 'Envoie en base de données partiellement',
 	'NO_CATEGORY'                 => 'Aucune catégorie',
+	'NO_ACCESS_ADMIN'             => 'La page demander n\'est accesible qu\'aux administrateur de niveau 1',
+	'EDITING_SUCCESS'             => 'Édition effectue avec succès',
+	'EDIT_ERROR'                  => 'Erreur lors de la sauvegarde ou rien à changer dans le formulaire.',
+	'ID_ERROR'                    => 'ID Incorrecte, un message sera transmis aux administrateurs',
+	'DEL_SUCCESS'                 => 'Effacement effectué avec succès.',
+	'DEL_ERROR'                   => 'Erreur lors de la suppression',
+	'ERROR_NO_DATA'               => 'Aucune donnée transmise',
 ));

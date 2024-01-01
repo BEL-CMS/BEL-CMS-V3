@@ -105,7 +105,8 @@ switch ($_POST['table']) {
 			('', 'CMS_WEBSITE_NAME', '', 0),
 			('', 'KEY_ADMIN', '".md5(uniqid(rand(), true))."', 1),
 			('', 'CMS_DEFAULT_PAGE', 'news', 1),
-			('', 'HOST', '".$host."', 1);";
+			('', 'HOST', '".$host."', 1),
+			('', 'LANDING', '0', 1);";
 	break;
 
 	case 'config_pages':
@@ -138,6 +139,7 @@ switch ($_POST['table']) {
 			('', 'mails', 1, '2', '1', NULL),
 			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
 			('', 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10'),
+			('', 'guestbook', 1, '0', '1', 'MAX_USER==8'),
 			('', 'donations', 1, '1|0', '1', '');";
 	break;
 
@@ -247,6 +249,17 @@ switch ($_POST['table']) {
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `id_group`, `image`, `color`) VALUES
 			(1, 'ADMINISTRATORS', 1, 'NULL', '#ff6e00'),
 			(2, 'MEMBERS', 2, 'NULL', '#052ba0');";
+	break;
+
+	case 'guestbook':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`author` text NOT NULL,
+			`message` text,
+			`date_msg` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
 	case 'interaction':

@@ -34,6 +34,7 @@ $tables = array(
 	'TABLE_EMOTICONES'          => $DB_PREFIX.'emoticones',
 	'TABLE_PAGES_GAMES'         => $DB_PREFIX.'games',
 	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
+	'TABLE_GUESTBOOK'           => $DB_PREFIX.'guestbook',
 	'TABLE_INTERACTION'         => $DB_PREFIX.'interaction',
 	'TABLE_MAILS'               => $DB_PREFIX.'mails',
 	'TABLE_MAIL_BLACKLIST'      => $DB_PREFIX.'mails_blacklist',
