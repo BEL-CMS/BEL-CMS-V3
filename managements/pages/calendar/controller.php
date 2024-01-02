@@ -20,6 +20,9 @@ class Calendar extends AdminPages
 	var $active = true;
 	var $bdd = 'ModelsCalendar';
 
+	#####################################
+	# Index
+	#####################################
 	public function index ()
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'calendar?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
@@ -30,7 +33,9 @@ class Calendar extends AdminPages
 		$this->set($data);
 		$this->render('index', $menu);
 	}
-
+	#####################################
+	# Ajouter
+	#####################################
 	public function add ()
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'calendar?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
@@ -38,29 +43,64 @@ class Calendar extends AdminPages
 		$menu[] = array(constant('CONFIG') => array('href'=>'calendar/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('add', $menu);
 	}
-
+	#####################################
+	# Ajouer en BDD
+	#####################################
 	public function sendadd ()
 	{
 		$return = $this->models->sendadd ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('calendar?management&option=pages', 2);
 	}
-
+	#####################################
+	# Catégorie
+	#####################################
 	public function addcat ()
 	{
 		$this->render('cat');
 	}
-
+	#####################################
+	# Ajouter en BDD
+	#####################################
 	public function sendnewcat()
 	{
 		$return = $this->models->sendnewcat ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('calendar?management&option=pages', 2);
 	}
-
+	#####################################
+	# Get eventt json only
+	#####################################
 	public function getEvents ()
 	{
 		$return = $this->models->getEvents();
 		echo json_encode($return);
+	}
+	#####################################
+	# Edit le calendrier
+	#####################################
+	public function edit ()
+	{
+        $d['data'] = $this->models->getEdit($this->id);
+        $this->set($d);
+		$this->render('edit');
+	}
+	#####################################
+	# Sauvegarde l'édition en BDD
+	#####################################
+	public function sendedit ()
+	{
+		$return = $this->models->sendedit($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('calendar?management&option=pages', 2);
+	}
+	#####################################
+	# Supprimer un événement en BDD
+	#####################################
+	public function del()
+	{
+		$return = $this->models->del($this->id);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('calendar?management&option=pages', 2);	
 	}
 }

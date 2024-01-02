@@ -13,13 +13,9 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-
 ?>
-<div class="card col-sm-6">
-    <div class="card-header">
-        <h3 class="card-title">Événements</h3>
-    </div>
-    <div class="card-body">
-    <div class="quick-events" data-start="monday"></div>
-    </div>
-</div>
+<section id="section_calendar">
+    <h2><?=constant('CALENDAR');?></h2>
+    <a href="calendar/list" title=""><?=constant('LIST_EVENT');?></a>
+    <div class="quick-events" data-view="calendar" data-layout="full" data-start="monday"></div>
+</section>

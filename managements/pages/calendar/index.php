@@ -13,7 +13,6 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-
 ?>
 <div class="grid lg:grid-cols-2 gap-6">
     <div class="card">
@@ -22,7 +21,7 @@ endif;
                 <h4 class="card-title"><?=constant('CALENDAR');?></h4>
             </div>
         </div>
-        <div class="quick-events" data-start="monday"></div>
+        <div class="quick-events" data-view="calendar" data-layout="full" data-start="monday"></div>
     </div>
     <div class="card">
         <div class="card-header">
@@ -39,6 +38,7 @@ endif;
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('START_DATE');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('END_DATE');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('START_TIME');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
 							</tr>
 						</thead>
@@ -46,6 +46,37 @@ endif;
 						<?php
 						foreach ($data as $k => $v):
                         ?>
+                            <tr>
+                                <td><?=$v->name;?></td>
+                                <td><?=$v->start_date;?></td>
+                                <td><?=$v->end_date;?></td>
+                                <td><?=$v->start_time;?> - <?=$v->end_time;?></td>
+                                <td>
+									<button class="belcms_tooltip_left" data="<?=constant('EDIT');?>" onclick="window.location.href='Calendar/edit/<?=$v->id?>?management&option=pages'"><i class="mgc_edit_line text-lg"></i></button>
+									<button class="belcms_tooltip_left" data="<?=constant('DELETE');?>" data-fc-target="delete-modal_<?=$v->id?>" data-fc-type="modal"><i class="mgc_delete_line text-xl"></i></button>
+									<div id="delete-modal_<?=$v->id?>"
+										class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden">
+										<div class="fc-modal-open:opacity-100 duration-500 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto flex flex-col bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
+											<div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
+												<h3 class="font-medium text-gray-800 dark:text-white text-lg"><?=$v->name?></h3>
+												<button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
+														data-fc-dismiss type="button">
+													<span class="material-symbols-rounded">close</span>
+												</button>
+											</div>
+											<div class="px-4 py-8 overflow-y-auto">
+												<p class="text-gray-800 dark:text-gray-200">
+													<?=constant('DEL_CONFIRM');?> <?=constant('OF2');?> <?=constant('EVENT');?> : <?=$v->name?>
+												</p>
+											</div>
+											<div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
+												<button class="btn dark:text-gray-200 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 hover:dark:bg-slate-700 transition-all" data-fc-dismiss type="button"><?=constant('CLOSE');?></button>
+												<a class="btn bg-primary text-white" onclick="window.location.href='Calendar/del/<?=$v->id?>?management&option=pages'"><?=constant('DELETE');?></a>
+											</div>
+										</div>
+									</div>
+								</td>
+                            </tr>
                         <?php
                         endforeach;
                         ?>

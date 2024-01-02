@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -119,6 +119,7 @@ $array = array(
 	'CATEGORIES'                          => 'Catégories',
 	'CATEGORIE'                           => 'Catégorie',
 	'WEB_IS_CLOSED'                       => 'Le site web est en mode fermé, seuls les administrateurs suprêmes ont accès.',
+	'ERROR_CAPTCHA'                       => 'Erreur de CAPTCHA !<br>Trop de tentative fausse, il est possible que vous soyez banni !',
 	########## ###########################
 	# COMMUN
 	#####################################
@@ -224,7 +225,7 @@ $array = array(
 	'FILE_MODELS_NO_FOUND'                => 'Models non trouvé',
 	'ERROR_FILE'                          => 'Erreur de fichier',
 	'UNLISTED'                            => 'Non répertorié',
-	'THE_REQUESTED_SUBPAGE'               => 'La sous-page demandée',
+	'THE_REQUESTED_SUBPAGE'               => 'La sous-page demandé ',
 	'IS_NOT_AVAILABLE_ON_THE_PAGE'        => 'n\'est pas disponible dans la page',
 	'LOGGED_IN_TO_ADMIN'                  => 'S\'est connecté à l\'administration',
 	'AUTHORIZED_ACCESS'                   => 'Accès autorisé',
@@ -389,6 +390,8 @@ $array = array(
 	'NEWTHREAD'                           => 'Nouveau Post',
 	'MAILS'                               => 'Boîte de réception',
 	'MANAGEMENTS'                         => 'Administration',
+	'GUESTBOOK'                           => 'Livre d\'or',
+	'DONATIONS'                           => 'Don',
 	#####################################
 	# USER
 	#####################################

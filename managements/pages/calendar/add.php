@@ -34,12 +34,8 @@ include ROOT.DS.'pages'.DS.'user'.DS.'country.php';
 						<input type="file" accept="image/*" name="image" class="form-input">
 					</div>
 					<div class="mt-2 mb-2">
-					<label class="text-gray-800 text-sm font-medium inline-block mb-2">date de début</label>
-						<div class="col-sm-12">
-							<div class="input-group">
-								<input type="date" name="start_date" class="form-input" required>
-							</div>
-						</div>
+						<label class="text-gray-800 text-sm font-medium inline-block mb-2">date de début</label>
+						<input type="date" name="start_date" class="form-input" required>
 					</div>
 					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mb-2">Date de fin<span class="required">*²</span></label>
@@ -50,16 +46,12 @@ include ROOT.DS.'pages'.DS.'user'.DS.'country.php';
 						<input type="time" name="start_time"  class="form-input">
 					</div>
 					<div class="mt-2 mb-2">
-					<label class="text-gray-800 text-sm font-medium inline-block mb-2">Fin de l'événement</label>
-						<div class="col-sm-12">
-							<div class="input-group">
-								<input type="time" name="end_time" class="form-input">
-							</div>
-						</div>
+						<label class="text-gray-800 text-sm font-medium inline-block mb-2">Fin de l'événement</label>
+						<input type="time" name="end_time" class="form-input">
 					</div>
 					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mb-2">Couleur</label>
-						<select id="color" name="color" required>
+						<select id="color" name="color">
 							<option><?=constant('CHOOSE_OPTION');?></option>
 							<option value="1" style="background:#ffd15c; color:#FFF;"><span>Couleur #ffd15c</span></option>
 							<option value="2" style="background:#f21e4e; color:#FFF;"><span>Couleur #f21e4e</span></option>

@@ -10,6 +10,8 @@
  */
 
 namespace Belcms\Pages\Models;
+use BelCMS\Core\Config;
+use BelCMS\Core\Dispatcher;
 use BelCMS\PDO\BDD as BDD;
 
 if (!defined('CHECK_INDEX')):
@@ -37,14 +39,14 @@ final class Calendar
 			$event->month = date('n', strtotime($db_event['start_date']));
 			$event->year  = date('Y', strtotime($db_event['start_date']));
 			if (!$db_event['end_date'] || ($db_event['end_date'] == '0000-00-00')) {
-				$event->duration = 1; // If end_time is blank -> event's duration = 1 (day).	
+				$event->duration = 1;
 			} else {
-				if (date('Ymd', strtotime($db_event['start_date'])) == date('Ymd', strtotime($db_event['end_date']))) { // If start date and end date are same day -> event's duration = 1 (day).
+				if (date('Ymd', strtotime($db_event['start_date'])) == date('Ymd', strtotime($db_event['end_date']))) {
 					$event->duration = 1;
 				} else {
 					$start_day = date('Y-m-d', strtotime($db_event['start_date']));
 					$end_day   = date('Y-m-d', strtotime($db_event['end_date']));
-					$event->duration = ceil(abs(strtotime($end_day) - strtotime($start_day)) / 86400) + 1; // Get event's duration = days between start date and end date.
+					$event->duration = ceil(abs(strtotime($end_day) - strtotime($start_day)) / 86400) + 1;
 				}
 			}
 			$event->time = $db_event['end_time'] ? $db_event['start_time'] . ' - ' . $db_event['end_time'] : $db_event['start_time'];
@@ -56,5 +58,22 @@ final class Calendar
 		}
 
 		return $events;
+	}
+
+	public function getList ()
+	{
+		$config = Config::GetConfigPage('calendar');
+		if (isset($config->config['MAX_LIST'])) {
+			$nbpp = (int) $config->config['MAX_LIST'];
+		} else {
+			$nbpp = (int) 6;
+		}
+		$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
+		$sql = New BDD();
+		$sql->table('TABLE_EVENTS');
+		$sql->orderby('ORDER BY `'.TABLE_EVENTS.'`.`id` DESC', true);
+		$sql->limit(array(0 => $page, 1 => $nbpp), true);
+		$sql->queryAll();
+		return $sql->data;
 	}
 }

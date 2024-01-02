@@ -1,0 +1,53 @@
+section#calendar_list {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+.calendar_list {
+    display: flex;
+    padding: 20px;
+    background-color: #f2f4f8;
+    margin-bottom: 20px;
+    border-radius: 15px;
+}
+.calendar_list_img {
+    flex: 0 0 25%;
+    max-width: 25%;
+    border-radius: 15px;
+}
+.calendar_list_img img {
+    vertical-align: middle;
+    border-style: none;
+    max-width: 265px;
+    max-height: 145px;
+    border-radius: 15px;
+}
+.calendar_list_infos {
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+.calendar_list_infos span {
+    display: block;
+    text-align: left !important;
+}
+.calendar_list_infos > h3 {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #454360;
+    margin-top: -3px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    text-align: left !important;
+}
+.calendar_list_infos_desc {
+    background-color: #FFF;
+    color: #333333;
+    height: 100px;
+    overflow-y: auto;
+    padding: 15px;
+    margin-top: 5px;
+}

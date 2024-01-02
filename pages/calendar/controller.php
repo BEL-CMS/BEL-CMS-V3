@@ -11,6 +11,7 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
+use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -29,5 +30,15 @@ class Calendar extends Pages
 		$this->typeMime = 'application/json';
 		$return = $this->models->get();
 		echo json_encode($return);
+	}
+
+	public function list ()
+	{
+		$data['data'] = $this->models->getList();
+		$config = Config::GetConfigPage('calendar');
+		$set['pagination'] = $this->pagination($config->config['MAX_LIST'], 'calendar/list', constant('TABLE_EVENTS'));
+		$this->set($set);
+		$this->set($data);
+		$this->render('list');
 	}
 }

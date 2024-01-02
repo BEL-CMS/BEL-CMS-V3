@@ -44,4 +44,5 @@ Common::constant(array(
 	'DEL_ERROR'                   => 'Erreur lors de la suppression',
 	'ERROR_NO_DATA'               => 'Aucune donnée transmise',
 	'CATEGORY'                    => 'Catégories',
+	'SEND_EDIT_SUCCESS'           => 'Édition a été effectuée avec succès'
 ));

@@ -43,9 +43,7 @@
 	margin-left: 0;
 }
 .quick-events .events-calendar .calendar-header .nav-time .btn-change-date:hover {
-	background: #fff;
-	border: 1px solid #f21e4e;
-	color: #f21e4e;
+	opacity: 0.7;
 }
 .quick-events .events-calendar .calendar-header .nav-time .btn-change-date#current {
 	font-size: 15px;
@@ -98,7 +96,7 @@
     background: #f21e4e;
     border-radius: 100%;
     width: 22px; 
-    font-size: 13px;
+    font-size: 12px;
     text-align: center;
 }
 .quick-events .events-calendar .calendar-table .calendar-day .event-title {

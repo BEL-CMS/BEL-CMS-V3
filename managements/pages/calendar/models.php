@@ -38,6 +38,16 @@ final class ModelsCalendar
 			$send['end_time']    = Common::VarSecure($data['end_time']);
 			$send['location']    = Common::VarSecure($data['location'], '');
 			$send['description'] = Common::VarSecure($data['description'], 'html');
+
+			if (isset($_FILES['image'])) {
+				$screen = Common::Upload('image', 'uploads/events', array('.png', '.gif', '.jpg', '.jpeg'));
+				if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
+					$send['image'] = 'uploads/events/'.$_FILES['image']['name'];
+				}
+			} else {
+				$send['image'] = '';
+			}
+
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_EVENTS');
@@ -46,18 +56,18 @@ final class ModelsCalendar
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_NEWCAT_SUCCESS
+					'text' => constant('SEND_NEWCAT_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_NEWCAT_ERROR
+					'text' => constant('SEND_NEWCAT_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'error',
-				'text' => ERROR_INSERT_BDD
+				'text' => constant('ERROR_INSERT_BDD')
 			);
 		}
 
@@ -79,18 +89,18 @@ final class ModelsCalendar
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => SEND_NEWCAT_SUCCESS
+					'text' => constant('SEND_NEWCAT_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => SEND_NEWCAT_ERROR
+					'text' => constant('SEND_NEWCAT_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 
@@ -101,36 +111,74 @@ final class ModelsCalendar
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_EVENTS');
-		$sql->isObject(false);
 		$sql->queryAll();
-		$events = array();
-		debug($sql->data);
-		foreach ($sql->data as $db_event) {
-			$event = new stdClass();
-			$event->title = $db_event['name'];
-			$event->image = $db_event['image'];
-			
-			$event->day   = date('j', strtotime($db_event['start_date']));
-			$event->month = date('n', strtotime($db_event['start_date']));
-			$event->year  = date('Y', strtotime($db_event['start_date']));
-			if (!$db_event['end_date'] || ($db_event['end_date'] == '0000-00-00')) {
-				$event->duration = 1;	
+		return $sql->data;
+	}
+
+	public function getEdit ($id)
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_EVENTS');
+		$sql->where(array('name' => 'id', 'value' => $id));
+		$sql->queryOne();
+		return $sql->data;
+	}
+
+	public function sendedit ($data)
+	{
+		if (is_array($data)) {
+			$update['name']        = Common::VarSecure($data['name'], null);
+			$update['color']       = Common::VarSecure($data['color']);
+			$update['start_date']  = Common::DatetimeReverse($data['start_date']);
+			$update['end_date']    = Common::DatetimeReverse($data['end_date']);
+			$update['start_time']  = Common::VarSecure($data['start_time']);
+			$update['end_time']    = Common::VarSecure($data['end_time']);
+			$update['location']    = Common::VarSecure($data['location'], '');
+			$update['description'] = Common::VarSecure($data['description'], 'html'); 
+			$id = (int) $data['id'];
+			$sql = New BDD();
+			$sql->table('TABLE_EVENTS');
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->update($update);
+			// SQL RETURN NB INSERT
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('SEND_EDIT_SUCCESS')
+				);
 			} else {
-				if (date('Ymd', strtotime($db_event['start_date'])) == date('Ymd', strtotime($db_event['end_date']))) {
-					$event->duration = 1;
-				} else {
-					$start_day = date('Y-m-d', strtotime($db_event['start_date']));
-					$end_day = date('Y-m-d', strtotime($db_event['end_date']));
-					$event->duration = ceil(abs(strtotime($end_day) - strtotime($start_day)) / 86400) + 1;
-				}
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('DEL_BDD_ERROR')
+				);
 			}
-			$event->time        = $db_event['end_time'] ? $db_event['start_time'] . ' - ' . $db_event['end_time'] : $db_event['start_time'];
-			$event->color       = $db_event['color'];
-			$event->location    = $db_event['location'];
-			$event->description = nl2br($db_event['description']);
-			
-			array_push($events, $event);
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
 		}
-		return;
+		return $return;
+	}
+
+	public function del ($id)
+	{
+		$id = (int) $id;
+		$sql = New BDD();
+		$sql->table('TABLE_EVENTS');
+		$sql->where(array('name' => 'id', 'value' => $id));
+		$sql->delete();
+		if ($sql->rowCount == 1) {
+			$return = array(
+				'type' => 'success',
+				'text' => constant('DEL_SUCCESS')
+			);
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('DEL_BDD_ERROR')
+			);
+		}
+		return $return;
 	}
 }

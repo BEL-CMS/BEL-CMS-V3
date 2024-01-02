@@ -140,6 +140,7 @@ class Templates
 	#########################################
 	public function cascadingStyleSheets ($var)
 	{
+		$link = strtolower($var);
 		$dir = 'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'styles.css';
 		$files          = array();
 		$return         = '';
@@ -157,6 +158,17 @@ class Templates
 		/* glightbox */
 		$files[] = 'assets/plugins/glightbox/css/glightbox.min.css';
 		$files[] = 'assets/plugins/glightbox/css/plyr.min.css';
+		/* Calendrier */
+		$sql = new BDD;
+		$sql->table('TABLE_WIDGETS');
+		$sql->where(array(
+			'name'  => 'name',
+			'value' => 'calendar',
+		));
+		$sql->queryOne();
+		if ($link == 'calendar' or !empty($sql->data)) {
+			$files[] = 'assets/plugins/quick-events/quick-events.css';
+		}
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom/custom.css')) {
 			$files[] = 'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/custom.css?';
@@ -189,6 +201,7 @@ class Templates
 	#########################################
 	public function javaScript ($var)
 	{
+		$link           = strtolower($var);
 		$files          = array();
 		$return         = '';
 		/* jQuery 3.7.1 */
@@ -215,6 +228,19 @@ class Templates
 		$files[] = 'assets/plugins/tooltip/tooltip.js';
 		/* glightbox */
 		$files[] = 'assets/plugins/glightbox/js/glightbox.min.js';
+
+		$sql = new BDD;
+		$sql->table('TABLE_WIDGETS');
+		$sql->where(array(
+			'name'  => 'name',
+			'value' => 'calendar',
+		));
+		$sql->queryOne();
+		if ($link == 'calendar' or !empty($sql->data)) {
+			$files[] = 'assets/plugins/quick-events/languages/lang.js';
+			$files[] = 'assets/plugins/quick-events/jquery.magnific-popup.js';
+			$files[] = 'assets/plugins/quick-events/quick-events.js';
+		}
 		/* custom css template */
 		if (is_file(constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js')) {
 			$files[] = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.'custom.js';

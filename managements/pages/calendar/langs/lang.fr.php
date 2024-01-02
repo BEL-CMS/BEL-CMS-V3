@@ -27,4 +27,5 @@ Common::constant(array(
     'CALENDAR'      => 'Calendrier',
     'START_DATE'    => 'Date de début',
     'END_DATE'      => 'Date de fin',
+	'START_TIME'    => 'Heures',
 ));
