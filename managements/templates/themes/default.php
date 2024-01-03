@@ -32,7 +32,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
                         <h1><?=constant('LANDING_PAGE_DETECT');?></h1>
                         <div class="flex items-center">
                             <?php
-                                $chckedLanding = $default == 'landing' ? 'checked="checked"': '';
+                                $chckedLanding = $landingActive == true ? 'checked="checked"': '';
                             ?>
                             <input value="1" <?=$chckedLanding;?> type="checkbox" id="landing" name="landing" class="form-switch square text-success">
                             <label for="landing" class="ms-2"><?=constant('ACTIVE');?></label>

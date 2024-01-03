@@ -116,10 +116,21 @@ final class ModelsThemes
 	public function sendPrimayPage ($data)
 	{
 		if (isset($data['landing']) and $data['landing'] == '1') {
-			$update['value'] = 'landing';
+			$update['value'] = '1';
+			$sql = New BDD;
+			$sql->table('TABLE_CONFIG');
+			$sql->where(array('name'=>'name','value'=> 'LANDING'));
+			$sql->update($update);
+			unset($update, $sql);
 		} else {
-			$update['value'] = Common::VarSecure($data['page']);
+			$update['value'] = '0';
+			$sql = New BDD;
+			$sql->table('TABLE_CONFIG');
+			$sql->where(array('name'=>'name','value'=> 'LANDING'));
+			$sql->update($update);
+			unset($update, $sql);
 		}
+		$update['value'] = Common::VarSecure($data['page']);
 		$sql = New BDD;
 		$sql->table('TABLE_CONFIG');
 		$sql->where(array('name'=>'name','value'=> 'CMS_DEFAULT_PAGE'));

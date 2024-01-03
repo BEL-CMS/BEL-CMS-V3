@@ -142,12 +142,13 @@ class Downloads extends AdminPages
 	{
 		$return = $this->models->sendeditcat($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('downloads/cat?management&pages', 2);
+		$this->redirect('downloads/cat?management&option=pages', 2);
 	}
 
 	public function delcat ()
 	{
-		$return = $this->models->delcat($this->id);
+		$id = (int) $this->data[2];
+		$return = $this->models->delcat($id);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('downloads/cat?management&option=pages', 2);
 	}

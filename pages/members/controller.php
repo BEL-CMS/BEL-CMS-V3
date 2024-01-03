@@ -28,7 +28,7 @@ class Members extends Pages
 
 	public function index ()
 	{
-		$config =  Config::GetConfigPage('members');
+		$config = Config::GetConfigPage('members');
 		$set['pagination'] = $this->pagination($config->config['MAX_USER'], 'members', constant('TABLE_USERS'));
 		$set['members'] = $this->models->GetUsers();
 		$this->set($set);

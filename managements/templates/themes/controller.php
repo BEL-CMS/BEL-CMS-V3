@@ -118,6 +118,7 @@ class Themes extends AdminPages
 		} else {
 			$data['default'] = $_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE'];
 		}
+			$data['landingActive'] = $_SESSION['CONFIG_CMS']['LANDING'] == '1' ? true : false;
 		if (!empty($_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'])) {
 			$dir = ROOT.DS.'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing.php';
 			$data['landing'] = true;

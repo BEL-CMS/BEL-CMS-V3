@@ -12,10 +12,6 @@
 namespace Belcms\Pages\Controller;
 use BelCMS\Core\Config;
 use Belcms\Pages\Pages;
-use BelCMS\Core\Notification;
-use BelCMS\Core\Secures;
-use BelCMS\Requires\Common;
-use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');

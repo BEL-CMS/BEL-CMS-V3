@@ -19,7 +19,7 @@ endif;
     <?php
     foreach ($data as $value):
         $img = empty($value->image) ? 'assets/img/no_screen.png' : $value->image;
-        $date = $value->start_date == $value->end_date ? Common::TransformDate($value->start_date, 'FULL') : Common::TransformDate($value->end_date, 'FULL', 'NONE').' - ' .Common::TransformDate($value->start_date, 'FULL', 'NONE');
+        $date = $value->start_date == $value->end_date ? Common::TransformDate($value->start_date, 'FULL') : Common::TransformDate($value->start_date, 'FULL', 'NONE').' - ' .Common::TransformDate($value->end_date, 'FULL', 'NONE');
     ?>
     <div class="calendar_list">
         <div class="calendar_list_img">

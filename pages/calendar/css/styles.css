@@ -46,7 +46,7 @@ section#calendar_list {
 .calendar_list_infos_desc {
     background-color: #FFF;
     color: #333333;
-    height: 100px;
+    height: 55px;
     overflow-y: auto;
     padding: 15px;
     margin-top: 5px;

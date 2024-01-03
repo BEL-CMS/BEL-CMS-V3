@@ -1,13 +1,16 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -22,12 +25,29 @@ final class ModelsGallery
 	# TABLE_GALLERY
 	# TABLE_GALLERY_CAT
 	#####################################
-	public function GetImg ()
+	public function getImg ($id = null)
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_GALLERY');
-		$sql->queryAll();
-		return $sql->data;
+		if ($id === null) {
+			$sql->queryAll();
+			if (!empty($sql->data)) {
+				$data = $sql->data;
+				foreach ($data as $key => $value) {
+					if (!empty($value->cat)) {
+						$data[$key]->cat = self::GetNameCat($value->cat)->name;
+					}
+				}
+				return $data;
+			}
+		} else if (is_integer($id)) {
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->queryOne();
+			if (!empty($sql->data)) {
+				$data = $sql->data;
+			}
+			return $data;
+		}
 	}
 
 	public function GetNameCat ($id = null)
@@ -35,44 +55,210 @@ final class ModelsGallery
 		$sql = New BDD();
 		$sql->table('TABLE_GALLERY_CAT');
 
-		if ($id !== null && is_numeric($id)) {
-			$id = (int) $id;
+		if ($id !== null) {
 			$where = array(
-				'name' => 'cat',
+				'name' => 'id',
 				'value' => $id
 			);
 			$sql->where($where);
-			if (!empty($this->data)){
-				
+			$sql->queryOne();
+			if (!empty($sql->data)){
+				return $sql->data;
 			}
+		} elseif ($id == null) {
+			$sql->queryAll();
+			return $sql->data;
 		}
 	}
+
+	public function sendEdit ($data)
+	{
+		if (is_array($data)) {
+			$id = (int) $data['id'];
+			if (isset($_FILES['image'])):
+				$image = Common::Upload('image', 'uploads/gallery', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
+				if ($image == constant('UPLOAD_FILE_SUCCESS')):
+					$update['image'] = 'uploads/gallery/'.$_FILES['image']['name'];
+					@unlink(ROOT.DS.$data['remove']);
+				endif;
+			endif;
+			$update['cat']  = Common::VarSecure($data['cat'], null);
+			$update['name'] = Common::VarSecure($data['name'], null);
+			$sql = New BDD();
+			$sql->table('TABLE_GALLERY');
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->update($update);
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDITING_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);	
+		}
+		return $return;
+	}
+
+	public function sendDel ($id)
+	{
+		$id = (int) $id;
+		// Retire l'image du FTP
+		$remove = self::getImg($id);
+		@unlink(ROOT.DS.$remove->image);
+		// SQL DELETE
+		$sql = New BDD();
+		$sql->table('TABLE_GALLERY');
+		$sql->where(array('name'=>'id','value' => $id));
+		$sql->delete();
+		// SQL RETURN NB DELETE
+		if ($sql->rowCount == true) {
+			$return = array(
+				'type' => 'success',
+				'text' => constant('DEL_SUCCESS')
+			);
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('DEL_ERROR')
+			);
+		}
+		return $return;
+	}
+
+	public function sendAddCat ($data)
+	{
+		if (is_array($data)) {
+			if (isset($_FILES['image'])):
+				$image = Common::Upload('image', 'uploads/gallery/cat', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
+				if ($image == constant('UPLOAD_FILE_SUCCESS')):
+					$insert['screen'] = 'uploads/gallery/cat/'.$_FILES['image']['name'];
+				endif;
+			endif;
+			$insert['name'] = Common::VarSecure($data['name'], null);
+			$sql = New BDD();
+			$sql->table('TABLE_GALLERY_CAT');
+			$sql->insert($insert);
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('ADD_FILE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);	
+		}
+		return $return;
+
+	}
+
+	public function sendEditCat ($data)
+	{
+		if (is_array($data)) {
+			$id = (int) $data['id'];
+			if (isset($_FILES['image'])):
+				$image = Common::Upload('image', 'uploads/gallery/cat', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
+				if ($image == constant('UPLOAD_FILE_SUCCESS')):
+					$update['screen'] = 'uploads/gallery/cat/'.$_FILES['image']['name'];
+					@unlink(ROOT.DS.$data['remove']);
+				endif;
+			endif;
+			$update['name'] = Common::VarSecure($data['name'], null);
+			$sql = New BDD();
+			$sql->table('TABLE_GALLERY_CAT');
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->update($update);
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDITING_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);	
+		}
+		return $return;
+	}
+
+	public function delcat ($id)
+	{
+		if ($id !== null && is_numeric($id)) {
+			// SQL DELETE
+			$sql = New BDD();
+			$sql->table('TABLE_GALLERY_CAT');
+			$sql->where(array('name'=>'id','value' => $id));
+			$sql->delete();
+			// SQL RETURN NB DELETE
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('DEL_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('DEL_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ID_ERROR')
+			);
+		}
+		return $return;
+	}
+
 	public function sendadd ($data)
 	{
 		$insert['name']        = Common::SecureRequest($data['name']);
 		$insert['description'] = Common::VarSecure($data['description'], 'html');
-		$insert['uploader']    = $_SESSION['USER']['HASH_KEY'];
-		if (isset($_FILES['image'])):
+		$insert['uploader']    = $_SESSION['USER']->user->hash_key;
+		$insert['cat']         = Common::VarSecure($data['cat'], null);
+		if (isset($_FILES['image'])) {
 			$image = Common::Upload('image', 'uploads/gallery', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
-			if ($image = UPLOAD_FILE_SUCCESS):
-				$insert['image'] = 'uploads'.DS.'gallery'.DS.'image'.DS.$_FILES['image']['name'];
+			if ($image == constant('UPLOAD_FILE_SUCCESS')):
+				$insert['image'] = 'uploads'.DS.'gallery'.DS.$_FILES['image']['name'];
 			endif;
-		else:
+		} else {
 			$return = array(
 				'type' => 'error',
 				'text' => 'Erreur de transfert'
 			);
 			return $return;
-		endif;
+		}
 
 		$sql = New BDD();
 		$sql->table('TABLE_GALLERY');
 		$sql->insert($insert);
-		$sql->insert();
 
 		$return = array(
 			'type' => 'success',
-			'text' => ADD_FILE_SUCCESS
+			'text' => constant('ADD_FILE_SUCCESS')
 		);
 		return $return;
 	}
@@ -80,8 +266,11 @@ final class ModelsGallery
 	public function sendparameter($data = null)
 	{
 		if ($data !== false) {
+			$data['MAX_IMG']      = (int) $data['MAX_IMG'];
+			$opt                  = array('MAX_IMG' => $data['MAX_IMG']);
 			$data['admin']        = isset($data['admin']) ? $data['admin'] : array(1);
 			$data['groups']       = isset($data['groups']) ? $data['groups'] : array(1);
+			$upd['config']        = Common::transformOpt($opt, true);
 			$upd['active']        = isset($data['active']) ? 1 : 0;
 			$upd['access_admin']  = implode("|", $data['admin']);
 			$upd['access_groups'] = implode("|", $data['groups']);
@@ -89,26 +278,24 @@ final class ModelsGallery
 			$sql = New BDD();
 			$sql->table('TABLE_PAGES_CONFIG');
 			$sql->where(array('name' => 'name', 'value' => 'gallery'));
-			$sql->insert($upd);
-			$sql->update();
+			$sql->update($upd);
 			if ($sql->rowCount == 1) {
 				$return = array(
 					'type' => 'success',
-					'text' => EDIT_DL_PARAM_SUCCESS
+					'text' => constant('EDIT_DL_PARAM_SUCCESS')
 				);
 			} else {
 				$return = array(
 					'type' => 'warning',
-					'text' => EDIT_DL_PARAM_ERROR
+					'text' => constant('EDIT_DL_PARAM_ERROR')
 				);
 			}
 		} else {
 			$return = array(
 				'type' => 'warning',
-				'text' => ERROR_NO_DATA
+				'text' => constant('ERROR_NO_DATA')
 			);
 		}
 		return $return;
 	}
-
 }

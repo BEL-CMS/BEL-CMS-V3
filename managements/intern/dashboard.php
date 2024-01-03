@@ -190,7 +190,7 @@ $php    = PHP_VERSION;
 			</div>
 
 			<div class="p-6">
-
+				<div class="quick-events" data-view="calendar" data-layout="full" data-start="monday"></div>
 			</div>
 		</div>
 	</div>

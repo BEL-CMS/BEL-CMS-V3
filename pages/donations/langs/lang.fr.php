@@ -10,7 +10,7 @@
  */
 
 namespace BELCMS\LANG;
-use BelCMS\Requires\Common as Common;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -49,5 +49,4 @@ Common::constant(array(
     'I_PROMISE'             => 'Je promets',
     'THX_DONATE'            => 'Merci pour votre promesse de don<br>Il sera visible dans votre profil, une fois reçus',
     'PAYPAL_ERROR'          => 'Le paiement n\'a pas pu s\'effectue avec succès, aucun retrait n\'est fait',
-
 ));
