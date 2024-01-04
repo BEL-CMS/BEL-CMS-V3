@@ -5,7 +5,7 @@
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -60,14 +60,16 @@ function checkWriteConfig ()
 		}
 	}
 }
+
 function checkWriteUploads ()
 {
 	$dir = ROOT.DS.'uploads';
 	if (!is_dir($dir)) {
-	    mkdir($dir, 0755, true);
+	    mkdir($dir, 0777, true);
 	}
 	$write = substr(sprintf('%o', fileperms($dir)), -4);
-	if ($write == '0755') {
+
+	if ($write == '0777') {
 		return true;
 	} else {
 		if (is_writable($dir) === true) {
@@ -80,6 +82,7 @@ function checkWriteUploads ()
 function checkWriteCustom ()
 {
 	$dir = ROOT.DS.'templates'.DS.'default'.DS.'custom';
+
 	if (!is_dir($dir)) {
 	    mkdir($dir, 0755, true);
 	}
@@ -119,12 +122,15 @@ function checkPDOConnect ($d)
 
 function createConfig ()
 {
+	if (is_writable(ROOT.'config') !== true) {
+		@chmod(ROOT.'config', 0775);
+	}
 	if (is_writable(ROOT.'config') === false) {
 		trigger_error("No Writable dir : ".ROOT."config", E_USER_ERROR);
 	}
 	$dirFile = ROOT.'config'.DS.'config.pdo.php';
 	if (is_file($dirFile)) {
-		@chmod($dirFile, 0700);
+		@chmod($dirFile, 0775);
 		@copy($dirFile, $dirFile.'_'.date('d-m-Y-H-i'));
 		unlink($dirFile);
 	}
@@ -142,7 +148,7 @@ function configIncPhp ()
 	$content .= "* @link https://bel-cms.dev".PHP_EOL;
 	$content .= "* @link https://determe.be".PHP_EOL;
 	$content .= "* @license http://opensource.org/licenses/GPL-3.0.-copyleft".PHP_EOL;
-	$content .= "* @copyright 2015-2023 Bel-CMS".PHP_EOL;
+	$content .= "* @copyright 2015-2024 Bel-CMS".PHP_EOL;
 	$content .= "* @author as Stive - stive@determe.be".PHP_EOL;
 	$content .= "*/".PHP_EOL;
 	$content .= "\$BDD = 'server';".PHP_EOL;
