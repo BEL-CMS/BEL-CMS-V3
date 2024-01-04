@@ -23,7 +23,7 @@ endif;
 
 final class Gallery
 {
-    public function getImg ($id = null)
+	public function getImg ($id = null)
     {
 		$sql = New BDD();
 		$sql->table('TABLE_GALLERY');

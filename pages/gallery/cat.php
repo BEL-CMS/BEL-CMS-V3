@@ -1,4 +1,5 @@
 <?php
+use BelCMS\Core\Notification;
 use BelCMS\Requires\Common;
 /**
  * Bel-CMS [Content management system]
@@ -34,30 +35,32 @@ endif;
 		</form>
 		<?php
 		endif;
-		foreach ($img['img'] as $key => $value):
-		?>
-		<div class="gallery">
-			<a data="Voir en popup" href="<?=$value->image;?>" class="belcms_tooltip_top image-popup">
-				<img src="<?=$value->image;?>">
-			</a>
-			<div class="gallery_row">
-				<span>Titre : </span>
-				<span><?=$value->name;?></span>
+		if (!empty($img['img'])):
+			foreach ($img['img'] as $key => $value):
+			?>
+			<div class="gallery">
+				<a data="Voir en popup" href="<?=$value->image;?>" class="belcms_tooltip_top image-popup">
+					<img src="<?=$value->image;?>">
+				</a>
+				<div class="gallery_row">
+					<span>Titre : </span>
+					<span><?=$value->name;?></span>
+				</div>
+				<div class="gallery_row">
+					<span>Publication : </span>
+					<span><?=Common::TransformDate($value->date_insert, 'FULL', 'NONE')?></span>
+				</div>
+				<div class="gallery_row">
+					<span>Vu : </span>
+					<span><?=$value->view;?></span>
+				</div>
+				<button class="belcms_tooltip_left belcms_btn belcms_bg_grey" data="Voir plus de détail" onclick="window.location.href='gallery/Detail/<?=$value->id?>'">Voir plus de détail</button>
 			</div>
-			<div class="gallery_row">
-				<span>Publication : </span>
-				<span><?=Common::TransformDate($value->date_insert, 'FULL', 'NONE')?></span>
-			</div>
-			<div class="gallery_row">
-				<span>Vu : </span>
-				<span><?=$value->view;?></span>
-			</div>
-			<button class="belcms_tooltip_left belcms_btn belcms_bg_grey" data="Voir plus de détail" onclick="window.location.href='gallery/Detail/<?=$value->id?>'">Voir plus de détail</button>
-		</div>
-		<?php
-		endforeach;
-		?>
-		<?php
+			<?php
+			endforeach;
+		else:
+			Notification::error(constant('NO_IMAGES_IN_DATABASE'), constant('GALLERY'));
+		endif;
 		if (!empty($pagination)):
 		?>
 			<div class="bel_cms_index_footer">

@@ -1,4 +1,5 @@
 <?php
+use BelCMS\Core\Notification;
 use BelCMS\Requires\Common;
 /**
  * Bel-CMS [Content management system]
@@ -14,6 +15,9 @@ if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+if (empty($category['cat']) && empty($img['img'])) {
+    Notification::warning(constant('NO_IMAGES_IN_DATABASE'), constant('GALLERY'));
+}
 ?>
 <section id="section_gallery">
         <?php
@@ -34,27 +38,29 @@ endif;
         </form>
         <?php
         endif;
-        foreach ($img['img'] as $key => $value):
-        ?>
-        <div class="gallery">
-            <a data="Voir en popup" href="<?=$value->image;?>" class="belcms_tooltip_top image-popup">
-                <img src="<?=$value->image;?>">
-            </a>
-            <div class="gallery_row">
-                <span>Titre : </span>
-                <span><?=$value->name;?></span>
+        if (!empty($img['img'])):
+            foreach ($img['img'] as $key => $value):
+            ?>
+            <div class="gallery">
+                <a data="Voir en popup" href="<?=$value->image;?>" class="belcms_tooltip_top image-popup">
+                    <img src="<?=$value->image;?>">
+                </a>
+                <div class="gallery_row">
+                    <span>Titre : </span>
+                    <span><?=$value->name;?></span>
+                </div>
+                <div class="gallery_row">
+                    <span>Publication : </span>
+                    <span><?=Common::TransformDate($value->date_insert, 'FULL', 'NONE')?></span>
+                </div>
+                <div class="gallery_row">
+                    <span>Vu : </span>
+                    <span><?=$value->view;?></span>
+                </div>
+                <button class="belcms_tooltip_left belcms_btn belcms_bg_grey" data="Voir plus de détail" onclick="window.location.href='gallery/Detail/<?=$value->id?>'">Voir plus de détail</button>
             </div>
-            <div class="gallery_row">
-                <span>Publication : </span>
-                <span><?=Common::TransformDate($value->date_insert, 'FULL', 'NONE')?></span>
-            </div>
-            <div class="gallery_row">
-                <span>Vu : </span>
-                <span><?=$value->view;?></span>
-            </div>
-            <button class="belcms_tooltip_left belcms_btn belcms_bg_grey" data="Voir plus de détail" onclick="window.location.href='gallery/Detail/<?=$value->id?>'">Voir plus de détail</button>
-        </div>
-        <?php
-        endforeach;
+            <?php
+            endforeach;
+        endif;
         ?>
 </section>

@@ -18,5 +18,18 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 Common::constant(array(
-    
+	#####################################
+	# Fichier lang en français - Pages gallery
+	#####################################
+    'NO_IMAGES_IN_DATABASE' => 'Aucune image dans la base de données',
+	'ADD_FILE_SUCCESS'      => 'Ajouté avec succès',
+	'DESCRITPION'           => 'Description',
+	'GALLERY'               => 'Gallerie d\'images',
+	'SCREEN'                => 'Images',
+	'GALLERY_CAT'           => 'Gallerie - Catégories',
+	'NO_CATEGORY'           => 'Aucune catégorie',
+	'CATEGORY'              => 'Catégorie',
+	'GALLERY_ACTIVE'        => 'Activer la gallerie',
+	'MAX_IMG'               => 'Maximum d\'images à afficher',
+	'UNKNOW_IMG'            => 'Aucune image trouver',
 ));
