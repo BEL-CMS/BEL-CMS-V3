@@ -16,5 +16,10 @@ if (typeof jQuery === 'undefined') {
         $(location).attr('href', url);
     });
 
+    $('#gallery_img_input').click(function() {
+        var copyText = document.getElementById("gallery_img_input");
+        navigator.clipboard.writeText(copyText.value);
+    });
+    
     console.log("Chargement JS Gallery BEL-CMS script Ok");
 })(jQuery);

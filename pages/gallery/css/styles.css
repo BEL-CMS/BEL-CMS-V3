@@ -72,3 +72,50 @@ ul#ul_gallery li img {
 #gallery_form {
     margin: 15px;
 }
+#gallery_img_left {
+    width: 240px;
+}
+#gallery_img_right {
+    width: calc(100% - 270px);
+}
+#gallery_img_right,
+#gallery_img_left {
+    display: block;
+    float: left;
+    padding: 15px;
+}
+#gallery_img_right {
+    margin: 15px;
+}
+#gallery_img_left img {
+    display: block;
+    width: 240px;
+    height: 175px;
+}
+#gallery_img_right ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+}
+#gallery_img_right ul li {
+    display: flex;
+    border-bottom: 1px dotted #32a1ce;
+}
+#gallery_img_right ul li span {
+    width: 50%;
+    line-height: 25px;
+}
+#gallery_img_right ul li span:first-child {
+    font-weight: bold;
+}
+#gallery_img_right ul li:last-child {
+    border: none;
+}
+#gallery_img_right ul li span:last-child {
+    text-align: right;
+}
+#gallery_img_right input {
+    cursor: pointer;
+}

@@ -100,4 +100,35 @@ final class Gallery
 
         }
     }
+
+	public function getImgDetail ($id = null)
+	{
+		$return = (object) array();
+		if (is_numeric($id)) {
+            $sql = New BDD();
+            $sql->table('TABLE_GALLERY');
+            $sql->where(array('name' => 'id', 'value' => $id));
+            $sql->queryOne();
+			$return = $sql->data;
+			$cat = self::getCat($return->cat);
+			$catName = !empty($cat->name) ? $cat->name : constant('NO_CATEGORY');
+			$return->cat = $catName;
+		}
+		return $return;
+	}
+
+	public function plusOneView ($id = null): bool
+	{
+		if (is_numeric($id)) {
+			$img = self::getImgDetail($id);
+			$number = $img->view;
+			$number = $number + 1;
+            $sql = New BDD();
+			$update['view'] = $number;
+            $sql->table('TABLE_GALLERY');
+            $sql->where(array('name' => 'id', 'value' => $id));
+			$sql->update($update);
+			return $sql->rowCount;
+		}
+	}
 }

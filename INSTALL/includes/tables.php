@@ -770,7 +770,10 @@ switch ($_POST['table']) {
 			('', 0, 'user'),
 			('', 0, 'news'),
 			('', 0, 'mails'),
-			('', 0, 'games');";
+			('', 0, 'games'),
+			('', 0, 'guestbook'),
+			('', 0, 'donations'),
+			('', 0, 'gallery');";
 	break;
 
 	case "page_survey":

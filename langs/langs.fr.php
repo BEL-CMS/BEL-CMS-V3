@@ -392,6 +392,7 @@ $array = array(
 	'MANAGEMENTS'                         => 'Administration',
 	'GUESTBOOK'                           => 'Livre d\'or',
 	'DONATIONS'                           => 'Don',
+	'GALLERY'                             => 'Gallerie d\'images',
 	#####################################
 	# USER
 	#####################################

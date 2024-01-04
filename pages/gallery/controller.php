@@ -44,4 +44,17 @@ class Gallery extends Pages
         $this->set($img);
         $this->render('cat');
     }
+
+    public function detail ()
+    {
+        $id = (int) $this->data[2];
+        $data['img'] = $this->models->getImgDetail($id);
+        if (!empty($data['img'])) {
+            $this->models->plusOneView($id);
+        }
+        $cat['category']['cat'] = $this->models->getCat();
+        $this->set($cat);
+        $this->set($data);
+        $this->render('detail');
+    }
 }
