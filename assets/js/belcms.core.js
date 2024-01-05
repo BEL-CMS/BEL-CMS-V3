@@ -72,6 +72,15 @@ if (typeof jQuery === 'undefined') {
 		$('.colorpicker').colorpicker();
 	}
 
+    var icons = {
+        header: "ui-icon-circle-arrow-e",
+        activeHeader: "ui-icon-circle-arrow-s"
+    }
+
+	$(".bel_cms_accordion").accordion({
+		heightStyle: "content",
+		icons: icons
+	  });
 
 	bel_cms_private_message();
 
