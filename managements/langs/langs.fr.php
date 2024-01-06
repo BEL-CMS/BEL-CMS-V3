@@ -46,4 +46,8 @@ Common::constant(array(
 	'CATEGORY'                    => 'Catégories',
 	'SEND_EDIT_SUCCESS'           => 'Édition a été effectuée avec succès',
 	'ACTIVE'                      => 'Activer',
+	'CAT_IS_REQUIRED'             => 'Une catégorie est obligatoire.',
+	'QUESTION'                    => 'Question',
+	'SEND_SUCCESS'                => 'Insertion en base de donnée avec succès',
+	'EMPTY_NAME'                  => 'Aucun nom transmis ?',
 ));

@@ -21,10 +21,19 @@ endif;
 
 class faq extends Pages
 {
-	var $useModels = 'Downloads';
+	var $useModels = 'FAQ';
 
 	public function index ()
     {
+        $get['cat'] = $this->models->getCat();
+        $this->set($get);
         $this->render('index');
+    }
+
+    public function search ()
+    {
+        $data['search'] = $this->models->search($_GET['search']);
+        $this->set($data);
+        $this->render('search');
     }
 }

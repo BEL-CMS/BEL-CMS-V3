@@ -249,6 +249,28 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
+	case 'faq':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(128) NOT NULL,
+			`content` text,
+			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`id_cat` int NOT NULL,
+			`publish` varchar(32) NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case 'faq_cat':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(64) NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
 	case 'gallery':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -773,7 +795,8 @@ switch ($_POST['table']) {
 			('', 0, 'games'),
 			('', 0, 'guestbook'),
 			('', 0, 'donations'),
-			('', 0, 'gallery');";
+			('', 0, 'gallery'),
+			('', 0, 'faq');";
 	break;
 
 	case "page_survey":

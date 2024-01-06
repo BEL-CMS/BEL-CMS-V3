@@ -87,6 +87,8 @@ class BelCMS
 			'emoticones',
 			'events',
 			'events_cat',
+			'faq',
+			'faq_cat',
 			'gallery',
 			'gallery_cat',
 			'games',

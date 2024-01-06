@@ -21,6 +21,8 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - FAQ
 	#####################################
-    'GET_YOU_QUESTION'    => 'Obtenez des réponses à vos questions',
-    'FIND_ANSWERS_SEARCH' => 'Trouvez ci-dessous les réponses aux questions les plus fréquemment posées.', 
+    'GET_YOU_QUESTION'       => 'Obtenez des réponses à vos questions',
+    'FIND_ANSWERS_SEARCH'    => 'Trouvez ci-dessous les réponses aux questions les plus fréquemment posées.',
+    'SEARCH_AND_PRESS_ENTER' => 'Rechercher et appuyer sur enter, laisser le champ vide pour revenir au début',
+    'NO_INFO_LOOKING'        => 'Aucune information à votre recherche',
 ));

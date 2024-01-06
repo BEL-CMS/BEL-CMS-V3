@@ -393,6 +393,7 @@ $array = array(
 	'GUESTBOOK'                           => 'Livre d\'or',
 	'DONATIONS'                           => 'Don',
 	'GALLERY'                             => 'Gallerie d\'images',
+	'FAQ'                                 => 'Foire aux questions',
 	#####################################
 	# USER
 	#####################################
