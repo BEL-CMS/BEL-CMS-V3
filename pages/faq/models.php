@@ -35,7 +35,7 @@ final class FAQ
         foreach ($return as $key => $value) {
             $getFaq = self::getFaq($value->id);
             if ($getFaq !== false) {
-                $return[$key]->faq[] = $getFaq;
+                $return[$key]->faq = $getFaq;
             } else {
                 $return[$key]->faq = false;
             }
@@ -49,7 +49,7 @@ final class FAQ
         $sql = new BDD;
         $sql->table('TABLE_FAQ');
         $sql->where(array('name' => 'id_cat', 'value' => $id));
-        $sql->queryOne();
+        $sql->queryAll();
         if (!empty($sql->data)) {
             return $sql->data;
         } else {
