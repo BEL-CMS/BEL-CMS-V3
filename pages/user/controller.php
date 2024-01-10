@@ -191,7 +191,7 @@ class User extends Pages
 		if (!isset($return['pass'])) {
 			$this->error = true;
 			$this->errorInfos = array($return['type'], $return['msg'], constant('PASSWORD'), false);
-			$this->redirect('User/LostPassword', 3);
+			$this->redirect('User/LostPassword?echo', 3);
 		} else {
 			$this->error = true;
 			$this->errorInfos = array($return['type'], $return['msg'], constant('PASSWORD'), false);

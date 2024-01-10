@@ -441,7 +441,7 @@ final class User
 	{
 		if ($data) {
 			if (strpos($data['value'], '@')) {
-				$type = 'email';
+				$type = 'mail';
 			} else {
 				$type = 'username';
 			}
@@ -471,7 +471,7 @@ final class User
 					$mail = array(
 						'subject'  => 'Demande de nouveau mot de passe',
 						'content'  => self::contentMail('Token', $contentMail),
-						'sendMail' => $results['email']
+						'sendMail' => $results['mail']
 					);
 					$returnMail = Common::sendMail($mail);
 					if ($returnMail) {
@@ -521,20 +521,21 @@ final class User
 							$sql = New BDD();
 							$sql->table('TABLE_USERS');
 							$sql->where(array('name' => $type,'value'=> $data['value']));
-							$sql->update(array('password'=>$password,'token'=>''));
+							$sql->update(array('password'=>$password,'token'=>'', 'expire' => 0));
 
 							$contentMail = '';
 							$contentMail .= $generatePass;
+							$name = defined('CMS_WEBSITE_NAME') ? constant('CMS_WEBSITE_NAME') : 'Nom inconnu';
+							$mailInconnu = defined('CMS_MAIL_WEBSITE') ? constant('CMS_MAIL_WEBSITE') : 'no_reply@bel-cms.dev';
 							$mail = array(
-								'name'     => constant('CMS_WEBSITE_NAME'),
-								'mail'     => constant('CMS_MAIL_WEBSITE'),
+								'name'     => $name,
+								'mail'     => $mailInconnu,
 								'subject'  => 'Demande de nouveau mot de passe',
 								'content'  => self::contentMail('Mot de passe', $contentMail),
-								'sendMail' => $results['email']
+								'sendMail' => $results['mail']
 							);
 
 							$returnMail = Common::sendMail($mail);
-
 							$return['msg']  = 'Voici votre nouveau mot de passe : '. $generatePass;
 							$return['type'] = 'success';
 							$return['pass'] = true;
