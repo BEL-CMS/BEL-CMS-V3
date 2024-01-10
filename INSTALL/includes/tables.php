@@ -693,20 +693,8 @@ switch ($_POST['table']) {
 				`date_post` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				`attachment` varchar(128) NOT NULL,
 				`content` text NOT NULL,
-				PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-	break;
-
-	case "page_forum_posts":
-			$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-			$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-				`id` int NOT NULL AUTO_INCREMENT,
-				`id_post` int NOT NULL,
-				`author` varchar(32) NOT NULL,
-				`options` text NOT NULL,
-				`date_post` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				`attachment` varchar(255) NOT NULL,
-				`content` text NOT NULL,
+				`lockpost` int NOT NULL,
+				`viewpost` int NOT NULL,
 				PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
