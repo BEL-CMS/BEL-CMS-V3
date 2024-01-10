@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
 */
 
@@ -17,9 +17,9 @@ endif;
 if (defined('DB_PREFIX')) { $DB_PREFIX = constant('DB_PREFIX'); } else { $DB_PREFIX = ''; }
 
 $tables = array(
-	#########################################
+	##########################
 	# Tables
-	#########################################
+	##########################
 	'TABLE_ARTICLES'            => $DB_PREFIX.'articles',
 	'TABLE_ARTICLES_CONTENT'    => $DB_PREFIX.'articles_content',
 	'TABLE_BAN'                 => $DB_PREFIX.'ban',
@@ -72,6 +72,7 @@ $tables = array(
 	'TABLE_SURVEY_AUTHOR'       => $DB_PREFIX.'page_survey_author',
 	'TABLE_PAYPAL'              => $DB_PREFIX.'paypal',
 	'TABLE_PURCHASE'            => $DB_PREFIX.'paypal_purchase',
+	'TABLE_UPLOADS'             => $DB_PREFIX.'uploads_admin',
 	'TABLE_USERS'               => $DB_PREFIX.'users',
 	'TABLE_USERS_GAMING'        => $DB_PREFIX.'users_gaming',
 	'TABLE_USERS_GROUPS'        => $DB_PREFIX.'users_groups',
@@ -80,6 +81,7 @@ $tables = array(
 	'TABLE_USERS_SOCIAL'        => $DB_PREFIX.'users_social',
 	'TABLE_VISITORS'            => $DB_PREFIX.'visitors',
 	'TABLE_WIDGETS'             => $DB_PREFIX.'widgets',
+	#####################################################
 );
 foreach ($tables as $name => $value) {
 	define($name, $value); unset($tables);
