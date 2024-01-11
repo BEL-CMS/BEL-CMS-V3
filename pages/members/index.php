@@ -9,126 +9,92 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Config;
+use BelCMS\Core\Secure;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
 <section id="belcms_section_members_main">
-	<?php
+<?php
 	foreach ($members as $a):
-		$avatar = empty($a->profils->avatar) ? constant('DEFAULT_AVATAR') : $a->profils->avatar;
-		$link   = empty($a->profils->websites) ? '#' : $a->profils->websites;
-		$linkA  = empty($a->profils->websites) ? '' : 'class="active"';
-		$fba    = empty($a->social->facebook)  ? '' : 'class="active"';
-		$x      = empty($a->social->x_twitter) ? '' : 'class="active"';
-		$dc     = empty($a->social->discord)   ? '' : 'class="active"';
-		$pr     = empty($a->social->pinterest) ? '' : 'class="active"';
-		$li     = empty($a->social->linkedIn)  ? '' : 'class="active"';
-		$yt     = empty($a->social->youtube)   ? '' : 'class="active"';
-		$wsa    = empty($a->social->whatsapp)  ? '' : 'class="active"';
-		$ig     = empty($a->social->instagram) ? '' : 'class="active"';
-		$mr     = empty($a->social->messenger) ? '' : 'class="active"';
-		$tok    = empty($a->social->tiktok)    ? '' : 'class="active"';
-		$sc     = empty($a->social->snapchat)  ? '' : 'class="active"';
-		$st     = empty($a->social->telegram)  ? '' : 'class="active"';
-		$rt     = empty($a->social->reddit)    ? '' : 'class="active"';
-		$sk     = empty($a->social->skype)     ? '' : 'class="active"';
-		$vr     = empty($a->social->viber)     ? '' : 'class="active"';
-		$tms    = empty($a->social->teams_ms)  ? '' : 'class="active"';
-		$tc     = empty($a->social->twitch)    ? '' : 'class="active"';
+		$spanGroups = '';
+		foreach ($a->groups->all_groups as $v) {
+			$group = Config::getGroupsForID($v);
+			$name  = defined($group->name) ? constant($group->name) : $group->name;
+			$spanGroups .= '<span style=background:'.$group->color.';color:#FFF;>'.$name.'</span>'.PHP_EOL;
+		}
+		$avatar       = empty($a->profils->avatar)    ? constant('DEFAULT_AVATAR') : $a->profils->avatar;
+		$facebook     = !empty($a->social->facebook)  ? '<li><a class="belcms_tooltip_bottom" data="facebook" href="'.$a->social->facebook.'" target="_blank"><i class="fa-brands fa-facebook"></i></a></li>' : '';
+		$youtube      = !empty($a->social->youtube)   ? '<li><a class="belcms_tooltip_bottom" data="youtube" href="'.$a->social->youtube.'" target="_blank"><i class="fa-brands fa-youtube"></i></a></li>' : '';
+		$whatsapp     = !empty($a->social->whatsapp)  ? '<li><a class="belcms_tooltip_bottom" data="whatsapp" href="'.$a->social->whatsapp.'" target="_blank"><i class="fa-brands fa-whatsapp"></i></a></li>' : '';
+		$instagram    = !empty($a->social->instagram) ? '<li><a class="belcms_tooltip_bottom" data="instagram" href="'.$a->social->instagram.'" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>' : '';
+		$messenger    = !empty($a->social->messenger) ? '<li><a class="belcms_tooltip_bottom" data="messenger" href="'.$a->social->messenger.'" target="_blank"><i class="fa-brands fa-facebook-messenger"></i></a></li>' : '';
+		$tiktok       = !empty($a->social->tiktok)    ? '<li><a class="belcms_tooltip_bottom" data="tiktok" href="'.$a->social->tiktok.'" target="_blank"><i class="fa-brands fa-tiktok"></i></a></li>' : '';
+		$snapchat     = !empty($a->social->snapchat)  ? '<li><a class="belcms_tooltip_bottom" data="snapchat" href="'.$a->social->snapchat.'" target="_blank"><i class="fa-brands fa-snapchat"></i></a></li>' : '';
+		$telegram     = !empty($a->social->telegram)  ? '<li><a class="belcms_tooltip_bottom" data="telegram" href="'.$a->social->telegram.'" target="_blank"><i class="fa-brands fa-telegram"></i></a></li>' : '';
+		$pinterest    = !empty($a->social->pinterest) ? '<li><a class="belcms_tooltip_bottom" data="pinterest" href="'.$a->social->pinterest.'" target="_blank"><i class="fa-brands fa-pinterest-p"></i></a></li>' : '';
+		$x_twitter    = !empty($a->social->x_twitter) ? '<li><a class="belcms_tooltip_bottom" data="x_twitter" href="'.$a->social->x_twitter.'" target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a></li>' : '';
+		$reddit       = !empty($a->social->reddit)    ? '<li><a class="belcms_tooltip_bottom" data="reddit" href="'.$a->social->reddit.'" target="_blank"><i class="fa-brands fa-reddit"></i></a></li>' : '';
+		$linkedIn     = !empty($a->social->linkedIn)  ? '<li><a class="belcms_tooltip_bottom" data="linkedIn" href="'.$a->social->linkedIn.'" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a></li>' : '';
+		$skype        = !empty($a->social->skype)     ? '<li><a class="belcms_tooltip_bottom" data="skype" href="'.$a->social->skype.'" target="_blank"><i class="fa-brands fa-skype"></i></a></li>' : '';
+		$viber        = !empty($a->social->viber)     ? '<li><a class="belcms_tooltip_bottom" data="viber" href="'.$a->social->viber.'" target="_blank"><i class="fa-brands fa-viber"></i></a></li>' : '';
+		$teams_ms     = !empty($a->social->teams_ms)  ? '<li><a class="belcms_tooltip_bottom" data="teams_ms" href="'.$a->social->teams_ms.'" target="_blank"><i class="fa-brands fa-microsoft"></i></a></li>' : '';
+		$discord      = !empty($a->social->discord)   ? '<li><a class="belcms_tooltip_bottom" data="discord" href="'.$a->social->discord.'" target="_blank"><i class="fa-brands fa-discord"></i></a></li>' : '';
+		$twitch       = !empty($a->social->twitch)    ? '<li><a class="belcms_tooltip_bottom" data="twitch" href="'.$a->social->twitch.'" target="_blank"><i class="fa-brands fa-twitch"></i></a></li>' : '';
 		if (!file_exists($avatar)) {
 			$avatar = constant('DEFAULT_AVATAR');
 		}
-	?>
-	<div class="belcms_grid_4">
-		<div class="belcms_section_members_main_users">
-			<div class="belcms_section_members_main_avatar">
-				<img src="<?=$avatar;?>" alt="avatar_<?=$a->user->username;?>">
-			</div>
-			<h4 class="belcms_section_members_main_users_h4 align_center">
-				<a href="Members/profil/<?=$a->user->username;?>"><?=$a->user->username;?></a>
-			</h4>
-			<ul class="bel_cms_section_members_main_ul align_center">
-				<li data-tooltip="Lien" data-position="bottom" <?=$linkA;?>>
-					<a href="<?=$link;?>" target="_blank"><i class="fa-solid fa-link"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('FACEBOOK');?>" data-position="bottom" <?=$fba;?>>
-					<a href="<?=$a->social->facebook;?>" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('X_TWITTER');?>" data-position="bottom" <?=$x;?>>
-					<a href="<?=$a->social->x_twitter;?>" target="_blank"><i class="fa-brands fa-square-x-twitter"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('DISCORD');?>" data-position="bottom" <?=$dc;?>>
-					<a href="<?=$a->social->discord;?>" target="_blank"><i class="fa-brands fa-discord"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('PINTEREST');?>" data-position="bottom" <?=$pr;?>>
-					<a href="<?=$a->social->pinterest;?>" target="_blank"><i class="fa-brands fa-pinterest-p"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('LINKEDIN');?>" data-position="bottom" <?=$li;?>>
-					<a href="<?=$a->social->linkedIn;?>" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('YOUTUBE');?>" data-position="bottom" <?=$yt;?>>
-					<a href="<?=$a->social->youtube;?>" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('WHATSAPP');?>" data-position="bottom" <?=$wsa;?>>
-					<a href="<?=$a->social->whatsapp;?>" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('INSTAGRAM');?>" data-position="bottom" <?=$ig;?>>
-					<a href="<?=$a->social->instagram;?>" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('MESSENGER');?>" data-position="bottom" <?=$mr;?>>
-					<a href="<?=$a->social->messenger;?>" target="_blank"><i class="fa-brands fa-facebook-messenger"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('TIKTOK');?>" data-position="bottom" <?=$tok;?>>
-					<a href="<?=$a->social->tiktok;?>" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('SNAPCHAT');?>" data-position="bottom" <?=$sc;?>>
-					<a href="<?=$a->social->snapchat;?>" target="_blank"><i class="fa-brands fa-snapchat"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('TELEGRAM');?>" data-position="bottom" <?=$st;?>>
-					<a href="<?=$a->social->telegram;?>" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('REDDIT');?>" data-position="bottom" <?=$rt;?>>
-					<a href="<?=$a->social->reddit;?>" target="_blank"><i class="fa-brands fa-reddit"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('SKYPE');?>" data-position="bottom" <?=$sk;?>>
-					<a href="<?=$a->social->skype;?>" target="_blank"><i class="fa-brands fa-skype"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('VIBER');?>" data-position="bottom" <?=$vr;?>>
-					<a href="<?=$a->social->viber;?>" target="_blank"><i class="fa-brands fa-viber"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('TEAMS_MS');?>" data-position="bottom" <?=$tms;?>>
-					<a href="<?=$a->social->teams_ms;?>" target="_blank"><i class="fa-brands fa-microsoft"></i></a>
-				</li>
-				<li data-tooltip="<?=constant('TWITCH');?>" data-position="bottom" <?=$tc;?>>
-					<a href="<?=$a->social->twitch;?>" target="_blank"><i class="fa-brands fa-twitch"></i></a>
-				</li>
-			</ul>
-			<?php
-			if (isset($_SESSION['USER'])) {
-				if ($a->user->username == $_SESSION['USER']->user->username) {
-				?>
-					<div class="bel_cms_section_members_main_contact">
-						<a href="User"><i class="fa-solid fa-user-gear"></i> Gérer mon compte</a>
-					</div>
-				<?php
-				} else {
-					?>
-					<div class="bel_cms_section_members_main_contact">
-						<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="Mails/New?user=<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
-					</div>
-				<?php	
-				}
-			} else {
-			?>
-				<div class="bel_cms_section_members_main_contact">
-					<a data-tooltip="Envoyer un message à <?=$a->user->username;?>" data-position="top" href="Mails/New?user=<?=$a->user->username;?>"><i class="fa-solid fa-envelope-circle-check"></i> Me Contacter</a>
+	?> 
+	<div class="belcms_section_members_main_row"> 
+		<ul>
+			<li>
+				<div class="belcms_members_avatar">
+					<img src="<?=$avatar;?>" alt="avatar_<?=$a->user->username;?>">
 				</div>
-			<?php
-			}
-			?>
-		</div>
+				<div class="belcms_members_autor_content">
+					<div class="belcms_members_autor_content_title">
+						<h3><a href="Members/profil/<?=$a->user->username;?>"><?=$a->user->username;?></a>&ensp;/&ensp;<a class="belcms_tooltip_bottom" data="Envoyé un message privé" href="Mails/New?user=<?=$a->user->username;?>"><i class="fa-solid fa-envelope"></i></a></h3>
+						<ul class="belcms_autor_social">
+							<?php
+							echo $facebook;
+							echo $youtube; 
+							echo $whatsapp; 
+							echo $instagram;
+							echo $messenger;
+							echo $tiktok; 
+							echo $snapchat; 
+							echo $telegram; 
+							echo $pinterest;
+							echo $x_twitter;
+							echo $reddit; 
+							echo $linkedIn; 
+							echo $skype; 
+							echo $viber; 
+							echo $teams_ms; 
+							echo $discord;  
+							echo $twitch; 
+							?>
+						</ul>
+						<div class="belcms_members_autor_text">
+							<?=$a->profils->info_text;?>
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="belcms_autor_group">
+					<div class="fa fa-bars"></div> <span class="no_barre">Groupes</span>
+					<?=$spanGroups;?>
+					<?php
+					if (!empty($a->profils->websites) and Secure::isUrl($a->profils->websites)) {
+						echo '<a href="'.$a->profils->websites.'" class="belcms_autor_group_web">'.$a->profils->websites.'</a>';
+					}
+					?>
+				</div>
+			</li>
+		</ul>
 	</div>
 	<?php
 	endforeach;
