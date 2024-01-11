@@ -325,6 +325,8 @@ $array = array(
 	'PHP_TO_VERSION'                      => 'Version de PHP',
 	'NB_ARTICLE'                          => 'Nombre d\'article posté',
 	'NB_POST_FORUM'                       => 'Nombre de sujet posté',
+	'ADMIN_DELETE_SUCCESS'                => 'Le fichier a été supprimé avec succès',
+	'FILE_NO_EXIST'                       => 'Le fichier n\'existe pas sur le FTP',
 	#####################################
 	# Fichier lang en français - Pages BAN
 	#####################################
@@ -394,6 +396,8 @@ $array = array(
 	'DONATIONS'                           => 'Don',
 	'GALLERY'                             => 'Gallerie d\'images',
 	'FAQ'                                 => 'Foire aux questions',
+	'FILE_MANAGER'                        => 'Gestionnaire de fichiers',
+	'ARTICLES'                            => 'Articles',
 	#####################################
 	# USER
 	#####################################

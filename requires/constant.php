@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -28,6 +28,7 @@ $dir = array(
 	'DIR_UPLOADS_MAILS' 	=> ROOT.DS.'uploads'.DS.'mails'.DS,
 	'DIRE_USER'         	=> ROOT.DS.'users'.DS,
 	'DIR_WIDGETS'       	=> ROOT.DS.'widgets'.DS,
+	'DIR_TABLE_CUSTOM'      => ROOT.DS.'spdo'.DS.'custom'.DS,
 );
 foreach ($dir as $name => $value) {
 	if (!defined(strtoupper($name))) {

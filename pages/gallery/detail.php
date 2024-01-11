@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Comment;
 use BelCMS\Requires\Common;
 use BelCMS\User\User;
 
@@ -55,3 +56,7 @@ $cat  = !empty($img->cat) ? '<li><span>Catégorie</span><span>'.$img->cat.'</spa
         </ul>
     </figcaption>
 </section>
+<?php
+$comments = new Comment;
+$comments->html();
+?>

@@ -11,9 +11,11 @@ if (typeof jQuery === 'undefined') {
 	if ($("textarea").hasClass("bel_cms_textarea_full")) {
 		_initTinymceFull();
 	}
-
-	if ($('body').hasClass("bel_cms_copyleft")) {
-		$('body').append('<a id="bel_cms_copyleft" style="display:none" href="https://bel-cms.dev" title="BEL-CMS">Powered by Bel-CMS</a>');
+	
+	var copyleft = $("body").hasClass("bel_cms_copyleft");
+	if (copyleft === false) {
+		var new_element = jQuery('<a style="display: none;" class="bel_cms_copyleft" href="https://bel-cms.dev" title="BEL-CMS">Powered by Bel-CMS</a>');
+		$('body').append(new_element);
 	}
 
 	$('.alertAjaxForm').submit(function(event) {
@@ -77,10 +79,12 @@ if (typeof jQuery === 'undefined') {
         activeHeader: "ui-icon-circle-arrow-s"
     }
 
-	$(".bel_cms_accordion").accordion({
-		heightStyle: "content",
-		icons: icons
-	  });
+	if ($('body').hasClass("bel_cms_accordion")) {
+		$(".bel_cms_accordion").accordion({
+			heightStyle: "content",
+			icons: icons
+		});
+	}
 
 	bel_cms_private_message();
 
@@ -185,7 +189,6 @@ function bel_cms_alert_box (objet, type) {
 		data: dataValue,
 		success: function(data) {
 			var data = $.parseJSON(data);
-			alert(data);
 			console.log(data);
 			/* refresh page */
 			if (data.redirect == undefined) {

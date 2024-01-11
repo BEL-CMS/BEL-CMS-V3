@@ -1,20 +1,26 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+namespace Belcms\Pages\Models;
+
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class ModelsShoutbox
+class Shoutbox
 {
 	public function getMsg($id = false)
 	{
@@ -36,22 +42,22 @@ class ModelsShoutbox
 
 	public function insertMsg()
 	{
-		if (strlen($_SESSION['USER']['HASH_KEY']) != 32) {
+		if (strlen($_SESSION['USER']->user->hash_key) != 32) {
 			$return['text'] = 'Erreur HashKey';
 			$return['type'] = 'danger';
 			return $return;
 		} else {
-			$data['hash_key'] = $_SESSION['USER']['HASH_KEY'];
+			$data['hash_key'] = $_SESSION['USER']->user->hash_key;
 		}
 
 		$sql = new BDD;
 		$sql->table('TABLE_USERS');
-		$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']['HASH_KEY']));
+		$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 		$sql->queryOne();
 		$user = $sql->data;
 
 		if (empty($user->avatar) OR !is_file($user->avatar)) {
-			$data['avatar'] = DEFAULT_AVATAR;
+			$data['avatar'] = constant('DEFAULT_AVATAR');
 		} else {
 			$data['avatar'] = $_SESSION['user']->avatar;
 		}
@@ -67,7 +73,7 @@ class ModelsShoutbox
 		$sql = New BDD();
 		$sql->table('TABLE_SHOUTBOX');
 		$sql->insert($data);
-		if ($rowCount == 1) {
+		if ($rowCount == true) {
 			$return['text']	= 'Message envoyer avec succès';
 			$return['type']	= 'success';
 		} else {
@@ -91,7 +97,7 @@ class ModelsShoutbox
 
 		if (!empty($sql->data)) {
 			foreach ($sql->data as $k => $v) {
-				$sql->data[$k]->username = Users::hashkeyToUsernameAvatar($v->hash_key);
+				$sql->data[$k]->username = user::getInfosUserAll($v->hash_key)->user->username;
 				unset($sql->data[$k]->hash_key);
 			}
 			$return = $sql->data;

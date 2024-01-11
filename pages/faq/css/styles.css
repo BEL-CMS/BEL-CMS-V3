@@ -66,6 +66,7 @@
     text-align: left !important;
     color: #515151;
     font-weight: bold;
+    margin: 0 !important;
 }
 .ui-corner-top {
     border-radius: 0 !important;

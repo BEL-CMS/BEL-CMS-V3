@@ -1,13 +1,16 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+namespace BELCMS\LANG;
+use BelCMS\Requires\Common as Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -16,10 +19,6 @@ endif;
 
 Common::constant(array(
 	#####################################
-	# Fichier lang en français - Pages gallery
+	# Fichier lang en français - Users
 	#####################################
-	'EDIT_DL_PARAM_SUCCESS' => 'Edition des parametres effecté avec succès',
-	'EDIT_DL_PARAM_ERROR'   => 'Error lors de la sauvegarde des parametre',
-	'ERROR_NO_DATA'         => 'Erreur de transfert de données',
-	'ADD_FILE_SUCCESS'      => 'Ajouté avec succès',
 ));

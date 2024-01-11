@@ -69,6 +69,7 @@ final class BelCMS
 		$this->link	  = Dispatcher::page($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']);
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
+		$landing      = Dispatcher::link();
 		new User;
 		$unavailable = new \Maintenance;
 		if ($unavailable->status() == 'close') {
@@ -84,13 +85,11 @@ final class BelCMS
 				die();
 			}
 		}
-		if ($this->link == 'landing') {
-			$dirLanding = ROOT.DS.'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing.php';
-			if (is_file($dirLanding)) {
-				require_once $dirLanding;
-				die();
-			}
-		}
+		$dirLanding = ROOT.DS.'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing.php';
+		if ($_SESSION['CONFIG_CMS']['LANDING'] == '1' && is_file($dirLanding) && count($landing) == 0) {
+			require_once $dirLanding;
+			die();
+		} else {
 			$dir = constant('DIR_PAGES').strtolower($this->link).DS.'controller.php';
 			if (is_file($dir)) {
 				require_once $dir;
@@ -125,6 +124,7 @@ final class BelCMS
 				$content = ob_get_contents();
 				echo $content;
 			}
+		}
 
 		if (ob_get_length() != 0) {
 			ob_end_clean();

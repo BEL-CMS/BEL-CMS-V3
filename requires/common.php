@@ -172,15 +172,15 @@ final class Common
 							$fileExt = substr ($file, -4);
 							if (is_array($ext)) {
 								if (array_search($fileExt, $ext)) {
-									$return[] = ($full_access) ? $dir.$file : $file;
+									$return[] = ($full_access) ? $dir.DS.$file : $file;
 								}
 							} else {
 								if ($fileExt == $ext) {
-									$return[] = ($full_access) ? $dir.$file : $file;
+									$return[] = ($full_access) ? $dir.DS.$file : $file;
 								}
 							}
 						} else {
-							$return[] = ($full_access) ? $dir.$file : $file;
+							$return[] = ($full_access) ? $dir.DS.$file : $file;
 						}
 					}
 				}
@@ -856,5 +856,28 @@ final class Common
 		if (file_exists($file)) {
 			@unlink($file);
 		}
+	}
+
+	public static function zipAchive ($rootPath, $zipFileName)
+	{
+		$zip = new \ZipArchive();
+		$zipFileName = $zipFileName.'.zip';
+		$zip->open($zipFileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+		$files = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($rootPath),
+			\RecursiveIteratorIterator::LEAVES_ONLY
+		);
+
+		foreach ($files as $name => $file)
+		{
+		  if (!$file->isDir()) {
+			  $filePath = $file->getRealPath();
+			  $relativePath = substr($filePath, strlen($rootPath) + 1);
+			  $zip->addFile($filePath, $relativePath);
+			}
+		}
+
+		$zip->close();
 	}
 }

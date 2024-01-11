@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -255,12 +255,12 @@ final class ModelsDownloads
 		}
 
 		if (!empty($_FILES['download']['name'])) {
-			$dl = Common::Upload('download', 'uploads/downloads',
+			Common::Upload('download', 'uploads/downloads',
 			array(
 				'.png', '.bmp', '.gif', '.jpg', '.ico', '.svg', '.tiff', '.webp', '.jpeg', '.doc', '.txt', '.pdf', '.rar',
 				'.zip', '.7zip', '.exe', '.tar', '.psd', '.jar','.avi', '.mpg', '.mpeg', '.av4', '.ac3', '.docx', '.doc', '.mp3',
 				'.mp4', '.svg', '.tif', '.tiff', '.txt', '.3gp', '.3g2', '.xml', '.xls', '.xlsx', '.ppt', '.pptx', '.pkg',
-				'.iso', '.torrent'
+				'.iso', '.torrent', '.msi'
 				));
 			$insert['download'] = 'uploads/downloads/'.$_FILES['download']['name'];
 		} else {

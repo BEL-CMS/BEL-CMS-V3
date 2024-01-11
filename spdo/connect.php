@@ -34,7 +34,7 @@ class PDOConnection
 		$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
 		$pdo_options[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES utf8';
 
-		$DB_HOST    = constant('DB_HOST');
+		$DB_HOST = constant('DB_HOST');
 		$DB_PORT = constant('DB_PORT');
 		$DB_NAME = constant('DB_NAME');
 		$DB_USER = constant('DB_USER');

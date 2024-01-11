@@ -26,7 +26,7 @@ endif;
 			</div>
 			<div class="p-6">
 				<div class="overflow-x-auto">
-				<div class="mt-2 mb-2">
+					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
 						<input name="name" type="text" class="form-input" id="input-name" required="required">
 					</div>

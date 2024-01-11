@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -53,7 +53,7 @@ class Downloads extends AdminPages
 		$countCat = count($cat);
 
 		if ($countCat == 0):
-			$this->error(get_class($this), 'Une catégorie est obligatoire', 'warning');
+			$this->error(get_class($this), constant('CAT_IS_REQUIRED'), 'warning');
 			$this->redirect('downloads/addcat?management&option=pages', 2);
 		else:
 			$d['cat'] = $cat;
@@ -67,7 +67,7 @@ class Downloads extends AdminPages
 		$cat = $this->models->getCat();
 		$countCat = count($cat);
 		if ($countCat == 0):
-			$this->error(get_class($this), 'Une catégorie est obligatoire', 'warning');
+			$this->error(get_class($this), constant('CAT_IS_REQUIRED'), 'warning');
 			$this->redirect('downloads?management&option=pages', 2);
 
 		else:

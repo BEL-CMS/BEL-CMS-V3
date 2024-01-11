@@ -22,6 +22,7 @@ use BelCMS\Core\GetHost;
 	<script src="assets/plugins/quick-events/languages/lang.js"></script>
 	<script src="managements/assets/js/config.js"></script>
 	<script type="text/javascript">
+		/*
 		document.onreadystatechange = function() {
 			if (document.readyState != "complete") {
 				document.querySelector("body").style.visibility = "hidden";
@@ -31,12 +32,15 @@ use BelCMS\Core\GetHost;
 				document.querySelector("body").style.visibility = "visible";
 			}
 		};
+		*/
 	</script>
 </head>
 <body>
+	<!--
 	<div id="loading">
 		<div><img src="assets/img/loader_7.gif"><p><?=constant('DOWNLOADS_IS_PROGRESS');?></p></div>
 	</div>
+	-->
 	<div class="flex wrapper">
 		<div class="app-menu">
 			<a href="Dashboard?admin" class="logo-box">
@@ -285,6 +289,7 @@ use BelCMS\Core\GetHost;
 		</div>
 	</div>
 
+	<script src="managements/assets/js/extract.js"></script>
 	<script src="assets/plugins/glightbox/js/glightbox.min.js"></script>
 	<script src="assets/plugins/tooltip/popper.min.js"></script>
 	<script src="assets/plugins/tooltip/tippy-bundle.umd.min.js"></script>
