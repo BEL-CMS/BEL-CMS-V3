@@ -123,11 +123,17 @@ class Templates
 				}
 			}
 			foreach ($b as $k => $v) {
-				if ($v->groups_access == 0 or in_array(1, $_SESSION['USER']->groups->all_groups)) {
-					$return[$k] = $v;
+				if (isset($_SESSION['USER'])) {
+					if ($v->groups_access == 0 or in_array(1, $_SESSION['USER']->groups->all_groups)) {
+						$return[$k] = $v;
+					} else {
+						$a = explode('|', $v->groups_access);
+						if (in_array($_SESSION['USER']->groups->all_groups, $a)) {
+							$return[$k] = $v;
+						}
+					}
 				} else {
-					$a = explode('|', $v->groups_access);
-					if (in_array($_SESSION['USER']->groups->all_groups, $a)) {
+					if ($v->groups_access == 0) {
 						$return[$k] = $v;
 					}
 				}
