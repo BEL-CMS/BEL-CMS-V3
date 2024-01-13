@@ -33,4 +33,6 @@ Common::constant(array(
 	'MIME_TYPE'        => 'Type Mime',
 	'RELEASE_DATE'     => 'Date de parution',
 	'UPLOADER'         => 'Mise en ligne par',
+	'NO_DL_CAT'        => 'Aucun téléchargement dans cette catégorie',
+	'INVALID_DL'       => 'Tentative d\'accès au téléchargement interdit',
 ));

@@ -85,8 +85,24 @@ final class Downloads
 				'value' => $id
 			);
 			$sql->where($where);
-			$sql->queryAll();
-			return $sql->data;
+			$sql->queryOne();
+			$return = $sql->data;
+	
+			$sqlCat = New BDD();
+			$sqlCat->table('TABLE_DOWNLOADS_CAT');
+			$idCatwhere = array(
+				'name' => 'id',
+				'value' => $return->idcat
+			);
+			$sqlCat->where($idCatwhere);
+			$sqlCat->queryOne();
+			$returnCat = $sqlCat->data;
+
+			if (Secures::isAcess($returnCat->id_groups) == true) {
+				return $return;
+			} else {
+				return false;
+			}
 		}
 	}
 
@@ -115,7 +131,7 @@ final class Downloads
 			$returnCat = $sqlCat->data;
 
 		}
-		if (Secures::isAcess($returnCat->groups) == true) {
+		if (Secures::isAcess($returnCat->id_groups) == true) {
 			return true;
 		} else {
 			return false;

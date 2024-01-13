@@ -1,16 +1,17 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
 use BelCMS\Requires\Common as Common;
-use BelCMS\User\User as User;
+use BelCMS\User\User;
+use BelCMS\Core\Comment;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -48,3 +49,7 @@ $size   = is_file($data->download) ? Common::ConvertSize(filesize($data->downloa
 		</ul>
 	</div>
 </div>
+<?php
+$comments = new Comment;
+$comments->html();
+?>

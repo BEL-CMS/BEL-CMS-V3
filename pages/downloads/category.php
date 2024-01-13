@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -16,42 +16,40 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-
+if (empty($data)) {
+	Notification::alert(constant('NO_DL_CAT'),constant('DOWNLOAD'));
+}
 ?>
 <div id="belcms_section_downloads_main">
-	<span class="bel-cms-pages_title"><?=constant('DOWNLOADS');?> - <?=$name?></span>
-	<div id="belcms_section_downloads_category">
-		<?php
-		if (count($data) != 0) {
-		?>
-		<ul id="belcms_section_downloads_nav_ul">
+	<div class="belcms_section_downloads_main_row"> 
+		<ul>
 			<?php
-			foreach ($data as $a => $b):
-				if (empty($b->screen) or !is_file($b->screen)):
-					$b->screen = '/pages/downloads/no_image.png';
-				endif;
-				?>
-				<li class="belcms_section_downloads_nav_ul_li">
-					<div class="belcms_section_downloads_nav_ul_left">
-						<img src="<?=$b->screen;?>" title="logo_<?=$b->name;?>">
-					</div>
-					<div class="belcms_section_downloads_nav_ul_right">
-						<a href="downloads/detail/<?=$b->id?>/<?=$b->name?>"><?=$b->name;?></a>
-				
-						<span>Taille : <?=Common::ConvertSize($b->size)?></span>
-						<span class="belcms_section_downloads_desc"><?=$b->description?></span>
-						<a class="belcms_section_downloads_nav_ul_right_dl belcms_btn belcms_bg_blue" href="downloads/detail/<?=$b->id;?>/<?=Common::MakeConstant($b->name)?>">Voir</a>
-					</div>
-				</li>
+			foreach ($data as $value):
+			?>
+			<li>
+				<div class="belcms_downloads_avatar">
+					<img src="<?=$value->screen;?>" alt="avatar_<?=$value->name;?>">
+				</div>
+				<div class="belcms_downloads_infos">
+					<ul>
+						<li class="belcms_downloads_infos_title"><?=$value->name;?><span>
+							<i class="fa-solid fa-eye"></i>&ensp;<?=$value->view;?>&ensp;|&ensp;<i class="fa-solid fa-floppy-disk"></i>&ensp;<?=$value->dls;?></li>
+						<li>
+						<?=$value->description;?>
+						</li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="belcms_downloads_footer">
+					<i class="fa fa-bars"></i>&ensp;<span><?=constant('DATE');?></span> : <?=Common::TransformDate($value->date, 'FULL', 'MEDIUM');?>
+					<a href="downloads/detail/<?=$value->id;?>/<?=Common::MakeConstant($value->name);?>">Voir</a>
+				</div>
+			</li>
 			<?php
 			endforeach;
-		?>
+			?>
 		</ul>
-		<?php
-		echo $pagination;
-		} else {
-			Notification::infos('Aucun téléchargement dans la catégorie.');
-		}
-		?>
 	</div>
 </div>
+
+

@@ -130,7 +130,7 @@ switch ($_POST['table']) {
 			('', 'forum', 1, '1|2|0', '1', 'NB_MSG_FORUM==5'),
 			('', 'user', 1, '0', '1', 'MAX_USER==5{||}MAX_USER_ADMIN==20'),
 			('', 'page', 1, '0', '1', ''),
-			('', 'downloads', 1, '1|2', '1|2', 'MAX_DL==1'),
+			('', 'downloads', 1, '1|2', '1|2', 'MAX_DL==5'),
 			('', 'inbox', 1, '0', '1', ''),
 			('', 'events', 1, '0', '1', ''),
 			('', 'gallery', 1, '0', '1', ''),
@@ -180,7 +180,7 @@ switch ($_POST['table']) {
 		  	`banner` text,
 		  	`ico` text,
 		  	`description` text NOT NULL,
-		  	`groups` text NOT NULL,
+		  	`id_groups` text NOT NULL,
 		  	PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;

@@ -1,144 +1,190 @@
-#belcms_section_downloads_main {
-	display: block;
-	max-width: 100%;
-	overflow: hidden;
-	color: #212529;
-	position: relative;
-	display: flex;
-	flex-wrap: wrap;
+#section_downloads {
+	margin: 0;
+	padding: 0;
 	margin-bottom: 15px;
 }
-#belcms_section_downloads_cat {
-	flex: 0 0 30%;
-	max-width: 30%;
-	padding-right: 10px;
-	padding-left: 10px;
-}
-#belcms_section_downloads_links {
-	flex: 0 0 70%;
-	max-width: 70%;
-	padding-right: 10px;
-	padding-left: 10px;
-}
-#belcms_section_downloads_cat,
-#belcms_section_downloads_nav_link {
-	margin: 0;
-	padding: 3px;
-	border-radius: 3px;
-	border: 1px solid rgba(0,0,0,.125);
-}
-#belcms_section_downloads_nav,
-#belcms_section_downloads_nav_ul {
+#section_downloads > ul {
+	display: block;
+	overflow: hidden;
+	width: 100%;
 	margin: 0;
 	padding: 0;
-	text-align: left !important;
-	background-color: rgba(0,0,0,.03);
-	max-width: 100%;
-	line-height: 25px;
-	font-weight: bold;
-	list-style: none;
+	margin-bottom: 1.25rem;
+	border-radius: .25rem;
 }
-#belcms_section_downloads_nav_ul {
-	background: rgba(0,0,0,0);
-}
-#belcms_section_downloads_nav a {
+#section_downloads > ul > li {
 	display: block;
+	float: left;
+	list-style: none;
+	margin: 5px;
+	background-color: rgba(0,0,0,.3);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+	border: 1px solid rgba(0,0,0,.125);
+	border-radius: .25rem;
+	
+}
+.section_downloads_cat {
+	display: block;
+}
+.section_downloads_cat div img {
+	width: 270px;
+	height: 180px;
+}
+.section_downloads_cat > h1 {
+	font-size: 16px;
+	font-weight: bolder;
+	margin: 0;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	padding: 0 15px;
+	text-align: left;
+}
+.section_downloads_cat_desc {
+	width: 270px;
 	padding: 0 15px;
 }
-#belcms_section_downloads_nav a:hover {
-	background-color: rgba(0,0,0,.05);
+.section_downloads_cat_desc p {
+	text-align: justify !important;
 }
-#belcms_section_downloads_nav_link {
-
-}
-#belcms_section_downloads_nav_ul > span {
+.section_downloads_cat_infos {
 	display: block;
-	padding-left: 10px;
+	width: 270px;
+	padding: 5px 15px;
 }
-#belcms_section_downloads_nav_ul span:first-child {
-	font-weight: bold;
+.section_downloads_cat_infos ul {
 	display: block;
-	margin-bottom: 5px;
-	padding: 0;
+	margin: 0; padding: 0;
 }
-#belcms_section_downloads_nav_ul span a {
-	margin-bottom: 5px;
-}
-.belcms_section_downloads_nav_ul_li {
-	position: relative;
-	background-color: rgba(0,0,0,.03);
-	display: flex;
-	flex-wrap: wrap;
-	margin-bottom: 10px !important;
-}
-.belcms_section_downloads_nav_ul_li:last-child {
-	margin-bottom: 0 !important;
-}
-.belcms_section_downloads_nav_ul_left {
-	width: 30%;
-	flex: 0 0 30%;
-	max-width: 75px;
-	max-height: 75px;
-}
-.belcms_section_downloads_nav_ul_left img {
-	width: 75px;
-	height: 75px;
-}
-.belcms_section_downloads_nav_ul_right {
-	width: 70%;
-	max-height: 75px;
-	overflow: hidden;
-	flex: 0 0 75%;
-	padding: 5px 10px;
-}
-.belcms_section_downloads_nav_ul_right span {
+.section_downloads_cat_infos ul li {
 	display: block;
-	font-size: 11px;
-	margin-bottom: 5px;
-	line-height: normal !important;
-}
-.belcms_section_downloads_nav_ul_right span:first-child a {
-	font-weight: bold;
-	text-overflow: ellipsis;
-	vertical-align: bottom;
-	white-space: nowrap;
-	max-width: 100%;
+	list-style: none;
 	font-size: 12px;
 }
-.belcms_section_downloads_nav_ul_right > a {
+.section_downloads_cat_infos ul li svg {
+	font-weight: bold;
+}
+.section_downloads_cat_infos ul li span {
+	margin-left: 5px;
+}
+.section_downloads_cat_button {
 	display: block;
+	margin: auto;
+	margin: 5px auto 5px auto;
+	padding: 0 10px;
+	background: #222222;
+	border: 1px solid #333333;
+	color: #999999;
 	font-size: 11px;
-	margin-bottom: 5px;
-	line-height: normal !important;
-}
-.belcms_section_downloads_nav_ul_right_dl {
-	display: block;
-	float: right;
-	padding: 5px 10px !important;
+	text-transform: uppercase;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+	outline: none;
 	text-align: center;
-	border-radius: 5px;
-	position: absolute;
-	right: 5px;
-	bottom: 5px;
-	border: 1px solid rgba(0,0,0,.03);
-	line-height: 20px !important;
+	padding: 5px;
 }
-.belcms_section_downloads_nav_ul_right_dl:hover {
-	border-color: rgba(0, 0, 0, 0.135);
+.section_downloads_cat_button:hover {
 	color: #FFF;
 }
-#belcms_section_downloads_category {
+.belcms_section_downloads_main_row {
+	display: block;
 	width: 100%;
-	padding-right: 10px;
-	padding-left: 10px;
-	padding: 10px;
 }
-.belcms_section_downloads_desc {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	max-width: 100%;
-	font-size: 11px;	
+.belcms_section_downloads_main_row > ul {
+	display: block;
+	overflow: hidden;
 }
+.belcms_section_downloads_main_row > ul > li {
+	display: block;
+	list-style: none;
+	border: 1px solid #eeeeee;
+	width: 100%;
+	overflow: hidden;
+	background: #fafafa;
+	margin-bottom: 10px;
+}
+.belcms_downloads_avatar {
+	display: block;
+	float: left;
+	background-color: #fafafa;
+	width: 270px;
+	border-radius: 1.25rem;
+}
+.belcms_downloads_avatar img {
+	width: 230px;
+	padding: 20px 5px;
+	margin: 0 20px;
+	border-radius: 4.25rem;
+}
+.belcms_downloads_infos {
+	display: block;
+	float: left;
+	background-color: #fafafa;
+	width: calc(100% - 270px);
+	padding: 20px;
+	height: 100%;
+	height: 160px;
+	overflow-y: auto;
+}
+.belcms_downloads_infos ul {
+	display: block;
+	width: 100%;
+	list-style-type: none
+}
+.belcms_downloads_infos ul li {
+	display: block;
+}
+.belcms_downloads_infos_title {
+	font-weight: bold;
+	text-align: left;
+}
+.belcms_downloads_infos_title span {
+	float: right;
+	font-weight: normal;
+	font-size: 11px;
+}
+.belcms_downloads_footer {
+	display: block;
+	width: 100%;
+	background-color: #FFF;
+	color: #666666;
+	font-size: 13px;
+	font-family: 'Lato', sans-serif;
+	overflow: hidden;
+	padding: 5px 30px;
+	text-align: left;
+	line-height: 20px;
+}
+.belcms_downloads_footer span {
+	font-weight: bold;
+}
+.belcms_downloads_footer a {
+	float: right;
+	display: block;
+	padding: 0 20px;
+	background: #222222;
+	border: 1px solid #333333;
+	color: #999999;
+	font-size: 11px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+	outline: none;
+	text-align: center;
+}
+.belcms_downloads_footer a:focus,
+.belcms_downloads_footer a:hover {
+	color: #FFF;
+}
+.belcms_downloads_footer * {
+	line-height: 20px;
+}
+.belcms_downloads_infos ul li {
+	max-height: 160px;
+}
+/* Detail */
 #belcms_section_downloads_detail {
 	display: block;
 	width: 100%;
@@ -187,8 +233,10 @@
 #belcms_section_downloads_detail_infos ul li i {
 	display: flex;
 }
-#belcms_section_downloads_detail_infos ul li a {
+#belcms_section_downloads_detail_infos ul li button {
 	display: block;
 	text-align: center;
 	margin:auto;
+}
+#section_downloads_cat_jquery {
 }

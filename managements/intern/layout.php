@@ -8,7 +8,7 @@ use BelCMS\Core\GetHost;
 	<base href="<?=GetHost::curPageURL();?>">
 	<title>Administration</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="managements/assets/css/app.min.css" rel="stylesheet" type="text/css">
+	<link href="managements/assets/css/app.css" rel="stylesheet" type="text/css">
 	<link href="managements/assets/css/icons.min.css" rel="stylesheet" type="text/css">
 	<link href="assets/plugins/DataTables-1.13.06/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="managements/assets/css/magnific-popup.css">

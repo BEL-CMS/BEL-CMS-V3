@@ -88,7 +88,7 @@ final class ModelsDownloads
 			// SECURE DATA
 			$send['name']        = Common::VarSecure($data['name'], ''); // autorise que du texte
 			$send['description'] = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
-			$data['groups']      = isset($data['groups']) ? $data['groups'] : array(1);
+			$data['id_groups']   = isset($data['groups']) ? $data['groups'] : array(1);
 			$send['groups']      = implode("|", $data['groups']);
 			$send['banner']      = isset($data['banner']) ? $data['banner'] : null;
 			$send['ico']         = isset($data['ico']) ? $data['ico'] : null;
@@ -123,14 +123,14 @@ final class ModelsDownloads
 		$id                  = (int) $data['id'];
 		$send['name']        = Common::VarSecure($data['name'], null);
 		$send['description'] = Common::VarSecure($data['description'], 'html');
-		$send['groups']      = implode('|', $data['groups']);
+		$send['id_groups']   = isset($data['groups']) ? implode('|', $data['groups']) : 1;
+
 
 		// SQL UPDATE
 		$sql = New BDD();
 		$sql->table('TABLE_DOWNLOADS_CAT');
-		$sql->insert($send);
 		$sql->where(array('name' => 'id', 'value' => $id));
-		$sql->update();
+		$sql->update($send);
 		// SQL RETURN NB UPDATE == 1
 		if ($sql->rowCount == 1) {
 			$return = array(

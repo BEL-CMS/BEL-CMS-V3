@@ -34,7 +34,7 @@ class Downloads extends Pages
 		// Tableau, liste les catégories et supprime ceux que l'utilisateur n'a pas accès.
 		foreach ($data as $a => $b) {
 			$i++;
-			if (Secures::isAcess($b->groups) == false) {
+			if (Secures::isAcess($b->id_groups) == false) {
 				unset($data[$a]);
 			} else {
 				$get['data'][$i] = (object) array();
@@ -46,21 +46,15 @@ class Downloads extends Pages
 				$get['data'][$i]->dl = $this->models->getDls($b->id);
 			}
 		}
-		// Si le tableau est vide, affiche une attention.
-		if (empty($get['data'])) {
-			$this->error = true;
-			$this->errorInfos = array('warning', constant('NO_DATA_AVAILABLE'), constant('INFO'), false);
-		} else {
-			$this->set($get);
-			$this->render('index');
-		}
+		$this->set($get);
+		$this->render('index');
 	}
 
 	public function category ()
 	{
 		$a = $this->models->getCat($this->data[2]);
 		$c['name'] = $a->name;
-		if (Secures::isAcess($a->groups) == true) {
+		if (Secures::isAcess($a->id_groups) == true) {
 			$config =  Config::GetConfigPage('downloads');
 			$c['pagination'] = $this->pagination($config->config['MAX_DL'], 'downloads/category/'.$this->data[2], constant('TABLE_DOWNLOADS'));
 			$c['data'] = $this->models->getDls($this->data[2]);
@@ -73,10 +67,13 @@ class Downloads extends Pages
 
 	public function detail ()
 	{
-		$c['data'] = current($this->models->getDlsDetail($this->data[2]));
-		if (empty($c['data'])) {
+		$c['data'] = $this->models->getDlsDetail($this->data[2]);
+		if ($c['data'] === false) {
 			$this->error = true;
-			$this->errorInfos = array('warning', constant('INVALID_ID'), constant('INFO'), false);
+			$this->errorInfos = array('alert', constant('INVALID_DL'), constant('DOWNLOAD'), false);
+		} else if (empty($c['data'])) {
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('INVALID_ID'), constant('DOWNLOAD'), false);
 		} else {
 			$this->models->NewView($this->data[2]);
 			$this->set($c);
