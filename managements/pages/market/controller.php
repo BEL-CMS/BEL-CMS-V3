@@ -244,7 +244,7 @@ class Market extends AdminPages
 	public function addDiscnount ()
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'market/discount?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
-		$this->render('addDiscount', $menu);
+		$this->render('adddiscount', $menu);
 	}
 	#########################################
 	# Ajouter en BDD la réduction
