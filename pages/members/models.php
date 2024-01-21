@@ -12,6 +12,7 @@
 namespace Belcms\Pages\Models;
 use BelCMS\Core\Dispatcher;
 use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 use BelCMS\User\User;
 use BelCMS\Core\Config;
 
@@ -45,7 +46,32 @@ final class Members
 
 		foreach ($returnSql as $k => $v) {
 			$return[$k] = User::getInfosUserAll($v->hash_key);
+			$return[$k]->profils->countPost = self::countPost($v->hash_key);
+			$return[$k]->profils->countDls  = self::countDls($v->hash_key);
 		}
+		return $return;
+	}
+
+	private function countPost ($id): int
+	{
+		$return = 0;
+		$sql = new BDD;
+		$sql->table('TABLE_FORUM_POST');
+		$where = array('name' => 'author', 'value' => $id);
+		$sql->where($where);
+		$sql->count();
+		$return = $sql->data;
+		return $return;
+	}
+	private function countDls ($id): int
+	{
+		$return = 0;
+		$sql = new BDD;
+		$sql->table('TABLE_DOWNLOADS_STATS');
+		$where = array('name' => 'author', 'value' => $id);
+		$sql->where($where);
+		$sql->count();
+		$return = $sql->data;
 		return $return;
 	}
 
@@ -143,6 +169,33 @@ final class Members
 			}
 		}
 		return $return;
+	}
+
+	public function visitOnePlus ($name = null)
+	{
+		if (!empty($name)) {
+			$name = Common::VarSecure($name, null);
+			$get = New BDD;
+			$get->table('TABLE_USERS');
+			$get->where(array('name' => 'username', 'value' => $name));
+			$get->queryOne();
+			$getHash_key = $get->data;
+			unset($sql);
+			$sql = New BDD;
+			$sql->table('TABLE_USERS_PROFILS');
+			$sql->where(array('name' => 'hash_key', 'value' => $getHash_key->hash_key));
+			$sql->queryOne();
+			$data = $sql->data; unset($sql);
+			if (!empty($data)) {
+				$returnCount = (int) $data->visits;
+				$returnCount = $returnCount +1;
+				$update['visits'] = $returnCount;
+				$sql = New BDD;
+				$sql->table('TABLE_USERS_PROFILS');
+				$sql->where(array('name' => 'hash_key', 'value' => $getHash_key->hash_key));
+				$sql->update($update);
+			}
+		}
 	}
 }
 

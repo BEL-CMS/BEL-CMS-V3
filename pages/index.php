@@ -62,13 +62,13 @@ class Pages
 		// Test si l'utilisateur a accès à la page.
 		if (Secures::getAccessPage(strtolower($this->pageName)) === false) {
 			$this->error = true;
-			$this->errorInfos = array('warning', constant('NO_ACCESS_GROUP_PAGE'), 'Info', $full = true);
+			$this->errorInfos = array('warning', constant('NO_ACCESS_GROUP_PAGE'), 'Info', $full = false);
 			return false;
 		}
 		// Test si la page est activée.
 		if (Secures::getPageActive(strtolower($this->pageName)) === false) {
 			$this->error = true;
-			$this->errorInfos = array('error', constant('NO_ACCESS_PAGE'), 'warning', true);
+			$this->errorInfos = array('error', constant('NO_ACCESS_PAGE'), 'warning', false);
 			return false;
 		}
 		extract($this->vars);

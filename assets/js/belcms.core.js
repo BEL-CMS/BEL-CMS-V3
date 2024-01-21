@@ -79,10 +79,9 @@ if (typeof jQuery === 'undefined') {
         activeHeader: "ui-icon-circle-arrow-s"
     }
 
-	if ($('body').hasClass("bel_cms_accordion")) {
+	if ($('.bel_cms_accordion').height() != undefined) {
 		$(".bel_cms_accordion").accordion({
 			heightStyle: "content",
-			icons: icons
 		});
 	}
 
@@ -180,9 +179,6 @@ function bel_cms_alert_box (objet, type) {
 	if ($('#alrt_bel_cms').height()) {
 		$('#alrt_bel_cms').remove();
 	}
-	$('body').append('<div id="alrt_bel_cms">Chargement...</div>');
-	$('#alrt_bel_cms').animate({ top: 0 }, 500);
-	/* start ajax */
 	$.ajax({
 		type: type,
 		url: url,

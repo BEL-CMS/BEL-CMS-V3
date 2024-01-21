@@ -123,24 +123,26 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `active`, `access_groups`, `access_admin`, `config`) VALUES
-			('', 'articles', 1, '1|0', '1|2', 'MAX_ARTICLES==20'),
+			('', 'articles', 1, '1|0', '1|2', 'MAX_ARTICLES==20{||}EMOTE==FALSE'),
 			('', 'members', 1, '0', '1', 'MAX_USER==6'),
 			('', 'team', 1, '0', '1', 'MAX_USER==10'),
 			('', 'shoutbox', 1, '0', '1', 'MAX_MSG==15'),
-			('', 'forum', 1, '1|2|0', '1', 'NB_MSG_FORUM==5'),
+			('', 'forum', 1, '1|2|0', '1', 'NB_MSG_FORUM==5{||}EMOTE==TRUE'),
 			('', 'user', 1, '0', '1', 'MAX_USER==5{||}MAX_USER_ADMIN==20'),
 			('', 'page', 1, '0', '1', ''),
-			('', 'downloads', 1, '1|2', '1|2', 'MAX_DL==5'),
+			('', 'downloads', 1, '1|2|0', '1|2', 'MAX_DL==6'),
 			('', 'inbox', 1, '0', '1', ''),
 			('', 'events', 1, '0', '1', ''),
-			('', 'gallery', 1, '0', '1', ''),
+			('', 'gallery', 1, '1|2|0', '1|2', 'MAX_IMG==5'),
 			('', 'managements', 1, '1', '1', ''),
-			('', 'news', 1, '1|0', '1', 'MAX_NEWS==2'),
+			('', 'news', 1, '1|0', '1', 'MAX_NEWS==1'),
 			('', 'mails', 1, '2', '1', NULL),
 			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
+			('', 'guestbook', 1, '1|2|0', '1|2', 'MAX_USER==6'),
 			('', 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10'),
-			('', 'guestbook', 1, '0', '1', 'MAX_USER==8'),
-			('', 'donations', 1, '1|0', '1', '');";
+			('', 'donations', 0, '1|2|0', '1', NULL),
+			('', 'calendar', 1, '0', '1|2', 'MAX_LIST==2'),
+			('', 'faq', 1, '1|2|0', '1|2', NULL);";
 	break;
 
 	case 'config_tpl':
@@ -150,7 +152,18 @@ switch ($_POST['table']) {
 			`name` varchar(32) NOT NULL,
 			`value` text,
 			PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case 'downlaods_stats':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`author` varchar(32) NOT NULL,
+			`id_dls` int NOT NULL,
+			`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
 	case 'downloads':
@@ -699,6 +712,20 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
+	case "page_forum_posts":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`id_post` int NOT NULL,
+			`author` varchar(32) NOT NULL,
+			`options` text NOT NULL,
+			`date_post` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`attachment` varchar(255) NOT NULL,
+			`content` text NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
 	case "page_forum_threads":
 			$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 			$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -930,13 +957,15 @@ switch ($_POST['table']) {
 			`websites` text,
 			`list_ip` text,
 			`avatar` text,
-			`config` text,
 			`info_text` text,
 			`birthday` date DEFAULT NULL,
 			`country` varchar(30) DEFAULT NULL,
 			`hight_avatar` varchar(255) DEFAULT NULL,
 			`friends` longtext,
 			`date_registration` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`visits` int DEFAULT NULL,
+			`gravatar` tinyint(1) NOT NULL DEFAULT '0',
+			`profils` tinyint(1) NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `hash_key` (`hash_key`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -1012,6 +1041,44 @@ switch ($_POST['table']) {
 			('', 'survey', 'Sondages', '0', '1', 0, 'left', 2, ''),
 			('', 'users', 'Utilisateurs', '0', '1', 0, 'left', 1, '');";
 	break;
+
+	case "notificaton":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`hash_key` varchar(32) NOT NULL,
+			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`ip` text NOT NULL,
+			`message` text NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "users_notification":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`author` varchar(32) NOT NULL,
+			`date_notif` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`message` text,
+			`ip` text,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "uploads_admin":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(64) NOT NULL,
+			`category` varchar(64) NOT NULL,
+			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`author` varchar(32) NOT NULL,
+			`size` bigint DEFAULT NULL,
+			`install` tinyint(1) DEFAULT '0',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		break;
 }
 
 $pdo_options = array();

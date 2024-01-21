@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -19,81 +19,56 @@ endif;
 if (UserInfos::isLogged() === true):
 	$list = array();
 	$path = "uploads/users/".$_SESSION['USER']->user->hash_key."/";
-	if($dossier = opendir($path))
-	{
-	    while(($fichier = readdir($dossier)))
-	    {
-
-	        if($fichier != '.' && $fichier != '..' && $fichier != 'index.php')
-	        {
+	if ($dossier = opendir($path)) {
+	    while(($fichier = readdir($dossier))) {
+	        if ($fichier != '.' && $fichier != '..' && $fichier != 'index.php' && $fichier != 'index.html') {
 	            $pattern = '/(gif|jpg|png)$/i'; //extension d'image accepter
-
 	            $matche = preg_match($pattern, $fichier);
-	            if ($matche)
-	            {
+	            if ($matche) {
 	                $list[] = $fichier;
 	            }
-
 	        }
 	    }
-
 	}
-	require_once 'nav.php';
 ?>
-	<div id="belcms_section_user_avatar">
-		<div id="belcms_section_user_avatar_left">
-			<div class="belcms_card">
-				<div class="belcms_title">Avatar actuel</div>
-				<div id="belcms_section_user_main_right_avatar">
-					<img src="<?=$user->profils->avatar?>">
-					<hr>
-					<div class="belcms_title">Avatar actuel</div>
-					<form action="user/newavatar" method="post" enctype="multipart/form-data">
-						<div class="setting image_picker">
-							<div class="settings_wrap">
-								<br>
-								<label class="drop_target">
-									<div class="image_preview"></div>
-									<input name="avatar" id="inputFile" type="file">
-								</label>
-							</div>
-						</div>
-						<hr>
-						<button type="submit" class="belcms_btn belcms_btn_blue"><?=constant('ADD');?></button>
-					</form>
-				</div>
+<section id="section_user">
+	<div class="flex-wrapper">
+		<div class="flex-grid">
+			<div class="d-col-4 t-col-4 m-col-12">
+				<?php include 'nav.php'; ?>
 			</div>
-		</div>
-		<div id="belcms_section_user_avatar_right">
-			<div class="belcms_card">
-				<div class="belcms_title">Avatar sauvegarder</div>
-				<div id="belcms_section_user_main_right_avatar">
-					<form id="avatarSubmit" method="post" action="user/avatarsubmit">
-						<ul id="bel_cms_user_ul_avatar">
-							<?php
-							foreach ($list as $k => $v):
-								$alt = 'uploads/users/'.$_SESSION['USER']->user->hash_key.'/'.$v;
-							?>
-							<li>
-								<label for="sel_avatar_<?=$k?>">
-									<a href="#<?=$v?>" class="bel_cms_jquery_avatar_sel" data-id="<?=$k?>">
-										<input class="select_avatar" id="sel_avatar_<?=$k?>" type="radio" name="avatar" value="<?=$alt?>">
-										<img width="100" height="100" class="bel_cms_jquery_avatar_sel" src="<?=$alt?>" alt="<?=$alt?>">
-									</a>
-								</label>
-							</li>
-							<?php
-							endforeach;
-							?>
-						</ul>
-						<hr>
-						<input id="selectavatar" type="hidden" name="select" value="select">
-						<button type="submit" class="belcms_btn belcms_btn_blue">Enregistrer</button>
-						<button id="delavatar" type="submit" class="belcms_btn belcms_bg_red">Supprimer</button>
-					</form>
+			<div class="d-col-8 t-col-8 m-col-12">
+				<p>Avatar actuel</p>
+				<div id="user_avatar">
+					<img src="<?=$_SESSION['USER']->profils->avatar;?>">
 				</div>
+				<div id="user_save_avatar">
+					<ul>
+						<?php
+						foreach ($list as $k => $v):
+							$alt = 'uploads/users/'.$_SESSION['USER']->user->hash_key.'/'.$v;
+						?>
+						<li>
+							<div>
+								<img src="<?=$alt;?>" alt="">
+							</div>
+							<div>
+								<a class="user_add_avatar" href="User/AddAvatar?avatar=<?=$alt;?>&select=select"><i class="fa-regular fa-eye"></i>  Ajouter comme avatar</a>
+								<a class="user_del_avatar" href="User/addAvatar?avatar=<?=$alt;?>&select=delete"><i class="fa-solid fa-eye-slash"></i>  Supprimer</a>
+							</div>
+						</li>
+						<?php
+						endforeach;
+						?>
+					</ul>
+				</div>
+				<form action="user/newavatar" method="post" enctype="multipart/form-data">
+					<input name="avatar" id="inputFile" type="file">
+					<button type="submit" class="belcms_btn belcms_btn_blue"><?=constant('ADD');?></button>
+				</form>
 			</div>
 		</div>
 	</div>
+</section>
 <?php
 endif;

@@ -65,6 +65,21 @@ class User extends Pages
 		self::index();
 	}
 	#########################################
+	# Sessions
+	#########################################
+	public function sessions ()
+	{
+		if (UserInfos::isLogged() === true) {
+			$data['user'] = $this->models->sessions();
+			$this->set($data);
+			$this->render('sessions');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);	
+		}
+	}
+	#########################################
 	# Page Avatar
 	#########################################
 	public function avatar ()
@@ -75,6 +90,58 @@ class User extends Pages
 			$d['current'] ='avatar';
 			$this->set($d);
 			$this->render('avatar');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	#########################################
+	# Affiche la pae general de user
+	#########################################
+	public function generals ()
+	{
+		if (UserInfos::isLogged() === true) {
+			$this->render('generals');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	#########################################
+	# Enregistre les parametres generals
+	#########################################
+	public function sendGen ()
+	{
+		$return = $this->models->sendGen($_POST);
+		$this->redirect('User/Generals', 3);
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);
+	}
+	#########################################
+	# affiche la page des notification
+	#########################################
+	public function Notification ()
+	{
+		if (UserInfos::isLogged() === true) {
+			$data['data'] = $this->models->getNotif();
+			$this->set($data);
+			$this->render('notification');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+
+	public function groups ()
+	{
+		if (UserInfos::isLogged() === true) {
+			$groups = $_SESSION['USER'];
+			$grp['groups'] = $groups->groups->all_groups;
+			$this->set($grp);
+			$this->render('groups');
 		} else {
 			$this->redirect('User/login&echo', 3);
 			$this->error = true;
@@ -288,10 +355,24 @@ class User extends Pages
 	#########################################
 	# Selectionne l'avatar ou le supprime
 	#########################################
-	public function avatarsubmit ()
+	public function addAvatar ()
 	{
-		$return = $this->models->avatarSubmit($this->data);
-		$this->error = true;
+		$return = $this->models->avatarSubmit($_GET);
+		debug($return);
+	}
+	#########################################
+	# recupere le background
+	#########################################
+	public function background ()
+	{
+		$this->render('background');
+	}
+	#########################################
+	# Enregistre le nouveau background
+	#########################################
+	public function NewBg ()
+	{
+		$return = $this->models->bgSubmit($_FILES);
 		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
 		$this->redirect('User', 2);
 	}

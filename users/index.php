@@ -216,7 +216,7 @@ class User
 		if (isset($_SESSION['LOGIN_MANAGEMENT'])) {
 			unset($_SESSION['LOGIN_MANAGEMENT']);
 		}
-
+		
 		$domain = ($_SERVER['HTTP_HOST']);
 		setcookie('BELCMS_HASH_KEY', 'data', time()-60*60*24*365, '/', $domain, false);
 		setcookie('BELCMS_NAME', 'data', time()-60*60*24*365, '/', $domain, false);
@@ -233,7 +233,7 @@ class User
 		if(!isset($_SESSION)) {
 			session_start();
 		}
-		$_SESSION['NB_REQUEST_SQL']   = 0;
+		$_SESSION['NB_REQUEST_SQL']  = 0;
 		/* Re cree la _SESSION; */
 		return $return;
 	}
@@ -256,6 +256,14 @@ class User
 			$user->queryOne();
 			if (!empty($user->data)) {
 				$a = array('user' => (object) $user->data);
+				if ($user->data['ip'] != Common::GetIp()) {
+					$insert['ip'] = Common::GetIp();
+					$insert['hash_key'] = $user->data-['hash_key'];
+					$insert['referer']  = $_SERVER['HTTP_REFERER'];
+ 					$sqlUpdateIP = new BDD;
+					$sqlUpdateIP->table('TABLE_USERS_IP');
+					$sqlUpdateIP->insert($insert);
+				}
 				/* Return info des groupes de l'user */
 				$group = new BDD();
 				$group->table('TABLE_USERS_GROUPS');
@@ -274,10 +282,14 @@ class User
 					'name'  => 'hash_key',
 					'value' => $hash_key
 				));
-				$profils->fields(array('gender','public_mail','websites','list_ip','avatar','config','info_text','birthday','country','hight_avatar','friends', 'date_registration'));
+				$profils->fields(array('gender','public_mail','websites','list_ip','avatar','info_text','birthday','country','hight_avatar','friends', 'date_registration', 'visits','gravatar', 'profils'));
 				$profils->isObject(false);
 				$profils->queryOne();
 				$c = array('profils' => (object) $profils->data);
+				if ($c['profils']->gravatar == '1') {
+					$gravatar = hash('sha256', strtolower(trim($a['user']->mail)));
+					$c['profils']->avatar = 'https://gravatar.com/avatar/'.$gravatar;
+				}
 				/* Return le profils de l'user */
 				$social = new BDD();
 				$social->table('TABLE_USERS_SOCIAL');

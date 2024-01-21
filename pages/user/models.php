@@ -11,11 +11,11 @@
 
 namespace Belcms\Pages\Models;
 
-use BelCMS\Core\Secure as Secure;
-use BelCMS\Core\Secures as Secures;
-use BelCMS\PDO\BDD as BDD;
+use BelCMS\Core\Secure;
+use BelCMS\Core\UserNotification;
+use BelCMS\PDO\BDD;
 use BelCMS\User\User as Users;
-use BelCMS\Requires\Common as Common;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -116,17 +116,31 @@ final class User
 						'expire'            => (int) 0,
 						'token'             => '',
 						'gold'              => (int) 0
-					);	
+					);
+
+					$test = New BDD();
+					$test->table('TABLE_USERS');
+					$test->count();
+
 					$insert = New BDD();
 					$insert->table('TABLE_USERS');
 					$insert->insert($insertUser);
 
-					$insertGroups = array(
-						'id'                => null,
-						'hash_key'          => $hash_key,
-						'user_group'        => 2,
-						'user_groups'       => 2
-					);
+					if ($test->data == 0) {
+						$insertGroups = array(
+							'id'                => null,
+							'hash_key'          => $hash_key,
+							'user_group'        => 1,
+							'user_groups'       => 1
+						);
+					} else {
+						$insertGroups = array(
+							'id'                => null,
+							'hash_key'          => $hash_key,
+							'user_group'        => 2,
+							'user_groups'       => 2
+						);	
+					}
 					$insertGrp = New BDD();
 					$insertGrp->table('TABLE_USERS_GROUPS');
 					$insertGrp->insert($insertGroups);
@@ -138,7 +152,6 @@ final class User
 						'websites'     => '',
 						'list_ip'      => '',
 						'avatar'       => constant('DEFAULT_AVATAR'),
-						'config'       => 0,
 						'info_text'    => '',
 						'birthday'     => date('Y-m-d'),
 						'country'      => '',
@@ -353,6 +366,7 @@ final class User
 		}
 
 		if ($error) {
+			New UserNotification($_SESSION['USER']->user->hash_key, 'Mot de passe changer');
 			$return['msg']  = 'Vos informations ont été sauvegardées avec succès';
 			$return['type'] = 'success';
 		}
@@ -482,7 +496,6 @@ final class User
 							'text'        => 'Une demande de regénération de mot de passe à été demander',
 							'modules'     => 'User'
 						);
-
 						$return['msg']  = 'Un mail avec un token a été génère et envoyé par courriel';
 						$return['type'] = 'success';
 					} else {
@@ -534,7 +547,6 @@ final class User
 								'content'  => self::contentMail('Mot de passe', $contentMail),
 								'sendMail' => $results['mail']
 							);
-
 							$returnMail = Common::sendMail($mail);
 							$return['msg']  = 'Voici votre nouveau mot de passe : '. $generatePass;
 							$return['type'] = 'success';
@@ -625,7 +637,6 @@ final class User
 				} else {
 					if ($dataUser->hash_key != $_SESSION['USER']->user->hash_key) {
 						$return = array('type' => 'error', 'msg' => 'La hash key ne vous appartient pas', 'title' => 'Hash Key');
-						// TODO : faire un systeme de prévention 
 						return $return;
 					} else {
 						if ($data['username'] != $dataUser->username) {
@@ -674,8 +685,9 @@ final class User
 						$sql->update($dataInsertProfils);
 
 						$return = array('type' => 'success', 'msg' => 'Tout les paramètre, on été enregistré', 'title' => 'Profil');
-						return $return;
+						New UserNotification($_SESSION['USER']->user->hash_key, 'Profil mise à jour');
 						$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
+						return $return;
 					}
 				}
 			} else {
@@ -707,6 +719,7 @@ final class User
 			setcookie('BELCMS_NAME', $results['username'], time()+60*60*24*30*3, '/');
 			setcookie('BELCMS_PASS', $insert['password'], time()+60*60*24*30*3, '/');
 			$return = array('type' => 'success', 'msg' => constant('SEND_PASS_IS_OK'), 'title' => constant('PASSWORD'));
+			New UserNotification($_SESSION['USER']->user->hash_key, constant('SEND_PASS_IS_OK'));
 			return $return;
 		} else {
 			$return = array('type' => 'error', 'msg' => constant('OLD_PASS_FALSE'), 'title' => constant('PASSWORD'));
@@ -763,6 +776,7 @@ final class User
 					$return['type'] = 'success';
 					$return['ext']  = 'Avatar';
 					/* update $_SESSION */
+					New UserNotification($_SESSION['USER']->user->hash_key, 'Avatar changer');
 					$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 				} else {
 					$return['msg']  = 'mavaise extention de l\'avatar';
@@ -783,11 +797,46 @@ final class User
 			// @ = fix erreur Windows localhost
 			@unlink($link);
 			unset($return);
+			New UserNotification($_SESSION['USER']->user->hash_key, 'Avatar surrpimé');
 			$return['msg']  = $link;
 			$return['type'] = 'success';
 			$return['ext']  = 'Avatar';
 		}
 
+		return $return;
+	}
+	#########################################
+	# Sauvegarde le background avatar
+	#########################################
+	public function bgSubmit ($data)
+	{
+		if (!empty($_FILES['hight_avatar'])) {
+			$dir = 'uploads/users/'.$_SESSION['USER']->user->hash_key.'/';
+			$extensions = array('.png', '.gif', '.jpg', '.jpeg');
+			$extension = strrchr($_FILES['hight_avatar']['name'], '.');
+			if (!in_array($extension, $extensions)) {
+				$return['msg']  = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg';
+				$return['type'] = 'error';
+				$return['ext']  = 'Extention';
+				return $return;
+			} else {
+				Common::Upload('hight_avatar', $dir, $extensions);
+				$sql = New BDD();
+				$sql->table('TABLE_USERS_PROFILS');
+				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
+				$sql->update(array('hight_avatar'=> $dir.$_FILES['hight_avatar']['name']));
+				$return['msg']  = 'Avatar changer avec succès';
+				$return['msg']  = 'Upload effectué avec succès';
+				$return['type'] = 'success';
+				$return['ext']  = 'Avatar';
+				New UserNotification($_SESSION['USER']->user->hash_key, 'Image de couverture ajouter');
+				$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			}
+		} else {
+			$return['msg']  = 'Aucun upload d\'image en cours...';
+			$return['type'] = 'error';
+			$return['ext']  = 'Aucune image';
+		}
 		return $return;
 	}
 	#########################################
@@ -808,6 +857,7 @@ final class User
 			$return['type'] = 'success';
 			$return['ext']  = 'Liens';
 			/* update $_SESSION */
+			New UserNotification($_SESSION['USER']->user->hash_key, constant('MODIFY_SOCIAL_SUCCESS'));
 			$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 		} else {
 			$return['msg']  = constant('ERROR_UPDATE_BDD');
@@ -869,6 +919,50 @@ final class User
 		$return['msg']  = constant('MODIFY_GAMES_SUCCESS');
 		$return['type'] = 'success';
 		$return['ext']  = constant('VIDEO_GAMES');
+		New UserNotification($_SESSION['USER']->user->hash_key, constant('MODIFY_GAMES_SUCCESS'));
 		return $return;
+	}
+
+	public function sessions ()
+	{
+		$sql = new BDD();
+		$sql->table('TABLE_VISITORS');
+		$sql->where(array('name' => 'visitor_user', 'value' => $_SESSION['USER']->user->hash_key));
+		$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+		$sql->limit(7);
+		$sql->queryAll();
+		$return = $sql->data;
+		return $return;
+	}
+
+	public function sendGen ($data)
+	{
+		if (is_array($data)) {
+			$insert['gravatar'] = isset($data['gravatar']) && $data['gravatar'] == 'on' ? '1' : '0';
+			$insert['profils']  = isset($data['profils'])  && $data['profils']  == 'on' ? '1' : '0';
+			$sql = New BDD();
+			$sql->table('TABLE_USERS_PROFILS');
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
+			$sql->update($insert);
+			$return['msg']  = constant('MODIFY_PROFILS_SUCCESS');
+			$return['type'] = 'success';
+			New UserNotification($_SESSION['USER']->user->hash_key, constant('MODIFY_PROFILS_SUCCESS'));
+			$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			return $return;
+		} else {
+			$return['msg']  = constant('MODIFY_PROFILS_ERROR');
+			$return['type'] = 'alert';
+			return $return;
+		}
+	}
+
+	public function getNotif ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_USERS_NOTIFICATION');
+		$sql->where(array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key));
+		$sql->limit(6);
+		$sql->queryAll();
+		return $sql->data;
 	}
 }

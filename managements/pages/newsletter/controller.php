@@ -16,7 +16,7 @@ endif;
 
 class Newsletter extends AdminPages
 {
-	var $admin  = true; // Admin suprême uniquement (Groupe 1);
+	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true; // activation manuel;
 	var $models = 'ModelsNewsletter';
 

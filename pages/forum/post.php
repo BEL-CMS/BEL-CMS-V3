@@ -21,25 +21,27 @@ endif;
 	<?php
 	foreach ($post as $k => $value):
 		if ($k == 0):
-			if ($post[0]->lockpost == 1):
-			?>
-				<div id="forum_new">
-					<h4><i class="fa fa-comments"></i> <?=$value->title?></h4>
-					<a data-tooltip="<?=constant('UNLOCK_THREAD');?>" data-position="bottom" href="forum/unlockPost/?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_green"><i class="fa fa-unlock"></i></a>
-					<a data-tooltip="<?=constant('DEL_THRAD');?>" data-position="bottom" href="Forum/DelPost/?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_black"><i class="fa fa-trash"></i></a>
-				</div>
-				<div class="clear"></div>
-			<?php
-			else:
-			?>
-				<div id="forum_new">
-					<h4><i class="fa fa-comments"></i> <?=$value->title?></h4>
-					<a data-tooltip="<?=constant('LOCK_THREAD');?>" data-position="bottom" href="forum/lockPost?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_red btn-icon-left"><i class="fa fa-lock"></i></a>
-					<a data-tooltip="<?=constant('DEL_THRAD');?>" data-position="bottom" href="Forum/DelPost?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_black"><i class="fa fa-trash"></i></a>
-				</div>
-				<div class="clear"></div>
-			<?php
-			endif;
+			if (User::isLogged()) {
+				if ($post[0]->lockpost == 1):
+				?>
+					<div id="forum_new">
+						<h4><i class="fa fa-comments"></i> <?=$value->title?></h4>
+						<a data-tooltip="<?=constant('UNLOCK_THREAD');?>" data-position="bottom" href="forum/unlockPost/?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_green"><i class="fa fa-unlock"></i></a>
+						<a data-tooltip="<?=constant('DEL_THRAD');?>" data-position="bottom" href="Forum/DelPost/?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_black"><i class="fa fa-trash"></i></a>
+					</div>
+					<div class="clear"></div>
+				<?php
+				else:
+				?>
+					<div id="forum_new">
+						<h4><i class="fa fa-comments"></i> <?=$value->title?></h4>
+						<a data-tooltip="<?=constant('LOCK_THREAD');?>" data-position="bottom" href="forum/lockPost?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_red btn-icon-left"><i class="fa fa-lock"></i></a>
+						<a data-tooltip="<?=constant('DEL_THRAD');?>" data-position="bottom" href="Forum/DelPost?id=<?=$post[0]->id?>" class="belcms_btn belcms_bg_black"><i class="fa fa-trash"></i></a>
+					</div>
+					<div class="clear"></div>
+				<?php
+				endif;
+			}
 		endif;
 	?>
 	<div class="belcms_forum_post_div">
@@ -54,7 +56,7 @@ endif;
 			<div style="margin-bottom: 10px; overflow: hidden;">
 				<div style="float: left;"><?=Common::TransformDate($value->date_post, 'MEDIUM', 'SHORT')?></div>
 				<?php
-				if ($_SESSION['USER']->user->hash_key == 1):
+				if (isset($_SESSION['USER']->user->hash_key) and$_SESSION['USER']->user->hash_key == 1) :
 					if ($k == 0):
 						?>
 						<div style="float: right;"><a href="Forum/EditPostPrimary/<?=$value->id_threads;?>"><i class="fas fa-pencil-alt"></i></a></div>
@@ -85,7 +87,7 @@ endif;
 	endforeach;
 	?>
 	<?php
-	if ($post[0]->lockpost == 0 and $_SESSION['USER'] !== false):
+	if ($post[0]->lockpost == 0 and User::isLogged()):
 	?>
 	<form action="Forum/Send" method="post" enctype="multipart/form-data">
 		<div class="card">

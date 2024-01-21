@@ -283,6 +283,306 @@ section { width: 100%; overflow: hidden; display: block; }
       width: 1170px;
     }
 }
+
+.flex-grid {
+	display: flex;
+	justify-content: space-between;
+}
+
+@media (min-width: 980px) {
+	.flex-grid {margin-top: 2rem;}
+	.flex-grid:first-child {margin-top: 0;}
+	
+	.d-col-1 						{width: 7.05%;}
+	.d-col-2 						{width: 15.5%;}
+	.d-col-3, 
+	.d-col-thirds 					{width: 23.95%;}
+	.d-col-4, 
+	.d-col-quarters 				{width: 32.4%;}
+	.d-col-5 						{width: 40.85%;}
+	.d-col-6, 
+	.d-col-halfs					{width: 49.3%;}
+	.d-col-7 						{width: 57.75%;}
+	.d-col-8 						{width: 66.2%;}
+	.d-col-9 						{width: 74.65%;}
+	.d-col-10 						{width: 83.1%;}
+	.d-col-11 						{width: 91.55%;}
+	.d-col-12, 
+	.d-col-full 					{width: 100%;}
+}
+
+@media only screen and (min-width: 661px) and (max-width: 979px) {	
+	.flex-wrapper {
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+	
+	.flex-grid {flex-flow: row wrap;}
+	
+	.t-col-4,
+	.t-col-6,
+	.t-col-12 {margin-top: 2rem}
+	
+	.t-col-4 		{width: 31.46%	}
+	.t-col-6 		{width: 48.6%;}
+	.t-col-12 		{width: 100%;}
+	
+	.flex-grid:first-child .t-col-4,
+	.flex-grid:first-child .t-col-6,
+	.flex-grid:first-child .t-col-12 {
+		 margin-top: 0;
+	}
+}
+
+@media only screen and (min-width: 0px) and (max-width: 660px) {
+	.flex-wrapper {
+		padding-left: 3%;
+		padding-right: 3%;
+	}
+	
+	.flex-grid {flex-flow: row wrap;}
+	
+	.m-col-6,
+	.m-col-12 {margin-top: 2rem;}
+	
+	.m-col-6 		{width: 47.2%;}
+	.m-col-12 		{width: 100%;}
+	
+	.flex-grid:first-child .m-col-6,
+	.flex-grid:first-child .m-col-12 {
+		 margin-top: 0;
+	}
+}
+/* utilisation des grids
+
+<section class="flex-wrapper">
+	<div class="flex-grid">
+		<div class="d-col-12 t-col-12 m-col-12">
+			Col 1
+		</div><!-- /.d-col-12 .t-col-12 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	
+	<div class="flex-grid">
+		<div class="d-col-6 t-col-6 m-col-6">
+			Col 1
+		</div><!-- /.d-col-6 .t-col-6 .m-col-6 -->
+		
+		<div class="d-col-6 t-col-6 m-col-6">
+			Col 2
+		</div><!-- /.d-col-6 .t-col-6 .m-col-6 -->
+	</div>
+
+	
+	<div class="flex-grid">
+		<div class="d-col-4 t-col-4 m-col-12">
+			Col 1
+		</div><!-- /.d-col-4 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-4 t-col-4 m-col-12">
+			Col 2
+		</div><!-- /.d-col-4 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-4 t-col-4 m-col-12">
+			Col 3
+		</div><!-- /.d-col-4 .t-col-4 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	
+	<div class="flex-grid">
+		<div class="d-col-3 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-3 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-3 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-3 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-3 t-col-6 m-col-12">
+			Col 3
+		</div><!-- /.d-col-3 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-3 t-col-6 m-col-12">
+			Col 4
+		</div><!-- /.d-col-3 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	
+	<div class="flex-grid">
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 1</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 2</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 3</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 4</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 5</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 6</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	
+	<div class="flex-grid">
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 1
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 2
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 3
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 4
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 5
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 6
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 7
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 8
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 9
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 10
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 11
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-4 m-col-12">
+			Col 12
+		</div><!-- /.d-col-1 .t-col-4 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	<div class="flex-grid">
+		<div class="d-col-1 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-1 .t-col-6 .m-col-12 -->
+		<div class="d-col-11 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-11 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	<div class="flex-grid">
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-10 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-10 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+	
+	<div class="flex-grid">
+		<div class="d-col-3 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-3 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-9 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-9 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+	
+	<div class="flex-grid">
+		<div class="d-col-4 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-4 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-8 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-8 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	<div class="flex-grid">
+		<div class="d-col-5 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-5 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-7 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-7 .t-col-6 .m-col-12 -->
+	</div>
+	
+	<div class="flex-grid">
+		<div class="d-col-6 t-col-6 m-col-6">
+			Col 1
+		</div><!-- /.d-col-6 .t-col-6 .m-col-12 -->
+		<div class="d-col-6 t-col-6 m-col-6">
+			Col 2
+		</div><!-- /.d-col-6 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+	
+	<div class="flex-grid">
+		<div class="d-col-7 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-7 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-5 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-5 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	<div class="flex-grid">
+		<div class="d-col-8 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-8 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-4 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-4 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+	
+	<div class="flex-grid">
+		<div class="d-col-9 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-9 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-3 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-3 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	<div class="flex-grid">
+		<div class="d-col-10 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-10 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-2 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-2 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+
+	<div class="flex-grid">
+		<div class="d-col-11 t-col-6 m-col-12">
+			Col 1
+		</div><!-- /.d-col-11 .t-col-6 .m-col-12 -->
+		
+		<div class="d-col-1 t-col-6 m-col-12">
+			Col 2
+		</div><!-- /.d-col-1 .t-col-6 .m-col-12 -->
+	</div><!-- /.flex-grid -->
+</section><!-- /.flex-wrapper -->
+*/
 /*-------------------------------------------------------------------------------------------------*/
 /*	Section de Bel-CMS, toujours utilisé pour uniformiser le site.
 ------------------------------------------------------
@@ -495,62 +795,134 @@ label {
 		transform: translateY(0px);
 	}
 }
-/*
-[data-tooltip][data-position="top"]:before {
-	bottom: 100%;
-	left: -130%;
-	margin-bottom: 10px;
+
+
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute; 
+  left: -9999px;
 }
-[data-tooltip][data-position="top"]:after {
-	border-top-color: #000;
-	border-bottom: none;
-	bottom: 101%;
-	left: calc(50% - 6px);
-	margin-bottom: 4px;
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 95px;
+  cursor: pointer;
 }
-[data-tooltip][data-position="left"]:before {
-	top: -12%;
-	right: 100%;
-	margin-right: 10px;
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before,
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content: '';
+  position: absolute;
 }
-[data-tooltip][data-position="left"]:after {
-	border-left-color: #000;
-	border-right: none;
-	top: calc(50% - 3px);
-	right: 100%;
-	margin-top: 2px;
-	margin-right: 4px;
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  left: 0; top: 0;
+  width: 80px; height: 30px;
+  background: #DDDDDD;
+  border-radius: 6px;
+  transition: background-color .2s;
 }
-[data-tooltip][data-position="right"]:before {
-	top: -5%;
-	left: 100%;
-	margin-left: 9px;
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  width: 30px; height: 30px;
+  transition: all .2s;
+  border-radius: 6px 0 0 6px;
+  background: #7F8C9A;
+  top: 0; left: 0;
 }
-[data-tooltip][data-position="right"]:after {
-	border-right-color: #000;
-	border-left: none;
-	top: calc(50% - 6px);
-	left: calc(100% + 4px);
+
+/* on checked */
+[type="checkbox"]:checked + label:before {
+  background:#34495E; 
 }
-[data-tooltip][data-position="bottom"]:before {
-	top: 100%;
-	left: -130%;
-	margin-top: 10px;
+[type="checkbox"]:checked + label:after {
+  background: #39D2B4;
+  top: 0; left: 51px;
+  border-radius: 0 6px 6px 0;
 }
-[data-tooltip][data-position="bottom"]:after {
-	border-bottom-color: #000;
-	border-top: none;
-	top: 100%;
-	left: 5px;
-	margin-top: 4px;
+
+[type="checkbox"]:checked + label .ui,
+[type="checkbox"]:not(:checked) + label .ui:before,
+[type="checkbox"]:checked + label .ui:after {
+  position: absolute;
+  left: 6px;
+  width: 65px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 22px;
+  transition: all .2s;
 }
-*/
+
+[type="checkbox"]:not(:checked) + label .ui:before {
+  font-family: 'FontAwesome';
+  content: "\f00d";
+  left: 46px;
+  margin-top: 3px;
+}
+[type="checkbox"]:checked + label .ui:after {
+  font-family: 'FontAwesome';
+  content: "\f00c";
+  color: #39D2B4;
+  margin-top: 3px;
+  left: 12px;
+}
+[type="checkbox"]:focus + label:before {
+  border: 0; outline: 0;
+  box-sizing: border-box;
+}
 /*-------------------------------------------------------------------------------------------------*/
 /*	Table (div) custom css
 ---------------------------------------------------------------------------------------------------*/
-.bel_cms_index_table {
+table.belcms_table {
 	width: 100%;
+	border-collapse: collapse;
+  }
+table.belcms_table td, table.belcms_table th {
+	border: 1px solid #AAAAAA;
+	padding: 5px 5px;
 }
+table.belcms_table thead {
+	background: #DDDDDD;
+	border-bottom: 2px solid #444444;
+}
+table.belcms_table thead th {
+	font-size: 13px;
+	font-weight: bold;
+}
+table.belcms_table tfoot {
+	font-weight: bold;
+}
+div.belcms_table {
+	width: 100%;
+	border-collapse: collapse;
+  }
+.divTable.belcms_table .divTableCell, .divTable.belcms_table .divTableHead {
+	border: 1px solid #eaeaf5;
+	padding: 5px 5px;
+}
+.divTable.belcms_table .divTableBody .divTableCell {
+	font-size: 13px;
+}
+.divTable.belcms_table .divTableHeading {
+	background: #fcfcfd;
+	border-bottom: 2px solid #eaeaf5;
+}
+.divTable.belcms_table .divTableHeading .divTableHead {
+	font-size: 15px;
+	font-weight: bold;
+}
+.belcms_table .tableFootStyle {
+	font-weight: bold;
+}
+.divTable{ display: table; }
+.divTableRow { display: table-row; }
+.divTableHeading { display: table-header-group;}
+.divTableCell, .divTableHead { display: table-cell;}
+.divTableHeading { display: table-header-group;}
+.divTableFoot { display: table-footer-group;}
+.divTableBody { display: table-row-group;}
 /*-------------------------------------------------------------------------------------------------*/
 /*	Notification
 ---------------------------------------------------------------------------------------------------*/

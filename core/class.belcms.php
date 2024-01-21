@@ -203,7 +203,7 @@ final class BelCMS
 				}
 			}
 			foreach ($b as $k => $v) {
-				if (isset($_SESSION['USER'])) {
+				if (isset($_SESSION['USER']) and !empty($_SESSION['USER'])) {
 					if ($v->groups_access == 0 or in_array(1, $_SESSION['USER']->groups->all_groups)) {
 						$return[$k] = $v;
 					} else {

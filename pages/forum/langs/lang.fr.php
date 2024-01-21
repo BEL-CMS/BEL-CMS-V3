@@ -75,7 +75,8 @@ Common::constant(array(
 	'NO_OPEN_POST'        => 'Vous ne pouvez pas ouvrir ce sujet',
 	'NO_CLOSE_POST'       => 'Vous ne pouvez pas fermer ce sujet',
 	'EDIT_REPLY'          => 'Edition du post',
-	'EDIT_POST'           => 'Editer ce post',
 	'EDIT_SUCCESS'        => 'Edition du post avec succès',
 	'EDIT_FALSE'          => 'Erreur durant le processus de sauvegarde',
+	'LOCK_POST_ERROR'     => 'Impossible de fermer le post',
+	'LOCK_POST_ERROR_NO'  => 'Impossible de fermer le sujet d\'un autre',
 ));

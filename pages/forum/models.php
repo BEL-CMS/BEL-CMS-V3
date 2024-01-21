@@ -10,9 +10,10 @@
  */
 
 namespace Belcms\Pages\Models;
-use BelCMS\PDO\BDD as BDD;
-use BelCMS\Requires\Common as Common;
-use BelCMS\User\User as User;
+use BelCMS\Core\Config;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -53,12 +54,14 @@ final class Forum
 						$access = true;
 						break;
 					} else {
-						if (User::getInfosUserAll($_SESSION['USER']->user->hash_key) !== false) {
-							$v_access = explode('|', $v_access);
-							foreach ($v_access as $key_access => $value_access) {
-								if (in_array($value_access, $_SESSION['USER']->groups->all_groups)) {
-									$access = true;
-									break;
+						if (User::isLogged()) {
+							if (User::getInfosUserAll($_SESSION['USER']->user->hash_key) !== false) {
+								$v_access = explode('|', $v_access);
+								foreach ($v_access as $key_access => $value_access) {
+									if (in_array($value_access, $_SESSION['USER']->groups->all_groups)) {
+										$access = true;
+										break;
+									}
 								}
 							}
 						}
@@ -73,26 +76,42 @@ final class Forum
 
 		return $return;
 	}
+	public function getModerator ()
+	{
+		$return = false;
+		if (User::isLogged()) {
+			$groups = $_SESSION['USER']->groups->all_groups;
+			if (count($groups) == 1) {
+				if (in_array($groups, Config::GetConfigPage('forum')->access_admin)){
+					$return = true;
+				}
+			} else {
+				$explode = explode('|', Config::GetConfigPage('forum')->access_admin);
+				foreach ($explode as $group) {
+					if (in_array($group, $groups)) {
+						$return = true;
+					}
+				}
+			}
+		}
+		return $return;
+	}
 	#####################################
 	# Récupère les noms des forums
 	#####################################
 	public function getAccessForum ($data)
 	{
-		$data = (int) $data;
+		$id = (int) $data;
 		$return = array();
 		$sql = New BDD();
-		$sql->table('TABLE_FORUM');
-		$sql->orderby(array(array('name' => 'orderby', 'type' => 'ASC')));
+		$sql->table('TABLE_FORUM_POST');
 		$where = array(
 			'name' => 'id',
-			'value' => $data
+			'value' => $id
 		);
 		$sql->where($where);
 		$sql->queryOne();
 		$return = $sql->data;
-		if ($return) {
-			$return = explode('|', $return->access_admin);
-		}
 		return $return;
 	}
 	#####################################
@@ -387,23 +406,44 @@ final class Forum
 	public function lock ($id = false)
 	{
 		if ($id) {
-			$id = Common::SecureRequest($id);
-			$where = array('name' => 'id', 'value' => $id);
-			$update = New BDD;
-			$update->table('TABLE_FORUM_POST');
-			$update->where($where);
-			$update->update(array('lockpost' => 1));
-			# verifie si c'est bien inserer
-			if ($update->rowCount === true) {
-				$return['msg']  = constant('LOCK_SUCCESS');
-				$return['type'] = 'success';
+			if (User::isLogged()) {
+				$hashKey = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
+				if (in_array(1, $hashKey->groups->all_groups)) {
+					$where = array('name' => 'id', 'value' => $id);
+					$update = New BDD;
+					$update->table('TABLE_FORUM_POST');
+					$update->where($where);
+					$update->update(array('lockpost' => 1));
+					if ($update->data === true) {
+						$return['msg']  = constant('LOCK_SUCCESS');
+						$return['type'] = 'success';
+						return $return;
+					}
+				} else {
+					$where[] = array('name' => 'id', 'value' => $id);
+					$where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+					$update = New BDD;
+					$update->table('TABLE_FORUM_POST');
+					$update->where($where);
+					$update->update(array('lockpost' => 1));
+					if ($update->data === true) {
+						$return['msg']  = constant('LOCK_SUCCESS');
+						$return['type'] = 'success';
+						return $return;
+					} else {
+						$return['msg']  = constant('LOCK_POST_ERROR_NO');
+						$return['type'] = 'error';	
+					}
+				}
 			} else {
-				$return['msg']  = constant('ERROR_LOCK_BDD');
-				$return['type'] = 'error';
+				$return['msg']  = constant('LOCK_POST_ERROR');
+				$return['type'] = 'error';	
 			}
-			# return le resulat
-			return $return;
+		} else {
+			$return['msg']  = constant('ERROR_NO_ID');
+			$return['type'] = 'error';	
 		}
+		return $return;
 	}
 	#####################################
 	# Delock le post
@@ -411,22 +451,42 @@ final class Forum
 	public function unlock ($id = false)
 	{
 		if ($id) {
-			$where = array('name' => 'id', 'value' => $id);
-			# update le post
-			$update = New BDD;
-			$update->table('TABLE_FORUM_POST');
-			$update->where($where);
-			$update->update(array('lockpost' => 0));
-			# verifie si c'est bien inserer
-			if ($update->rowCount === true) {
-				$return['msg']  = constant('UNLOCK_SUCCESS');
-				$return['type'] = 'success';
+			if (User::isLogged()) {
+				$hashKey = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
+				if (in_array(1, $hashKey->groups->all_groups)) {
+					$where = array('name' => 'id', 'value' => $id);
+					$update = New BDD;
+					$update->table('TABLE_FORUM_POST');
+					$update->where($where);
+					$update->update(array('lockpost' => 0));
+					if ($update->rowCount === true) {
+						$return['msg']  = constant('LOCK_SUCCESS');
+						$return['type'] = 'success';
+						return $return;
+					}
+				} else {
+					$where[] = array('name' => 'id', 'value' => $id);
+					$where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+					$update = New BDD;
+					$update->table('TABLE_FORUM_POST');
+					$update->where($where);
+					$update->update(array('lockpost' => 0));
+					if ($update->rowCount === true) {
+						$return['msg']  = constant('LOCK_SUCCESS');
+						$return['type'] = 'success';
+						return $return;
+					} else {
+						$return['msg']  = constant('LOCK_POST_ERROR_NO');
+						$return['type'] = 'error';	
+					}
+				}
 			} else {
-				$return['msg']  = constant('ERROR_UNLOCK_BDD');
-				$return['type'] = 'error';
+				$return['msg']  = constant('LOCK_POST_ERROR');
+				$return['type'] = 'error';	
 			}
-			# return le resulat
-			return $return;
+		} else {
+			$return['msg']  = constant('ERROR_NO_ID');
+			$return['type'] = 'error';	
 		}
 	}
 	#####################################

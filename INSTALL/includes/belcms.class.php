@@ -82,6 +82,9 @@ class BelCMS
 			'config',
 			'config_pages',
 			'config_tpl',
+			'donations',
+			'donations_receive',
+			'downlaods_stats',
 			'downloads',
 			'downloads_cat',
 			'emoticones',
@@ -103,14 +106,15 @@ class BelCMS
 			'market',
 			'market_address',
 			'market_cat',
-			'market_link',
 			'market_img',
-			'market_sold',
+			'market_link',
 			'market_order',
+			'market_sold',
 			'market_tva',
 			'newsletter',
 			'newsletter_send',
 			'newsletter_tpl',
+			'notificaton',
 			'page_forum',
 			'page_forum_post',
 			'page_forum_posts',
@@ -124,9 +128,11 @@ class BelCMS
 			'page_survey_quest',
 			'paypal',
 			'paypal_purchase',
+			'uploads_admin',
 			'users',
 			'users_gaming',
 			'users_groups',
+			'users_notification',
 			'users_page',
 			'users_profils',
 			'users_social',
@@ -186,7 +192,37 @@ function insertUserBDD ()
 	$user['password']	= password_hash($_POST['password'], PASSWORD_DEFAULT);
 	$user['email']		= $_POST['email'];
 	$user['hash_key']	= md5(uniqid(rand(), true));
-	$user['ip']		= getIp();
+	$user['ip']		    = getIp();
+
+	$domain = ($_SERVER['HTTP_HOST']);
+
+	setcookie(
+		'BELCMS_HASH_KEY',
+		$user['hash_key'],
+		time()+60*60*24*30*3,
+		"/",
+		$domain,
+		true,
+		true
+	);
+	setcookie(
+		'BELCMS_NAME',
+		$user['username'],
+		time()+60*60*24*30*3,
+		"/",
+		$domain,
+		true,
+		true
+	);
+	setcookie(
+		'BELCMS_PASS',
+		$user['password'],
+		time()+60*60*24*30*3,
+		"/",
+		$domain,
+		true,
+		true
+	);
 
 	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users` (
 				`id`,
@@ -225,16 +261,18 @@ function insertUserBDD ()
 				`websites`,
 				`list_ip`,
 				`avatar`,
-				`config`,
 				`info_text`,
 				`birthday`,
 				`country`,
 				`hight_avatar`,
 				`friends`,
-				`date_registration`
+				`date_registration`,
+				`visits` int DEFAULT '0',
+				`gravatar` tinyint(1) NOT NULL DEFAULT '0',
+				`profils` tinyint(1) NOT NULL DEFAULT '0'
 				)
 			VALUES (
-				NULL , '".$user['hash_key']."', '', '', '', '', 'assets/img/default_avatar.jpg', '', '', '', '', '', '', NOW()
+				NULL , '".$user['hash_key']."', '', '', '', '', 'assets/img/default_avatar.jpg', '', '', '', '', '', '', NOW(), '', '0', '0'
 			);";
 
 	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_social` (

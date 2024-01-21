@@ -18,7 +18,7 @@ endif;
 
 class Donations extends AdminPages
 {
-	var $admin  = true; // Admin suprême uniquement (Groupe 1);
+	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true;
 	var $bdd = 'ModelsDonations';
 

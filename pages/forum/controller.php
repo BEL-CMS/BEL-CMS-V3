@@ -11,7 +11,8 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
-use BelCMS\Requires\Common as Common;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -58,7 +59,11 @@ class Forum extends Pages
 	{
 		$data['id']      = (int) $this->id;
 		$data['threads'] = $this->models->GetThreadsPost($data['id']);
-		$groupUser       = $_SESSION['USER']->groups->all_groups;
+		if (User::isLogged()) {
+			$groupUser   = $_SESSION['USER']->groups->all_groups;
+		} else {
+			$groupUser = array(0 => 0);
+		}
 		$access          = false;
 		$secure          = $this->models->securityPost((int) $data['id']);
 
@@ -187,21 +192,49 @@ class Forum extends Pages
 
 	private function accessLock ($id)
 	{
-		$groupUser = $_SESSION['USER']->groups->all_groups;
-
+		$return = false;
+		$forumAccess = $this->models->getAccessForum($id);
+		/* Si logué return tout les groupes, autrement groupe visiteur (0) */
+		if (User::isLogged()) {
+			$groupUser = $_SESSION['USER']->groups->all_groups;
+		} else {
+			$groupUser = array(0 => 0);
+		}
+		/* Admin de niveau 1 */
 		if (in_array('1', $groupUser)) {
 			return true;
 		}
-
-		$access    = false;
-		$forumAccess = $this->models->getAccessForum($id);
-		foreach ($forumAccess as $k => $v) {
-			if (in_array($v, $groupUser)) {
-				$access = true;
-				break;
+		/* Si c'est un modérateur */
+		if ($this->models->getModerator() === true) {
+			return true;
+		}
+		/* Si logué et si c'est son post */
+		if (User::isLogged()) {
+			if ($forumAccess->author == $_SESSION['USER']->user->hash_key) {
+				return true;
 			}
 		}
-		return $access;
+		return $return;
+	}
+
+	private function accessLockAdmin ($id)
+	{
+		$return = false;
+		/* Si logué return tout les groupes, autrement groupe visiteur (0) */
+		if (User::isLogged()) {
+			$groupUser = $_SESSION['USER']->groups->all_groups;
+		} else {
+			$groupUser = array(0 => 0);
+		}
+		/* Admin de niveau 1 */
+		if (in_array('1', $groupUser)) {
+			return true;
+		}
+		/* Si c'est un modérateur */
+		if ($this->models->getModerator() === true) {
+			return true;
+		}
+		return $return;
 	}
 
 	public function lockpost ()
@@ -235,7 +268,7 @@ class Forum extends Pages
 	public function delpost ($id)
 	{
 		$id = (int) $this->id;
-		if (self::accessLock($id)) {
+		if (self::accessLockAdmin($id)) {
 			$return = $this->models->delpost($id);
 			$this->error = true;
 			$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);

@@ -5,28 +5,16 @@
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
-
-$insert = insertUserBDD();
 ?>
-<?php if ($insert === true): ?>
 <div class="belcms_notification">
 	<div class="belcms_notification_msg">
 		<p>Votre installation s'est, à priori, bien déroulée.</p>
 		<p>Merci de nous en faire part sur <a href="http://bel-cms.dev" title="BEL-CMS">bel-cms.dev</a> si vous avez rencontre le moindre souci lors de l'installation</p>
 	</div>
 </div>
-<?php else: ?>
-<div class="belcms_notification">
-	<header class="belcms_notification_header error">
-		<span>Erreur</span>
-	</header>
-	<div class="belcms_notification_msg">Une erreur est survenue durant l'installation veuillez vous référer au forum de <a href="https://bel-cms.dev"><b><i>Bel-CMS</i></b></a> sur le forum, avec le nom de l'erreur, merci<br><i style="color: red;"><?=$insert;?></i></div>
-</div>
-<?php endif;
-if ($insert === true): ?>
 <div class="row">
 	<div class="col-sm-12">
 		<div class="panel panel-default">
@@ -40,16 +28,16 @@ if ($insert === true): ?>
 	<div class="col-sm-12">
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<div class="alert alert-success" role="alert">Redirection automatique dans 5s</div>
+				<div class="alert alert-success" role="alert">Redirection automatique dans 10s<br>Créer un compte directement, le 1ᵉʳ compte créé sera administrateur</div>
 			</div>
 		</div>
 	</div>
 </div>
-<?php endif;
-chmod(ROOT.DS.'INSTALL', 0777);
+<?php
+@chmod(ROOT.DS.'INSTALL', 0777);
 recursive_delete(ROOT.DS.'INSTALL');
-chmod(ROOT.DS.'default'.DS.'custom', 0777);
+@chmod(ROOT.DS.'default'.DS.'custom', 0777);
 ?>
 <script type="text/javascript">
-	setTimeout("location.href = '<?=$_SESSION['HTTP_HOST'];?>';", 5000);
+	setTimeout("location.href = '<?=$_SESSION['HTTP_HOST'];?>';", 10000);
 </script>

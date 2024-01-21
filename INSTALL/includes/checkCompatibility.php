@@ -123,14 +123,14 @@ function checkPDOConnect ($d)
 function createConfig ()
 {
 	if (is_writable(ROOT.'config') !== true) {
-		@chmod(ROOT.'config', 0775);
+		@chmod(ROOT.'config', 0755);
 	}
 	if (is_writable(ROOT.'config') === false) {
 		trigger_error("No Writable dir : ".ROOT."config", E_USER_ERROR);
 	}
-	$dirFile = ROOT.'config'.DS.'config.pdo.php';
+	$dirFile = ROOT.DS.'config'.DS.'config.pdo.php';
 	if (is_file($dirFile)) {
-		@chmod($dirFile, 0775);
+		@chmod($dirFile, 0755);
 		@copy($dirFile, $dirFile.'_'.date('d-m-Y-H-i'));
 		unlink($dirFile);
 	}

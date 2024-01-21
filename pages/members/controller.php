@@ -40,6 +40,9 @@ class Members extends Pages
 		$name = Common::VarSecure($this->data[2], null);
 		$data['groups'] = Secures::getGroups();
 		$data['data']   = $this->models->getViewUser($name);
+		if (!empty($data['data'])) {
+			$this->models->visitOnePlus($name);
+		}
 		if (empty($data['data'])) {
 			Notification::warning('L\'utilisateur demandé n\'existe pas', constant('USER'));
 		} else {

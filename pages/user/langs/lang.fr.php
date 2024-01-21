@@ -47,6 +47,8 @@ Common::constant(array(
 	'THIS_NAME_OR_PSEUDO_RESERVED' => 'Ce nom d\'utilisateur est déjà réservé.',
 	'THIS_MAIL_IS_ALREADY_RESERVED'=> 'Ce courriel est déjà réservé.',
 	'MODIFY_SOCIAL_SUCCESS'        => 'Liens sociaux modifier avec succès',
+	'MODIFY_PROFILS_SUCCESS'       => 'Profils mise à jour',
+	'MODIFY_PROFILS_ERROR'         => 'Une erreur, c\'est produit lors de la mise à jour',
 	'SEND_PASS_IS_OK'              => 'Le mot de passe a été enregistré',
 	'OLD_PASS_FALSE'               => 'L\'ancien mot de passe de conrespond pas',
 	'CHOICE_OF_GAMES'              => 'Choix des jeux',

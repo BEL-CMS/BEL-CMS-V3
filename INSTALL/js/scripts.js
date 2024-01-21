@@ -42,7 +42,7 @@ function ajax (i) {
 		} else {
 			$('.belcms_notification > header').removeClass('infos').addClass("success"); 
 			$('#error_bdd').empty().append('Toutes les tables on bien été crée, vous pouvez passer au suivant en cliquant sur le bouton suivant.');
-			$('#menu').append('<li><a href="?page=sql">Précédent</a></li><li id="next"><a href="?page=user">Suivant</a></li>');
+			$('#menu').append('<li><a href="?page=sql">Précédent</a></li><li id="next"><a href="?page=finish">Suivant</a></li>');
 		}
 	});
 }

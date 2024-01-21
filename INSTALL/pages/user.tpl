@@ -5,7 +5,7 @@
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 ?>
@@ -34,15 +34,9 @@
 			<span class="title">Installation</span>
 		</a>
 	</li>
-	<li class="active">
-		<a href="#">
-			<span class="number">5</span>
-			<span class="title">Création d'un Compte</span>
-		</a>
-	</li>
 	<li>
 		<a href="#">
-			<span class="number">6</span>
+			<span class="number">5</span>
 			<span class="title">Remerciement</span>
 		</a>
 	</li>

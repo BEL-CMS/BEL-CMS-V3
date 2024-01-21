@@ -37,6 +37,7 @@ $files = array (
 	ROOT.DS.'spdo'.DS.'connect.php',
 	ROOT.DS.'spdo'.DS.'spdo.class.php',
 	ROOT.DS.'core'.DS.'class.error.php',
+	ROOT.DS.'core'.DS.'class.user.notification.php',
 	ROOT.DS.'config'.DS.'class.config.php',
 	ROOT.DS.'ban'.DS.'index.php',
 	ROOT.DS.'maintenance'.DS.'index.php',
