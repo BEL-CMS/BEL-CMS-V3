@@ -1,13 +1,14 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 2.1.0
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2022 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -15,60 +16,53 @@ if (!defined('CHECK_INDEX')):
 endif;
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
 ?>
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="block">
-            <div class="block-title">
-                <h2>Ajouter une team</h2>
-            </div>
-			<form action="/Team/sendAdd?management&gaming=true" enctype="multipart/form-data" method="post" class="form-horizontal form-bordered">
-				<div class="form-group">
+<form action="Team/sendAdd?management&option=gaming" method="post">
+	<div class="flex flex-col gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title">Ajouter la team</h4>
+				</div>
+			</div>
+			<div class="p-6">
+				<div class="overflow-x-auto">
+				<div class="mb-3">
 					<label for="input-Default" class="col-sm-2 control-label"><?=NAME?></label>
-					<div class="col-sm-10">
-						<input required name="name" type="text" class="form-control" id="input-Default" value="">
-					</div>
+					<input required name="name" type="text" class="form-input" id="input-Default" value="">
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="input-img" class="col-sm-2 control-label">Images</label>
-					<div class="col-sm-10">
-						<input id="input-img" name="img" class="form-control" type="file" value="">
-					</div>
+					<input id="input-img" name="img" accept="image/*" class="form-input" type="file" value="">
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="input-img" class="col-sm-2 control-label">Images</label>
-					<div class="col-sm-10">
-						<input id="input-img" name="img_pre" class="form-control" type="text" value="">
-					</div>
+						<input id="input-img" name="img_pre" class="form-input" type="text" value="">
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label class="col-sm-2 control-label">Jeux</label>
-					<div class="col-sm-10">
-						<select name="game" class="form-control" tabindex="-1">
-							<option></option>
-							<?php
-							foreach ($game as $k => $v):
-								?>
-								<option value="<?=$v->id?>"><?=$v->name?></option>
-								<?php
-							endforeach;
-							?>
-						</select>
-					</div>
+					<select name="game" tabindex="-1" class="form-input">
+						<option></option>
+						<?php
+						foreach ($game as $k => $v):
+						?>
+							<option value="<?=$v->id?>"><?=$v->name?></option>
+						<?php
+						endforeach;
+						?>
+					</select>
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label class="col-sm-2 control-label">Description</label>
-					<div class="col-sm-10">
-						<textarea class="bel_cms_textarea_full" name="description"></textarea>
-					</div>
+					<textarea class="bel_cms_textarea_full" name="description"></textarea>
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="input-order" class="col-sm-2 control-label">Ordre</label>
-					<div class="col-sm-10">
-						<input id="input-order" name="orderby" type="number" class="form-control" value="" min="1" max="24">
-					</div>
+					<input id="input-order" name="orderby" type="number" class="form-input" value="" min="1" max="24">
 				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary"><?=EDIT?></button>
+				<div class="mb-3">
+					<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
+						<i class="fa fa-dot-circle-o"></i><?=constant('EDIT');?>
+					</button>
 				</div>
 			</form>
 		</div>

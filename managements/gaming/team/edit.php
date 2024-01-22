@@ -1,13 +1,14 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 2.1.0
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2022 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -15,84 +16,65 @@ if (!defined('CHECK_INDEX')):
 endif;
 if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === true):
 ?>
-<div class="x_panel">
-	<div class="x_title">
-		<h2>Menu Page Team</h2>
-		<div class="clearfix"></div>
-	</div>
-	<div class="x_content">
-		<a href="/team?management&gaming=true" class="btn btn-app">
-			<i class="fa fas fa-home"></i> Accueil
-		</a>
-		<a href="/Team/addTeam?management&gaming=true" class="btn btn-app">
-			<i class="fa fas fa-plus"></i> <?=ADD?>
-		</a>
-	</div>
-</div>
-<div class="col-md-12">
-	<div class="panel panel-white">
-		<div class="panel-heading clearfix">
-			<h4 class="panel-title"><?=BLOG?></h4>
-		</div>
-		<div class="panel-body basic-form-panel">
-			<form action="/Team/sendEdit?management&gaming=true" enctype="multipart/form-data" method="post" class="form-horizontal">
-				<div class="form-group">
-					<label for="input-Default" class="col-sm-2 control-label"><?=NAME?></label>
-					<div class="col-sm-10">
-						<input name="name" type="text" class="form-control" id="input-Default" value="<?=$data->name?>">
-					</div>
+<form action="Team/sendEdit?management&option=gaming" method="post">
+	<div class="flex flex-col gap-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="flex justify-between items-center">
+					<h4 class="card-title">Ajouter la team</h4>
 				</div>
-				<div class="form-group">
-					<label for="input-img" class="col-sm-2 control-label">Images</label>
-					<div class="col-sm-10">
-						<input id="input-img" name="img" class="form-control" type="file" value="">
-					</div>
+			</div>
+			<div class="p-6">
+				<div class="mb-3">
+					<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
+					<input required name="name" value="<?=$data->name?>" type="text" class="form-input" id="input-Default" value="">
 				</div>
-				<div class="form-group">
-					<label for="input-img" class="col-sm-2 control-label">Images</label>
-					<div class="col-sm-10">
-						<input id="input-img" name="img_pre" class="form-control" type="text" value="<?=$data->img?>">
-					</div>
+				<div class="mb-3">
+					<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Images</label>
+					<input id="input-img" name="img" class="form-input" type="file" value="">
 				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Jeux</label>
-					<div class="col-sm-10">
-						<select name="game" class="form-control" tabindex="-1">
-							<option></option>
-							<?php
-							foreach ($game as $k => $v):
-								if ($v->id == $data->game) {
-									$checked = 'selected="selected"';
-								} else {
-									$checked = '';
-								}
-								?>
-								<option <?=$checked?> value="<?=$v->id?>"><?=$v->name?></option>
-								<?php
-							endforeach;
+				<div class="mb-3">
+				<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Images</label>
+					<input id="input-img" name="img_pre" value="<?=$data->img?>" class="form-input" type="text" value="">
+				</div>
+				<div class="mb-3">
+					<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Jeux</label>
+					<select name="game" class="form-input" tabindex="-1">
+						<option></option>
+						<?php
+						foreach ($game as $k => $v):
+							if ($v->id == $data->game) {
+								$checked = 'selected="selected"';
+							} else {
+								$checked = '';
+							}
 							?>
-						</select>
-					</div>
+							<option <?=$checked?> value="<?=$v->id?>"><?=$v->name?></option>
+							<?php
+						endforeach;
+						?>
+					</select>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">Description</label>
+				<div class="mb-3">
+				<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('DESC');?></label>
 					<div class="col-sm-10">
 						<textarea class="bel_cms_textarea_full" name="description"><?=$data->description?></textarea>
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="input-order" class="col-sm-2 control-label">Ordre</label>
-					<div class="col-sm-10">
-						<input id="input-order" name="orderby" type="number" class="form-control" value="<?=$data->orderby?>" min="1" max="24">
-					</div>
+				<div class="mb-3">
+					<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('ORDER');?></label>
+					<input id="input-order" name="orderby" type="number" class="form-input" value="<?=$data->orderby?>" min="1" max="99">
 				</div>
-				<div class="form-group">
+				<div class="mb-3">
 					<input type="hidden" name="id" value="<?=$data->id?>">
-					<button type="submit" class="btn btn-primary"><?=EDIT?></button>
+					<button type="submit" class="btn bg-violet-500 border-violet-500 text-white">
+						<i class="fa fa-dot-circle-o"></i><?=constant('SEND');?>
+					</button>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
-</div>
+</form>
 <?php
 endif;
+?>

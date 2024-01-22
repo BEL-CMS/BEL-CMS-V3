@@ -1,13 +1,16 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 2.1.0
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2022 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -102,14 +105,14 @@ final class ModelsTeam
 	public function SendEdit ($data)
 	{
 		$error = null;
-		if ($_FILES['img']['size'] != 0) {
+		if (isset($_FILES['img']) and $_FILES['img']['size'] != 0) {
 			$dir = 'uploads/team/';
 			if (!file_exists($dir)) {
 				if (!mkdir($dir, 0777, true)) {
 					throw new Exception('Failed to create directory');
 				} else {
 					$fopen  = fopen($dir.'/index.html', 'a+');
-					$fclose = fclose($fopen);
+					fclose($fopen);
 				}
 			}
 			$extensions = array('.png', '.gif', '.jpg', '.jpeg');
@@ -138,8 +141,7 @@ final class ModelsTeam
 			$sql = New BDD();
 			$sql->table('TABLE_TEAM');
 			$sql->where(array('name'=>'id','value'=> $id));
-			$sql->insert($edit);
-			$sql->update();
+			$sql->update($edit);
 			$countRowUpdate = $sql->rowCount;
 
 			if ($countRowUpdate != 0) {
@@ -159,7 +161,7 @@ final class ModelsTeam
 	public function SendAdd($data)
 	{
 		$error = null;
-		if ($_FILES['img']['size'] != 0) {
+		if (isset($_FILES['img']) and $_FILES['img']['size'] != 0) {
 			$dir = 'uploads/team/';
 			if (!file_exists($dir)) {
 				if (!mkdir($dir, 0777, true)) {
@@ -194,7 +196,6 @@ final class ModelsTeam
 			$sql = New BDD();
 			$sql->table('TABLE_TEAM');
 			$sql->insert($insert);
-			$sql->insert();
 			$countRowUpdate = $sql->rowCount;
 
 			if ($countRowUpdate != 0) {
@@ -239,7 +240,6 @@ final class ModelsTeam
 				$insert['teamid'] = $id;
 				$insert['author'] = $v;
 				$sql->insert($insert);
-				$sql->insert();
 				$i++;
 			}
 		}

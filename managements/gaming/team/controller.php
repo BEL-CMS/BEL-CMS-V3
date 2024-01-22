@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 2.1.0
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2022 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -16,17 +16,17 @@ endif;
 
 class Team extends AdminPages
 {
-	var $admin  = true; // Admin suprême uniquement (Groupe 1);
+	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true;
-	var $models = 'ModelsTeam';
+	var $bdd = 'ModelsTeam';
 
 	public function index ()
 	{
 		$data['data'] = $this->models->getTeam ();
 		$data['count'] = count($data['data']);
 		$this->set($data);
-		$menu[] = array('Accueil'=> array('href'=>'team?management&gaming=true','icon'=>'fa fa-home'));
-		$menu[] = array('Ajouter'=> array('href'=>'Team/addTeam?management&gaming=true','icon'=>'fa fa-plus'));
+		$menu[] = array(constant('HOME') => array('href'=>'team?management&option=gaming','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'Team/addTeam?management&option=gaming','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 		$this->render('index', $menu);
 	}
 
@@ -37,8 +37,9 @@ class Team extends AdminPages
 		$this->render('add');
 	}
 
-	public function edit ($id)
+	public function edit ()
 	{
+		$id = (int) $this->data[2];
 		if ($id && is_numeric($id)) {
 			$data['data'] = $this->models->getTeam ($id);
 			$data['game'] = $this->models->getGames ();
@@ -51,7 +52,7 @@ class Team extends AdminPages
 	{
 		$return = $this->models->SendEdit ($_POST);
 		$this->error(get_class($this), $return['msg'], $return['type']);
-		$this->redirect('team?management&gaming=true', 2);
+		$this->redirect('team?management&option=gaming', 2);
 	}
 
 	public function sendAdd ()
@@ -61,12 +62,13 @@ class Team extends AdminPages
 		} else {
 			$return = $this->models->SendAdd ($_POST);
 			$this->error(get_class($this), $return['msg'], $return['type']);
-			$this->redirect('team?management&gaming=true', 2);
+			$this->redirect('team?management&option=gaming', 2);
 		}
 	}
 
-	public function player ($id)
+	public function player ()
 	{
+		$id = (int) $this->data[2];
 		if ($id && is_numeric($id)) {
 			$data['team'] = $this->models->getTeam ($id);
 			$data['user'] = $this->models->getUsers ();
@@ -78,8 +80,7 @@ class Team extends AdminPages
 				$data['userTeam'] = array();
 			}
 			$this->set($data);
-			$menu[] = array('Accueil'=> array('href'=>'/team?management&gaming=true','icon'=>'fa fa-home'));
-			$menu[] = array('Configurations'=> array('href'=>'/Team/cobfig?management&gaming=true','icon'=>'fa fas fa-plus'));
+			$menu[] = array(constant('HOME') => array('href'=>'team?management&option=gaming','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 			$this->render('player', $menu);
 		}
 	}
@@ -96,7 +97,7 @@ class Team extends AdminPages
 		if ($id && is_numeric($id)) {
 			$return = $this->models->del ($id);
 			$this->error(get_class($this), $return['msg'], $return['type']);
-			$this->redirect('team?management&gaming=true', 2);
+			$this->redirect('team?management&option=gaming', 2);
 		}
 	}
 }

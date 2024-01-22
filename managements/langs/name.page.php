@@ -48,7 +48,6 @@ Common::constant(array(
 	'CONNECTED'             => 'Connecté',
 	'LASTCONNECTED'         => 'Dernier connecté',
 	'DONATES'               => 'Paypal',
-	'NEWSLETTER'            => 'Newsletter',
 	'GALLERY'               => 'Galerie',
 	'ACTIVITY'              => 'Activité',
 	'DOWNLOADS_IS_PROGRESS' => 'Chargement de la page en cours...',
@@ -62,6 +61,7 @@ Common::constant(array(
 	'EXTRAS'                => 'Extras',
 	'SERVER'                => 'Serveur',
 	'UNAVAILABLE'           => 'Maintenance',
+	'EVENTS'                => 'Evénements',
 	#####################################
 	# Fichier lang en français
 	#####################################
@@ -76,7 +76,6 @@ Common::constant(array(
 	'SEND_ERROR'            => 'Error BDD',
 	'DEL_SUCCESS'           => 'Supprimé avec succès',
 	'DEL_ERROR'             => 'Erreur durant l\'effacement',
-	'HOME'                  => 'Accueil',
 	'CATEGORIES'            => 'Câtégories',
 	'DESCRIPITON'           => 'Description',
 	'ADD_CAT_SUCCESS'       => 'Ajout de la Catégorie avec succès',
