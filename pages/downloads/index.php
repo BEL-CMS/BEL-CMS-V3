@@ -18,28 +18,23 @@ endif;
 ?>
 <section id="section_downloads">
 	<ul id="section_download_jquery">
+		<li id="downloads_title">
+			<h2><?=constant('DOWNLOADS');?></h2>
+			<div class="downloads_title_cat"><?=constant('NB_CAT');?></div>
+			<div class="downloads_title_view"><?=constant('NB_VIEW');?></div>
+		</li>
 		<?php
 		foreach ($data as $value):
+			$i = 0;
+			$countCat = count((array) $value->dl);
+			foreach ($value->dl as $v) {
+				$i = $i + $v->view; 
+			}
 		?>
-		<li>
-			<div class="section_downloads_cat">
-				<?php
-				if (!empty($value->banner)):
-				?>
-				<div><img src="<?=$value->banner;?>"></div>
-				<?php
-				endif;
-				?>
-				<h1><?=$value->name;?></h1>
-				<div class="section_downloads_cat_desc">
-					<?=$value->description;?>
-				</div>
-				<div class="section_downloads_cat_infos">
-					<ul>
-						<li><a class="section_downloads_cat_button" href="downloads/category/<?=$value->id;?>">Entrer dans cette catégorie</a></li>
-					</ul>
-				</div>
-			</div>
+		<li class="downloads_li_content">
+			<h3><a href="Downloads/category/<?=$value->id;?>"><?=$value->name;?></a><span><?=$value->description;?></span></h3>
+			<div><span><?=$countCat;?></span></div>
+			<div><span><?=$i;?></span></div>
 		</li>
 		<?php
 		endforeach;

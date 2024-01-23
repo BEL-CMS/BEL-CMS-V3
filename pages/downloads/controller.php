@@ -70,8 +70,10 @@ class Downloads extends Pages
 		$c['data'] = $this->models->getDlsDetail($this->data[2]);
 		if ($c['data'] === false) {
 			$this->error = true;
-			$this->errorInfos = array('alert', constant('INVALID_DL'), constant('DOWNLOAD'), false);
+			$this->errorInfos = array('alert', constant('NO_DL'), constant('DOWNLOAD'), false);
+			$this->redirect('Downloads', 3);
 		} else if (empty($c['data'])) {
+			$this->redirect('Downloads', 3);
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('INVALID_ID'), constant('DOWNLOAD'), false);
 		} else {

@@ -35,4 +35,6 @@ Common::constant(array(
 	'UPLOADER'         => 'Mise en ligne par',
 	'NO_DL_CAT'        => 'Aucun téléchargement dans cette catégorie',
 	'INVALID_DL'       => 'Tentative d\'accès au téléchargement interdit',
+	'NB_CAT'           => 'Nombre de téléchargement',
+	'NB_VIEW'          => 'Nombre de vu',
 ));

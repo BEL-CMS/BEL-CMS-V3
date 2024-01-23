@@ -19,7 +19,11 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 $author = User::getInfosUserAll($data->uploader);
-$author = $author->user->username;
+if ($author === false) {
+	$author = constant('MEMBER_DELETE');
+} else {
+	$author = $author->user->username;
+}
 $screen = !is_file($data->screen)   ? 'pages/downloads/no_image.png' : $data->screen;
 $md5    = is_file($data->download) ? md5_file($data->download) : null;
 $mime   = is_file($data->download) ? mime_content_type($data->download) : null;

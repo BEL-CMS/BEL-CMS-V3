@@ -87,6 +87,10 @@ final class Downloads
 			$sql->where($where);
 			$sql->queryOne();
 			$return = $sql->data;
+
+			if ($return === false) {
+				return false;
+			}
 	
 			$sqlCat = New BDD();
 			$sqlCat->table('TABLE_DOWNLOADS_CAT');
