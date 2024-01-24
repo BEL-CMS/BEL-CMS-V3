@@ -16,13 +16,13 @@
 .members_main_grid {
 	flex-grow: 1;
 	width: 33.33%;
-	max-width: 33.33%;
+	max-width: 32.33%;
 	border-radius: 12px;
 	background-color: #f8f8fb;
 	box-shadow: 0 0 40px 0 rgba(94,92,154,.06);
 	position: relative;
 	border: 1px solid #e1e1e1;
-	margin: 0 5px;
+	margin: 5px 5px;
 }
 .members_main_grid figure {
 	height: 96px;

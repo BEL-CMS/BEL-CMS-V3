@@ -42,7 +42,7 @@ if (empty($data)) {
 				<div class="clear"></div>
 				<div class="belcms_downloads_footer">
 					<i class="fa fa-bars"></i>&ensp;<span><?=constant('DATE');?></span> : <?=Common::TransformDate($value->date, 'FULL', 'MEDIUM');?>
-					<a href="downloads/detail/<?=$value->id;?>/<?=Common::MakeConstant($value->name);?>">Voir</a>
+					<a class="belcms_btn belcms_bg_grey" href="downloads/detail/<?=$value->id;?>/<?=Common::MakeConstant($value->name);?>">Voir</a>
 				</div>
 			</li>
 			<?php

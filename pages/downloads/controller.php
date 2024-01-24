@@ -34,7 +34,8 @@ class Downloads extends Pages
 		// Tableau, liste les catégories et supprime ceux que l'utilisateur n'a pas accès.
 		foreach ($data as $a => $b) {
 			$i++;
-			if (Secures::isAcess($b->id_groups) == false) {
+			$group = empty($b->id_groups) ? 0 : $b->id_groups;
+			if (!empty($group) &&Secures::isAcess($b->id_groups) == false) {
 				unset($data[$a]);
 			} else {
 				$get['data'][$i] = (object) array();

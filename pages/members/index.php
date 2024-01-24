@@ -36,7 +36,7 @@ endif;
 			<div class="members_main_username">
 				<a href="Members/profil/<?=$v->user->username;?>" title="#"><?=$v->user->username;?></a>
 			</div>
-			<div class="members_main_link"><a href="https://bel-cms.dev">https://bel-cms.dev</a></div>
+			<div class="members_main_link"><a href="<?=$v->profils->websites;?>"><?=$v->profils->websites;?></a></div>
 			<ul class="members_main_stats">
 				<li>
 					<span><?=$v->profils->countPost;?></span><span>Post</span>

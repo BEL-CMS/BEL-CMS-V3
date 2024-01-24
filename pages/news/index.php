@@ -29,7 +29,7 @@ use BelCMS\Core\Comment as Comment;
 				$avatar   = constant('DEFAULT_AVATAR');
 			} else {
 				$username = $user->user->username;
-				$avatar   = is_file($user->profils->avatar) ? $user->profils->avatar : constant('DEFAULT_AVATAR');
+				$avatar   = !empty($user->profils->avatar) ? $user->profils->avatar : constant('DEFAULT_AVATAR');
 			}
 		?>
 			<article class="bel_cms_blog">

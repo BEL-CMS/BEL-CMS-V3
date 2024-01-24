@@ -11,6 +11,9 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -55,27 +58,21 @@ class Shoutbox extends Pages
 		$i = 1;
 		foreach ($get as $k => $v):
 			$i++;
-			if ($i & 0) {
-				$left_right =  'by_myself right';
-			} else {
-				$left_right =  'from_user left';
-			}
 
 			if (!empty($v->hash_key)) {
-				$infosUser = Users::getInfosUser($v->hash_key);
-				$username  = $infosUser[$v->hash_key]->username;
-				$avatar    = empty($infosUser[$v->hash_key]->avatar) ? AVATAR_DEFAULT : $infosUser[$v->hash_key]->avatar;
+				$infosUser = User::getInfosUserAll($v->hash_key);
+				$username  = $infosUser->user->username;
+				$avatar    = empty($infosUser->profils->avatar) ? constant('DEFAULT_AVATAR') : $infosUser->profils->avatar;
 			} else {
 				$username  = 'Inconnu';
-				$avatar    = AVATAR_DEFAULT;
+				$avatar    = constant('DEFAULT_AVATAR');
 			}
 
 			$msg = ' ' . $v->msg;
 			$msg = preg_replace("#([\t\r\n ])(www|ftp)\.(([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^ \"\n\r\t<]*)?)#i", '\1<a href="http://\2.\3" onclick="window.open(this.href); return false;">\2.\3</a>', $msg);
 			$msg = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $msg);
-			$msg = preg_replace_callback('`((https?|ftp)://\S+)`', 'cesure_href',$msg);
 
-			$return .= '<li class="'.$left_right.'" id="id_'.$v->id.'">
+			$return .= '<li id="id_'.$v->id.'">
 				<a data-toggle="tooltip" title="'.$username.'" href="Members/View/'.$username.'" class="avatar">
 					<img src="'.$avatar.'">
 				</a>
@@ -92,19 +89,19 @@ class Shoutbox extends Pages
 
 	public function insertMsg()
 	{
-		if (strlen($_SESSION['USER']['HASH_KEY']) != 32) {
+		if (strlen($_SESSION['USER']->user->hash_key) != 32) {
 			$return['text'] = 'Erreur HashKey';
 			$return['type'] = 'danger';
 			return $return;
 		} else {
-			$data['hash_key'] = $_SESSION['USER']['HASH_KEY'];
+			$data['hash_key'] = $_SESSION['USER']->user->hash_key;
 		}
 
-		if (!empty($_SESSION['USER']['HASH_KEY'])) {
-			$infosUser = Users::getInfosUser($_SESSION['USER']['HASH_KEY']);
-			$data['avatar'] = empty($infosUser[$_SESSION['USER']['HASH_KEY']]->avatar) ? AVATAR_DEFAULT : $infosUser[$_SESSION['USER']['HASH_KEY']]->avatar;
+		if (!empty($_SESSION['USER']->user->hash_key)) {
+			$infosUser = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			$data['avatar'] = empty($infosUser->profils->avatar) ? constant('DEFAULT_AVATAR') : $infosUser->profils->avatar;
 		} else {
-			$data['avatar']    = AVATAR_DEFAULT;
+			$data['avatar']    = constant('DEFAULT_AVATAR');
 		}
 
 		if (empty($_REQUEST['text'])) {

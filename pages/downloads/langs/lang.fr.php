@@ -37,4 +37,6 @@ Common::constant(array(
 	'INVALID_DL'       => 'Tentative d\'accès au téléchargement interdit',
 	'NB_CAT'           => 'Nombre de téléchargement',
 	'NB_VIEW'          => 'Nombre de vu',
+	'DETAILS'          => 'Détails',
+	'ADD_INFOS'        => 'Information additionnelle',
 ));

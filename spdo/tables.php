@@ -24,6 +24,8 @@ $tables = array(
 	##########################
 	'TABLE_ARTICLES'            => $DB_PREFIX.'articles',
 	'TABLE_ARTICLES_CONTENT'    => $DB_PREFIX.'articles_content',
+	'TABLE_BADGES'              => $DB_PREFIX.'badge',
+	'TABLE_BADGES_USERS'        => $DB_PREFIX.'badge_users',
 	'TABLE_BAN'                 => $DB_PREFIX.'ban',
 	'TABLE_COMMENTS'            => $DB_PREFIX.'comments',
 	'TABLE_CONFIG'              => $DB_PREFIX.'config',

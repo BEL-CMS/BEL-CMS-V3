@@ -28,7 +28,7 @@ class Games extends Pages
 		$set['pagination'] = $this->pagination($config->config['MAX_GAMING_PAGE'], 'games', constant('TABLE_PAGES_GAMES'));
 		$data = $this->models->GetGames();
 		foreach ($data as $key => $value) {
-			$data->$key->count = count((array)$value->user);
+			$data->$key->count = isset($value->user) ? count((array)$value->user) : 0;
 		}
 		$set['data'] = $data;
 		$this->set($set);

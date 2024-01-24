@@ -34,8 +34,12 @@ endif;
 				$cat->last->date_post = Common::TransformDate($cat->last->date_post, 'MEDIUM', 'NONE');
 			}
 			if (isset($cat->last->author)) {
-				$avatar = User::getInfosUserAll($cat->last->author)->profils->avatar;
-				if (!is_file($avatar)) {
+				if (User::ifUserExist($cat->last->author)) {
+					$avatar = User::getInfosUserAll($cat->last->author)->profils->avatar;
+					if ($avatar === false) {
+						$avatar = constant('DEFAULT_AVATAR');
+					}
+				} else {
 					$avatar = constant('DEFAULT_AVATAR');
 				}
 			} else {

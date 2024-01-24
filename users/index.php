@@ -229,12 +229,6 @@ class User
 		$return['msg']  = constant('SESSION_COOKIES_DELETE');
 		$return['type'] = 'success';
 
-		/* Re cree la _SESSION; */
-		if(!isset($_SESSION)) {
-			session_start();
-		}
-		$_SESSION['NB_REQUEST_SQL']  = 0;
-		/* Re cree la _SESSION; */
 		return $return;
 	}
 	#########################################
@@ -256,14 +250,15 @@ class User
 			$user->queryOne();
 			if (!empty($user->data)) {
 				$a = array('user' => (object) $user->data);
+				/*
 				if ($user->data['ip'] != Common::GetIp()) {
 					$insert['ip'] = Common::GetIp();
-					$insert['hash_key'] = $user->data-['hash_key'];
+					$insert['hash_key'] = $user->data['hash_key'];
 					$insert['referer']  = $_SERVER['HTTP_REFERER'];
  					$sqlUpdateIP = new BDD;
 					$sqlUpdateIP->table('TABLE_USERS_IP');
 					$sqlUpdateIP->insert($insert);
-				}
+				}*/
 				/* Return info des groupes de l'user */
 				$group = new BDD();
 				$group->table('TABLE_USERS_GROUPS');
@@ -285,11 +280,11 @@ class User
 				$profils->fields(array('gender','public_mail','websites','list_ip','avatar','info_text','birthday','country','hight_avatar','friends', 'date_registration', 'visits','gravatar', 'profils'));
 				$profils->isObject(false);
 				$profils->queryOne();
-				$c = array('profils' => (object) $profils->data);
-				if ($c['profils']->gravatar == '1') {
+				if ($profils->data['gravatar'] == '1') {
 					$gravatar = hash('sha256', strtolower(trim($a['user']->mail)));
-					$c['profils']->avatar = 'https://gravatar.com/avatar/'.$gravatar;
+					$profils->data['avatar'] = 'https://gravatar.com/avatar/'.$gravatar;
 				}
+				$c = array('profils' => (object) $profils->data);
 				/* Return le profils de l'user */
 				$social = new BDD();
 				$social->table('TABLE_USERS_SOCIAL');

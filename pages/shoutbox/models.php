@@ -59,7 +59,7 @@ class Shoutbox
 		if (empty($user->avatar) OR !is_file($user->avatar)) {
 			$data['avatar'] = constant('DEFAULT_AVATAR');
 		} else {
-			$data['avatar'] = $_SESSION['user']->avatar;
+			$data['avatar'] = $_SESSION['user']->profils->avatar;
 		}
 
 		if (empty($_REQUEST['text'])) {
@@ -73,7 +73,7 @@ class Shoutbox
 		$sql = New BDD();
 		$sql->table('TABLE_SHOUTBOX');
 		$sql->insert($data);
-		if ($rowCount == true) {
+		if ($sql->rowCount == true) {
 			$return['text']	= 'Message envoyer avec succès';
 			$return['type']	= 'success';
 		} else {
@@ -103,6 +103,7 @@ class Shoutbox
 			$return = $sql->data;
 		}
 
+		$this->typeMime = 'application/json';
 		return $return;
 	}
 
@@ -115,13 +116,13 @@ class Shoutbox
 			$data['hash_key'] = $hash_key;
 		}
 
-		$data['avatar'] = Users::hashkeyToUsernameAvatar($hash_key, 'avatar');
+		$data['avatar'] = User::getInfosUserAll($hash_key)->profils->avatar;
 
 		if (empty($text)) {
 			$return['text'] = 'Aucun texte transmis';
 			return $return;
 		} else {
-			$data['msg'] = Common::VarSecure($text, '<a><b><p><strong>');
+			$data['msg'] = Common::VarSecure($text, '<a><b><p><strong><i>');
 		}
 
 		$sql = New BDD();
