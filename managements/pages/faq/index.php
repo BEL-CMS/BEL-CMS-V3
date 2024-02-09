@@ -41,12 +41,17 @@ endif;
 						<?php
 						foreach ($faq as $k => $v):
 							$user = User::getInfosUserAll($v->publish);
+                            if ($user === false) {
+                                $username = constant('MEMBER_DELETE');
+                            } else {
+                                $username = $user->user->username;
+                            }
 							?>
 							<tr>
 								<td><?=$v->name?></td>
 								<td><?=$v->namecat?></td>
 								<td><?=Common::TransformDate($v->date_insert, 'MEDIUM', 'SHORT')?></td>
-								<td><?=$user->user->username?></td>
+								<td><?=$username;?></td>
                                 <td>
                                     <button class="belcms_tooltip_left" data="<?=constant('EDIT');?>" onclick="window.location.href='faq/edit/<?=$v->id?>?management&option=pages'"><i class="mgc_edit_line text-lg"></i></button>
                                     <button class="belcms_tooltip_left" data="<?=constant('DELETE');?>" data-fc-target="delete-modal_<?=$v->id?>" data-fc-type="modal"><i class="mgc_delete_line text-xl"></i></button>

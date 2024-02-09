@@ -21,26 +21,8 @@ use BelCMS\Core\GetHost;
 	<link rel="stylesheet" href="assets/plugins/quick-events/quick-events.css">
 	<script src="assets/plugins/quick-events/languages/lang.js"></script>
 	<script src="managements/assets/js/config.js"></script>
-	<script type="text/javascript">
-		/*
-		document.onreadystatechange = function() {
-			if (document.readyState != "complete") {
-				document.querySelector("body").style.visibility = "hidden";
-				document.querySelector("#loading").style.visibility = "visible";
-			}  else  {
-				document.querySelector("#loading").style.display = "none";
-				document.querySelector("body").style.visibility = "visible";
-			}
-		};
-		*/
-	</script>
 </head>
 <body>
-	<!--
-	<div id="loading">
-		<div><img src="assets/img/loader_7.gif"><p><?=constant('DOWNLOADS_IS_PROGRESS');?></p></div>
-	</div>
-	-->
 	<div class="flex wrapper">
 		<div class="app-menu">
 			<a href="Dashboard?admin" class="logo-box">
@@ -305,5 +287,6 @@ use BelCMS\Core\GetHost;
 	<script src="managements/assets/js/app.js"></script>
 	<script src="assets/plugins/quick-events/jquery.magnific-popup.js"></script>
 	<script src="assets/plugins/quick-events/quick-events.js"></script>
+	<script src="assets/js/jscolor.min.js"></script>
 	</body>
 </html>

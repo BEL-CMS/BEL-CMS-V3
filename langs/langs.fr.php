@@ -176,7 +176,6 @@ $array = array(
 	'UPDATE_NOW'                          => 'Mettre à jour maintenant',
 	'FILES'                               => 'Fichiers',
 	'LINK'                                => 'Lien',
-	'LINKS'                               => 'Liens',
 	'PROFIL'                              => 'Profil',
 	'LAST'                                => 'Hier',
 	'TODAY'                               => 'Aujourd\'hui',
@@ -327,6 +326,8 @@ $array = array(
 	'NB_POST_FORUM'                       => 'Nombre de sujet posté',
 	'ADMIN_DELETE_SUCCESS'                => 'Le fichier a été supprimé avec succès',
 	'FILE_NO_EXIST'                       => 'Le fichier n\'existe pas sur le FTP',
+	'ERROR_ID'                            => 'ID Fausse, un administrateur est prévenu',
+	'LINK_EXIT'                           => 'Attention, vous allez être redirigé vers un site externe(5s),<br>nous ne sommes pas responsables du contenu.',
 	#####################################
 	# Fichier lang en français - Pages BAN
 	#####################################
@@ -398,6 +399,7 @@ $array = array(
 	'FAQ'                                 => 'Foire aux questions',
 	'FILE_MANAGER'                        => 'Gestionnaire de fichiers',
 	'ARTICLES'                            => 'Articles',
+	'LINKS'                               => 'Liens',
 	#####################################
 	# USER
 	#####################################

@@ -130,8 +130,9 @@ class Downloads extends AdminPages
 		$this->redirect('downloads/cat?management&option=pages', 2);
 	}
 
-	public function editcat ($id)
+	public function editcat ()
 	{
+		$id = (int) $this->data[2];
 		$d['data']   = current($this->models->getCat($id));
 		$d['groups'] = Config::getGroups();
 		$this->set($d);

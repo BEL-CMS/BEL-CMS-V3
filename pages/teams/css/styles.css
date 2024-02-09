@@ -1,0 +1,105 @@
+section#belcms_team {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+.belcms_team_separate {
+	display: block;
+	width: calc(50% - 10px);
+	overflow: hidden;
+	float: left;
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	background-color: rgba(0, 0, 0, 0.25);
+	margin: 5px;
+	padding-bottom: 0;
+}
+.belcms_team_separate:last-child {
+	border-left: 0;
+}
+.belcms_team_row > h3 {
+	display: block;
+	text-align: center;
+	font-size: 100%;
+	margin: 15px auto 5px auto;
+}
+.belcms_team_game {
+	display: block;
+	text-align: center;
+	line-height: 30px;
+}
+.belcms_team_ul {
+	display: block;
+	overflow: hidden;
+	text-align: center;
+	overflow-x: scroll;
+	margin: 15px auto;
+	margin-bottom: 0;
+	padding: 15px;
+	padding-bottom: 0;
+}
+.belcms_team_ul li {
+	float: left;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 44px;
+	height: 44px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	background: rgba(255,255,255,0.1);
+	margin: 6px;
+	text-align: center;
+}
+.belcms_team_ul li a img {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  height: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  object-fit: cover;
+}
+.belcms_team_left,
+.belcms_team_right {
+	display: block;
+	float: left;
+	width: 50%;
+	min-height: 50px;
+	transition: all 500ms;
+}
+.belcms_team_left a,
+.belcms_team_right a {
+	color: #FFF;
+}
+.belcms_team_left p {
+	text-align: center;
+	margin: 0;
+	line-height: 20px;
+	padding-top: 3px;
+}
+.belcms_team_left p:last-child {
+	color: #FFF;
+}
+.belcms_team_right {
+	background-color: rgba(0, 0, 0, 0.25);
+}
+.belcms_team_right:hover {
+	transition: all 500ms;
+	background-color: rgba(0, 0, 0, 0.50);
+}
+.belcms_team_left {
+	background-color: rgba(0, 0, 0, 0.55);
+}
+.belcms_team_right a {
+	display: block;
+	line-height: 50px;
+	text-align: center;
+	text-decoration: none;
+}

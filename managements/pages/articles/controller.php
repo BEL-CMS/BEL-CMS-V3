@@ -10,6 +10,7 @@
  */
 
 use BelCMS\Core\Config;
+use BelCMS\Core\Notification;
 use BelCMS\Core\Secures;
 
 if (!defined('CHECK_INDEX')):
@@ -40,6 +41,9 @@ class Articles extends AdminPages
 
 	public function getpage ()
 	{
+		if (!is_int($this->id)) {
+			New Notification(constant('ERROR'), 'ERREUR ID', constant('ID_ERROR'));
+		}
 		$id = (int) $this->id;
 		$menu[] = array(constant('HOME') => array('href'=>'Articles?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD') => array('href'=>'Articles/addsubpage/'.$id.'/?management&option=pages', 'icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
@@ -62,6 +66,9 @@ class Articles extends AdminPages
 
 	public function edit ()
 	{
+		if (!is_int($this->id)) {
+			New Notification(constant('ERROR'), 'ERREUR ID', constant('ID_ERROR'));
+		}
 		$id = (int) $this->id;
 		$set['groups'] = Config::getGroups();
 		$set['data']   = $this->models->getPage($id);
@@ -91,6 +98,9 @@ class Articles extends AdminPages
 
 	public function addsubpage ()
 	{
+		if (!is_int($this->id)) {
+			New Notification(constant('ERROR'), 'ERREUR ID', constant('ID_ERROR'));
+		}
 		$id = (int) $this->id;
 		$set['data'] = $this->models->getPage($id);
 		$this->set($set);
@@ -106,6 +116,9 @@ class Articles extends AdminPages
 
 	public function subpageedit ()
 	{
+		if (!is_int($this->id)) {
+			New Notification(constant('ERROR'), 'ERREUR ID', constant('ID_ERROR'));
+		}
 		$id = (int) $this->id;
 		$set['data'] = $this->models->getPagecontentId($id);
 		$this->set($set);
@@ -121,6 +134,9 @@ class Articles extends AdminPages
 
 	public function delsubpage ()
 	{
+		if (!is_int($this->id)) {
+			New Notification(constant('ERROR'), 'ERREUR ID', constant('ID_ERROR'));
+		}
 		$id = (int) $this->id;
 		$return = $this->models->deletesub($id);
 		$this->error(get_class($this), $return['text'], $return['type']);
@@ -129,6 +145,9 @@ class Articles extends AdminPages
 
 	public function deleteAll ()
 	{
+		if (!is_int($this->id)) {
+			New Notification(constant('ERROR'), 'ERREUR ID', constant('ID_ERROR'));
+		}
 		$id = (int) $this->id;
 		$return = $this->models->deleteAll($id);
 		$this->error(get_class($this), $return['text'], $return['type']);

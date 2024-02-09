@@ -35,7 +35,9 @@ endif;
 	<?php
 	foreach ($threads as $value):
 		$user = User::getInfosUserAll($value->author);
+		$user = $user == false ? constant('MEMBER_DELETE') : $user->user->username;
 		$userlast = User::getInfosUserAll($value->last->author);
+		$userlast = $userlast == false ? constant('MEMBER_DELETE') : $userlast->user->username;
 		$icon = $value->lockpost == 1 ? 'fa-solid fa-comment-slash' : 'fa-solid fa-comment-dots';
 		$red  = $value->lockpost == 1 ? 'redpost' : '';
 	?>
@@ -43,10 +45,10 @@ endif;
 			<div class="belcms_forum_main_cat_ico"><i class="<?=$icon;?>"></i></div>
 			<div class="belcms_forum_main_cat_subtitle">
 				<h3><a href="Forum/Post/<?=Common::MakeConstant($value->title)?>?id=<?=$value->id?>"><?=$value->title?></a></h3>
-				<div>Poste par : <?=$user->user->username;?></div>
+				<div>Poste par : <?=$user;?></div>
 			</div>
 			<div class="belcms_forum_main_cat_last_post">
-				<div><?=$userlast->user->username;?></div>
+				<div><?=$userlast;?></div>
 				<div><?=Common::truncate(Common::VarSecure($value->last->content, null), '45');?></div>
 			</div>
 		</div>

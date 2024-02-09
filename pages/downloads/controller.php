@@ -10,6 +10,7 @@
  */
 
 namespace Belcms\Pages\Controller;
+use BelCMS\Core\Interaction;
 use Belcms\Pages\Pages;
 use BelCMS\Core\Secures;
 use BelCMS\Core\Config;
@@ -35,7 +36,7 @@ class Downloads extends Pages
 		foreach ($data as $a => $b) {
 			$i++;
 			$group = empty($b->id_groups) ? 0 : $b->id_groups;
-			if (!empty($group) &&Secures::isAcess($b->id_groups) == false) {
+			if (!empty($group) &&  Secures::isAcess($b->id_groups) == false) {
 				unset($data[$a]);
 			} else {
 				$get['data'][$i] = (object) array();
@@ -53,6 +54,9 @@ class Downloads extends Pages
 
 	public function category ()
 	{
+		if (!is_numeric($this->data[2])) {
+			new Interaction('error', constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
+		}
 		$a = $this->models->getCat($this->data[2]);
 		$c['name'] = $a->name;
 		if (Secures::isAcess($a->id_groups) == true) {
@@ -68,6 +72,9 @@ class Downloads extends Pages
 
 	public function detail ()
 	{
+		if (!is_numeric($this->data[2])) {
+			new Interaction('error', constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
+		}
 		$c['data'] = $this->models->getDlsDetail($this->data[2]);
 		if ($c['data'] === false) {
 			$this->error = true;
@@ -86,6 +93,9 @@ class Downloads extends Pages
 
 	public function getDl ()
 	{
+		if (!is_numeric($this->data[2])) {
+			new Interaction('error', constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
+		}
 		$id = $this->data[2];
 		if ($id != null && is_numeric($id)) {
 			if ($this->models->ifAccess($id) == true) {

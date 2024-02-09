@@ -1,3 +1,76 @@
-#bel_cms_shoutbox {
+#belcms_shoutbox {
 	width: 100%;
+	display: block;
+	border-radius: 5px;
+	margin: 15px;
+}
+#belcms_shoutbox h6 {
+	padding: 23px 25px 18px;
+	line-height: 1;
+	border: 1px solid #e6ecf5;
+	display: table;
+	width: 100%;
+	position: relative;
+	border-radius: 5px 5px 0 0;
+}
+#belcms_shoutbox_main ul {
+	display: block;
+	list-style: none;
+	width: 100%;
+}
+#belcms_shoutbox_main ul li {
+	display: inline-block;
+	padding: 25px;
+	width: 100%;
+	border: 1px solid #e6ecf5;
+}
+#belcms_shoutbox_main ul li p {
+	text-align: justify;
+}
+.belcms_shoutbox_main_date {
+	display: inline-block;
+	float: right;
+	color: #888da8;
+	font-size: 10px;
+	line-height: 30px;
+}
+.belcms_shoutbox_main_user {
+	font-weight: bold;
+	line-height: 30px;
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 15px;
+}
+.belcms_shoutbox_main_user_avatar {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+.belcms_shoutbox_main_user_avatar img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+#belcms_shoutbox_main_textarea textarea{
+	width: 100%;
+	min-height: 90px;
+	border: 1px solid #ebebeb;
+	padding: 14px 12px;
+	color: #888;
+	font-family: "Titillium Web",sans-serif;
+	font-size: 0.8125em;
+	border-radius: 4px;
+	resize: none;
+}
+#belcms_shoutbox_main_textarea input {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	cursor: pointer;
+	display: inline;
+	width: auto;
+	line-height: 30px;
+	height: 30px;
+	padding: 0px 20px;
+	margin-left: 15px;
 }

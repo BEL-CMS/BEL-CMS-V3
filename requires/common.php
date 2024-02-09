@@ -419,8 +419,6 @@ final class Common
 		$subject  = (isset($data['subject']) AND !empty($data['subject'])) ? $data['subject'] : 'Bel-CMS MAIL';
 		$content  = (isset($data['content']) AND !empty($data['content'])) ? $data['content'] : 'Testing Website mail';
 		$sendMail = (isset($data['sendMail']) AND !empty($data['sendMail'])) ? $data['sendMail'] : false;
-		$link     = (isset($data['link']) AND !empty($data['link'])) ? $data['link'] : '<a href="'.GetHost::getBaseUrl().'/Mails/unsubcribe">unsubcribe</a>';
-		$content .= $content.'<br><br><div style="background:#333333; color:#FFF;"><p>Cette alerte email vous a été envoyée par '.$fromName.'</p><p>Vous ne souhaitez plus recevoir cette alerte ? Désactivez-la, '.$fromName.'</p><br><br>';
 
 		if ($sendMail) {
 			if (Secure::isMail($sendMail)) {
@@ -879,5 +877,27 @@ final class Common
 		}
 
 		$zip->close();
+	}
+
+	public static function removeAllDir ($dir)
+	{
+		$handle = opendir($dir);
+		while($elem = readdir($handle)) {
+			if(is_dir($dir.'/'.$elem) && substr($elem, -2, 2) !== '..' && substr($elem, -1, 1) !== '.') {
+				self::removeAllDir($dir.'/'.$elem);
+			} else {
+				if(substr($elem, -2, 2) !== '..' && substr($elem, -1, 1) !== '.') {
+					unlink($dir.'/'.$elem);
+				}
+			}        
+		}
+		$handle = opendir($dir);
+		while($elem = readdir($handle)) {
+			if(is_dir($dir.'/'.$elem) && substr($elem, -2, 2) !== '..' && substr($elem, -1, 1) !== '.') {
+				self::removeAllDir($dir.'/'.$elem);
+				rmdir($dir.'/'.$elem);
+			}
+		}
+		rmdir($dir);
 	}
 }

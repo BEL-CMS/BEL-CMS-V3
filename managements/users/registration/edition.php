@@ -162,14 +162,18 @@ endif;
 								$male      = 'selected="selected"';
 								$female    = null;
 								$unisexual = null;
-							} elseif ($profil->profils->gender == 'female') {
+							} elseif ($user->profils->gender == 'female') {
 								$female    = 'selected="selected"';
 								$male      = null;
 								$unisexual = null;
-							} elseif ($profil->profils->gender == 'unisexual') {
+							} elseif ($user->profils->gender == 'unisexual') {
 								$unisexual = 'selected="selected"';
 								$male      = null;
 								$female    = null;
+							} else {
+								$unisexual = 'selected="selected"';
+								$male      = null;
+								$female    = null;	
 							}
 							?>
 							<option <?=$unisexual?> value="unisexual">Non spécifié</option>

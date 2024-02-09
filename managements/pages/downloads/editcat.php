@@ -31,7 +31,7 @@ endif;
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-12 control-label" for="checkbox"><?=TEXT?></label>
+						<label class="col-sm-12 control-label" for="checkbox"><?=constant('TEXT');?></label>
 						<div class="col-sm-12">
 							<textarea class="bel_cms_textarea_full" name="description"><?=$data->description?></textarea>
 						</div>

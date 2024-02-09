@@ -29,9 +29,11 @@ $currency = array (
     'GBP' => 'Pound sterling',
     'PHP' => 'Philippine peso'
 );
-$sanbox  = $data['PAYPAL_SANDBOX'] == 'true' ? 'checked="checked"' : '';
-$adress = explode('|', $data['PAYPAL_ADRESS']);
-$cp = explode(',', $adress[1]);
+$sandbox  = $data['PAYPAL_SANDBOX'] == 'true' ? 'checked="checked"' : '';
+$address = explode('|', $data['PAYPAL_ADRESS']);
+
+// Vérifier si l'indice 1 existe avant de l'utiliser
+$cp = isset($address[1]) ? explode(',', $address[1]) : ['', ''];
 ?>
 <form action="PayPal/send?management&option=parameter" method="post" enctype="multipart/form-data">
     <div class="grid lg:grid-cols-4 gap-6">
@@ -53,7 +55,7 @@ $cp = explode(',', $adress[1]);
             <div class="card p-6">
                 <div>
                     <div class="flex items-center">
-                        <input class="form-switch" type="checkbox" role="switch" name="sanbox" value="true" <?=$sanbox;?>>
+                        <input class="form-switch" type="checkbox" role="switch" name="sanbox" value="true" <?=$sandbox;?>>
                         <label class="ms-1.5"><?=constant('SANBOX');?></label>
                     </div>
                 </div>
@@ -61,7 +63,8 @@ $cp = explode(',', $adress[1]);
             <div class="card p-6">
                 <div>
                     <label for="select-label-catagory" class="mb-2 block"><?=constant('CURRENCY');?></label>
-                    <select id="select-label-catagory" class="form-select" name="currency">
+                
+                    <select class="t-label-catagory" class="form-select" name="currency">
                         <?php
                         foreach ($currency as $key => $value):
                             if ($data['PAYPAL_CURRENCY'] == $key):
@@ -69,7 +72,7 @@ $cp = explode(',', $adress[1]);
                             else:
                                 echo '<option value="'.$key.'">'.$value.'</option>';
                             endif;
-                        endforeach
+                        endforeach;
                         ?>
                     </select>
                 </div>
@@ -145,18 +148,18 @@ $cp = explode(',', $adress[1]);
                 <div class="flex flex-col gap-3">
                     <div class="mb-2 mt-2">
                         <label class="mb-2 block"><?=constant('STREET');?> & <?=constant('NUMBER');?> </label>
-                        <input type="text" class="form-input" name="street" value="<?=$adress[0];?>">
+                        <input type="text" class="form-input" name="street" value="<?=$address[0] ?? ''; ?>">
                     </div>
                     <div class="mb-2 mt-2">
                         <label class="mb-2 block"><?=constant('POSTAL_CODE');?></label>
-                        <input type="number" min="1" class="form-input" name="cp" value="<?=$cp[0];?>">
+                        <input type="number" min="1" class="form-input" name="cp" value="<?=$cp[0] ?? ''; ?>">
                     </div>
                     <div class="mb-2 mt-2">
                         <label class="mb-2 block"><?=constant('LOCALITY');?></label>
-                        <input type="text" class="form-input" name="locality" value="<?=$cp[1];?>">
+                        <input type="text" class="form-input" name="locality" value="<?=$cp[1] ?? ''; ?>">
                     </div>
                 </div>
             </div>
         </div>
-	</div>
+    </div>
 </form>

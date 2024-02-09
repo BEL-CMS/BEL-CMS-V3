@@ -62,12 +62,24 @@ class Shoutbox
 			$data['avatar'] = $_SESSION['user']->profils->avatar;
 		}
 
-		if (empty($_REQUEST['text'])) {
+		if (empty($_POST['text'])) {
 			$return['text'] = 'Erreur Message Vide';
 			$return['type'] = 'warning';
 			return $return;
 		} else {
 			$data['msg'] = Common::VarSecure($_REQUEST['text'], '<a><b><p><strong>');
+		}
+
+		if (isset($_FILES['file']) and !empty($_FILES['file'])) {
+			if (constant('UPLOAD_FILE_SUCCESS') == Common::Upload('file', 'uploads/shoutbox', false)) {
+				$data['file'] = 'uploads/shoutbox/'.$_FILES['file']['name'];
+			}
+		}
+
+		if (isset($_FILES['img']) and !empty($_FILES['img'])) {
+			if (constant('UPLOAD_FILE_SUCCESS') == Common::Upload('img', 'uploads/shoutbox', false)) {
+				$data['image'] = 'uploads/shoutbox/'.$_FILES['img']['name'];
+			}
 		}
 
 		$sql = New BDD();

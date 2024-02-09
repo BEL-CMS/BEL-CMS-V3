@@ -10,6 +10,7 @@
  */
 
 use BelCMS\Core\Dispatcher;
+use BelCMS\Core\Interaction;
 use BelCMS\Core\Notification;
 use BelCMS\Requires\Common;
 
@@ -130,9 +131,9 @@ class AdminPages
 		ob_start();
 		?>
 			<?php
-				Notification::error(constant('NO_ACCESS_ADMIN'), 'Page');
-				$this->render = ob_get_contents();
-
+			Notification::error(constant('NO_ACCESS_ADMIN'), 'Page');
+			$this->render = ob_get_contents();
+			new Interaction('error', 'Niveau administration 1', 'Requis un accès du niveau 1');
 			if (ob_get_length() != 0) {
 				ob_end_clean();
 			}

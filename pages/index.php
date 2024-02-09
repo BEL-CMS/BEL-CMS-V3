@@ -231,6 +231,7 @@ class Pages
 	#########################################
 	function pagination ($nbpp = '5', $page = null, $table = null, $where = false)
 	{
+		$nbpp        = $nbpp == 0 ? 5 : $nbpp;
 		$current     = (int) Dispatcher::RequestPages();
 		$page_url    = $page.'?';
 		$total       = self::paginationCount($nbpp, $table, $where);

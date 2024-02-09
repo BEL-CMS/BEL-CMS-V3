@@ -102,12 +102,8 @@ final class Managements
 						ob_end_clean();
 					}
 					$this->page = defined(strtoupper($this->page)) ? constant(strtoupper($this->page)) : $this->page;
-					$Interaction = New Interaction;
-					$Interaction->user($_SESSION['USER']->user->hash_key);
-					$Interaction->title('Accès non autorisé');
-					$Interaction->type('error');
-					$Interaction->text('Accès non autorisé de '.$_SESSION['USER']->user->username.' à la page '.$this->page.' : paramètre');
-					$Interaction->insert();
+					$errorName = 'Accès non autorisé de '.$_SESSION['USER']->user->username.' à la page '.$this->page.' : paramètre';
+					new Interaction('error', constant('INFO'), $errorName);
 					return $render;
 				}
 			}
@@ -189,12 +185,7 @@ final class Managements
 				</div>
 			<?php
 				$page = defined(strtoupper($page)) ? constant(strtoupper($page)) : $page;
-				$Interaction = New Interaction;
-				$Interaction->user($_SESSION['USER']->user->hash_key);
-				$Interaction->title(constant('UNAUTHORIZED_ACCESS'));
-				$Interaction->type('error');
-				$Interaction->text(constant('UNAUTHORIZED_ACCESS').' : '.$_SESSION['USER']->user->hash_key.' '.constant('ONE_PAGE').' '.$page.' : '.constant('SETTING'));
-				$Interaction->insert();
+				$Interaction = New Interaction('error', 'Accès', constant('UNAUTHORIZED_ACCESS'));
 			} else {
 				$require = constant('DIR_ADMIN').$request.DS.$page.DS.'controller.php';
 				if(!is_file($require)) {
@@ -247,30 +238,15 @@ final class Managements
 
 				if (password_verify($_REQUEST['passwrd'], $data->password)) {
 					if ($_SESSION['USER']->user->hash_key == $data->hash_key) {
-						$Interaction = New Interaction;
-						$Interaction->user($_SESSION['USER']->user->hash_key);
-						$Interaction->type('success');
-						$Interaction->title(constant('AUTHORIZED_ACCESS'));
-						$Interaction->text(constant('LOGGED_IN_TO_ADMIN'));
-						$Interaction->insert();
+						new Interaction('success', constant('AUTHORIZED_ACCESS'), constant('LOGGED_IN_TO_ADMIN'));
 						$_SESSION['LOGIN_MANAGEMENT'] = true;
 						$return['ajax'] = constant('LOGIN_IN_PROGRESS');
 					} else {
-						$Interaction = New Interaction;
-						$Interaction->user($_SESSION['USER']->user->hash_key);
-						$Interaction->type('error');
-						$Interaction->title(constant('UNAUTHORIZED_ACCESS'));
-						$Interaction->text(constant('TRY_TO_CONNECT_WHIT_ANOTHER_HASHKEY'));
-						$Interaction->insert();
+						new Interaction('error', constant('UNAUTHORIZED_ACCESS'), constant('TRY_TO_CONNECT_WHIT_ANOTHER_HASHKEY'));
 						$return['ajax'] = constant('HASHKEY_DOES_NOT_MATCH_YOURS');
 					}
 				} else {
-					$Interaction = New Interaction;
-					$Interaction->user($_SESSION['USER']->user->hash_key);
-					$Interaction->type('error');
-					$Interaction->title(constant('UNAUTHORIZED_ACCESS'));
-					$Interaction->text(constant('ATTEMPTED_ACCESS_WHIT_WRONG_PASS'));
-					$Interaction->insert();
+					new Interaction('error', constant('UNAUTHORIZED_ACCESS'), constant('ATTEMPTED_ACCESS_WHIT_WRONG_PASS'));
 					$return['ajax'] = constant('THE_PASS_IS_NOT_CORRECT');
 				}
 

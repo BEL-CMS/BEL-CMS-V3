@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -42,12 +42,17 @@ endif;
 						if (!empty($comments)):
 							foreach ($comments as $k => $v):
 								$user = User::getInfosUserAll($v->hash_key);
+								if ($user === false) {
+									$username = constant('MEMBER_DELETE');
+								} else {
+									$username = $user->user->username;
+								}
 							?>
 							<tr>
 								<td><?=$v->id;?></td>
 								<td><?=$v->page;?></td>
 								<td><?=$v->page_sub;?></td>
-								<td><?=$user->user->username;?></td>
+								<td><?=$username;?></td>
 								<td><?=$v->date_com;?></td>
 								<td>
 									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/comments/edit/<?=$v->id?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
@@ -55,7 +60,7 @@ endif;
 									<div id="delete-modal_<?=$v->id?>" class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden"> 
 										<div class="fc-modal-open:opacity-100 duration-500 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto flex flex-col bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
 											<div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
-												<h3 class="font-medium text-gray-800 dark:text-white text-lg"><?=$user->user->username?></h3>
+												<h3 class="font-medium text-gray-800 dark:text-white text-lg"><?=$username;?></h3>
 												<button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
 														data-fc-dismiss type="button">
 													<span class="material-symbols-rounded">close</span>

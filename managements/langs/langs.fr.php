@@ -40,6 +40,7 @@ Common::constant(array(
 	'EDITING_SUCCESS'             => 'Édition effectue avec succès',
 	'EDIT_ERROR'                  => 'Erreur lors de la sauvegarde ou rien à changer dans le formulaire.',
 	'ID_ERROR'                    => 'ID Incorrecte, un message sera transmis aux administrateurs',
+	'ID_ERROR_TITLE'              => 'ID Incorrecte',
 	'DEL_SUCCESS'                 => 'Effacement effectué avec succès.',
 	'DEL_ERROR'                   => 'Erreur lors de la suppression',
 	'ERROR_NO_DATA'               => 'Aucune donnée transmise',

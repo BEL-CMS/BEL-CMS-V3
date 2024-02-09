@@ -27,7 +27,6 @@ class Calendar extends AdminPages
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'calendar?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD') => array('href'=>'calendar/add?management&option=pages','icon'=>'mgc_add_circle_line', 'color' => 'bg-success text-white'));
-		$menu[] = array(constant('CATEGORY') => array('href'=>'calendar/addcat?management&option=pages','icon'=>'mgc_codepen_line', 'color' => 'bg-warning text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'calendar/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$data['data'] = $this->models->getEvents();
 		$this->set($data);
@@ -39,7 +38,6 @@ class Calendar extends AdminPages
 	public function add ()
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'calendar?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
-		$menu[] = array(constant('CATEGORY') => array('href'=>'calendar/addcat?management&option=pages','icon'=>'mgc_codepen_line', 'color' => 'bg-warning text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'calendar/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('add', $menu);
 	}

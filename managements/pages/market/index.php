@@ -53,7 +53,11 @@ endif;
 								$v->remaining = empty($v->remaining) ? constant('UNLIMITED') : $v->remaining;
 								$cat          = empty($v->cat) ? constant('NO_CATEGORY') : $v->cat;
 								$user         = User::getInfosUserAll($v->author);
-								$username     = $user->user->username;
+								if ($user === false) {
+									$username = constant('MEMBER_DELETE');
+								} else {
+									$username = $user->user->username;
+								}
 								$nbRemaining  = (int) $v->remaining - (int) $v->buy;
 								?>
 								<tr>

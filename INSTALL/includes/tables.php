@@ -142,7 +142,9 @@ switch ($_POST['table']) {
 			('', 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10'),
 			('', 'donations', 0, '1|2|0', '1', NULL),
 			('', 'calendar', 1, '0', '1|2', 'MAX_LIST==2'),
-			('', 'faq', 1, '1|2|0', '1|2', NULL);";
+			('', 'faq', 1, '1|2|0', '1|2', NULL),
+			('', 'links', 1, '1|2|0', '1|2', 'MAX_LINKS==6'),
+			('', 'newsletter', 1, '1|2|0', '1|2', 'MAX_LINKS==6');";
 	break;
 
 	case 'config_tpl':
@@ -622,7 +624,7 @@ switch ($_POST['table']) {
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(128) NOT NULL,
 			`email` varchar(256) NOT NULL,
-			`sendmail` int NOT NULL,
+			`registered` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
@@ -632,8 +634,9 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`template` int NOT NULL,
-			`author` varchar(32) NOT NULL,
+			`receiver` text,
 			`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`send` tinyint(1) DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
@@ -644,7 +647,6 @@ switch ($_POST['table']) {
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(128) NOT NULL,
 			`template` varchar(128) NOT NULL,
-			`author` varchar(32) NOT NULL,
 			`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -775,6 +777,8 @@ switch ($_POST['table']) {
 				`avatar` varchar(256) NOT NULL,
 				`date_msg` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				`msg` text,
+				`image` text,
+				`file` text,
 				PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
@@ -811,7 +815,9 @@ switch ($_POST['table']) {
 			('', 0, 'guestbook'),
 			('', 0, 'donations'),
 			('', 0, 'gallery'),
-			('', 0, 'faq');";
+			('', 0, 'faq'),
+			('', 0, 'links'),
+			('', 0, 'team');";
 	break;
 
 	case "page_survey":
@@ -1078,7 +1084,35 @@ switch ($_POST['table']) {
 			`install` tinyint(1) DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		break;
+	break;
+
+	case "links":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(32) DEFAULT NULL,
+			`link` varchar(128) DEFAULT NULL,
+			`author` varchar(128) DEFAULT NULL,
+			`description` text,
+			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`view` int NOT NULL DEFAULT '0',
+			`click` int NOT NULL DEFAULT '0',
+			`cat` int DEFAULT '0',
+			`valid` tinyint(1) NOT NULL DEFAULT '1',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "links_cat":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(64) DEFAULT NULL,
+			`color` varchar(16) DEFAULT NULL,
+			`description` text,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
 }
 
 $pdo_options = array();

@@ -1,67 +1,46 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<div class="x_panel">
-	<div class="x_title">
-		<h2>Menu Page</h2>
-		<div class="clearfix"></div>
-	</div>
-	<div class="x_content">
-		<a href="/newsletter?management&page=true" class="btn btn-app">
-			<i class="fa fas fa-home"></i> Accueil
-		</a>
-		<a href="newsletter/parameter?management&page=true" class="btn btn-app">
-			<i class="fa fas fa-cogs"></i> Configuration
-		</a>
-		<a href="/newsletter/tpl?management&page=true" class="btn btn-app">
-			<i class="fa far fa-newspaper"></i> Templates
-		</a>
-		<a href="/newsletter/prepa?management&page=true" class="btn btn-app">
-			<i class="fa fas fa-share-square"></i> Envoyer
-		</a>
-	</div>
-</div>
-
-<div class="col-md-12">
-	<div class="panel panel-white">
-		<div class="panel-body">
-			<div class="table-responsive">
-				<table id="datatableDl" class="table table-striped jambo_table bulk_action">
-					<thead>
-						<tr>
-							<th># ID</th>
-							<th>Template</th>
-							<th>Date de publication</th>
-							<th>Auteur</th>
-							<th>Options</th>
-						</tr>
-					</thead>
-					<tfoot>
-						<tr>
-							<th># ID</th>
-							<th>Template</th>
-							<th>Date de publication</th>
-							<th>Auteur</th>
-							<th>Options</th>
-						</tr>
-					</tfoot>
-					<tbody>
-
-					</tbody>
-				</table>
+<div class="flex flex-col gap-6">
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title"><?=constant('LIST_OF_NEWSLETTER');?></h4>
+			</div>
+		</div>
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
+						<thead class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">#<?=constant('ID');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('REGISTERED');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php
+						?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

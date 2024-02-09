@@ -88,8 +88,8 @@ final class ModelsDownloads
 			// SECURE DATA
 			$send['name']        = Common::VarSecure($data['name'], ''); // autorise que du texte
 			$send['description'] = Common::VarSecure($data['description'], 'html'); // autorise que les balises HTML
-			$data['id_groups']   = isset($data['groups']) ? $data['groups'] : array(1);
-			$send['groups']      = implode("|", $data['groups']);
+			$data['id_groups']   = isset($data['groups']) ? $data['groups'] : array(0 => 1);
+			$send['id_groups']   = implode("|", $data['groups']);
 			$send['banner']      = isset($data['banner']) ? $data['banner'] : null;
 			$send['ico']         = isset($data['ico']) ? $data['ico'] : null;
 			// SQL INSERT
@@ -123,9 +123,7 @@ final class ModelsDownloads
 		$id                  = (int) $data['id'];
 		$send['name']        = Common::VarSecure($data['name'], null);
 		$send['description'] = Common::VarSecure($data['description'], 'html');
-		$send['id_groups']   = isset($data['groups']) ? implode('|', $data['groups']) : 1;
-
-
+		$send['id_groups']   = isset($data['id_groups']) ? implode('|', $data['id_groups']) : 1;
 		// SQL UPDATE
 		$sql = New BDD();
 		$sql->table('TABLE_DOWNLOADS_CAT');

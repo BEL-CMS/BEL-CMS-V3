@@ -46,24 +46,24 @@ class BelCMS
 			?>
 			<!DOCTYPE HTML>
 			<html lang="fr">
-			    <head>
-			    	<title>Installation du C.M.S [BEL-CMS]</title>
-			        <meta charset="UTF-8">
-			        <meta http-equiv="x-ua-compatible" content="ie=edge">
-			        <link href="/INSTALL/img/favicon.ico" rel="shortcut icon">
-			        <link type="text/plain" rel="author" href="/INSTALL/humans.txt">
-			        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+				<head>
+					<title>Installation du C.M.S [BEL-CMS]</title>
+					<meta charset="UTF-8">
+					<meta http-equiv="x-ua-compatible" content="ie=edge">
+					<link href="/INSTALL/img/favicon.ico" rel="shortcut icon">
+					<link type="text/plain" rel="author" href="/INSTALL/humans.txt">
+					<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-			        <link rel="stylesheet" href="/INSTALL/css/styles.css">
-			    </head>
-			    <body>
-			    	<main>
-			    		<h1>Installation de BEL-CMS v3.0.0</h1>
-			    		<?=self::VIEW()?>
-			    	</main>
-			        <script src="/INSTALL/js/jquery.min.js"></script>
-			        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-			        <script src="/INSTALL/js/scripts.js"></script>
+					<link rel="stylesheet" href="/INSTALL/css/styles.css">
+				</head>
+				<body>
+					<main>
+						<h1>Installation de BEL-CMS v3.0.0</h1>
+						<?=self::VIEW()?>
+					</main>
+					<script src="/INSTALL/js/jquery.min.js"></script>
+					<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+					<script src="/INSTALL/js/scripts.js"></script>
 				</body>
 			</html>
 			<?php
@@ -72,6 +72,27 @@ class BelCMS
 			return $buffer;
 		}
 	}
+
+	function RepEfface($dir) {
+	$handle = opendir($dir);
+	while($elem = readdir($handle)) {
+		if(is_dir($dir.'/'.$elem) && substr($elem, -2, 2) !== '..' && substr($elem, -1, 1) !== '.') {
+			self::RepEfface($dir.'/'.$elem);
+		} else {
+			if(substr($elem, -2, 2) !== '..' && substr($elem, -1, 1) !== '.') {
+				unlink($dir.'/'.$elem);
+			}
+		}        
+	}
+	$handle = opendir($dir);
+	while($elem = readdir($handle)) {
+		if(is_dir($dir.'/'.$elem) && substr($elem, -2, 2) !== '..' && substr($elem, -1, 1) !== '.') {
+			self::RepEfface($dir.'/'.$elem);
+			rmdir($dir.'/'.$elem);
+		}
+	}
+	rmdir($dir);
+   }
 
 	public static function TABLES () {
 		$tables = array(
@@ -98,6 +119,8 @@ class BelCMS
 			'groups',
 			'guestbook',
 			'interaction',
+			'links',
+			'links_cat',
 			'mails',
 			'mails_blacklist',
 			'mails_msg',
@@ -128,6 +151,8 @@ class BelCMS
 			'page_survey_quest',
 			'paypal',
 			'paypal_purchase',
+			'team',
+			'team_users',
 			'uploads_admin',
 			'users',
 			'users_gaming',
@@ -137,7 +162,7 @@ class BelCMS
 			'users_profils',
 			'users_social',
 			'visitors',
-			'widgets'
+			'widgets',
 		);
 		return $tables;
 	}

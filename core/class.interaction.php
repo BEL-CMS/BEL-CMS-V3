@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -26,42 +26,52 @@ final class Interaction
 			$type,
 			$text,
 			$title,
+			$page,
 			$date;
 
-	public function user ($hash_key = null) {
+	public function __construct($type, $title, $text)
+	{
+		$this->type  = self::type($type);
+		$this->text  = self::text($text);
+		$this->user  = self::user();
+		$this->title = self::title($title);
+		$this->page  = Dispatcher::name();
+		self::insert();
+	}
+
+	private function user () {
 		if (Users::isLogged() === true) {
-			$this->user = $_SESSION['USER']->user->hash_key;
+			return $_SESSION['USER']->user->hash_key;
 		} else {
-			$this->user = Common::GetIp();
+			return Common::GetIp();
 		}
 	}
 
 	public function type ($type = null)
 	{
 		switch ($type) {
-			case constant('INFO'):
-				$type = 'infos';
+			case 'infos':
+				$return = 'infos';
 			break;
-			case constant('ERROR'):
-				$type = 'error';
+			case 'error':
+				$return = 'error';
 			break;
-			case constant('SUCCESS'):
-				$type = 'success';
+			case 'success':
+				$return = 'success';
 			break;
-			case constant('WARNING'):
-				$type = 'warning';
+			case 'warning':
+				$return = 'warning';
 			break;
 			default:
-				$type = 'infos';
+				$return = 'infos';
 			break;
 		}
-
-		$this->type = $type;
+		return $return;
 	}
 
 	public function text ($text = null)
 	{
-		$this->text = Common::VarSecure($text, 'html');
+		return Common::VarSecure($text, 'html');
 	}
 
 	public function date ()
@@ -71,9 +81,9 @@ final class Interaction
 		return $date;
 	}
 
-	public function title ($text = null)
+	public function title ($title = null)
 	{
-		$this->title = Common::VarSecure($text, '');
+		return Common::VarSecure($title, null);
 	}
 
 	public function insert ()
@@ -84,6 +94,7 @@ final class Interaction
 		$insert['text']   = $this->text;
 		$insert['date']   = self::date();
 		$insert['title']  = $this->title;
+		$insert['page']   = $this->page;
 		/* BDD */
 		$sql = New BDD();
 		$sql->table('TABLE_INTERACTION');

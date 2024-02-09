@@ -362,16 +362,27 @@ final class Forum
 			// Assemble les deux tableaux
 			$return = array_merge($firstPost, $posts);
 			foreach ($return as $k => $v) {
-				$author = User::getInfosUserAll($v->author);
-				// Fait corrépondre leurs ID avec leur username
-				$return[$k]->author       = $author->user->username;
-				// Fait corrépondre leurs ID avec leur avatar
-				$return[$k]->avatar       = $author->profils->avatar;
-				// Fait corrépondre leurs ID avec leur date d'inscription
-				$return[$k]->registration = $author->profils->date_registration;
-				$return[$k]->group        = $author->groups->user_group;
-				$return[$k]->authorId     = $v->author;
-				$return[$k]->countPost    = self::nbUserForum($v->author);
+				if (User::getInfosUserAll($v->author) === false) {
+					$return[$k]->author       = constant('MEMBER_DELETE');;
+					// Fait corrépondre leurs ID avec leur avatar
+					$return[$k]->avatar       = constant('DEFAULT_AVATAR');
+					// Fait corrépondre leurs ID avec leur date d'inscription
+					$return[$k]->registration = '';
+					$return[$k]->group        = 0;
+					$return[$k]->authorId     = '';
+					$return[$k]->countPost    = 0;
+				} else {
+					$author = $author->user->username;
+					// Fait corrépondre leurs ID avec leur username
+					$return[$k]->author       = $author;
+					// Fait corrépondre leurs ID avec leur avatar
+					$return[$k]->avatar       = $author->profils->avatar;
+					// Fait corrépondre leurs ID avec leur date d'inscription
+					$return[$k]->registration = $author->profils->date_registration;
+					$return[$k]->group        = $author->groups->user_group;
+					$return[$k]->authorId     = $v->author;
+					$return[$k]->countPost    = self::nbUserForum($v->author);	
+				}
 			}
 		}
 		return $return;

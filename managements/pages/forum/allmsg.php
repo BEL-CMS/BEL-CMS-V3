@@ -41,15 +41,17 @@ endif;
 							foreach ($data as $key => $v):
 								$user = User::getInfosUserAll($v->author);
 								if (empty($user)):
-									$user = new stdClass();
-									$user->user->color = '#000';
-									$user->user->username = constant('MEMBER_DELETE');
+									$color = '#000';
+									$username = constant('MEMBER_DELETE');
+								else:
+									$color = $user->user->color;
+									$username = $user->user->username;
 								endif;
 								?>
 								<tr>
 									<td><?=$v->id;?></td>
 									<td><?=$v->id_post;?></td>
-									<td style="color:<?=$user->user->color;?>"><?=$user->user->username;?></td>
+									<td style="color:<?=$color;?>"><?=$username;?></td>
 									<td><?=$v->date_post;?></td>
 									<td>
 										<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/Forum/EditMessage/<?=$v->id?>?management&option=pages'"><i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
