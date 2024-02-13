@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -27,8 +27,8 @@ endif;
 			<div class="login-form">
 				<div class="main-div">
 					<div class="panel">
-						<h2><?=REGISTRATION;?></h2>
-						<p><?=INFO_REGISTRATION;?></p>
+						<h2><?=constant('REGISTRATION');?></h2>
+						<p><?=constant('INFO_REGISTRATION');?></p>
 					</div>
 					<form id="Login" action="/User/SendRegister" method="post">
 						<div class="form-group">
@@ -46,20 +46,21 @@ endif;
 						<div class="input-group form-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text">
-									<?=$_SESSION['TMP_QUERY_REGISTER']['NUMBER_1']?> + 
-									<?=$_SESSION['TMP_QUERY_REGISTER']['NUMBER_2']?>
+									<?=$captcha['NB_ONE']?> + 
+									<?=$captcha['NB_TWO']?>
 								</div>
 							</div>
 							<input name="query_register" type="number" min="1" max="18" class="form-control" id="security-password" placeholder="Your Answer" autocomplete="off">
 						</div>
 						<div class="forgot">
-							<a href="/user/lostpassword&echo"><?=FORGOT_PASSWORD;?></a>
+							<a href="/user/lostpassword&echo"><?=constant('FORGOT_PASSWORD');?></a>
 						</div>
 						<div class="nouser">
-							<a href="/user/Login&echo"><?=YOU_HAVE_ACCOUNT;?></a>
+							<a href="/user/Login&echo"><?=constant('YOU_HAVE_ACCOUNT');?></a>
 						</div>
+						<input type="hidden" name="captcha" value="">
 						<input type="hidden" name="send" value="register">
-						<button type="submit" class="btn btn-primary"><?=REGISTER;?></button>
+						<button type="submit" class="btn btn-primary"><?=constant('REGISTER');?></button>
 					</form>
 				</div>
 			</div>

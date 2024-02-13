@@ -10,6 +10,7 @@
  */
 
 namespace Belcms\Pages\Controller;
+use BelCMS\Core\Captcha;
 use BelCMS\Core\Config;
 use Belcms\Pages\Pages;
 
@@ -24,16 +25,6 @@ class GuestBook extends Pages
 
 	public function index ()
 	{
-        if (isset($_SESSION['TMP_QUERY_GUESTBOOK'])) {
-            unset($_SESSION['TMP_QUERY_GUESTBOOK']);
-        }
-        $numberOneRand = rand(1, 9);
-        $numberTwoRand = rand(1, 9);
-		$OVERALL = $numberOneRand + $numberTwoRand;
-        $_SESSION['TMP_QUERY_GUESTBOOK'] = array();
-		$_SESSION['TMP_QUERY_GUESTBOOK']['NUMBER_1'] = $numberOneRand;
-		$_SESSION['TMP_QUERY_GUESTBOOK']['NUMBER_2'] = $numberTwoRand;
-        $_SESSION['TMP_QUERY_GUESTBOOK']['OVERALL'] = $numberOneRand + $numberTwoRand;
 		$config = Config::GetConfigPage('guestbook');
 		$set['pagination'] = $this->pagination($config->config['MAX_USER'], 'guestbook', constant('TABLE_GUESTBOOK'));
         $data['user'] = $this->models->getUser();
@@ -44,11 +35,19 @@ class GuestBook extends Pages
 
     public function new ()
     {
+        $set['captcha'] = Captcha::createCaptcha();
+        $this->set($set);
         $this->render('new');
     }
 
     public function sendNew ()
     {
+		if (Captcha::verifCaptcha($_POST['query_guestbook']) === false) {
+			$this->error = true;
+			$this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('REGISTRATION'), false);
+			return false;	
+		}
+
         $return = $this->models->sendNew ($_POST);
 		$this->error = true;
 		$this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);

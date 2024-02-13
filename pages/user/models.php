@@ -53,19 +53,11 @@ final class User
 				$tmpNdd =  explode('.', $tmpMailSplit[1]);
 			}
 
-			if (!isset($_REQUEST['query_register']) or !isset($_SESSION['TMP_QUERY_REGISTER']['OVERALL'])) {
-				$return['msg']  = constant('SECURE_CODE_FAIL'); $error++;
-				$return['type'] = 'warning';
-				return $return;
-			}
 			if (empty($data['username']) OR empty($data['email']) OR empty($data['passwordhash'])) {
 				$return['msg']   = constant('UNKNOW_USER_MAIL_PASS'); $error++;
 				$return['type']  = 'error';
 			} else if (in_array($tmpNdd[0], $arrayBlackList)) {
 				$return['msg']   = constant('NO_MAIL_ALLOWED'); $error++;
-				$return['type']  = 'warning';
-			} else if ($_REQUEST['query_register'] != $_SESSION['TMP_QUERY_REGISTER']['OVERALL'])  {
-				$return['msg']   = constant('SECURE_CODE_FAIL'); $error++;
 				$return['type']  = 'warning';
 			} else if (strlen($data['username']) < 3) {
 				$return['msg']   = constant('MIN_THREE_CARACTER'); $error++;
@@ -170,7 +162,7 @@ final class User
 					$insertPage->table('TABLE_USERS_PAGE');
 					$insertPage->insert(array('hash_key'=> $hash_key));
 
-					unset($_SESSION['TMP_QUERY_REGISTER']);
+					//unset($_SESSION['TMP_QUERY_REGISTER']);
 					
 					Users::login($data['username'],$data['passwordhash']);
 

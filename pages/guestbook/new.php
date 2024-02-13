@@ -17,19 +17,19 @@ if (!defined('CHECK_INDEX')):
 endif;
 $user = User::isLogged() ? $_SESSION['USER']->user->username : '';
 $readonly = User::isLogged() ? 'readonly' : '';
- ?>
+?>
 <section id="section_guestbook">
 	<h2><?=constant('GUEST_BOOK_NEW');?></h2>
 	<form id="form_guestbook" action="guestbook/SendNew" method="post">
 		<div>
 			<label for="author"><?=constant('ENTER_YOUR_NAME');?></label>
-			<input <?=$readonly;?> type="text" value=<?=$user;?> name="author" id="author" required>
+			<input <?=$readonly;?> type="text" value="<?=$user;?>" name="author" id="author" required>
 		</div>
 		<div>
 			<textarea required name="message"></textarea>
 		</div>
 		<div>
-			<input required name="query_guestbook" type="number" min="1" max="18" class="form-control" autocomplete="off" placeholder="Captcha resolvé le petit calcul : <?=$_SESSION['TMP_QUERY_GUESTBOOK']['NUMBER_1']?> + <?=$_SESSION['TMP_QUERY_GUESTBOOK']['NUMBER_2']?>">
+			<input required name="query_guestbook" type="number" min="1" max="18" class="form-control" autocomplete="off" placeholder="Captcha resolvé le petit calcul : <?=$captcha['NB_ONE'];?> + <?=$captcha['NB_TWO'];?>">
 			<input type="hidden" value="" name="captcha">
 		</div>
 		<div class="donation_purchase_row">

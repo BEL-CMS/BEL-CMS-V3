@@ -10,11 +10,10 @@
 */
 
 namespace BelCMS\User;
-use BelCMS\PDO\BDD as BDD;
-use BelCMS\Core;
-use BelCMS\Requires\Common as Common;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 use BelCMS\Core\Config as BelCMSConfig;
-use BelCMS\Core\Dispatcher as Dispatcher;
+use BelCMS\Core\Dispatcher;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -72,17 +71,17 @@ class User
 		if (self::isLogged() === false and Dispatcher::view() != 'logout') {
 			// Control si la variable $_COOKIE existe
 			if (
-				isset($_COOKIE['BELCMS_HASH_KEY']) AND
-				!empty($_COOKIE['BELCMS_HASH_KEY']) AND
-				isset($_COOKIE['BELCMS_NAME']) AND
-				!empty($_COOKIE['BELCMS_NAME']) AND
-				isset($_COOKIE['BELCMS_PASS']) AND
-				!empty($_COOKIE['BELCMS_PASS'])
+				isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+				!empty($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+				isset($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+				!empty($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+				isset($_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+				!empty($_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']])
 			) {
 				// Passe en tableaux les valeurs du $_COOKIE
-				$name     = $_COOKIE['BELCMS_NAME'];
-				$hash_key = $_COOKIE['BELCMS_HASH_KEY'];
-				$hash     = $_COOKIE['BELCMS_PASS'];
+				$name     = $_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']];
+				$hash_key = $_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']];
+				$hash     = $_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']];
 				// Verifie le hash_key est bien de 32 caractere
 				if ($hash_key AND strlen($hash_key) == 32) {
 					self::login($name, $hash, $hash_key);
@@ -142,13 +141,14 @@ class User
 					$check_password = false;
 				}
 				if (password_verify($password, $results->password) OR $check_password) {
+
 					if (
-						!isset($_COOKIE['BELCMS_HASH_KEY']) && 
-						!isset($_COOKIE['BELCMS_NAME']) && 
-						!isset($_COOKIE['BELCMS_PASS'])
+						!isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) && 
+						!isset($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) && 
+						!isset($_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']])
 					) {
 						setcookie(
-							'BELCMS_HASH_KEY',
+							'BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'],
 							$results->hash_key,
 							time()+60*60*24*30*3,
 							"/",
@@ -157,7 +157,7 @@ class User
 							true
 						);
 						setcookie(
-							'BELCMS_NAME',
+							'BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES'],
 							$results->username,
 							time()+60*60*24*30*3,
 							"/",
@@ -166,7 +166,7 @@ class User
 							true
 						);
 						setcookie(
-							'BELCMS_PASS',
+							'BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES'],
 							$results->password,
 							time()+60*60*24*30*3,
 							"/",
@@ -218,9 +218,9 @@ class User
 		}
 		
 		$domain = ($_SERVER['HTTP_HOST']);
-		setcookie('BELCMS_HASH_KEY', 'data', time()-60*60*24*365, '/', $domain, false);
-		setcookie('BELCMS_NAME', 'data', time()-60*60*24*365, '/', $domain, false);
-		setcookie('BELCMS_PASS', 'data', time()-60*60*24*365, '/', $domain, false);
+		setcookie('BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $domain, false);
+		setcookie('BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $domain, false);
+		setcookie('BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $domain, false);
 
 		unset($_SESSION['USER'], $_COOKIE["BELCMS_HASH_KEY"],$_COOKIE["BELCMS_NAME"], $_COOKIE["BELCMS_PASS"]);
 

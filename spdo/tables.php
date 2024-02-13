@@ -27,6 +27,7 @@ $tables = array(
 	'TABLE_BADGES'              => $DB_PREFIX.'badge',
 	'TABLE_BADGES_USERS'        => $DB_PREFIX.'badge_users',
 	'TABLE_BAN'                 => $DB_PREFIX.'ban',
+	'TABLE_CAPTCHA'             => $DB_PREFIX.'capcha',
 	'TABLE_COMMENTS'            => $DB_PREFIX.'comments',
 	'TABLE_CONFIG'              => $DB_PREFIX.'config',
 	'TABLE_PAGES_CONFIG'        => $DB_PREFIX.'config_pages',

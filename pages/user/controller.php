@@ -11,13 +11,14 @@
 
 namespace BELCMS\Pages\Controller;
 
+use BelCMS\Core\Captcha;
 use BELCMS\Pages\Pages;
 use BELCMS\User\User as UserInfos;
-use BelCMS\PDO\BDD as BDD;
-use BELCMS\Core\Notification as Notification;
-use BelCMS\Core\Secure as Secure;
-use BelCMS\Requires\Common as Common;
-use BelCMS\Core\Interaction as Interaction;
+use BelCMS\PDO\BDD;
+use BELCMS\Core\Notification;
+use BelCMS\Core\Secure;
+use BelCMS\Requires\Common;
+use BelCMS\Core\Interaction;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -34,7 +35,7 @@ class User extends Pages
 		if (UserInfos::isLogged() === true) {
 			$dir = constant('DIR_UPLOADS_USER').$_SESSION['USER']->user->hash_key.'/';
 			if (!is_dir($dir)) {
-				mkdir($dir, 0777, true);
+				mkdir($dir, 0774, true);
 			}
 			$fopen  = fopen($dir.'/index.html', 'a+');
 			fclose($fopen);
@@ -205,7 +206,6 @@ class User extends Pages
 	public function login ()
 	{
 		if (UserInfos::isLogged() === false) {
-			self::queryRegister();
 			$this->render('login');
 		} else {
 			$d = array();
@@ -220,19 +220,13 @@ class User extends Pages
 	public function register ()
 	{
 		if (UserInfos::isLogged() === false) {
-			self::queryRegister();
+			$return['captcha'] = Captcha::createCaptcha();
+			$this->set($return);
 			$this->data = (bool) true;
 			$this->render('register');
 		} else {
 			$this->redirect('user', 0);
 		}
-	}
-	private function queryRegister () {
-		$_SESSION['TMP_QUERY_REGISTER'] = array();
-		$_SESSION['TMP_QUERY_REGISTER']['number_1'] = rand(1, 9);
-		$_SESSION['TMP_QUERY_REGISTER']['number_2'] = rand(1, 9);
-		$_SESSION['TMP_QUERY_REGISTER']['overall']  = $_SESSION['TMP_QUERY_REGISTER']['number_1'] + $_SESSION['TMP_QUERY_REGISTER']['number_2'];
-		$_SESSION['TMP_QUERY_REGISTER'] = Common::arrayChangeCaseUpper($_SESSION['TMP_QUERY_REGISTER']);	
 	}
 	#########################################
 	# Deconnexion
@@ -253,7 +247,6 @@ class User extends Pages
 	}
 	public function sendLostPassword ()
 	{
-		unset($_POST['send']);
 		$return = $this->models->checkToken($_POST);
 		if (!isset($return['pass'])) {
 			$this->error = true;
@@ -267,7 +260,14 @@ class User extends Pages
 
 	public function sendRegister ()
 	{
+		if (Captcha::verifCaptcha($_POST['query_register']) === false) {
+			$this->error = true;
+			$this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('REGISTRATION'), false);
+			return false;	
+		}
+
 		$return = $this->models->sendRegistration($this->data);
+
 		if ($return['type'] == 'error' or $return['type'] == 'warning') {
 			$this->error = true;
 			$this->errorInfos = array($return['type'], $return['msg'], constant('REGISTRATION'), false);

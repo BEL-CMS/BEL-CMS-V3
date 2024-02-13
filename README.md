@@ -41,9 +41,6 @@ Bel-CMS need a LAMP hosting (Apache / PHP / MySQL).
 - TinyMCE 2.1 free edition
 - FontAwesome 6.5.1 free edition (17,7mo);
 
-## Test
-- PHP 8.3.2 OVH Linux Debian
-
 ## Installation
 
 - Copy all content of folder on your FTP

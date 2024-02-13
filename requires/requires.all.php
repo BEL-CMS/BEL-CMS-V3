@@ -44,6 +44,7 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.notification.php',
 	ROOT.DS.'core'.DS.'class.comment.php',
 	ROOT.DS.'core'.DS.'class.gesthost.php',
+	ROOT.DS.'core'.DS.'class.captcha.php',
 	ROOT.DS.'core'.DS.'class.dispatcher.php',
 	ROOT.DS.'core'.DS.'class.secure.php',
 	ROOT.DS.'core'.DS.'class.secures.php',

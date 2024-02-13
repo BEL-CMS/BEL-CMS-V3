@@ -23,11 +23,18 @@ endif;
 			<?php
 			foreach ($var as $value):
 				$user = User::getInfosUserAll($value->hash_key);
+				if ($user == false) {
+					$color = constant('DEFAULT_COLOR_USERNAME');
+					$user  = constant('MEMBER_DELETE');
+				} else {
+					$color = $user->user->color;
+					$user  = $user->user->username;
+				}
 				$date = Common::TransformDate($value->date_msg, 'FULL', 'MEDIUM');
 				$msg  = Common::getSmiley($value->msg);
 			?>
 			<li id="id_<?=$value->id;?>">
-				<span><a href="#" style="color:<?=$user->user->color;?>;"><?=$user->user->username;?></a></span>
+				<span><a href="#" style="color:<?=$color;?>;"><?=$user;?></a></span>
 				<span><?=$msg;?></span>
 				<i><?=$date;?></i>
 				<?php

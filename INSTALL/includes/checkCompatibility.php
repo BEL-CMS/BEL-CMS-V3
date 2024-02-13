@@ -45,57 +45,67 @@ function checkIntl ()
 }
 function checkWriteConfig ()
 {
-	$dir = ROOT.DS.'config';
-	if (!is_dir($dir)) {
-	    mkdir($dir, 0755, true);
-	}
-	$write = substr(sprintf('%o', fileperms(ROOT.'config')), -4);
-	if ($write == '0755') {
+	$dir = ROOT.'config';
+	$write = substr(sprintf('%o', fileperms($dir)), -4);
+	if ($write == '0775') {
 		return true;
 	} else {
 		if (is_writable($dir) === true) {
 			return true;
-		} else {
-			return false;
 		}
 	}
 }
 
-function checkWriteUploads ()
-{
-	$dir = ROOT.DS.'uploads';
-	if (!is_dir($dir)) {
-	    mkdir($dir, 0777, true);
-	}
-	$write = substr(sprintf('%o', fileperms($dir)), -4);
-
-	if ($write == '0777') {
-		return true;
-	} else {
-		if (is_writable($dir) === true) {
-			return true;
-		} else {
-			return false;
+function recursive_delete($dir) {
+	$d = dir($dir);  
+	if (is_dir($dir) && !is_link($dir)) {
+	  if ($d = opendir($dir)) {
+		while (($entry = readdir($d)) !== false) {
+		  if ($entry == '.' || $entry == '..') continue;
+		  $path = $dir .'/'. $entry;
+		  if (is_file($path)) unlink($path);
+		  if (is_dir($path)) recursive_delete($path);
 		}
+		closedir($d);
+	  }
+	  return rmdir($dir);
 	}
+	return unlink($dir);
 }
-function checkWriteCustom ()
-{
-	$dir = ROOT.DS.'templates'.DS.'default'.DS.'custom';
 
-	if (!is_dir($dir)) {
-	    mkdir($dir, 0755, true);
-	}
-	$write = substr(sprintf('%o', fileperms($dir)), -4);
-	if ($write == '0755') {
-		return true;
-	} else {
-		if (is_writable($dir) === true) {
-			return true;
+
+function createDirAll ()
+{
+	$dir = array(
+		ROOT.DS.'config',
+		ROOT.DS.'uploads',
+		ROOT.'uploads'.DS.'backup',
+		ROOT.'uploads'.DS.'downloads',
+		ROOT.'uploads'.DS.'emoticones',
+		ROOT.'uploads'.DS.'events',
+		ROOT.'uploads'.DS.'forum',
+		ROOT.'uploads'.DS.'gallery',
+		ROOT.'uploads'.DS.'gallery'.DS.'cat',
+		ROOT.'uploads'.DS.'games',
+		ROOT.'uploads'.DS.'groups',
+		ROOT.'uploads'.DS.'mails',
+		ROOT.'uploads'.DS.'market',
+		ROOT.'uploads'.DS.'market'.DS.'cat',
+		ROOT.'uploads'.DS.'paypal',
+		ROOT.'uploads'.DS.'shoutbox',
+		ROOT.'uploads'.DS.'team',
+		ROOT.'uploads'.DS.'tmp',
+		ROOT.'uploads'.DS.'users'
+	);
+
+	foreach ($dir as $v) {
+		if (is_writable($v)) {
+			$array[$v] = 'La permition du dossier est correcte';
 		} else {
-			return false;
+			$array[$v] = 'le dossier '.$v.' n\'est pas en Chmod 0775, verifier vos permissions'; 
 		}
 	}
+	return $array;
 }
 function checkPDOConnect ($d)
 {
@@ -123,14 +133,14 @@ function checkPDOConnect ($d)
 function createConfig ()
 {
 	if (is_writable(ROOT.'config') !== true) {
-		@chmod(ROOT.'config', 0755);
+		@chmod(ROOT.'config', 0775);
 	}
 	if (is_writable(ROOT.'config') === false) {
 		trigger_error("No Writable dir : ".ROOT."config", E_USER_ERROR);
 	}
 	$dirFile = ROOT.DS.'config'.DS.'config.pdo.php';
 	if (is_file($dirFile)) {
-		@chmod($dirFile, 0755);
+		@chmod($dirFile, 0777);
 		@copy($dirFile, $dirFile.'_'.date('d-m-Y-H-i'));
 		unlink($dirFile);
 	}

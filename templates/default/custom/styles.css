@@ -1,0 +1,30 @@
+.client-item img {
+    width: 161px !important;
+    height: 100px !important;
+}
+.swiper-button-prev,
+.swiper-button-next {
+    padding: 11px 0 !important;
+}
+.nav-holder li i {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #999;
+    font-size: 14px;
+}
+.nav-holder li svg {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #999;
+    font-size: 14px;
+}
+.nav-contacts li svg {
+    float: right;
+    margin-right: 15px;
+}
+.breadcrumb-wrap span {
+    margin: 0 !important;
+    margin-left: 30px !important;
+}

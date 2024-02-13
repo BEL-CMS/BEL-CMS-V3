@@ -26,7 +26,7 @@ if(!isset($_SESSION)) {
 #########################################
 # MicroTime loading
 #########################################
-$_SESSION['SESSION_START'] = microtime(true);; // Timestamp actuel avec microsecondes
+$_SESSION['SESSION_START'] = microtime(true); // Timestamp actuel avec microsecondes
 #########################################
 # Microtime pour le chargement de la page
 #########################################

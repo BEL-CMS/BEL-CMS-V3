@@ -99,6 +99,7 @@ class BelCMS
 			'articles',
 			'articles_content',
 			'ban',
+			'capcha',
 			'comments',
 			'config',
 			'config_pages',
@@ -338,23 +339,6 @@ function insertUserBDD ()
 		unset($cnx);
 	}
 	return $return;
-}
-
-function recursive_delete($dir) {
-	$d = dir($dir);  
-	if (is_dir($dir) && !is_link($dir)) {
-	  if ($d = opendir($dir)) {
-		while (($entry = readdir($d)) !== false) {
-		  if ($entry == '.' || $entry == '..') continue;
-		  $path = $dir .'/'. $entry;
-		  if (is_file($path)) unlink($path);
-		  if (is_dir($path)) recursive_delete($path);
-		}
-		closedir($d);
-	  }
-	  return rmdir($dir);
-	}
-	return unlink($dir);
 }
 
 function getIp () {

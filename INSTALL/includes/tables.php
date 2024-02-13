@@ -14,6 +14,13 @@ if ($_SERVER['SERVER_PORT'] == '80') {
 } else {
 	$host = 'https://'.$_SERVER['HTTP_HOST'].'/';
 }
+function randomString($length) {
+	$str = random_bytes($length);
+	$str = base64_encode($str);
+	$str = str_replace(["+", "/", "="], "", $str);
+	$str = substr($str, 0, $length);
+	return $str;
+}
 $_SESSION['HTTP_HOST'] = $host;
 $current    = new DateTime('now');
 $date       = $current->format('Y-m-d H:i:s');
@@ -62,6 +69,17 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
 
+	case "capcha":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`IP` varchar(45) NOT NULL,
+			`dateinsert` varchar(5) DEFAULT NULL,
+			`code` varchar(32) NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+	break;
+
 	case 'comments':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -106,7 +124,8 @@ switch ($_POST['table']) {
 			('', 'KEY_ADMIN', '".md5(uniqid(rand(), true))."', 1),
 			('', 'CMS_DEFAULT_PAGE', 'news', 1),
 			('', 'HOST', '".$host."', 1),
-			('', 'LANDING', '0', 1);";
+			('', 'LANDING', '0', 1),
+			('', 'COOKIES', '".randomString(6)."', 1);";
 	break;
 
 	case 'config_pages':
@@ -807,7 +826,6 @@ switch ($_POST['table']) {
 			('', 0, 'page'),
 			('', 0, 'shoutbox'),
 			('', 0, 'survey'),
-			('', 0, 'team'),
 			('', 0, 'user'),
 			('', 0, 'news'),
 			('', 0, 'mails'),
@@ -898,6 +916,30 @@ switch ($_POST['table']) {
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `purchase` (`id_purchase`),
 			UNIQUE KEY `id_paypal` (`id_paypal`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "team":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`game` int NOT NULL,
+			`name` varchar(64) NOT NULL,
+			`description` text,
+			`img` text NOT NULL,
+			`orderby` varchar(3) NOT NULL DEFAULT '1',
+			PRIMARY KEY (`id`),
+			UNIQUE KEY `name` (`name`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "team_users":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`teamid` varchar(16) NOT NULL,
+			`author` varchar(32) NOT NULL,
+			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 

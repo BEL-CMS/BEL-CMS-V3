@@ -35,8 +35,7 @@
 </div>
 <?php
 @chmod(ROOT.DS.'INSTALL', 0777);
-RepEfface(ROOT.DS.'INSTALL');
-@chmod(ROOT.DS.'default'.DS.'custom', 0777);
+recursive_delete(ROOT.DS.'INSTALL');
 ?>
 <script type="text/javascript">
 	setTimeout("location.href = '<?=$_SESSION['HTTP_HOST'];?>';", 10000);

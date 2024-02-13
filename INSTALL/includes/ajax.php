@@ -6,6 +6,7 @@
 		'ban',
 		'comments',
 		'config',
+		'capcha',
 		'config_pages',
 		'config_tpl',
 		'donations',

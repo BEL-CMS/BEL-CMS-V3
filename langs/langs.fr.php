@@ -46,6 +46,7 @@ $array = array(
 	'YOUR_MESSAGE'                        => 'Votre Message...',
 	'LOGIN_ID'                            => 'Connexion identifiant',
 	'MEMBER_DELETE'                       => 'Membre supprimé',
+	'CODE_CAPTCHA_ERROR'                  => 'Erreur de code captcha, veuillez réessayer',
 	#####################################
 	# Fichier lang en français - Social
 	#####################################

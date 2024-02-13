@@ -59,14 +59,8 @@
 		<a href="#">Précédent</a>
 	</li>
 	<li id="next">
-		<a href="?page=control">Suivant</a>
+		<a href="?page=checkdir">Suivant</a>
 	</li>
 </ul>
 <?php
-    // Ancienne installation
-	$domain = ($_SERVER['HTTP_HOST']);
-	setcookie('BELCMS_HASH_KEY', 'data', time()-60*60*24*365, '/', $domain, false);
-	setcookie('BELCMS_NAME', 'data', time()-60*60*24*365, '/', $domain, false);
-	setcookie('BELCMS_PASS', 'data', time()-60*60*24*365, '/', $domain, false);
-	unset($_SESSION['USER'], $_COOKIE["BELCMS_HASH_KEY"],$_COOKIE["BELCMS_NAME"], $_COOKIE["BELCMS_PASS"]);
 ?>
