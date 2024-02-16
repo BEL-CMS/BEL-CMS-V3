@@ -377,6 +377,7 @@ switch ($_POST['table']) {
 			`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`type` text NOT NULL,
 			`text` text,
+			`page` text,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
