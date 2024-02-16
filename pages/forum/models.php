@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -362,7 +362,8 @@ final class Forum
 			// Assemble les deux tableaux
 			$return = array_merge($firstPost, $posts);
 			foreach ($return as $k => $v) {
-				if (User::getInfosUserAll($v->author) === false) {
+				$user = User::getInfosUserAll($v->author);
+				if ($user === false) {
 					$return[$k]->author       = constant('MEMBER_DELETE');;
 					// Fait corrépondre leurs ID avec leur avatar
 					$return[$k]->avatar       = constant('DEFAULT_AVATAR');
@@ -372,9 +373,9 @@ final class Forum
 					$return[$k]->authorId     = '';
 					$return[$k]->countPost    = 0;
 				} else {
-					$author = $author->user->username;
+					$author = $user;
 					// Fait corrépondre leurs ID avec leur username
-					$return[$k]->author       = $author;
+					$return[$k]->author       = $author->user->username;
 					// Fait corrépondre leurs ID avec leur avatar
 					$return[$k]->avatar       = $author->profils->avatar;
 					// Fait corrépondre leurs ID avec leur date d'inscription
