@@ -1,14 +1,15 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Popup;
 use BelCMS\Requires\Common;
 use BelCMS\User\User;
 
@@ -17,63 +18,80 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<section id="belcms_forum">
+<section id="belcms_forum_main">
+	<h1>Forum communautaire</h1>
 	<?php
-	foreach ($forum as $value):
-		if (isset($value->last->date_post)) {
-			$value->last->date_post = Common::TransformDate($value->last->date_post, 'MEDIUM', 'NONE');
-		}
+	if (User::isLogged() === false):
 	?>
-	<div class="belcms_forum_main_cat">
-		<div class="belcms_forum_main_cat_title">
-			<h2><i class="fa-solid fa-comment-dots"></i> <?=$value->title;?></h2>
+	<div class="belcms_forum_main_block_container">
+		<div class="belcms_forum_main_block_header">
+			<h3>Connexion</h3>
+		</div>
+		<div class="belcms_forum_main_block_content">
+			<span class="belcms_forum_main_block_content_ico">
+				<i class="fa-solid fa-user-pen"></i>
+			</span>
+			<span class="belcms_forum_main_block_content_title">
+				<span><a href="User/Login&echo" class="belcms_tooltip_bottom" data="Connexion">Connexion</a></span>
+				<span>Connexion requise pour accéder au forum.</span>
+			</span>
+		</div>
+	</div>
+	<?php
+	endif;
+	foreach ($forum as $val):
+	?>
+	<div class="belcms_forum_main_block_container">
+		<div class="belcms_forum_main_block_header">
+			<h3><?=$val->title;?></h3>
 		</div>
 		<?php
-		foreach ($value->category as $cat):
-			if (isset($cat->last->date_post)) {
-				$cat->last->date_post = Common::TransformDate($cat->last->date_post, 'MEDIUM', 'NONE');
-			}
-			if (isset($cat->last->author)) {
-				if (User::ifUserExist($cat->last->author)) {
-					$avatar = User::getInfosUserAll($cat->last->author)->profils->avatar;
-					if ($avatar === false) {
-						$avatar = constant('DEFAULT_AVATAR');
-					}
-				} else {
-					$avatar = constant('DEFAULT_AVATAR');
-				}
+		foreach ($val->category as $cat):
+			$title = empty($cat->last->title) ? '' : Common::truncate($cat->last->title, 20);
+			$a     = empty($title) ? '' : '<a href="Forum/Post/'.$title.'?id='.$cat->last->id.'">'.$title.'</a>';
+			$user  = User::getInfosUserAll($cat->last->author);
+			if ($user != false) {
+				$name = '<a href="Members/profil/'.$user->user->username.'">'.$user->user->username.'</a>';
 			} else {
-				$avatar = constant('DEFAULT_AVATAR');
+				$name = constant('MEMBER_DELETE');
 			}
-			$cat->last->title     = empty($cat->last->title)     ? '' : Common::truncate($cat->last->title, 15);
-			$cat->last->date_post = empty($cat->last->date_post) ? '' : Common::truncate($cat->last->date_post, 15);
+			$date = !empty($cat->last->date_post) ? Common::TransformDate($cat->last->date_post, 'MEDIUM', 'SHORT') : '';
 		?>
-		<div class="belcms_forum_main_cat_block">
-			<div class="belcms_forum_main_cat_ico"><i class="<?=$cat->icon;?>"></i></div>
-			<div class="belcms_forum_main_cat_subtitle">
-				<h3><a href="Forum/Threads/<?=Common::MakeConstant($cat->title)?>?id=<?=$cat->id?>"><?=$cat->title?></a></h3>
-				<div><?=$cat->subtitle;?></div>
-			</div>
-			<div class="belcms_forum_main_cat_subject">
-				<div>Sujets</div>
-				<div><?=$cat->countPosts;?></div>
-			</div>
-			<div class="belcms_forum_main_cat_message">
-				<div>Messages</div>
-				<div><?=$cat->count;?></div>
-			</div>
-			<div class="belcms_forum_main_cat_avatar">
-				<img src="<?=$avatar;?>" alt="avatar">
-			</div>
-			<div class="belcms_forum_main_cat_last">
-				<div><?=Common::truncate($cat->last->title, 15);?></div>
-				<div><?=Common::truncate($cat->last->date_post, 15);?></div>
-			</div>
+		<div class="belcms_forum_main_block_content">
+			<span class="belcms_forum_main_block_content_ico">
+				<i class="<?=$cat->icon;?>"></i>
+			</span>
+			<span class="belcms_forum_main_block_content_title">
+				<span><a href="Forum/Threads/<?=Common::MakeConstant($cat->title)?>?id=<?=$cat->id?>"><?=$cat->title;?></a></span>
+				<span><?=$cat->subtitle;?></span>
+			</span>
+			<?php
+			if ($cat->countPosts != 0 and $cat->count != 0):
+			?>
+			<span class="belcms_forum_main_block_content_stats">
+				<span>Discussions</span>
+				<span><?=$cat->countPosts;?></span>
+			</span>
+			<span class="belcms_forum_main_block_content_stats">
+				<span>Messages</span>
+				<span><?=$cat->count;?></span>
+			</span>
+			<?php
+			endif;
+			if (!empty($user) and !empty($cat->last->date_post)):
+			?>
+			<span class="belcms_forum_main_block_content_last">
+				<span><?=$a;?></span>
+				<span><?=$date;?> . <?=$name;?></span>
+			</span>
+			<?php
+			endif;
+			?>
 		</div>
 		<?php
 		endforeach;
 		?>
-	</div>
+	</div> 
 	<?php
 	endforeach;
 	?>

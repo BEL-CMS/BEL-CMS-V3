@@ -1156,3 +1156,27 @@ nav#bel_cms_comment {
 	background: #88b14b;
 	color: #FFF;
 }
+/*-------------------------------------------------------------------------------------------------*/
+/*	Popup Utilisateur
+---------------------------------------------------------------------------------------------------*/
+#belcms_popup {
+	width: 350px;
+	height: 200px;
+	background: rgb(255, 255, 255);
+	padding: 10px;
+	animation-duration: 0.4s;
+	animation-delay: 0.2s;
+	border-radius: 4px;
+}
+#belcms_popup div {
+	display: flex;
+	width: 320px;
+	height: 120px;
+}
+#belcms_left {
+	width: 50px;
+	height: 50px;
+}
+#belcms_right {
+	width: auto;
+}

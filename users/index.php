@@ -232,6 +232,23 @@ class User
 		return $return;
 	}
 	#########################################
+	# Récupère le hash_key depuis un username
+	#########################################
+	public static function getHashKey ($username = false)
+	{
+		$username = Common::VarSecure($username, null);
+		$user = new BDD();
+		$user->table('TABLE_USERS');
+		$user->where(array(
+			'name'  => 'username',
+			'value' => $username
+		));
+		$user->fields(array('hash_key'));
+		$user->queryOne();
+		$return = $user->data;
+		return $return;
+	}
+	#########################################
 	# Change hash_key en username ou avatar
 	#########################################
 	public static function getInfosUserAll ($hash_key = false)

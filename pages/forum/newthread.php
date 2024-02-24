@@ -16,6 +16,7 @@ endif;
 ?>
 <section id="bel_cms_forum_newthread">
 	<form action="Forum/Send" method="post" enctype="multipart/form-data">
+		
 		<div class="card">
 			<div class="card-body">
 				<div class="form-group row">

@@ -33,6 +33,7 @@ class Forum extends Pages
 			return false;
 		}
 
+
 		foreach ($data['forum'] as $k => $v) {
 			$data['forum'][$k]->category = $this->models->getCatForum($v->id);
 			foreach ($data['forum'][$k]->category as $last_k => $last_v) {
@@ -82,6 +83,7 @@ class Forum extends Pages
 			}
 		}
 
+
 		foreach ($data['threads'] as $k => $v) {
 			$last = $this->models->getLastPostsForum($v->id);
 			if (empty($last)) {
@@ -89,8 +91,9 @@ class Forum extends Pages
 			} else {
 				$data['threads'][$k]->last = $last;
 			}
-			
+			$data['threads'][$k]->reply = $this->models->GetNbReply($v->id);
 		}
+
 
 		if (!empty($data['threads'])) {
 			foreach ($data['threads'] as $key => $value) {
@@ -100,6 +103,9 @@ class Forum extends Pages
 		} else {
 			$data['name'] = null;
 		}
+
+		$data['reply'] = $this->models->GetNbReply($data['threads'][0]->id);
+
 
 		$this->set($data);
 		$this->render('threads');
@@ -309,6 +315,6 @@ class Forum extends Pages
 		$return  = $this->models->SubmitPost($data);
 		$this->error = true;
 		$this->errorInfos = array($return['type'], $return['msg'], 'Forum', false);
-		$this->redirect($referer, 2);
+		//$this->redirect($referer, 2);
 	}
 }

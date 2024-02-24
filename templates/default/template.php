@@ -50,8 +50,9 @@
                         <?php
 						if ($var->fullwide === true):
 						?>
+                        <div class="column-content">
                             <section>
-								<div class="wrap-inner fl-wrap sm-mar-w">
+								<div class="wrap-inner fl-wrap">
                                     <div class="container">
 										<?php
 										echo $var->page;
@@ -59,6 +60,7 @@
 									</div>
 								</div>
                             </section>
+                        </div>
 						<?php
 						elseif (strtolower($var->link) == 'news' && $var->fullwide !== true):
 						?>

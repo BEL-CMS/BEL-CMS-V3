@@ -76,6 +76,34 @@ final class Forum
 
 		return $return;
 	}
+
+	public function GetNbReply ($id = false)
+	{
+		if ($id != false and is_numeric($id)) {
+			$sql = new BDD;
+			$sql->table('TABLE_FORUM_POSTS');
+			$where = array('name' => 'id_post', 'value' => $id);
+			$sql->where($where);
+			$sql->count();
+
+			return $sql->data;
+		}
+	}
+
+	public function GetNbDisplay ($id)
+	{
+		if ($id != false and is_numeric($id)) {
+			$sql = new BDD;
+			$sql->table('TABLE_FORUM_POSTS');
+			$where = array('name' => 'id_post', 'value' => $id);
+			$sql->where($where);
+			$sql->count();
+
+			return $sql->data;
+		}	
+	}
+
+
 	public function getModerator ()
 	{
 		$return = false;
@@ -557,7 +585,7 @@ final class Forum
 			unset($_SESSION['REPLYPOST']);
 		}
 
-		$upload = Common::Upload('file', 'forum');
+		$upload = Common::Upload('file', 'uploads/forum');
 		if ($upload == constant('UPLOAD_FILE_SUCCESS')) {
 			$insert['attachment'] = 'uploads/forum/'.Common::FormatName($_FILES['file']['name']);
 			$upload = '<br>'.$upload;
@@ -717,6 +745,10 @@ final class Forum
 	{
 		$int = null;
 		$secure = Common::hash_key($hash) ? true : false;
+		if ($secure === false) {
+			$hash = User::getHashKey($hash)->hash_key;
+			$secure = true;
+		}
 		if ($secure === true):
 			$sql = New BDD();
 			$sql->table('TABLE_FORUM_POST');
@@ -744,9 +776,9 @@ final class Forum
 			if ($return_count == 0) {
 				$int_count = 0;
 			} else {
-				$int + (int) $return_count;
+				$return = $int + (int) $return_count;
 			}
 		endif;
-		return $int;
+		return $return;
 	}
 }
