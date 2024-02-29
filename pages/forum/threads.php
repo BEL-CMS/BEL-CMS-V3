@@ -20,7 +20,7 @@ if (!defined('CHECK_INDEX')):
 endif;
 if (User::isLogged()):
 	?>
-	<div id="forum_new">
+	<div id="forum_new_treads">
 		<a data="<?=constant('NEW_THREAD');?>" href="Forum/NewThread?id=<?=$id?>"><i class="fas fa-plus"></i> <?=constant('NEW_THREAD');?></a>
 	</div>
 	<?php	
@@ -37,7 +37,7 @@ endif;
 	foreach ($threads as $value):
 		$userinfos = User::getInfosUserAll($value->author);
 		$user = $userinfos == false ? constant('MEMBER_DELETE') : $userinfos->user->username;
-		$avatar = is_file(ROOT.$userinfos->profils->avatar) ? $userinfos->profils->avatar : constant('DEFAULT_AVATAR');
+		$avatar = !empty($userinfos->profils->avatar) ? $userinfos->profils->avatar : constant('DEFAULT_AVATAR');
 		$originDate = Common::TransformDate($value->date_post, 'MEDIUM', 'NONE');
 		$icon = $value->lockpost == 1 ? 'fa-solid fa-comment-slash' : 'fa-solid fa-comment-dots';
 		$red  = $value->lockpost == 1 ? 'redpost' : '';

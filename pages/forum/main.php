@@ -40,59 +40,63 @@ endif;
 	<?php
 	endif;
 	foreach ($forum as $val):
+		if (!empty($val->category)):
 	?>
 	<div class="belcms_forum_main_block_container">
 		<div class="belcms_forum_main_block_header">
 			<h3><?=$val->title;?></h3>
 		</div>
 		<?php
-		foreach ($val->category as $cat):
-			$title = empty($cat->last->title) ? '' : Common::truncate($cat->last->title, 20);
-			$a     = empty($title) ? '' : '<a href="Forum/Post/'.$title.'?id='.$cat->last->id.'">'.$title.'</a>';
-			$user  = User::getInfosUserAll($cat->last->author);
-			if ($user != false) {
-				$name = '<a href="Members/profil/'.$user->user->username.'">'.$user->user->username.'</a>';
-			} else {
-				$name = constant('MEMBER_DELETE');
-			}
-			$date = !empty($cat->last->date_post) ? Common::TransformDate($cat->last->date_post, 'MEDIUM', 'SHORT') : '';
-		?>
-		<div class="belcms_forum_main_block_content">
-			<span class="belcms_forum_main_block_content_ico">
-				<i class="<?=$cat->icon;?>"></i>
-			</span>
-			<span class="belcms_forum_main_block_content_title">
-				<span><a href="Forum/Threads/<?=Common::MakeConstant($cat->title)?>?id=<?=$cat->id?>"><?=$cat->title;?></a></span>
-				<span><?=$cat->subtitle;?></span>
-			</span>
-			<?php
-			if ($cat->countPosts != 0 and $cat->count != 0):
+		if (!empty($val->category)):
+			foreach ($val->category as $cat):
+				$title = empty($cat->last->title) ? '' : Common::truncate($cat->last->title, 20);
+				$a     = empty($title) ? '' : '<a href="Forum/Post/'.$title.'?id='.$cat->last->id.'">'.$title.'</a>';
+				$user  = User::getInfosUserAll($cat->last->author);
+				if ($user != false) {
+					$name = '<a href="Members/profil/'.$user->user->username.'">'.$user->user->username.'</a>';
+				} else {
+					$name = constant('MEMBER_DELETE');
+				}
+				$date = !empty($cat->last->date_post) ? Common::TransformDate($cat->last->date_post, 'MEDIUM', 'SHORT') : '';
 			?>
-			<span class="belcms_forum_main_block_content_stats">
-				<span>Discussions</span>
-				<span><?=$cat->countPosts;?></span>
-			</span>
-			<span class="belcms_forum_main_block_content_stats">
-				<span>Messages</span>
-				<span><?=$cat->count;?></span>
-			</span>
+			<div class="belcms_forum_main_block_content">
+				<span class="belcms_forum_main_block_content_ico">
+					<i class="<?=$cat->icon;?>"></i>
+				</span>
+				<span class="belcms_forum_main_block_content_title">
+					<span><a href="Forum/Threads/<?=Common::MakeConstant($cat->title)?>?id=<?=$cat->id?>"><?=$cat->title;?></a></span>
+					<span><?=$cat->subtitle;?></span>
+				</span>
+				<?php
+				if ($cat->countPosts != 0 and $cat->count != 0):
+				?>
+				<span class="belcms_forum_main_block_content_stats">
+					<span>Discussions</span>
+					<span><?=$cat->countPosts;?></span>
+				</span>
+				<span class="belcms_forum_main_block_content_stats">
+					<span>Messages</span>
+					<span><?=$cat->count;?></span>
+				</span>
+				<?php
+				endif;
+				if (!empty($user) and !empty($cat->last->date_post)):
+				?>
+				<span class="belcms_forum_main_block_content_last">
+					<span><?=$a;?></span>
+					<span><?=$date;?> . <?=$name;?></span>
+				</span>
+				<?php
+				endif;
+				?>
+			</div>
 			<?php
-			endif;
-			if (!empty($user) and !empty($cat->last->date_post)):
-			?>
-			<span class="belcms_forum_main_block_content_last">
-				<span><?=$a;?></span>
-				<span><?=$date;?> . <?=$name;?></span>
-			</span>
-			<?php
-			endif;
-			?>
-		</div>
-		<?php
-		endforeach;
+			endforeach;
+		endif;
 		?>
 	</div> 
 	<?php
+		endif;
 	endforeach;
 	?>
 </section>

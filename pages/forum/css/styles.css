@@ -113,6 +113,7 @@
     color: #8c8c8c;
 }
 /* Threads */
+#forum_new_treads,
 #forum_new {
     display: block;
     width: auto;
@@ -121,6 +122,7 @@
     text-align: right;
     overflow: hidden;
 }
+#forum_new_treads a,
 #forum_new > a {
     display: inline-block;
     background-color: rgba(0,0,0,0.7);
@@ -131,6 +133,10 @@
     display: block;
     float: left;
     line-height: 45px;
+}
+#forum_new_treads a {
+    padding: 5px 15px;
+    margin-bottom: 20px;
 }
 #forum_new > a {
     display: block;
@@ -171,6 +177,11 @@
     background: #f5f5f5;
     border-right: 1px solid #d8d8d8;
     padding: 25px;
+}
+.belcms_forum_post_div_infos img {
+    max-width: 175px;
+    height: auto;
+    margin: auto;
 }
 .belcms_forum_post_div_content {
     width: 75%;

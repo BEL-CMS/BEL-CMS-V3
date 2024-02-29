@@ -58,20 +58,15 @@ final class GuestBook
 
 	public function sendNew ($data)
 	{
-		if ($_SESSION['TMP_QUERY_GUESTBOOK']['OVERALL'] == $data['query_guestbook'] && $data['captcha'] == '') {
-			$insert['author']  = Common::VarSecure($data['author']);
-			$insert['message'] = Common::VarSecure($data['message']);
-			$sql = new BDD();
-			$sql->table('TABLE_GUESTBOOK');
-			$sql->insert($insert);
+		$insert['author']  = Common::VarSecure($data['author']);
+		$insert['message'] = Common::VarSecure($data['message']);
+		$sql = new BDD();
+		$sql->table('TABLE_GUESTBOOK');
+		$sql->insert($insert);
 
-			$return['msg']  = constant('ADD_NEW_GUESTBOOK');
-			$return['type'] = 'success';
-		} else {
-			$return['msg']  = constant('ERROR_CAPTCHA');
-			$return['type'] = 'error';
-		}
-		unset($_SESSION['TMP_QUERY_GUESTBOOK']);
+		$return['msg']  = constant('ADD_NEW_GUESTBOOK');
+		$return['type'] = 'success';
+
 		return $return;
 	}
 }

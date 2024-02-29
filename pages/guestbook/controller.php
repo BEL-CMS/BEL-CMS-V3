@@ -44,7 +44,7 @@ class GuestBook extends Pages
     {
 		if (Captcha::verifCaptcha($_POST['query_guestbook']) === false) {
 			$this->error = true;
-			$this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('REGISTRATION'), false);
+		    $this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('REGISTRATION'), false);
 			return false;	
 		}
 
