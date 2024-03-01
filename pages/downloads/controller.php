@@ -60,7 +60,7 @@ class Downloads extends Pages
 		$a = $this->models->getCat($this->data[2]);
 		$c['name'] = $a->name;
 		if (Secures::isAcess($a->id_groups) == true) {
-			$config =  Config::GetConfigPage('downloads');
+			$config = Config::GetConfigPage('downloads');
 			$c['pagination'] = $this->pagination($config->config['MAX_DL'], 'downloads/category/'.$this->data[2], constant('TABLE_DOWNLOADS'));
 			$c['data'] = $this->models->getDls($this->data[2]);
 		} else {

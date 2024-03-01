@@ -49,7 +49,7 @@ $size   = is_file($data->download) ? Common::ConvertSize(filesize($data->downloa
 			<li><span><?=constant('MIME_TYPE');?> : </span><i><?=$mime?></i></li>
 			<li><span><?=constant('RELEASE_DATE');?> : </span><i><?=Common::TransformDate($data->date, 'FULL', 'SHORT')?></i></li>
 			<li><span><?=constant('UPLOADER');?> : </span><i><?=$author;?></i></li>
-			<li><a class="belcms_btn belcms_bg_blue" href="Downloads/getDl/<?=$data->id?>">Télécharger</a></li>
+			<li><a style="padding: 0 15px;line-height:30px;" class="belcms_btn belcms_bg_grey" href="Downloads/getDl/<?=$data->id?>">Télécharger</a></li>
 		</ul>
 	</div>
 </div>

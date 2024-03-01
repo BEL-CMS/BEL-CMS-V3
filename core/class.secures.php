@@ -220,8 +220,10 @@ final class Secures
 			if (in_array(1, $_SESSION['USER']->groups->all_groups)) {
 				return true;
 			} else {
-				if (in_array($data, $_SESSION['USER']->groups->all_groups)) {
-					return true;
+				foreach ($g as $a) {
+					if (in_array($a, $_SESSION['USER']->groups->all_groups)) {
+						return true;
+					}
 				}
 			}
 		} else {

@@ -94,7 +94,10 @@ final class Comment
 				$links .= $dispatcher->link[2];
 			}
 			if ($_SESSION['USER']->user->hash_key !== false) {
-				$html .= '<form action="Comments/Send" method="post" enctype="multipart/form-data"><input name="url" type="hidden" value="'.$links.'"><textarea name="text"></textarea><button type="submit" class="belcms_btn belcms_bg_black">Envoyer</button></form>';
+				$html .= '<form action="Comments/Send" method="post" enctype="multipart/form-data"><input name="url" type="hidden" value="'.$links.'">';
+				$html .= '<textarea name="text"></textarea>';
+				$html .= '<input type="submit" style="padding: 0 15px;line-height:30px;" class="belcms_btn belcms_bg_grey" value="Envoyer"';
+				$html .= '</form>';
 			}
 		}
 		$html .= '</nav>';
