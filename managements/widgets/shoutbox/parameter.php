@@ -36,7 +36,7 @@ endif;
 							</div>
 							<div class="mt-2 mb-2">
 								<label class="col-md-12 control-label"><?=constant('MAX_MSG');?></label>
-								<input id="input-NB_MSG" name="MAX_MSG" type="number" class="form-input" type="number" value="<?=$config->config['MAX_MSG']?>" min="5" max="25">
+								<input id="input-NB_MSG" name="MAX_MSG" type="number" class="form-input" type="number" value="<?=$config->opttions['MAX_MSG']?>" min="5" max="25">
 							</div>
 						</div>
 					</div>

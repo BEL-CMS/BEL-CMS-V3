@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -152,7 +152,7 @@ final class ModelsShoutbox
 		$sql->table('TABLE_SHOUTBOX');
 		$sql->delete();
 		// SQL RETURN NB DELETE
-		if ($sql->rowCount <= 1) {
+		if ($sql->rowCount == true) {
 			$return = array(
 				'type' => 'success',
 				'text' => constant('DEL_ALL_SHOUTBOX_SUCCESS')
@@ -173,7 +173,7 @@ final class ModelsShoutbox
 
 		if (!empty($data) && is_array($data)) {
 			$opt                  = array('MAX_MSG' => $data['MAX_MSG']);
-			$upd['config']        = Common::transformOpt($opt, true);
+			$upd['opttions']      = Common::transformOpt($opt, true);
 			$upd['title']         = Common::VarSecure($data['title'], '');
 			$upd['groups_access'] = implode("|", $data['groups']);
 			$upd['groups_admin']  = implode("|", $data['admin']);
@@ -187,7 +187,9 @@ final class ModelsShoutbox
 			} else if ($data['pos'] == 'right') {
 				$upd['pos'] = 'right';
 			}
-			$upd['pages']  = implode("|", $data['current']);
+			if (isset($data['current'])) {
+				$upd['pages']  = implode("|", $data['current']);
+			}
 			// SQL UPDATE
 			$sql = New BDD();
 			$sql->table('TABLE_WIDGETS');

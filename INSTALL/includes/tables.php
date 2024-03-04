@@ -1069,26 +1069,27 @@ switch ($_POST['table']) {
 	case "widgets":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL AUTO_INCREMENT,
-			`name` varchar(64) NOT NULL,
-			`title` varchar(64) NOT NULL,
-			`groups_access` varchar(255) NOT NULL,
-			`groups_admin` varchar(255) NOT NULL,
-			`active` tinyint(1) DEFAULT NULL,
-			`pos` varchar(6) NOT NULL,
-			`orderby` int NOT NULL,
-			`pages` text NOT NULL,
-			PRIMARY KEY (`id`),
-			UNIQUE KEY `name` (`name`)
+				`id` int NOT NULL AUTO_INCREMENT,
+				`name` varchar(64) NOT NULL,
+				`title` varchar(64) NOT NULL,
+				`groups_access` varchar(255) NOT NULL,
+				`groups_admin` varchar(255) NOT NULL,
+				`active` tinyint(1) DEFAULT NULL,
+				`pos` varchar(6) NOT NULL,
+				`orderby` int NOT NULL,
+				`pages` text NOT NULL,
+				`opttions` text,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `name` (`name`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `title`, `groups_access`, `groups_admin`, `active`, `pos`, `orderby`, `pages`) VALUES
-			('', 'connected', 'Connecté', '0', '1', 0, 'right', 1, ''),
-			('', 'lastconnected', 'Dernier connecté', '0', '1', 0, 'right', 2, ''),
-			('', 'newsletter', 'Newsletter', '0', '1', 0, 'left', 2, ''),
-			('', 'shoutbox', 'T\'chats', '0', '1', 0, 'bottom', 1, ''),
-			('', 'survey', 'Sondages', '0', '1', 0, 'left', 2, ''),
-			('', 'users', 'Utilisateurs', '0', '1', 0, 'left', 1, '');";
+			('', 'connected', 'Connecté', '0', '1', 0, 'right', 1, '',''),
+			('', 'lastconnected', 'Dernier connecté', '0', '1', 0, 'right', 2, '',''),
+			('', 'newsletter', 'Newsletter', '0', '1', 0, 'left', 2, '', ''),
+			('', 'shoutbox', 'T\'chats', '0', '1', 0, 'bottom', 1, '', '15'),
+			('', 'survey', 'Sondages', '0', '1', 0, 'left', 2, '', ''),
+			('', 'users', 'Utilisateurs', '0', '1', 0, 'left', 1, '', '');";
 	break;
 
 	case "notificaton":
