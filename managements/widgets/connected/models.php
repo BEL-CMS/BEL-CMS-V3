@@ -1,13 +1,15 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\PDO\BDD;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -21,4 +23,102 @@ final class ModelsConnected
 	#####################################
 	# TABLE_SHOUTBOX
 	#####################################
+	function getActive()
+	{
+		$active = array();
+		$sql = New BDD();
+		$sql->table('TABLE_STATS');
+		$sql->queryAll();
+
+		foreach ($sql->data as $value) {
+			$active[$value->name] = $value->value == '1' ? true : false;
+		}
+		return $active;
+	}
+
+	function getNbPageView()
+	{
+		$count = (int) 0;
+		$sql = New BDD();
+		$sql->table('TABLE_PAGE_STATS');
+		$sql->fields('nb_view');
+		$sql->queryAll();
+	
+		foreach ($sql->data as $view) {
+		   $count += $view->nb_view;
+		}
+		return $count;
+	}
+
+	function getNbNews()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_PAGES_NEWS');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbDownloads ()
+	{
+		$count = (int) 0;
+		$sql = new BDD;
+		$sql->table('TABLE_DOWNLOADS');
+		$sql->queryAll();
+	
+		foreach ($sql->data as $view) {
+		   $count += $view->dls ;
+		}
+		return $count;
+	}
+
+	function getNbUsers ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_USERS');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbArticles ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_ARTICLES');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbComments ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_COMMENTS');
+		$sql->count();
+		return $sql->data;
+	}
+	function getNbImg ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_GALLERY');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbLinks ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_LINKS');
+		$sql->count();
+		return $sql->data;
+	}
+
+	public function sendOptions ($name = false, $value = false)
+	{
+		if ($name !== false and $value !== false) {
+			$d['value'] = $value;
+			$sql = New BDD();
+			$sql->table('TABLE_STATS');
+			$sql->where(array('name' => 'name', 'value' => $name));
+			$sql->update($d);
+			debug($sql);
+		}
+	}
 }
