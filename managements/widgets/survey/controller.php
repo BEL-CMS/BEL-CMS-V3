@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -17,40 +17,28 @@ endif;
 class Survey extends AdminPages
 {
 	var $active    = true;
-	var $models    = 'ModelsSurvey';
+	var $bdd       = 'ModelsSurvey';
 
 	public function index ()
 	{
-		$data['data']  = $this->models->getAllSurvey();
-		$this->set($data);
-		$menu[] = array('Accueil'=> array('href'=>'/survey?management&widgets','icon'=>'fa fa-home'));
-		$menu[] = array('Ajouter'=> array('href'=>'/survey/add?management&widgets','icon'=>'fa fa-plus-circle'));
-		$menu[] = array('Configuration'=> array('href'=>'/survey/parameter?management&widgets','icon'=>'fa fa-cubes'));
+		$menu[] = array(constant('HOME') => array('href'=>'survey?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD') => array('href'=>'survey/add?management&option=widgets','icon'=>'mgc_baby_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'survey/parameter?management&option=widgets','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+		$d['data'] = $this->models->getSurvey();
+		$this->set($d);
 		$this->render('index', $menu);
 	}
-	public function add()
+
+	public function add ()
 	{
-		$this->render('add');	
+		$menu[] = array(constant('HOME') => array('href'=>'survey?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$this->render('add', $menu);
 	}
-	public function send()
+
+	public function sendNew ()
 	{
-		$return = $this->models->send($_POST);
+		$return = $this->models->sendNew ($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('/survey?management&widgets', 2);
-	}
-	public function parameter ()
-	{
-		$data['groups'] = BelCMSConfig::getGroups();
-		$data['config'] = BelCMSConfig::GetConfigWidgets(get_class($this));
-		$data['pages']  = Common::ScanDirectory(DIR_PAGES, true);
-		$this->set($data);
-		$menu[] = array('Accueil'=> array('href'=>'/survey?management&widgets','icon'=>'fa fa-home'));
-		$this->render('parameter', $menu);
-	}
-	public function sendparameter ()
-	{
-		$return = $this->models->sendparameter($_POST);
-		$this->error(get_class($this), $return['text'], $return['type']);
-		$this->redirect('Survey?management&widgets', 2);
+		$this->redirect('survey?management&option=widgets', 2);
 	}
 }

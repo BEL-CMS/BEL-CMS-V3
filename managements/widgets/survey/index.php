@@ -1,77 +1,76 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title">Liste des blog</h3>
-		<div class="card-tools">
-			<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-				<i class="fas fa-minus"></i>
-			</button>
+<div class="flex flex-col gap-6">
+	<div class="card">
+		<div class="card-header">
+			<div class="flex justify-between items-center">
+				<h4 class="card-title"><?=constant('SURVEY');?></h4>
+			</div>
 		</div>
-	</div>
-	<div class="card-body">
-		<div class="table-responsive">
-			<table  class="DataTableBelCMS table table-vcenter table-condensed table-bordered">
-			<thead>
-				<tr>
-					<th>Titre</th>
-					<th>Date</th>
-					<th>Options</th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr>
-					<th>Titre</th>
-					<th>Date</th>
-					<th>Options</th>
-				</tr>
-			</tfoot>
-			<tbody>
-				<?php
-				foreach ($data as $k => $v):
-					?>
-					<tr>
-						<td><?=$v->name;?></td>
-						<td><?=$v->date;?></td>
-						<td>
-							<a href="survey/edit/<?=$v->id?>?management&widgets=true" class="btn btn btn-primary btn-sm mb-1">Edit</a>
-							<a href="#" data-toggle="modal" data-target="#modal_<?=$v->id?>" class="btn btn btn-danger btn-sm mb-1">Supprimer</a>
-							<div class="modal fade" id="modal_<?=$v->id?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-										<h4 class="modal-title" id="exampleModalLabel">ID : <?=$v->id?></h4>
-										</div>
-										<div class="modal-body">Confirmer la suppression du sondage :<br><?=$v->name?></div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-											<button onclick="window.location.href='/survey/delete/<?=$v->id?>?management&widgets=true'" type="button" class="btn btn-primary">Supprimer</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</td>
-					</tr>
-					<?php
-				endforeach;
-				?>
-			</tbody>
-			</table>
+		<div class="p-6">
+			<div class="overflow-x-auto">
+				<div class="border rounded-lg overflow-hidden dark:border-gray-700 p-2">
+					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
+						<thead class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('QUESTION');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('DATE_OF_PUBLICATION');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('END_VOTE');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NUMBER_OF_RESPONSES');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							foreach ($data as $v):
+								if ($v->dateclose == 'P99Y') {
+									$endtime = constant('UNLIMITED');
+								} else {
+									$date = new DateTimeImmutable($v->timestop);
+									$newDate = $date->add(new DateInterval($v->dateclose));
+									$endtime = $newDate->format('d-m-Y H:i:s');	
+									$endtime = Common::TransformDate($endtime, 'MEDIUM', 'SHORT');		
+								}
+								?>
+								<tr>
+									<td><?=$v->question;?></td>
+									<td><?=Common::TransformDate($v->timestop, 'MEDIUM', 'SHORT');?></td>
+									<td><?=$endtime;?></td>
+									<td><?=$v->vote;?></td>
+									<td></td>
+								</tr>
+								<?php
+							endforeach;
+							?>
+						</tbody>
+						<tfoot class="bg-gray-50 dark:bg-gray-700">
+							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('QUESTION');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('DATE_OF_PUBLICATION');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('END_VOTE');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NUMBER_OF_RESPONSES');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
