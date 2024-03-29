@@ -22,17 +22,17 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 				<h4><?=constant('NEW');?> <?=constant('SURVEY');?></h4>
 			</div>
 			<div class="p-6">
-				<form action="survey/sendNew?management&option=widgets" method="post">
+				<form action="survey/sendEdit?management&option=widgets" method="post">
 					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('QUESTION');?></label>
 						<div class="col-sm-12">
-							<input name="name" type="text" class="form-input" value="" required>
+							<input name="name" type="text" class="form-input" value="<?=$data->question;?>" required>
 						</div>
 					</div>
 					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('END_VOTE');?></label>
 						<select name="dateclose" class="form-input">
-							<option value="0"><?=constant('PLEASE_CHOOSE_OPTION');?></option>
+							<option value="<?=$data->dateclose;?>"><?=constant($data->dateclose);?></option>
 							<option value="PT1M"><?=constant('PT1M');?></option>
 							<option value="PT5M"><?=constant('PT5M');?></option>
 							<option value="PT30M"><?=constant('PT30M');?></option>
@@ -56,11 +56,12 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NUMBER_OF_RESPONSES');?></label>
 						<div class="col-sm-12">
-							<input name="nb" type="number" min="1" class="form-input" value="1">
+							<input name="nb" type="number" min="1" class="form-input" value="<?=$data->answer_nb;?>">
 						</div>
 					</div>
 					<div>
 						<div class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">
+                            <input type="hidden" name="id" value="<?=$data->id;?>">
 							<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i> <?=constant('SAVE');?></button>
 						</div>
 					</div>

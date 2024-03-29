@@ -51,4 +51,6 @@ Common::constant(array(
 	'QUESTION'                    => 'Question',
 	'SEND_SUCCESS'                => 'Insertion en base de donnée avec succès',
 	'EMPTY_NAME'                  => 'Aucun nom transmis ?',
+	'NEW'                         => 'Nouveau',
+	'ARRANGEMENT'                 => 'Disposition',
 ));

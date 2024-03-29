@@ -21,11 +21,14 @@ endif;
 #	TABLE_SURVEY
 #->	id, question, timestop, dateclose, vote, answer_nb
 #	TABLE_SURVEY_QUEST
-#->	id, id_question, answer, nbvote
+#->	id, id_question, answer
 #	TABLE_SURVEY_VOTE
 #->	id, id_vote, id_question , datetime_vote
 final class ModelsSurvey
 {
+	#########################################
+	# Récupère les questions
+	#########################################
 	public function getSurvey ()
 	{
 		$sql = new BDD;
@@ -33,7 +36,9 @@ final class ModelsSurvey
 		$sql->queryAll();
 		return $sql->data;
 	}
-
+	#########################################
+	# Enregistre une nouvelle question
+	#########################################
 	public function sendNew ($data)
 	{
 		if (is_array($data) and !empty($data)) {
@@ -60,6 +65,166 @@ final class ModelsSurvey
 				'text' => constant('ERROR_NO_DATA')
 			);
 		}
+		return $return;
+	}
+	#########################################
+	# Récupère les réponses
+	#########################################
+	public function getReply ($id)
+	{
+		if (is_int($id) and !empty($id)) {
+			$sql = new BDD;
+			$sql->table('TABLE_SURVEY_QUEST');
+			$sql->where(array('name' => 'id_question', 'value' => $id));
+			$sql->queryOne();
+			$return = $sql->data;
+			return $return;
+		}
+	}
+	#########################################
+	# Récupère le nombre de question
+	#########################################
+	public function getNbAnswer ($id)
+	{
+		if (is_int($id) and !empty($id)) {
+			$sql = new BDD;
+			$sql->table('TABLE_SURVEY');
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->queryOne();
+			$return = $sql->data;
+			return $return;
+		}
+	}
+	#########################################
+	# Enregistre les question
+	#########################################
+	public function sendReply ($data)
+	{
+		if (is_array($data) and !empty($data)) {
+			foreach ($data['reply'] as $key => $value) {
+				if (!empty($value)) {
+					$reply[$key] = $value;
+				}
+			}
+			foreach ($reply as $key => $value) {
+				$insert['id_question'] = (int) $data['id'];
+				$insert['answer']      = Common::VarSecure($value, '');
+				$sql = new BDD;
+				$sql->table('TABLE_SURVEY_QUEST');
+				$sql->insert($insert);
+			}
+			$return = array(
+				'type' => 'success',
+				'text' => constant('SEND_SUCCESS')
+			);
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+	#########################################
+	# Editer la question et les paramètres
+	#########################################
+	public function edit ($id)
+	{
+		if (is_int($id)) {
+			$where = array('name' => 'id', 'value' => $id);
+			$sql = new BDD;
+			$sql->table('TABLE_SURVEY');
+			$sql->where($where);
+			$sql->queryOne();
+			$return = $sql->data;
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+	#########################################
+	# Enregistre les questions
+	#########################################
+	public function sendEdit ($data)
+	{
+		if (is_array($data) and is_numeric($data['id'])) {
+			$update['question']  = Common::VarSecure($data['name'], '');
+			$update['dateclose'] = Common::VarSecure($data['dateclose'], '');
+			$update['answer_nb'] = Secure::isInt($data['nb']);
+			$where = array('name' => 'id', 'value' => $data['id']);
+			$sql = new BDD;
+			$sql->table('TABLE_SURVEY');
+			$sql->where($where);
+			$sql->update($update);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDIT_PARAM_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_PARAM_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+	#########################################
+	# Enregistre les paramètres
+	#########################################
+	public function sendparameter ($data)
+	{
+		$return = array();
+
+		if (!empty($data) && is_array($data)) {
+			$upd['title']         = Common::VarSecure($data['title'], '');
+			$upd['groups_access'] = implode("|", $data['groups']);
+			$upd['groups_admin']  = implode("|", $data['admin']);
+			$upd['active']        = isset($data['active']) ? 1 : 0;
+			if ($data['pos'] == 'top') {
+				$upd['pos'] = 'top';
+			} else if ($data['pos'] == 'bottom') {
+				$upd['pos'] = 'bottom';
+			} else if ($data['pos'] == 'left') {
+				$upd['pos'] = 'left';
+			} else if ($data['pos'] == 'right') {
+				$upd['pos'] = 'right';
+			}
+			if (isset($data['current'])) {
+				$upd['pages']  = implode("|", $data['current']);
+			}
+			// SQL UPDATE
+			$sql = New BDD();
+			$sql->table('TABLE_WIDGETS');
+			$sql->where(array('name' => 'name', 'value' => 'survey'));
+			$sql->update($upd);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDIT_PARAM_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_PARAM_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+
 		return $return;
 	}
 }

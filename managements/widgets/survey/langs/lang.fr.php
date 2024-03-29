@@ -34,4 +34,5 @@ Common::constant(array(
 	'NUMBER_OF_RESPONSES'         => 'Nombre de réponses',
 	'PLEASE_CHOOSE_OPTION'        => '--Veuillez choisir une option--',
 	'UNLIMITED'                   => 'Illimité',
+	'REPLY'                       => 'Réponses'
 ));
