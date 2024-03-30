@@ -1,22 +1,73 @@
-						#bel_cms_widgets_survey_name {
+#belcms_widgets_survey {
 	display: block;
-	font-size: 14px;
-	text-align: center;
+	width: 100%;
 }
-#bel_cms_widgets_survey ul {
+#belcms_widgets_quest {
+	display: table;
+	width: 100%;
+}
+#belcms_widgets_text {
+	display: table-cell;
+	width: calc(100% - 50px);
+	padding-right: 15px;
+	font-weight: bold;
+	text-align: justify;
+}
+#belcms_widgets_nb_vote {
+	display: table-cell;
+	background: rgba(0, 0, 0, 0.2);
+	width: 50px;
+	height: 30px;
+	text-align: center;
+	vertical-align: middle;
+}
+#belcms_widgets_survey_list_vote {
+	display: block;
 	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 15px 0;
 }
-#bel_cms_widgets_survey ul li {
-	display: block;
-	margin-bottom: 1px dashed;
-}
-#bel_cms_widgets_survey ul li span {
-	float: right;
-}
-
-#bel_cms_widgets_survey a {
-	display: block;
+.belcms_reply {
+	width: 100%;
+	background-color: #e5e7eb;
+	margin-bottom: 8px;
+	height: 1rem;
+	border-radius: 4px;
+	position: relative;
 	text-align: center;
-}					
+	cursor: pointer;
+}
+.belcms_reply_line {
+	background-color: #0ca0d6;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	border-radius: 4px;
+	line-height: 1rem;
+	text-align: left;
+	padding-left: 10px;
+}
+.belcms_reply_text {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	border-radius: 4px;
+	line-height: 1rem;
+	color: rgba(0, 0, 0, 0.75);
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#belcms_widgets_survey_form {
+	display: block;
+	display: flex;
+}
+#belcms_widgets_survey_form input {
+	width: calc(100% - 45px);
+}
+#belcms_widgets_survey_form button {
+	width: 45px;
+	cursor: pointer;
+	margin-right: -1px;
+}
