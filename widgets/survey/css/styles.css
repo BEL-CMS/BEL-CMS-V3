@@ -29,35 +29,82 @@
 }
 .belcms_reply {
 	width: 100%;
-	background-color: #e5e7eb;
+	background: rgba(255, 255, 255, 0.05);
+	color: #fff;
 	margin-bottom: 8px;
-	height: 1rem;
+	height: 1.8rem;
 	border-radius: 4px;
 	position: relative;
-	text-align: center;
 	cursor: pointer;
+	border: 1px solid #ffffff1a;
+	line-height: 1.8rem;
+}
+.belcms_reply_answer {
+	display: block;
+	position: absolute;
+	text-align: left;
+	padding-left: 5px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	line-height: 1.8rem;
+	z-index: 100;
 }
 .belcms_reply_line {
-	background-color: #0ca0d6;
+	background: rgb(0,255,15);
+	background: linear-gradient(90deg, rgba(0,255,15,1) 0%, rgba(57,139,12,1) 30%, rgba(121,9,9,1) 80%);
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	border-radius: 4px;
-	line-height: 1rem;
+	line-height: 1.8rem;
 	text-align: left;
 	padding-left: 10px;
 }
+/*
+#belcms_widgets_survey_list_vote li:nth-child(2) .belcms_reply_line {
+	background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(254,0,0,1) 50%, rgba(252,176,69,1) 100%);
+}
+#belcms_widgets_survey_list_vote li:nth-child(3) .belcms_reply_line {
+	background: linear-gradient(93deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%); 
+}
+#belcms_widgets_survey_list_vote li:nth-child(4) .belcms_reply_line {
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,47,1) 35%);
+}
+#belcms_widgets_survey_list_vote li:nth-child(5) .belcms_reply_line {
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,109,9,1) 35%); 
+}
+#belcms_widgets_survey_list_vote li:nth-child(6) .belcms_reply_line {
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,9,9,1) 35%); 
+}
+#belcms_widgets_survey_list_vote li:nth-child(7) .belcms_reply_line {
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,9,91,1) 35%);
+}
+#belcms_widgets_survey_list_vote li:nth-child(8) .belcms_reply_line {
+background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%),
+            linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
+}
+#belcms_widgets_survey_list_vote li:nth-child(9) .belcms_reply_line {
+	background-image: linear-gradient(to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+#belcms_widgets_survey_list_vote li:nth-child(10) .belcms_reply_line {
+	background-image: linear-gradient(to right, #3b97aa, #2e9599, #339285, #438e6e, #558858, #678345, #797c36, #8b742d, #a1692d, #b55b3a, #c24c52, #c64270);
+}
+*/
 .belcms_reply_text {
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	right: 0;
 	border-radius: 4px;
-	line-height: 1rem;
+	line-height: 1.6rem;
 	color: rgba(0, 0, 0, 0.75);
 	padding-left: 10px;
 	padding-right: 10px;
+	color: rgba(255, 255, 255, 0.55);
 }
 #belcms_widgets_survey_form {
 	display: block;

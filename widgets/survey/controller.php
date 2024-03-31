@@ -23,11 +23,11 @@ class Survey extends Widgets
 
 	public function index ($var)
 	{
-		//$d['var'] = $this->models->getMsg();
+		$d['var'] = $this->models->getSurvey();
 		$this->name  = $var->name;
 		$this->title = $var->title;
 		$this->pos   = $var->pos;
-		//$this->set($d);
+		$this->set($d);
 		$this->render();
 	}
 

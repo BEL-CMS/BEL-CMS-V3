@@ -21,8 +21,56 @@ endif;
 #	TABLE_SURVEY_QUEST
 #->	id, id_question, answer
 #	TABLE_SURVEY_VOTE
-#->	id, id_vote, id_question , datetime_vote
+#->	id, id_vote, author, datetime_vote
 class Survey
 {
+    public function getSurvey ()
+    {
+        $sql = new BDD;
+        $sql->table('TABLE_SURVEY');
+        $sql->limit(1);
+        $sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+        $sql->queryOne();
+        $sql->data->answer = self::getAnswer($sql->data->id, $sql->data->answer_nb, $sql->data->question);
+        $return = $sql->data;
+        return $return;
+    }
 
+    private function getAnswer ($id, $limit, $question)
+    {
+        if (is_numeric($id)) {
+            $sql = new BDD;
+            $sql->table('TABLE_SURVEY_QUEST');
+            $sql->orderby(array(array('name' => 'id', 'type' => 'ASC')));
+            $sql->where(array('name' => 'id_question', 'value' => $id));
+            $sql->limit($limit);
+            $sql->queryAll();
+            foreach ($sql->data as $key => $value) {
+                $sql->data[$key]->nb_vote  = self::getVote($value->id_question);
+                $sql->data[$key]->question = $question;
+            }
+            $return = $sql->data;
+            return $return;
+        }
+    }
+
+    private function getVote ($id)
+    {
+        if (is_numeric($id)) {
+            $sql = new BDD;
+            $sql->table('TABLE_SURVEY_VOTE');
+            $sql->where(array('name' => 'id_vote', 'value' => $id));
+            $sql->count();
+            return $sql->data;
+        }
+    }
+
+    private function getUserVote ($id)
+    {
+        if (is_numeric($id)) {
+            $sql = new BDD;
+            $sql->table('TABLE_SURVEY_VOTE');
+            $sql->where(array('name' => 'id_vote', 'value' => $id));
+        }
+    }
 }

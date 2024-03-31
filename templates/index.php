@@ -261,9 +261,9 @@ class Templates
 		/* Widgets js */
 		foreach (self::getCssWidgets() as $v) {
 			/* widgets js default */
-			$dirWidgets = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'custom'.DS.strtolower($v->name).'.js';
+			$dirWidgets = constant('DIR_WIDGETS').strtolower($v->name).DS.'js'.DS.'javascripts.js';
 			if (is_file($dirWidgets)) {
-				$files[] = ROOT.DS.'templates/'.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].'/custom/'.strtolower($v->name).'.js';
+				$files[] = 'widgets/'.strtolower($v->name).'/js/javascripts.js';
 			}
 		}
 
