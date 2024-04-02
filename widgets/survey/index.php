@@ -14,9 +14,6 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 $answer = count($var->answer);
-foreach ($var->answer as $key => $value) {
-	$countTotal =+ $value->nb_vote;
-}
 ?>
 <div id="belcms_widgets_survey">
 	<div id="belcms_widgets_quest">
@@ -26,16 +23,20 @@ foreach ($var->answer as $key => $value) {
 	<ul id="belcms_widgets_survey_list_vote">
 		<?php
 		foreach ($var->answer as $key => $value):
-			$nb_vote = $value->nb_vote == '0' ? 0 : $value->nb_vote;
-			$prc     = ($nb_vote / $countTotal) * 100;
-			$line    = $nb_vote == 0 ? '' : 'class="belcms_reply_line" style="width:'.$prc.'%;"' ;
-
+			$userVote = $value->count_vote == '0' ? 0 : $value->count_vote;
+			if ($var->vote != 0) {
+				$prc = ($userVote / $var->vote) * 100;
+			} else {
+				$prc = 0;
+			}
+			$line    = $userVote == 0 ? '' : 'class="belcms_reply_line" style="width:'.$prc.'%;"' ;
+			$voting  = $value->userVote === true ? '<div class="belcms_reply belcms_tooltip_bottom jquery_vote" data="Cliqué pour Voté" data-id="'.$value->id.'" data-answer="'.$value->id_question.'" data-quest="'.$value->id.'">' : '<div class="belcms_reply no_cursor">';
 		?>
 		<li>
-			<div class="belcms_reply belcms_tooltip_bottom jquery_vote" data="Cliqué pour Voté" data-id="<?=$value->id_question;?>">
+			<?=$voting;?>
 				<div class="belcms_reply_answer"><?=$value->answer;?></div>
 				<div <?=$line;?> ></div>
-				<div class="belcms_reply_text"><?=$prc;?>%</div>
+				<div class="belcms_reply_text"><?=round($prc, 2);?>%</div>
 			</div>
 		</li>
 		<?php
@@ -43,13 +44,22 @@ foreach ($var->answer as $key => $value) {
 		?>
 	</ul>
 	<?php
-	if ($var->answer_nb > $answer):
+	$form = true;
+	foreach ($var->answer as $value):
+		if ($value->count_vote >= 1) {
+			$form = false;
+			break;
+		}
+	endforeach;
+	if ($var->answer_nb > $answer and $form === true):
 	?>
-	<form action="" method="post" id="belcms_widgets_survey_form">
-		<input type="text" name="text" value="" required placeholder="Nouvelle réponse">
+	<form id="belcms_widgets_survey_form">
+		<input type="hidden" name="id" value="<?=$var->id;?>" id="belcms_widgets_survey_form_id">
+		<input type="text" name="text" value="" required placeholder="Nouvelle réponse" id="belcms_widgets_survey_form_name">
 		<button type="submit" form="belcms_widgets_survey_form" value="Submit"><i class="fa-solid fa-square-check fa-xl"></i></button> 
 	</form>
 	<?php
 	endif;
 	?>
+	<p id="belcms_reply_all"><a href="survey"><?=constant('VIEW_ALL_SURVEYS');?></a></p>
 </div>

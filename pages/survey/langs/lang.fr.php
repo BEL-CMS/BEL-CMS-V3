@@ -13,19 +13,12 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-?>
-<section id="bel_cms_survey">
-	<ul>
-		<?php
-		foreach ($data as $key => $value):
-			?>
-			<li>
-				<a href="survey/list/<?=$value->id;?>"><?=$value->question;?></a>
-				<span></span>
-			</li>
-			<?php
-		endforeach;
-		?>
-	</ul>
-</section>
 
+use BelCMS\Requires\Common;
+
+Common::constant(array(	
+	#####################################
+	# Fichier lang en français
+	#####################################
+	'VIEW_ALL_SURVEYS' => 'Voir tous les sondages',
+));

@@ -118,3 +118,13 @@ background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
 	cursor: pointer;
 	margin-right: -1px;
 }
+#belcms_reply_all a {
+	display: block;
+	width: 100%;
+	text-align: right;
+	text-decoration:dashed;
+	color: rgba(255, 255, 255, 0.60);
+}
+.no_cursor {
+	cursor: default;
+}

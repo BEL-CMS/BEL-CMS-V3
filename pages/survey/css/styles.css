@@ -1,11 +1,22 @@
+#bel_cms_survey {
+	display: block;
+	background-color: #fcfcfd;
+	color: #8f91ac;
+	padding: 25px;
+	border-radius: 8px;
+	border: 1px solid #eaeaf5 !important;
+}
 #bel_cms_survey ul {
-	list-style: none;
+	display: block;
 	margin: 0;
 	padding: 0;
 }
 #bel_cms_survey ul li {
-	border-bottom: 1px dotted;
+	display: block;
+	list-style: none;
+	position: relative;
+	height: 30px;
 }
-#bel_cms_survey ul li span {
-	float: right;
+#bel_cms_survey ul li a {
+	line-height: 30px;
 }

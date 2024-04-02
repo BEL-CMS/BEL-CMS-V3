@@ -1,13 +1,16 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+namespace BELCMS\Pages\Controller;
+use Belcms\Pages\Pages;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -16,31 +19,24 @@ endif;
 
 class Survey extends Pages
 {
-	var $models = 'ModelsSurvey';
+	var $useModels = 'Survey';
 
 	public function index ()
 	{
-		$set['data'] = $this->models->getSurvey();
-		foreach ($set['data'] as $k => $v) {
-			$set['data'][$k]->vote = $this->models->checkVote($v->id);
-			if ($set['data'][$k]->vote == false) {
-				$set['data'][$k]->vote = '/pages/survey/img/green.png';
-			} else {
-				$set['data'][$k]->vote = '/pages/survey/img/red.png';
-			}
-		}
-		$this->set($set);
+		$d['data'] = $this->models->getAllSurvey();
+		$this->set($d);
 		$this->render('index');
 	}
 
-	public function send ()
+	public function sendvote ()
 	{
-		if (isset($_POST['id']) && is_numeric($_POST['id'])) {
-			$return = $this->models->addVote($_POST);
-			$this->error(get_class($this), $return['text'], $return['type']);
-			$this->redirect('blog', 2);
-		} else {
-			$this->error(get_class($this), ERROR_NO_ID_VALID, 'error');
-		}
+		$return = $this->models->vote($_POST);
+		return json_encode($return);
+	}
+
+	public function newsurvey ()
+	{
+		$return = $this->models->newSurvey($_POST);
+		return json_encode($return);
 	}
 }

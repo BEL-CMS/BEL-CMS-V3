@@ -46,8 +46,8 @@ class Survey
             $sql->limit($limit);
             $sql->queryAll();
             foreach ($sql->data as $key => $value) {
-                $sql->data[$key]->nb_vote  = self::getVote($value->id_question);
                 $sql->data[$key]->question = $question;
+                $sql->data[$key]->userVote = self::getUserVote($value->id_question);
             }
             $return = $sql->data;
             return $return;
@@ -59,7 +59,7 @@ class Survey
         if (is_numeric($id)) {
             $sql = new BDD;
             $sql->table('TABLE_SURVEY_VOTE');
-            $sql->where(array('name' => 'id_vote', 'value' => $id));
+            $sql->where(array('name' => 'id_question', 'value' => $id));
             $sql->count();
             return $sql->data;
         }
@@ -68,9 +68,17 @@ class Survey
     private function getUserVote ($id)
     {
         if (is_numeric($id)) {
+            $where[] = array('name' => 'id_question', 'value' => $id);
+            $where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
             $sql = new BDD;
             $sql->table('TABLE_SURVEY_VOTE');
-            $sql->where(array('name' => 'id_vote', 'value' => $id));
+            $sql->where($where);
+            $sql->count();
+            if ($sql->data >= 1) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 }

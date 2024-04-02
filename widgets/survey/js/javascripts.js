@@ -10,22 +10,43 @@
                 $('#alrt_bel_cms').remove();
             }
 
-            var id = $(this).attr("data-id");
+            var formData = {
+                quest:  $(this).attr("data-quest"),
+                answer: $(this).attr("data-answer"),
+                id:     $(this).attr("data-id")
+            };
 
             $.ajax({
-                url: "survey/sendvote?ajax=" + id,
                 type: "POST",
-                contentType: false,
-                cache: false,
-                processData:false,
-                beforeSend : function() {
-                    $('body').append('<div id="alrt_bel_cms">Le vote a été pris en compte</div>');
-                },
-                success: function(data) {
-                    
-                }
+                url: "survey/sendvote?json",
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data);
+                 location.reload();
             });
 
 	    });
     }
+
+        $("#belcms_widgets_survey_form").submit(function(event) {
+            event.preventDefault();
+            
+            var formData = {
+                name: $("#belcms_widgets_survey_form_name").val(),
+                id: $("#belcms_widgets_survey_form_id").val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "survey/Newsurvey?json",
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data);
+            });
+
+        });
 })(jQuery);
