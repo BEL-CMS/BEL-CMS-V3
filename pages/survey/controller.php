@@ -23,7 +23,8 @@ class Survey extends Pages
 
 	public function index ()
 	{
-		$d['data'] = $this->models->getAllSurvey();
+		$d['pagination'] = $this->pagination(1, 'Survey', constant('TABLE_SURVEY'));
+		$d['data'] = $this->models->getSurvey();
 		$this->set($d);
 		$this->render('index');
 	}

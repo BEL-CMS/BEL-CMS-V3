@@ -10,6 +10,8 @@
  */
 
 namespace Belcms\Pages\Models;
+
+use BelCMS\Core\Dispatcher;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
 
@@ -82,11 +84,24 @@ final class Survey
 		}
 	}
 
-	public function getAllSurvey ()
+	public function getSurvey ()
 	{
+		$nbpp = (int) 1;
+		$page = (Dispatcher::RequestPages() * $nbpp) - $nbpp;
 		$sql = new BDD;
 		$sql->table('TABLE_SURVEY');
-		$sql->queryAll();
+		$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+		$sql->limit(array(0 => $page, 1 => $nbpp), true);
+		$sql->queryOne();
+
+		if (!empty($sql->data)) {
+			$sql2 = new BDD;
+			$sql2->table('TABLE_SURVEY_QUEST');
+			$sql2->where(array('name' => 'id_question', 'value' => $sql->data->id));
+			$sql2->orderby(array(array('name' => 'count_vote', 'type' => 'DESC')));
+			$sql2->queryAll();
+			$sql->data->quest = $sql2->data;
+		}
 		return $sql->data;
 	}
 
