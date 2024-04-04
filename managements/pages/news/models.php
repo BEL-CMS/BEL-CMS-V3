@@ -108,6 +108,14 @@ final class ModelsNews
 			$edit['tags']              = Common::VarSecure($data['tags'], ''); // autorise que du texte
 			$edit['tags']              = str_replace(' ', '', $edit['tags']);
 			$edit['cat']               = ''; // à implanter
+			if (isset($_FILES['img'])) {
+				$screen = Common::Upload('img', 'uploads/news', array('.png', '.gif', '.jpg', '.jpeg'));
+				if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
+					$edit['img'] = 'uploads/news/'.$_FILES['img']['name'];
+				}
+			} else {
+				$edit['img'] = '';
+			}
 			// SQL UPDATE
 			$sql = New BDD();
 			$sql->table('TABLE_PAGES_NEWS');
@@ -163,6 +171,15 @@ final class ModelsNews
 			$send['tags']              = str_replace(' ', '', $send['tags']);
 			$send['cat']               = ''; // à implanter
 			$send['view']              = 0;
+
+			if (isset($_FILES['img'])) {
+				$screen = Common::Upload('img', 'uploads/news', array('.png', '.gif', '.jpg', '.jpeg'));
+				if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
+					$send['img'] = 'uploads/news/'.$_FILES['img']['name'];
+				}
+			} else {
+				$send['img'] = '';
+			}
 			// SQL INSERT
 			$sql = New BDD();
 			$sql->table('TABLE_PAGES_NEWS');

@@ -49,6 +49,18 @@ if ($data->tags != null) {
 						</div>
 					</div>
 					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Image</label>
+						<div class="col-sm-12">
+							<input name="img" type="file" class="form-input">
+						</div>
+					</div>
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">lien de l'image</label>
+						<div class="col-sm-12">
+							<input type="text" class="form-input" value="<?=$data->img?>">
+						</div>
+					</div>				
+					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('TEXT');?> :</label>
 						<div class="mt-2 mb-2">
 							<textarea class="bel_cms_textarea_full" name="content"><?=$data->content?></textarea>
