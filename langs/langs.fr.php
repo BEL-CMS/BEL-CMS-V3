@@ -74,6 +74,7 @@ $array = array(
 	'SURVEYS'                             => 'Sondages',
 	'SEE_THE_LIST_OF_SURVEYS'             => 'Voir la liste des sondages',
 	'NO_SURVEY_IN_PROGRESS'               => 'Aucun sondage en cours...',
+	'LASTCONNECTED'                       => 'Dérnier connecté',
 	#####################################
 	# Fichier lang en français - Erreur
 	### ##################################
@@ -401,6 +402,7 @@ $array = array(
 	'FILE_MANAGER'                        => 'Gestionnaire de fichiers',
 	'ARTICLES'                            => 'Articles',
 	'LINKS'                               => 'Liens',
+	'SURVEY'                              => 'Sondages',
 	#####################################
 	# USER
 	#####################################

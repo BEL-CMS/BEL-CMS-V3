@@ -171,7 +171,7 @@ section { width: 100%; overflow: hidden; display: block; }
 /*-------------------------------------------------------------------------------------------------*/
 /*	Créé un block en dessous avec aucune marge ou padding sert juste à forcer en dessous.
 ---------------------------------------------------------------------------------------------------*/
-.clear { clear: both; margin: 0; padding: 0; }
+.clear { clear: both; margin: 20px; padding: 0; padding: 20px;}
 /*-------------------------------------------------------------------------------------------------*/
 /*	Grid >> 12 Columns - inline & position relative pour la position absolute;
 ---------------------------------------------------------------------------------------------------*/
@@ -1094,6 +1094,9 @@ nav#bel_cms_comment {
 #belcms_pagination ul {
 	display: flex;
 	text-decoration-style: none;
+	padding: 0;
+	margin: 0;
+	list-style: none;
 }
 .belcms_pagination_item {
 	float: left;
@@ -1179,4 +1182,26 @@ nav#bel_cms_comment {
 }
 #belcms_right {
 	width: auto;
+}
+/*-------------------------------------------------------------------------------------------------*/
+/*	Loading
+---------------------------------------------------------------------------------------------------*/
+#belcms_loading {
+	background-color: #FFF;
+	color: #FFF;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	z-index: 99999;
+	background: #FFF;
+}
+#belcms_loading img {
+	z-index: 999999;
+	position: absolute;
+	top: 45%;
+	left: 45%;
+	border: 2px solid rgba(0, 0, 0, 0.1);
+	padding: 25px;
+	border-radius: 6px;
+	box-shadow: #000;
 }

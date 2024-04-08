@@ -62,6 +62,7 @@ Common::constant(array(
 	'SERVER'                => 'Serveur',
 	'UNAVAILABLE'           => 'Maintenance',
 	'EVENTS'                => 'Evénements',
+	'STATS'                 => 'Statistiques',
 	#####################################
 	# Fichier lang en français
 	#####################################

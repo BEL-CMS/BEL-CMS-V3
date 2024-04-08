@@ -54,9 +54,7 @@
                             <section>
 								<div class="wrap-inner fl-wrap">
                                     <div class="container">
-										<?php
-										echo $var->page;
-										?>
+										<?php echo $var->page; ?>
 									</div>
 								</div>
                             </section>
@@ -91,6 +89,29 @@
                                             ?>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                        else:
+                        ?>
+                        <div class="column-content">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="wrap-inner fl-wrap">
+                                    <?php
+                                    echo $var->page;
+                                    ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                <?php
+                                if (isset($var->widgets['right'])):
+                                    foreach ($var->widgets['right'] as $title => $content):
+                                        echo $content['view'];
+                                    endforeach;
+                                endif
+                                ?>
                                 </div>
                             </div>
                         </div>

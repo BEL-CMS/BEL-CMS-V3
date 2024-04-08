@@ -60,6 +60,7 @@ final class Config
 			$return = $sql->data;
 			$return->groups_access = explode('|', $return->groups_access);
 			$return->groups_admin  = explode('|', $return->groups_admin);
+			$return->opttions      = Common::transformOpt($return->opttions);
 			$return->pages  = explode('|', $return->pages);
 			if (!empty($return->config)) {
 				$return->config = Common::transformOpt($return->config);

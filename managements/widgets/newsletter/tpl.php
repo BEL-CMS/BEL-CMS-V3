@@ -18,7 +18,7 @@ endif;
 	<div class="card">
 		<div class="card-header">
 			<div class="flex justify-between items-center">
-				<h4 class="card-title">Liste des membres</h4>
+				<h4 class="card-title">Liste des templates</h4>
 			</div>
 		</div>
 		<div class="p-6">
@@ -27,9 +27,9 @@ endif;
 					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
 						<thead class="bg-gray-50 dark:bg-gray-700">
 							<tr>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('ID');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('EMAIL');?></th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('TPL');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('DATE');?></th>
 							</tr>
 						</thead>
 						<tbody>

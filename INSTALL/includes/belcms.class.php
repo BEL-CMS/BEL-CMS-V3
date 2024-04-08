@@ -73,7 +73,7 @@ class BelCMS
 		}
 	}
 
-	function RepEfface($dir) {
+	public static function RepEfface($dir) {
 	$handle = opendir($dir);
 	while($elem = readdir($handle)) {
 		if(is_dir($dir.'/'.$elem) && substr($elem, -2, 2) !== '..' && substr($elem, -1, 1) !== '.') {
@@ -99,9 +99,9 @@ class BelCMS
 			'articles',
 			'articles_content',
 			'ban',
-			'capcha',
 			'comments',
 			'config',
+			'capcha',
 			'config_pages',
 			'config_tpl',
 			'donations',
@@ -147,9 +147,9 @@ class BelCMS
 			'page_news_cat',
 			'page_shoutbox',
 			'page_stats',
-			'page_survey',
-			'page_survey_author',
-			'page_survey_quest',
+			'survey',
+			'survey_answer',
+			'survey_vote',
 			'paypal',
 			'paypal_purchase',
 			'team',
@@ -163,7 +163,7 @@ class BelCMS
 			'users_profils',
 			'users_social',
 			'visitors',
-			'widgets',
+			'widgets'
 		);
 		return $tables;
 	}

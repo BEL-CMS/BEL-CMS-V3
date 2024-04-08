@@ -9,7 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace Belcms\Widgets\Models\Connected;
+namespace Belcms\Widgets\Models\Stats;
 use BelCMS\PDO\BDD as BDD;
 
 if (!defined('CHECK_INDEX')):
@@ -17,7 +17,7 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Connected
+class Stats
 {
 	protected function GetGroups ()
 	{
@@ -31,6 +31,95 @@ class Connected
 		}
 		return $return;
 	}
+
+	function getActive()
+	{
+		$active = array();
+		$sql = New BDD();
+		$sql->table('TABLE_STATS');
+		$sql->queryAll();
+
+		foreach ($sql->data as $value) {
+			$active[$value->name] = $value->value == '1' ? true : false;
+		}
+		return $active;
+	}
+
+	function getNbPageView()
+	{
+		$count = (int) 0;
+		$sql = New BDD();
+		$sql->table('TABLE_PAGE_STATS');
+		$sql->fields('nb_view');
+		$sql->queryAll();
+	
+		foreach ($sql->data as $view) {
+		   $count += $view->nb_view;
+		}
+		return $count;
+	}
+
+	function getNbNews()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_PAGES_NEWS');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbDownloads ()
+	{
+		$count = (int) 0;
+		$sql = new BDD;
+		$sql->table('TABLE_DOWNLOADS');
+		$sql->queryAll();
+	
+		foreach ($sql->data as $view) {
+		   $count += $view->dls ;
+		}
+		return $count;
+	}
+
+	function getNbUsers ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_USERS');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbArticles ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_ARTICLES');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbComments ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_COMMENTS');
+		$sql->count();
+		return $sql->data;
+	}
+	function getNbImg ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_GALLERY');
+		$sql->count();
+		return $sql->data;
+	}
+
+	function getNbLinks ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_LINKS');
+		$sql->count();
+		return $sql->data;
+	}
+
+
 	protected function GetUsersNb ($where = false)
 	{
 		$return = null;

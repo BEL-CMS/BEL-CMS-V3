@@ -9,22 +9,18 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace Belcms\Widgets\Controller\Connected;
-use BelCMS\Widgets\Widgets as BaseWidget;
-
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-class Connected extends BaseWidget
-{
-	var $useModels = 'Connected';
-	public function index ($var)
-	{
-		$this->name  = $var->name;
-		$this->title = $var->title;
-		$this->pos   = $var->pos;
-		$this->render();
-	}
-}
+use BelCMS\Requires\Common;
+
+Common::constant(array(
+	#####################################
+	# Fichier lang en français - Pages Newsletter
+	#####################################
+	'TPL'       => 'Template',
+    'ADDTPL'    => 'Ajouté un template',
+    'NEW'       => 'Nouveau',
+));

@@ -11,8 +11,6 @@
 
 namespace Belcms\Pages\Models;
 use BelCMS\PDO\BDD as BDD;
-use BelCMS\Core\Secures;
-use BelCMS\Requires\Common as Common;
 use BelCMS\Core\Dispatcher;
 use BelCMS\Core\Config;
 

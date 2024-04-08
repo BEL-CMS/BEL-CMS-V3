@@ -179,7 +179,7 @@
     padding: 25px;
 }
 .belcms_forum_post_div_infos img {
-    max-width: 175px;
+    max-width: 95%;
     height: auto;
     margin: auto;
 }
@@ -229,4 +229,26 @@
 #file_attachment {
     width: 98%;
     margin: auto;
+}
+/* Stats */
+#belcms_forum_main_stats {
+    display: block;
+    width: 33.333333%;
+    float: left;
+    background-color: #212A35;
+    color: #fff;
+}
+#belcms_forum_main_stats ul li {
+    line-height: 35px;
+    text-align: left;
+    padding: 10px;
+    padding-left: 15px;
+    border-bottom: 1px solid rgba(255,255,0255,.25);
+}
+#belcms_forum_main_stats ul li:first-child {
+    padding: 10px;
+    padding-left: 15px;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255,255,0255,.25);
+    text-align: left;
 }

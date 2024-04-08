@@ -26,6 +26,7 @@
 	font-weight: 700;
 	color: #272727;
 	line-height: 50px;
+	margin: 0;
 }
 .downloads_title_view,
 .downloads_title_cat {
@@ -47,7 +48,7 @@
 .downloads_li_content h3 {
 	display: block;
 	float: right;
-	width: 240px;
+	width: 220px;
 	text-align: center;
 }
 .downloads_li_content h3 {

@@ -62,3 +62,15 @@
 	font-weight: bold;
 	margin-left: 15px;
 }
+#belcms_widgets_survey_page_form {
+	display: block;
+	display: flex;
+}
+#belcms_widgets_survey_page_form input {
+	width: calc(100% - 45px);
+}
+#belcms_widgets_survey_page_form button {
+	width: 45px;
+	cursor: pointer;
+	margin-right: -1px;
+}

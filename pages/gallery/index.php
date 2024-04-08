@@ -19,48 +19,49 @@ if (empty($category['cat']) && empty($img['img'])) {
     Notification::warning(constant('NO_IMAGES_IN_DATABASE'), constant('GALLERY'));
 }
 ?>
+<?php
+if (!empty($category['cat'])):
+?>
 <section id="section_gallery">
+    <form id="gallery_form" method="get" action="Gallery/Cat/">
+        <select id="jQuery_cat">
+            <option selected disabled>Choisir une catégorie</option>
+            <option value="0">Aucune catégorie</option>
         <?php
-        if (!empty($category['cat'])):
+        foreach ($category['cat'] as $key => $value):
         ?>
-        <form id="gallery_form" method="get" action="Gallery/Cat/">
-            <select id="jQuery_cat">
-                <option selected disabled>Choisir une catégorie</option>
-                <option value="0">Aucune catégorie</option>
-            <?php
-            foreach ($category['cat'] as $key => $value):
-            ?>
-                <option value="<?=$value->id;?>"><?=$value->name;?></option>
-            <?php
-            endforeach;
-            ?>
-            </select>
-        </form>
+            <option value="<?=$value->id;?>"><?=$value->name;?></option>
         <?php
-        endif;
-        if (!empty($img['img'])):
-            foreach ($img['img'] as $key => $value):
-            ?>
-            <div class="gallery">
-                <a data="Voir en popup" href="<?=$value->image;?>" class="belcms_tooltip_top image-popup">
-                    <img src="<?=$value->image;?>">
-                </a>
-                <div class="gallery_row">
-                    <span>Titre : </span>
-                    <span><?=$value->name;?></span>
-                </div>
-                <div class="gallery_row">
-                    <span>Publication : </span>
-                    <span><?=Common::TransformDate($value->date_insert, 'FULL', 'NONE')?></span>
-                </div>
-                <div class="gallery_row">
-                    <span>Vu : </span>
-                    <span><?=$value->view;?></span>
-                </div>
-                <button class="belcms_tooltip_left belcms_btn belcms_bg_grey" data="Voir plus de détail" onclick="window.location.href='gallery/Detail/<?=$value->id?>'">Voir plus de détail</button>
+        endforeach;
+        ?>
+        </select>
+    </form>
+    <?php
+    if (!empty($img['img'])):
+        foreach ($img['img'] as $key => $value):
+        ?>
+        <div class="gallery">
+            <a data="Voir en popup" href="<?=$value->image;?>" class="belcms_tooltip_top image-popup">
+                <img src="<?=$value->image;?>">
+            </a>
+            <div class="gallery_row">
+                <span>Titre : </span>
+                <span><?=$value->name;?></span>
             </div>
-            <?php
-            endforeach;
-        endif;
-        ?>
+            <div class="gallery_row">
+                <span>Publication : </span>
+                <span><?=Common::TransformDate($value->date_insert, 'FULL', 'NONE')?></span>
+            </div>
+            <div class="gallery_row">
+                <span>Vu : </span>
+                <span><?=$value->view;?></span>
+            </div>
+            <button class="belcms_tooltip_left belcms_btn belcms_bg_grey" data="Voir plus de détail" onclick="window.location.href='gallery/Detail/<?=$value->id?>'">Voir plus de détail</button>
+        </div>
+        <?php
+        endforeach;
+    endif;
+    ?>
 </section>
+<?php
+endif;

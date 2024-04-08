@@ -5,7 +5,7 @@
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -172,6 +172,36 @@ switch ($_POST['table']) {
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(32) NOT NULL,
 			`value` text,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "donations":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+			`last_name` text,
+			`adress` text,
+			`iban` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+			`bic` varchar(16) NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "donations_receive":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` text,
+			`surname` text,
+			`mail` text,
+			`id_purchase` text NOT NULL,
+			`sold` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+			`msg` text,
+			`valid` tinyint(1) DEFAULT '0',
+			`date_paie` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`type` text,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
@@ -672,36 +702,6 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
-	case "donations":
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL AUTO_INCREMENT,
-			`name` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
-			`last_name` text,
-			`adress` text,
-			`iban` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
-			`bic` varchar(16) NOT NULL,
-			PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-	break;
-
-	case "donations_receive":
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL AUTO_INCREMENT,
-			`name` text,
-			`surname` text,
-			`mail` text,
-			`id_purchase` text NOT NULL,
-			`sold` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-			`msg` text,
-			`valid` tinyint(1) DEFAULT '0',
-			`date_paie` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			`type` text,
-			PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-	break;
-
 	case "page_forum":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -836,38 +836,42 @@ switch ($_POST['table']) {
 			('', 0, 'gallery'),
 			('', 0, 'faq'),
 			('', 0, 'links'),
-			('', 0, 'team');";
+			('', 0, 'team'),
+			('', 0, 'survey');";
 	break;
 
-	case "page_survey":
+	case "survey":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL,
-			`idvote` int NOT NULL,
-			`number` varchar(256) NOT NULL,
-			`content` text NOT NULL,
-			`vote` int DEFAULT NULL,
+			`id` int NOT NULL AUTO_INCREMENT,
+			`question` text,
+			`dateclose` varchar(6) DEFAULT '0',
+			`timestop` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`vote` int DEFAULT '0',
+			`answer_nb` int DEFAULT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
-	case "page_survey_author":
+	case "survey_answer":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL,
-			`idvote` int NOT NULL,
-			`author` varchar(32) NOT NULL,
-			`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (`id`)
+			`id` int NOT NULL AUTO_INCREMENT,
+		  	`id_question` int DEFAULT NULL,
+		  	`answer` text,
+		  	`count_vote` int NOT NULL DEFAULT '0',
+		  	PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
-	case "page_survey_quest":
+	case "survey_vote":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL,
-			`name` text NOT NULL,
-			`date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`id` int NOT NULL AUTO_INCREMENT,
+			`id_vote` int DEFAULT NULL,
+			`id_question` int DEFAULT NULL,
+			`author` varchar(32) DEFAULT NULL,
+			`datetime_vote` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;

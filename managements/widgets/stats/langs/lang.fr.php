@@ -33,5 +33,7 @@ Common::constant(array(
     'RECCORD_IMAGES'      => 'Images enregistrées',
     'ACTIVE'              => 'Activer',
     'DISABLE'             => 'Désactiver',
-    'THE_VIEW_NO_REFLECT' => 'La vue ici, ne reflète pas le même style sur le site.'
+    'THE_VIEW_NO_REFLECT' => 'La vue ici, ne reflète pas le même style sur le site.',
+    'ARRANGEMENT'         => 'Disposition',
+
 ));

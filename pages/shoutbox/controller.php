@@ -9,11 +9,8 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace Belcms\Pages\Controller;
+namespace BELCMS\Pages\Controller;
 use Belcms\Pages\Pages;
-use BelCMS\PDO\BDD;
-use BelCMS\Requires\Common;
-use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -26,6 +23,8 @@ class Shoutbox extends Pages
 
 	function index ()
 	{
+		$d['var'] = $this->models->getMsg();
+		$this->set($d);
 		$this->render('index');
 	}
 

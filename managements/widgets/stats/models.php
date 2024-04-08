@@ -10,13 +10,14 @@
  */
 
 use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 
-final class ModelsConnected
+final class ModelsStats
 {
 	#####################################
 	# Infos tables
@@ -118,7 +119,53 @@ final class ModelsConnected
 			$sql->table('TABLE_STATS');
 			$sql->where(array('name' => 'name', 'value' => $name));
 			$sql->update($d);
-			debug($sql);
 		}
+	}
+
+	public function sendparameter ($data)
+	{
+		$return = array();
+
+		if (!empty($data) && is_array($data)) {
+			$upd['title']         = Common::VarSecure($data['title'], '');
+			$upd['groups_access'] = implode("|", $data['groups']);
+			$upd['groups_admin']  = implode("|", $data['admin']);
+			$upd['active']        = isset($data['active']) ? 1 : 0;
+			if ($data['pos'] == 'top') {
+				$upd['pos'] = 'top';
+			} else if ($data['pos'] == 'bottom') {
+				$upd['pos'] = 'bottom';
+			} else if ($data['pos'] == 'left') {
+				$upd['pos'] = 'left';
+			} else if ($data['pos'] == 'right') {
+				$upd['pos'] = 'right';
+			}
+			if (isset($data['current'])) {
+				$upd['pages']  = implode("|", $data['current']);
+			}
+			// SQL UPDATE
+			$sql = New BDD();
+			$sql->table('TABLE_WIDGETS');
+			$sql->where(array('name' => 'name', 'value' => 'stats'));
+			$sql->update($upd);
+			if ($sql->rowCount == 1) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDIT_PARAM_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_PARAM_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+
+		return $return;
 	}
 }

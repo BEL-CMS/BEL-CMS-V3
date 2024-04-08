@@ -15,9 +15,14 @@ if (!defined('CHECK_INDEX')):
 endif;
 $i = 0;
 $form = true;
-debug($data);
+$answer = count($data->quest);
 
-$answer = count($data->answer);
+foreach ($data->quest as $value):
+	if ($value->count_vote >= 1) {
+		$form = false;
+		break;
+	}
+endforeach;
 ?>
 <section id="bel_cms_survey">
 	<h2><?=$data->question;?></h2>
@@ -43,14 +48,20 @@ $answer = count($data->answer);
 		?>
 	</ul>
 	<?php
-	if ($var->answer_nb > $answer and $form === true):
-	?>
-	<form id="belcms_widgets_survey_form">
-		<input type="hidden" name="id" value="<?=$var->id;?>" id="belcms_widgets_survey_form_id">
-		<input type="text" name="text" value="" required placeholder="Nouvelle réponse" id="belcms_widgets_survey_form_name">
-		<button type="submit" form="belcms_widgets_survey_form" value="Submit"><i class="fa-solid fa-square-check fa-xl"></i></button> 
-	</form>
-	<?php
+	if ($data->answer_nb > $answer and $form === true):
+		$date = new \DateTimeImmutable($data->timestop);
+		$expirationDate = $date->add(new \DateInterval($data->dateclose));
+		$now_date = new \DateTime("now");
+		$interval = $now_date->diff($expirationDate);
+		if ($interval->invert == 0):
+		?>
+			<form id="belcms_widgets_survey_page_form">
+				<input type="hidden" name="id" value="<?=$data->id;?>" id="belcms_widgets_survey_form_id">
+				<input type="text" name="text" value="" required placeholder="Nouvelle réponse" id="belcms_widgets_survey_page_form_name">
+				<button type="submit" form="belcms_widgets_survey_page_form" value="Submit"><i class="fa-solid fa-square-check fa-xl"></i></button> 
+			</form>
+		<?php
+		endif;
 	endif;
 	?>
 </section>

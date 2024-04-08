@@ -43,7 +43,7 @@ final class Managements
 		$this->link = Dispatcher::link();
 		$this->page = Dispatcher::page();
 		$this->view = Dispatcher::view();
-		
+
 		self::getLangs();
 
 		if (isset($_SESSION['USER']->user->hash_key) && strlen($_SESSION['USER']->user->hash_key) == 32) {
@@ -229,6 +229,7 @@ final class Managements
 				}
 
 				$return = array();
+
 
 				$sql = New BDD();
 				$sql->table('TABLE_USERS');

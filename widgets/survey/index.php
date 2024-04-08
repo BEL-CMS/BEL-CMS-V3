@@ -52,13 +52,19 @@ $answer = count($var->answer);
 		}
 	endforeach;
 	if ($var->answer_nb > $answer and $form === true):
-	?>
-	<form id="belcms_widgets_survey_form">
-		<input type="hidden" name="id" value="<?=$var->id;?>" id="belcms_widgets_survey_form_id">
-		<input type="text" name="text" value="" required placeholder="Nouvelle réponse" id="belcms_widgets_survey_form_name">
-		<button type="submit" form="belcms_widgets_survey_form" value="Submit"><i class="fa-solid fa-square-check fa-xl"></i></button> 
-	</form>
-	<?php
+		$date = new \DateTimeImmutable($var->timestop);
+		$expirationDate = $date->add(new \DateInterval($var->dateclose));
+		$now_date = new \DateTime("now");
+		$interval = $now_date->diff($expirationDate);
+		if ($interval->invert == 0):
+		?>
+		<form id="belcms_widgets_survey_form">
+			<input type="hidden" name="id" value="<?=$var->id;?>" id="belcms_widgets_survey_form_id">
+			<input type="text" name="text" value="" required placeholder="Nouvelle réponse" id="belcms_widgets_survey_form_name">
+			<button type="submit" form="belcms_widgets_survey_form" value="Submit"><i class="fa-solid fa-square-check fa-xl"></i></button> 
+		</form>
+		<?php
+		endif;
 	endif;
 	?>
 	<p id="belcms_reply_all"><a href="survey"><?=constant('VIEW_ALL_SURVEYS');?></a></p>

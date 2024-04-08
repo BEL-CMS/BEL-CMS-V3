@@ -10,14 +10,28 @@
  */
 
 use BelCMS\Core\Visitors;
+use BelCMS\Requires\Common;
 use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
+$countPage = number_format($page, 0, ',', '.');
 ?>
 <div id="bel_cms_widgets_connected" class="widget">
+	<p>Pages vues <b><i><?=$countPage;?></i></b>  depuis le <br><?=Common::TransformDate($_SESSION['CONFIG_CMS']['CMS_DATE_INSTALL'], 'FULL', 'MEDIUM');?></p>
+	<?php if ($active['users'] == true or $active['news']  == true or $active['news']  == true or $active['articles']  == true or $active['comments']   == true or $active['files']  == true or $active['files']  == true or $active['links']  == true or $active['images']): ?>
+	<ul id="widgets_users">
+		<?=$active['users']    == true ? '<li>Membres<span>'.$users.'</span></li>'        : ''; ?>
+		<?=$active['news']     == true ? '<li>News<span>'.$news.'</span></li>'            : ''; ?>
+		<?=$active['articles'] == true ? '<li>Articles<span>'.$articles.'</span></li>'    : ''; ?>
+		<?=$active['comments'] == true ? '<li>Commentaire<span>'.$comments.'</span></li>' : ''; ?>
+		<?=$active['files']    == true ? '<li>Fichiers<span>'.$files.'</span></li>'      : ''; ?>
+		<?=$active['links']    == true ? '<li>Liens<span>'.$links.'</span></li>'          : ''; ?>
+		<?=$active['images']   == true ? '<li>Images<span>'.$img.'</span></li>'           : ''; ?>
+	</ul>
+	<?php endif; ?>
 	<ul>
 		<li>
 			<span>Hier</span>

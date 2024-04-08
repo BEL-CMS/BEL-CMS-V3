@@ -23,7 +23,6 @@ function debug ($data, $exitAfter = true, $collapse = false)
 
 		if (!$isTerminal && $level == 0 && !defined("DUMP_DEBUG_SCRIPT")) {
 			define("DUMP_DEBUG_SCRIPT", true);
-
 			echo '<script language="Javascript">function toggleDisplay(id) {';
 			echo 'var state = document.getElementById("container"+id).style.display;';
 			echo 'document.getElementById("container"+id).style.display = state == "inline" ? "none" : "inline";';

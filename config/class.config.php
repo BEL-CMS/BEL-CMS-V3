@@ -49,6 +49,25 @@ final class Config
 		unset($sql);
 		return $return;
 	}
+
+	public static function getConfigWidgets ($name = false)
+	{
+		$return = (object) array();
+		$sql = new BDD;
+		$sql->table(constant('TABLE_WIDGETS'));
+		$sql->fields(array('name', 'title','groups_access','groups_admin','active','pos','orderby','pages','opttions'));
+		if ($name !== false) {
+			$where = array('name' => 'name', 'value' => $name);
+			$sql->where($where);
+			$sql->queryOne();
+		} else {
+			$sql->queryAll();
+		}
+		$return = $sql->data;
+		unset($sql);
+		return $return;
+	}
+
 	public static function langs (): array
 	{
 		return constant('LANGS');

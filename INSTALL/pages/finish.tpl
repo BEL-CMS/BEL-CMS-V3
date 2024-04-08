@@ -35,7 +35,7 @@
 </div>
 <?php
 @chmod(ROOT.DS.'INSTALL', 0777);
-recursive_delete(ROOT.DS.'INSTALL');
+BelCMS::RepEfface(ROOT.DS.'INSTALL');
 ?>
 <script type="text/javascript">
 	setTimeout("location.href = '<?=$_SESSION['HTTP_HOST'];?>';", 10000);

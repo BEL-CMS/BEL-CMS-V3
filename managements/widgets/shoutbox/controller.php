@@ -22,6 +22,7 @@ class Shoutbox extends AdminPages
 	var $admin  = false; // Admin suprême uniquement (Groupe 1);
 	var $active = true; // activation manuel;
 	var $bdd    = 'ModelsShoutbox';
+
 	public function index ()
 	{
 		$menu[] = array(constant('HOME') => array('href'=>'shoutbox?management&option=widgets','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));

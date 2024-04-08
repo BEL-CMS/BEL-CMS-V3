@@ -104,7 +104,9 @@ class Forum extends Pages
 			$data['name'] = null;
 		}
 
-		$data['reply'] = $this->models->GetNbReply($data['threads'][0]->id);
+		if (!empty($data['threads'])) {
+			$data['reply'] = $this->models->GetNbReply($data['threads'][0]->id);
+		}
 
 
 		$this->set($data);

@@ -1,0 +1,68 @@
+#bel_cms_widgets_connected ul {
+	display: block;
+	list-style: none;
+	border: none !important;
+	padding: 0 !important;
+	margin-bottom: 15px;
+	overflow: hidden;
+	display: block;
+	border-bottom: 1px solid rgba(255, 255, 255, .30) !important;
+	padding-bottom: 5px !important;
+	margin: 0;
+	
+}
+#bel_cms_widgets_connected ul:last-child {
+	border-bottom: 0 !important;
+	padding: 0 !important;
+	margin-bottom: 0 !important;
+}
+	#bel_cms_widgets_connected ul li {
+		display: block;
+		overflow: hidden;
+		border: none !important;
+		padding: 0 !important;
+		line-height: 25px;
+	}
+	#bel_cms_widgets_connected ul li span {
+		display: block;
+		float: left;
+	}
+	#bel_cms_widgets_connected ul li span:nth-child(2) {
+		float: right;
+		text-align: right;
+	}
+
+	#getVisitorDay {
+		margin: 0 !important;
+		padding: 0 !important;
+		border: 1px dashed rgba(0, 0, 0, .5);
+	}
+	#getVisitorDay li,
+	#getVisitorConnected li {
+		font-size: 80%;
+		font-style: italic;
+	}
+#bel_cms_widgets_connected > p {
+	text-align: center;
+	border-bottom: 1px solid rgba(255, 255, 255, .30);
+	padding-bottom: 5px;
+	margin: 0;
+	margin-bottom: 10px;
+}
+#bel_cms_widgets_connected > p i {
+	text-decoration: underline;
+}
+#widgets_users {
+	display: block;
+	border-bottom: 1px solid rgba(255, 255, 255, .30) !important;
+	padding-bottom: 5px !important;
+	margin: 0;
+	margin-bottom: 10px !important;
+	text-align: left;
+}
+#widgets_users li {
+	list-style-type: disc;
+}
+#widgets_users li span {
+	float: right !important;
+}
