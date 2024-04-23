@@ -1,7 +1,9 @@
 @import "/assets/plugins/tooltip/scale.css";
 @import "/assets/css/grid.css";
 *, ::after, ::before { box-sizing: border-box; }
-p, span { text-align: justify; }
+#endloading {
+	display: none;
+}
 /*-------------------------------------------------------------------------------------------------*/
 /*	Custom couleur, de la balise code ou pre
 ---------------------------------------------------------------------------------------------------*/

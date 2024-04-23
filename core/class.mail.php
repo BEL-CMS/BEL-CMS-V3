@@ -1,15 +1,17 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.1 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
 namespace BelCMS\Core;
+
+use DateTime;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -18,47 +20,94 @@ endif;
 
 final class eMail
 {
-	#####################################
-	# Insert registration
-	#####################################
-	public static function token ($title = null, $content = null)
+	public	$fromName,
+			$fromMail,
+			$subject,
+			$content,
+			$sendMail,
+			$msg;
+	private $date;
+
+	public function __construct()
 	{
-		$return = '	<!doctype html>
-					<html>
-						<meta charset="utf-8">
-						<style type="text/css" data-hse-inline-css="true">
-							body, html {font-family: Helvetica, Arial, sans-serif;background: #dbe5ea;margin: 0;margin: 0;padding: 0;border: none;outline: none;list-style: none; }
-							#main {background: #FFF;padding-bottom: 60px; }
-							#main > h1 {margin: 0;padding: 0;font-size: 16px;line-height: 50px;background-color: #ffffff;border-radius: 4px 4px 0px 0px;text-align: center; }
-							#corp {background: #126de5;text-align: center;color: #FFF;line-height: 65px; }
-							#corp > div,
-							#corp > div > img {margin: 0; padding: 0;line-height: normal; }
-							#token {text-align: center;padding: 20px 0; }
-							#token > span {display: inline-block;background: #ebf5fa;margin: auto;line-height: 60px;padding: 0 20px; }
-							#link {background-color: #ffffff;padding-left: 24px;padding-right: 24px;padding-top: 8px;padding-bottom: 8px;						text-align: center; }
-							#link > a {display: inline-block;background: #0ec06e;color: #FFF;padding: 15px 20px;margin: auto;text-decoration: none;}
-							#infos {display: block;background: #FFF;text-align: center;}
-							#infos > span {display: inline-block;background: #242b3d;color: #FFF;padding: 5px 15px;margin: 15px auto;}
-							#copyright {text-align: center;font-size: 11px;margin-bottom: 50px;}
-							.clear {clear: both;}
-						</style>
-						<body>
-							<div id="main">
-								<h1>'.$title.'</h1>
-								<div id="corp">
-									<div><img src=" data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAZlBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+Vn2moAAAAIXRSTlMA9APwcWsX/GUp947VyU3OWCUSBtp1RAyR27e1iHAZvLsH6T7vAAABSUlEQVRo3u3Y626DMAwF4ISQptyh0NLdd97/Jfdn2obZIIpdqZP8PUBPRRLHjlFKKaWUUhsOffU4uTK46b3qD0bYyTdYaPxJ8s9XFiv2+mpkZLnFr+w5MwKKDn/qBsPWWmxwrWE6BmwKR+bvYxcroQ3YFRhfaXCI4JJXOusQpUndrWdEyhPPr0Ukl1aaKkR7TqpvFtHsnBDwAkL6MDRYqfNiHIu8BsP3EoMqffa5fX0pENCDKC/my6XkB1QgvPnB8wOesFRni0NeswMetk9rzg5wWCrIPccOADEuA8ZbB8z3/4n2Fvn+t+nOQfsHpeJWxW6nXA/jzCzXYhcOCPErE4T4pQ9CvG0BId54geC1jrEBVMFofkGIt+8gxAcQEOIjFAjxIRCE+BgLQnwQByH+lABC/DEEROxzTghueruS55yoAKWUUkoptfIBQWw+kbVEMGQAAAAASUVORK5CYII="></div>
-									<p>Récupération de mot de passe</p>
-								</div>
-								<div id="token">
-									<span>'.$content.'</span>
-								</div>
-								<div id="link"><a href="https://bel-cms.dev?token=21241545465">Lien automatique</a></div>
-								<div id="infos"><span>Attention, le Token est valide uniquement pendant 1h00</span></div>
-								<div class="clear"></div>
-								<div id="copyright"><p>Template mail by <a href="https://bel-cms.dev">Bel-CMS</a></p>
-							</div>
-						</body>
-					</html>';
+		$this->date = new DateTime('now');
+		$this->date->format('d/m/Y à H:i:s');
+	}
+
+    public function fromName ($data = false)
+	{
+		$this->fromName = !empty($data) ? $data : $_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'];
+	}
+
+	public function fromMail ($data = false)
+	{
+		$this->fromMail = !empty($data) ? $data : $_SERVER['SERVER_ADMIN'];
+	}
+
+	public function subject ($data = false)
+	{
+		$this->subject = !empty($data) ? $data : '';
+	}
+
+	public function message ($data = false)
+	{
+		$this->msg = !empty($data) ? $data : false;
+	}
+
+	public function output ($data)
+	{
+		$this->sendMail = !empty($data) ? $data : false;
+	}
+
+	public function html ($data = false)
+	{
+		$this->content  = !empty($data) ? $data : false;
+		if ($this->content === false) {
+			$this->content = '
+			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			<html xmlns:v="urn:schemas-microsoft-com:vml">
+				<head>
+					<meta http-equiv="content-type" content="text/html; charset=utf-8">
+					<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+				</head>
+				<body style="width: 100%;height: 100%;background: #37383a;">
+					<table cellpadding="0" cellspacing="0" style="width: 620px; margin:0 auto;">
+						<tr><td style="height: 10px; background-color: #5187bd;border-collapse:collapse; text-align:left;"></td></tr>
+						<tr style="background: #FFF;">
+							<td style="padding: 25px;font-size: 24px;color: #5187bd;font-family: Helvetica, sans-serif;">'.$this->fromName.'</td>
+						</tr>
+						<tr><td style="height: 3px; background: #777777;border: 1px dotted #777777;padding: 2px 0; background: #FFF;"></td></tr>
+						<tr>
+							<td style="background: #5187bd;color:#FFF;line-height: 90px;padding: 5px 25px;font-size: 24px;">Formulaire de contact</td>
+						</tr>
+						<tr><td style="height: 3px; background: #777777;border: 1px dotted #777777;padding: 2px 0; background: #FFF;"></td></tr>
+						<tr style="background: #FFF;">
+							<td style="color:#aaaaaa;padding: 25px 0 0 25px;font-size: 12px;font-family:Arial, Helvetica, sans-serif;">'.$this->date.'</td>
+						</tr>
+						<tr style="background: #FFF;">
+							<td style="padding: 0 25px 0px 25px;font-family:"Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif; font-size:36px;font-size: 24px;color: #777777;">'.$this->subject.'</td>
+						</tr>
+						<tr style="background: #FFF;">
+							<td style="padding: 5px 25px 25px 25px;text-align: justify;font-family: Arial, Helvetica, sans-serif;font-size: 13px;line-height: 15pt;color: #777777;">
+								'.$this->msg.'
+							</td>
+						</tr>
+						<tr><td style="height: 10px;background-color: #5187bd;border-collapse:collapse; text-align:left;"></td></tr>
+					</table>     
+				</body>
+			</html>';
+		}
+	}
+
+	public function send ()
+	{
+		$headers   = array();
+		$headers[] = "MIME-Version: 1.0";
+		$headers[] = 'Content-Type: text/html; charset=iso-8859-1';
+		$headers[] = "From: {$this->fromName} <{$this->fromMail}>";
+		$headers[] = "Reply-To: NoReply <{$this->fromMail}>";
+		$headers[] = "X-Mailer: PHP/".phpversion();
+		$return = mail($this->sendMail, $this->subject, $this->content, implode("\n", $headers));
 		return $return;
-    }
+	}
 }

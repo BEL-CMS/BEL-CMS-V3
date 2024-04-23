@@ -362,6 +362,7 @@ class User
 			} else {
 				$return = false;
 			}
+			//debug($return);
 			return $return;
 		}
 	}

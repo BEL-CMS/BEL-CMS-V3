@@ -33,9 +33,7 @@ final class Contact
 			$insert['subject'] = Common::VarSecure($data['subject'], null);
 			$insert['message'] = Common::VarSecure($data['message'], 'html');
 			$insert['mail']    = Secure::isMail($data['mail']);
-			if (isset($data['tel']) and !empty($data['tel'])) {
-				$insert['tel'] = Common::VarSecure($data['tel']);
-			}
+			
 
 			$sql = new BDD;
 			$sql->table('TABLE_CONTACT');

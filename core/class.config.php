@@ -10,8 +10,8 @@
  */
 
 namespace BelCMS\Core;
-use BelCMS\PDO\BDD as BDD;
-use BelCMS\Requires\Common as Common;
+use BelCMS\PDO\BDD;
+use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');

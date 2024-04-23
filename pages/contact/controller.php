@@ -13,7 +13,6 @@ namespace Belcms\Pages\Controller;
 
 use BelCMS\Core\Notification;
 use Belcms\Pages\Pages;
-use BelCMS\Core\Captcha;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -26,8 +25,6 @@ class Contact extends Pages
 
 	public function index ()
 	{
-        $set['captcha'] = Captcha::createCaptcha();
-        $this->set($set);
         $this->render('index');
     }
 
@@ -43,16 +40,9 @@ class Contact extends Pages
             Notification::warning('Aucun sujet transmit');
         }
         if (empty($_POST['message'])) {
-            Notification::warning('Aucun message transmit');
+            Notification::warning('Aucun message transmi');
         }
-
-        if (Captcha::verifCaptcha($_POST['query_contact']) === false) {
-            $this->error = true;
-            $this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('ERROR_CAPTCHA'), false);
-            return false;   
-        } else {
-            $return = $this->models->send($_POST);
-            debug($return);  
-        }
+        $return = $this->models->send($_POST);
+        debug($return);
     }
 }

@@ -8,22 +8,9 @@
 #belcms_contact_form input {
 	display: block;
 	width: 50%;
-	margin: 10px 0px;
-}
-.belcms_contact_form_br input {
-	margin-right: 10px !important;
-}
-.belcms_contact_form_br input:nth-last-child() {
-	margin-right: 0 !important;
-	margin-left: 10px !important;
+	margin: 10px 20px;
 }
 .belcms_contact_form_br > textarea {
 	margin: auto;
 	max-width: 80%;
-}
-.belcms_contact_form_br > button {
-	width: 100%;
-}
-#captcha {
-	width: 100% !important;
 }
