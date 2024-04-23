@@ -104,6 +104,7 @@ class BelCMS
 			'capcha',
 			'config_pages',
 			'config_tpl',
+			'contact',
 			'donations',
 			'donations_receive',
 			'downlaods_stats',

@@ -1,0 +1,223 @@
+/*counter area ---------------------- */
+.counter-sec5 {
+    position: relative;
+    max-width: 1720px;
+    display: block;
+    margin: auto;
+    padding: 90px 100px;
+    z-index: 2;
+
+    @media(max-width: 1399px) {
+        padding: 90px 50px;
+    }
+
+    @include md {
+        padding: 80px 0;
+
+        .container {
+            max-width: 100%;
+        }
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url('../img/update_4/bg/counter_bg_1.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-color: #10131C;
+        clip-path: path("M542.491 19.8743C554.97 7.16177 572.036 0 589.849 0H1129.15C1146.96 0 1164.03 7.16177 1176.51 19.8743C1188.99 32.5868 1206.05 39.7485 1223.87 39.7485H1640C1684.18 39.7485 1720 75.5658 1720 119.749V491.253C1720 535.436 1684.18 571.253 1640 571.253H1225.55C1207.29 571.253 1189.79 578.594 1177 591.626C1164.21 604.658 1146.71 612 1128.45 612H590.549C572.288 612 554.793 604.658 542.001 591.626C529.208 578.594 511.714 571.253 493.452 571.253H80C35.8172 571.253 0 535.435 0 491.253V119.749C0 75.5658 35.8173 39.7485 80.0001 39.7485H495.132C512.946 39.7485 530.012 32.5868 542.491 19.8743Z");
+        z-index: -1;
+
+        @include lg {
+            clip-path: none;
+        }
+    }
+
+}
+
+.counter5-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+
+    @include lg {
+        display: block;
+    }
+}
+
+.counter-area5 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+
+    @include lg {
+        margin-top: 40px;
+    }
+
+    @include xs {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .th-counterup {
+        padding: 40px 60px 60px 60px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        @include xl {
+            margin: 0;
+            padding: 40px;
+        }
+
+        @include md {
+            padding: 30px;
+        }
+
+        @include sm {
+            padding: 30px 20px;
+        }
+
+        @include xs {
+            border-right: 1px solid transparent;
+        }
+
+        &:nth-child(2) {
+            border-right: 1px solid transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        &:nth-child(3) {
+            border-bottom: 1px solid transparent;
+
+            @include xs {
+                border-right: 1px solid transparent;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+
+        &:nth-child(4) {
+            border-right: 1px solid transparent;
+            border-bottom: 1px solid transparent;
+        }
+
+        .counter-card_text {
+            font-family: $title-font;
+            color: $white-color;
+            font-size: 18px;
+            line-height: 28px;
+        }
+    }
+}
+
+.counter-title-area {
+    max-width: 350px;
+
+    @include lg {
+        max-width: 100%;
+        display: block;
+        text-align: center;
+        margin: auto;
+    }
+
+    .sec-title {
+        margin-top: -0.3rem;
+    }
+
+    .th-btn {
+        padding: 22px 50px;
+    }
+}
+
+.counter-shape1 {
+    z-index: 3;
+
+    @media(max-width: 1699px) {
+        display: none !important;
+    }
+}
+
+/* counter area ----------------- */
+.counter-sec {
+    &.style5 {
+        position: relative;
+        background-color: #F8F8F8;
+        border-radius: 20px;
+        margin-left: -160px;
+        z-index: 2;
+        margin-top: 65px;
+        padding: 35px 60px;
+
+        @include lg {
+            margin-left: 0;
+            padding: 35px 40px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @include sm {
+            grid-template-columns: repeat(1, 1fr);
+            padding: 0 20px 40px;
+        }
+
+        .th-counterup {
+            padding: 0;
+            border: none;
+
+            @include sm {
+                padding-top: 20px;
+            }
+
+            .content {
+                .counter {
+                    font-family: $title-font;
+                    font-weight: 600;
+                    font-size: 48px;
+                    line-height: 48px;
+                    color: $title-color;
+                }
+            }
+
+            .counter-number {
+                color: $title-color;
+            }
+
+            .counter-card_text {
+                color: $body-color;
+            }
+        }
+    }
+}
+
+.counter-sec {
+    &.style6 {
+        padding: 0 70px;
+        border-radius: 20px;
+
+        @include sm {
+            padding: 0 30px 66px 30px;
+        }
+
+        .th-counterup {
+            padding: 46px 30px 66px 0px;
+
+            @include xs {
+                padding: 46px 30px 0px 0px;
+            }
+        }
+
+    }
+}
+
+.counter-area6 {
+    position: relative; 
+    z-index: 3;
+}
+
+@media (min-width: 1300px) {
+    .counter-area6 {
+        .th-container {
+            --main-container: 1360px;
+        }
+    }
+}

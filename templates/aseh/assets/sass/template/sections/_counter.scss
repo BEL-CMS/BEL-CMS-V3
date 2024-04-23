@@ -1,0 +1,265 @@
+/* Counter 1 ---------------------------------- */
+.counter-sec {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 0;
+
+    @include lg {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 30px;
+
+    }
+
+    @media(max-width: 460px) {
+        grid-template-columns: repeat(1, 1fr);
+        padding: 20px 0 40px 0; 
+    } 
+
+    &.style2 {
+        padding: 0;
+
+        @media(max-width: 460px) {
+            padding: 20px 0;
+        }
+    }
+}
+
+.th-counterup {
+    border-right: 1px solid #3C4458;
+    padding: 50px 70px 50px 0px;
+
+
+    &.style2 {
+        border-right: 1px solid #fff;
+        padding: 50px 70px 50px 0px;
+
+        @include lg {
+            border-right: 1px solid #fff;
+            border-bottom: 1px solid #fff;
+            padding-right: 0;
+        }
+
+        @media(max-width: 460px) {
+            border: none;
+            padding: 20px;
+
+        }
+
+        .content {
+            .counter-box_text {
+                color: $th-border-color;
+            }
+
+            .counter-number {
+                color: $white-color;   
+            }
+        }
+    }
+
+    @include xl {
+        margin-right: 25px;
+        padding-right: 40px;
+    }
+
+    @include lg {
+        border-right: 1px solid #3C4458;
+        border-bottom: 1px solid #3C4458;
+        margin-right: 0;
+        padding-right: 0;
+        text-align: center;
+
+        &:nth-child(2) {
+            border-right: 1px solid transparent;
+            margin-right: 0;
+        }
+
+        &:nth-child(3) {
+            border-bottom: 1px solid transparent;
+        }
+
+        &:last-child {
+            border-bottom: 1px solid transparent;
+        }
+    }
+
+    @include md {
+        padding: 25px;
+    }
+
+
+    @media(max-width: 460px) {
+        border: none;
+        padding: 20px 0;
+
+    }
+
+    &:hover {
+        .icon {
+            svg {
+
+                path {
+                    stroke: $theme-color !important;
+                    stroke-width: 1;
+                }
+            }
+        }
+    }
+
+    @include md {
+        padding: 30px;
+    }
+
+    @include sm {
+        text-align: center;
+    }
+
+    @media(max-width: 460px) {
+        border: none;
+        padding: 20px 0;
+
+    }
+
+    .inner {
+        display: flex;
+        justify-content: flex-start;
+        gap: 15px;
+        max-width: 255px;
+
+        @include lg {
+            display: block;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        @media(max-width: 600px) {
+            display: block;
+            max-width: 100%;
+            margin: auto;
+        }
+    }
+
+
+
+    &:last-child {
+        border-right: 1px solid transparent;
+        margin-right: 0;
+        padding-right: 0;
+    }
+
+
+    .content {
+
+        .counter {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            font-weight: 700;
+            font-size: 64px;
+            line-height: 84px;
+            color: $white-color;
+            margin-bottom: 0;
+
+            @include lg {
+                justify-content: center;
+                margin-top: 10px;
+
+            }
+
+            @include sm {
+                font-size: 44px;
+                line-height: 54px;
+            }
+
+        }
+
+        .counter-box_text {
+            font-family: $title-font;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 28px;
+            color: $body-color;
+            margin-bottom: 0;
+
+            @include sm {
+                font-size: 14px;
+                line-height: 28px;
+            }
+        }
+
+        .counter-number {
+            font-weight: 400;
+            color: $theme-color;
+        }
+    }
+}
+
+
+.counter-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+
+    &.style2 {
+        @include vxs {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+
+    @include vxs {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+
+.counter-card {
+    position: relative;
+    text-align: center;
+
+    .border-line {
+        content: "";
+        position: absolute;
+        right: 0;
+        width: 1px;
+        height: 100%;
+
+    }
+
+
+    &_icon {
+        display: block;
+        margin: 0 auto;
+        padding-bottom: 20px;
+    }
+
+    &_number {
+        font-family: $title-font;
+        font-weight: 700;
+        font-size: 50px;
+        line-height: 60px;
+        color: $title-color;
+        margin-bottom: 2px;
+        margin-top: -0.24em;
+    }
+
+    &_text {
+        display: block;
+        margin-bottom: -6px;
+    }
+}
+
+@include md {
+    .counter-card_number {
+        font-size: 40px;
+    }
+}
+
+.counter-area {
+    @media (min-width: 1400px) {
+        .th-container {
+            --main-container: 1340px;
+        }
+    }
+}

@@ -1,0 +1,95 @@
+/* blog-grid-2 ------------------------------ */
+.blog-grid-2 {
+    background-color: $white-color;
+    box-shadow: none;
+    border-radius: 20px;
+    transition: all 0.4s ease-in-out;
+
+    .blog-img {
+        border-radius: 20px 20px 0 0;
+
+        img {
+            border-radius: 20px 20px 0 0;
+        }
+    }
+
+    .blog-meta {
+        margin-bottom: 8px;
+    }
+
+    &_content {
+        position: relative;
+        padding: 30px;
+
+        .blog-calendar {
+            position: absolute;
+            top: -57px;
+            right: 30px;
+            display: flex;
+            flex-flow: column;
+            width: 63px;
+            height: 88px;
+            background-color: $white-color;
+            border-radius: 10px;
+
+            @include vxs {
+                top: -70px;
+                right: 10px;
+            }
+        }
+    }
+
+    .blog-date {
+        background-color: $theme-color;
+        font-family: $title-font;
+        font-weight: 600;
+        font-size: 30px;
+        line-height: 40px;
+        border-radius: 10px;
+        color: $white-color;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .blog-month {
+        background-color: $white-color;
+        font-family: $body-color;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 18px;
+        color: $title-color;
+        text-transform: uppercase;
+        padding: 6px;
+        text-align: center;
+        box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.08);
+        border-radius: 0 0 10px 10px;
+
+    }
+
+    .box-title {
+        margin-bottom: 25px;
+    }
+
+    .th-btn {
+        padding: 16px 40px;
+    }
+
+    &:hover {
+        box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.05);
+
+    }
+}
+
+/* blog grid 3*/
+.blog-grid {
+    &.style3 {
+        box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.05);
+    }
+}
+
+.blog-sec4 {
+    position: relative;
+    background-color: #F8F8F8;
+    margin-bottom: -105px;
+    padding-bottom: 223px;
+}

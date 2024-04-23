@@ -1,0 +1,240 @@
+/* about 6 ------------------------ */
+.about-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    @include md {
+        display: block;
+    }
+
+    .about-wrapper {
+        max-width: 604px;
+    }
+}
+
+.about-description {
+    max-width: 315px;
+    margin-left: auto;
+    margin-bottom: 0;
+
+    @include md {
+        max-width: 100%;
+        margin: 15px 0 0 0;
+    }
+}
+
+.img-box7 {
+    position: relative;
+    padding-bottom: 30px;
+
+    @include lg {
+        padding-bottom: 50px;
+    }
+}
+
+.img-box8 {
+    .img1 {
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+.about-counter-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+    margin-left: -200px;
+
+    @include lg {
+        margin-left: 0;
+    }
+
+    @include sm {
+        display: block;
+    }
+}
+
+.about-box {
+    position: relative;
+    background-color: $white-color;
+    padding: 30px;
+    max-width: 251px;
+    z-index: 2;
+    @include sm {
+        max-width: 100%; 
+        margin-bottom: 30px;
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        right: -10px;
+        bottom: -10px;
+        border: 1px solid $theme-color;
+    }
+
+    &_icon {
+        margin-bottom: 20px;
+    }
+
+    &_text {
+        margin-bottom: 10px;
+    }
+
+}
+
+.counter-content {
+    &.style3 {
+        width: 100%;
+        gap: 15px;
+
+        .th-counterup {
+            &.style3 {
+                border: none;
+                padding: 0;
+
+                .inner {
+                    .counter {
+                        color: $title-color;
+                        line-height: 64px;
+
+                        @include lg {
+                            justify-content: flex-start;
+                        }
+
+                        @include md {
+                            font-size: 44px;
+                            line-height: 44px;
+                        }
+
+                        .title {
+                            color: $title-color;
+                        }
+                    }
+                }
+
+                .counter-card_text {
+                    font-size: 18px;
+                    line-height: 28px;
+
+                    @include xl {
+                        font-size: 16px;
+                        line-height: 26px;
+                    }
+
+                    @include lg {
+                        text-align: left;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* about 7 -------------------------------- */
+.about7-area-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 40px;
+    background-color: $smoke-color;
+    border: 10px solid $white-color;
+    border-radius: 100px;
+    margin-left: -350px;
+    z-index: 2;
+
+    @include lg {
+        margin-left: 0;
+    }
+
+    @include md {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 40px 40px;
+    }
+
+    @include sm {
+        grid-template-columns: repeat(1, 1fr);
+        border-radius: 50px;
+    }
+
+    @include vxs {
+        padding: 40px 20px;
+    }
+
+    .checklist {
+        margin-left: 40px;
+
+        @include xl {
+            margin: 0;
+        }
+    }
+}
+
+.about-video {
+    position: relative;
+    border-radius: 100px;
+    min-width: 333px;
+
+    @include md {
+        min-width: 100%;
+    }
+
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 100px;
+    }
+
+    .play-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        &:before,
+        &:after {
+            background-color: $white-color;
+
+        }
+
+        i {
+            --icon-size: 50px;
+            font-size: 16px;
+            background-color: $white-color;
+            color: $theme-color;
+
+        }
+    }
+}
+
+.th-experience {
+    &.style3 {
+        .experience-year {
+            font-weight: 800;
+            font-size: 54px;
+            line-height: 54px;
+            text-transform: capitalize;
+            color: $theme-color;
+            margin-bottom: 5px;
+        }
+
+        .experience-text {
+            font-family: $title-font;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 30px;
+            color: $title-color;
+            margin-bottom: 0;
+        }
+    }
+}

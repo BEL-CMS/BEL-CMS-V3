@@ -28,8 +28,10 @@ endif;
 		<div class="belcms_contact_form_br">
 			<textarea name="message" class="bel_cms_textarea_simple" placeholder="Votre message"></textarea>
 		</div>
+			<input id="captcha" required name="query_contact" type="number" min="1" max="18" autocomplete="off" placeholder="Captcha : resolvé le petit calcul : <?=$captcha['NB_ONE'];?> + <?=$captcha['NB_TWO'];?>">
+			<input type="hidden" value="" name="captcha">
 		<div class="belcms_contact_form_br">
-			<button type="submit" class="belcms_bg_grey"><i class="fa fa-dot-circle-o" style="width: 100%;border-radius: 8px;"></i>Envoyer</button>
+			<button type="submit" class="belcms_bg_grey">Envoyer</button>
 		</div>
 	</form>
 </div>

@@ -33,6 +33,7 @@ $tables = array(
 	'TABLE_PAGES_CONFIG'        => $DB_PREFIX.'config_pages',
 	'TABLE_CONFIG_TPL'          => $DB_PREFIX.'config_tpl',
 	'TABLE_CONTACT'             => $DB_PREFIX.'contact',
+	'TABLE_CONTACT_REPLY'       => $DB_PREFIX.'contact_send',
 	'TABLE_DONATIONS'           => $DB_PREFIX.'donations',
 	'TABLE_DONATIONS_REVEIVE'   => $DB_PREFIX.'donations_receive',
 	'TABLE_DOWNLOADS_STATS'     => $DB_PREFIX.'downlaods_stats',

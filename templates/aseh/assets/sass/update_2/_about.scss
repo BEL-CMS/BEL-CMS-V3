@@ -1,0 +1,252 @@
+/* about area --------------------- */
+.img-box5 {
+    position: relative;
+
+    @include lg {
+        margin-bottom: 50px;
+    }
+
+    .img1 {
+        position: relative;
+        text-align: center;
+        border-radius: 250px 250px 0px 0px;
+        z-index: 2;
+
+        @include lg {
+            text-align: left;
+        }
+
+        &:before,
+        &:after {
+            content: "";
+            position: absolute;
+            width: 491px;
+            height: 559px;
+            border-radius: 250px 250px 0px 0px;
+            z-index: -1;
+        }
+
+        &:before {
+            bottom: 0px;
+            left: 18px;
+            background-color: $theme-color;
+
+            @include lg {
+                left: 0px;
+            }
+        }
+
+        &:after {
+            bottom: 0;
+            right: 0;
+            border: 2px solid $theme-color;
+
+            @include lg {
+                right: unset;
+                left: 50px;
+            }
+        }
+
+        img {
+            margin-bottom: 20px;
+            margin-left: 20px;
+            border-radius: 250px 250px 0px 0px;
+        }
+
+    }
+
+    .th-experience {
+        position: absolute;
+        top: 50%;
+        left: -10%;
+        z-index: 2;
+        border-radius: 30px;
+        background: $theme-color;
+        box-shadow: 0px 13px 25px 0px rgba(0, 0, 0, 0.05);
+        width: 188px;
+        color: $white-color;
+        text-align: center;
+        padding: 30px;
+
+        @include lg {
+            left: 0;
+        }
+
+        @include vxs {
+            top: auto;
+            bottom: 0;
+        }
+
+        .experience-year {
+            font-size: 64px;
+            color: $white-color;
+            margin-bottom: 0px;
+        }
+
+        .experience-text {
+            color: $white-color;
+        }
+    }
+}
+
+.achive-about-wrap {
+    &.style2 {
+        border: none;
+        padding: 0;
+        margin-bottom: 30px;
+
+        .achive-about {
+            align-items: center;
+        }
+    }
+}
+
+.feature-wrapper {
+    &.style2 {
+        .icon-btn {
+            background-color: $theme-color3;
+            border-color: $theme-color3;
+        }
+    }
+}
+
+/* about 6 ----------------------------*/
+.img-box6 {
+    position: relative;
+    z-index: 2;
+
+    @include lg {
+        margin-bottom: 50px;
+    }
+    @include xs {
+        margin-bottom: 70px;
+    }
+
+    .img1 {
+        position: relative;
+        min-width: 560px;
+        max-height: 555px;
+        z-index: 2;
+
+        @include xs {
+            min-width: 100%;
+            max-height: 100%;
+        }
+
+        img {
+            clip-path: path("M371.567 497.554C460.416 479.727 523.85 399.053 515.359 308.834C511.598 268.952 494.175 229.775 449.78 202.991C320.62 125.107 334.165 81.0837 357.876 53.9769C381.586 26.87 259.625 -37.7106 157.966 31.8332C56.3076 101.377 71.5859 48.8962 19.0817 48.8962C-33.4224 48.8962 42.0578 223.314 19.0817 282.579C-33.4518 418.025 92.2408 553.618 371.567 497.554Z");
+        }
+    }
+
+    .about-shape6-1 {
+        position: absolute;
+        left: -28px;
+        top: 30px;
+        background-color: $theme-color;
+        width: 100%;
+        height: 100%;
+        clip-path: path("M145.076 13.6602C56.1981 31.4867 -7.23584 112.161 1.25532 202.38C5.0161 242.262 22.4391 281.439 66.834 308.223C195.994 386.108 182.449 430.13 158.738 457.237C135.028 484.344 256.989 548.925 358.648 479.381C460.306 409.837 445.058 462.318 497.562 462.318C550.066 462.318 474.586 287.9 497.562 228.635C550.066 93.1598 424.373 -42.4037 145.076 13.6602Z");
+        z-index: -1;
+    }
+
+    .about-shape6-2 {
+        position: absolute;
+        left: -36px;
+        top: 20px;
+        background-color: $title-color;
+        width: 100%;
+        height: 100%;
+        clip-path: path("M84.0892 532C71.4553 532 61.5245 530.091 55.5895 525.187C51.4468 521.78 49.3607 517.022 49.3607 511.061C49.3607 493.146 55.2663 482.603 60.4962 473.323C71.2497 454.174 79.7408 439.05 32.114 369.506C-23.6515 288.097 3.79054 192.357 33.5243 165.984C42.1623 158.319 50.771 157.086 57.0879 162.607C71.3966 175.118 85 179.876 99.9257 177.556C130.746 172.768 167.003 136.146 207.696 68.7464C232.17 28.1889 269.102 5.34047 317.464 0.788398C409.926 -7.93395 493.956 55.9712 512.701 149.421C543.845 304.426 520.047 428.389 447.387 489.504C403.991 526.009 346.639 534.379 290.08 512.5C263.314 502.133 213.425 511.589 165.181 520.752C134.86 526.45 105.596 532 84.0892 532ZM48.2442 162.167C43.3082 162.167 38.4897 165.573 35.5222 168.216C6.46422 194.002 -20.1845 287.804 34.6114 367.803C83.2959 438.874 74.3934 454.732 63.1405 474.791C57.8519 484.218 52.387 493.939 52.387 511.061C52.387 516.141 54.0617 520.018 57.5287 522.867C72.4543 535.231 117.231 526.743 164.652 517.757C213.307 508.535 263.637 498.99 291.197 509.651C346.698 531.148 402.933 522.955 445.448 487.184C517.226 426.803 540.672 303.897 509.734 150.008C491.283 58.0857 408.751 -4.76219 317.728 3.78395C270.366 8.24792 234.227 30.6265 210.252 70.3029C168.531 139.436 132.597 175.5 100.396 180.492C84.5299 182.959 70.1332 177.996 55.09 164.839C52.8864 162.93 50.5359 162.167 48.2442 162.167Z ");
+        z-index: -1;
+    }
+
+    .about-shape6-3 {
+        position: absolute;
+        left: -54px;
+        top: 7px;
+        background-color: $white-color;
+        width: 100%;
+        height: 100%;
+        clip-path: path("M357.246 521.99C356.276 521.99 355.336 521.961 354.396 521.902C342.849 521.227 335.915 516.028 335.357 507.659C334.093 488.687 327.835 475.706 315.642 466.807C290.433 448.423 238.898 448.658 162.478 467.571C116.497 478.936 74.2171 469.01 36.7855 438.056C-34.8163 378.791 -48.978 274.27 3.84926 194.946C91.4932 63.3178 196.061 -7.51827 290.609 0.646091C347.139 5.49184 393.59 40.0876 418.094 95.5641C429.7 121.819 471.656 150.394 512.261 178.03C552.748 205.607 591.002 231.627 592.941 252.331C593.441 257.676 591.56 262.493 587.329 266.722C574.666 279.38 563.031 282.669 552.748 285.547C531.594 291.479 514.876 296.178 499.362 378.996C481.646 473.68 398.086 521.99 357.246 521.99ZM259.495 450.038C285.144 450.038 304.33 454.825 317.434 464.37C330.391 473.826 337.061 487.541 338.383 507.453C339 516.616 348.813 518.554 354.601 518.906C393.414 521.168 478.59 473.709 496.424 378.438C512.29 293.799 529.772 288.865 551.955 282.639C562.356 279.703 573.109 276.707 585.214 264.578C588.828 260.966 590.356 257.06 589.944 252.596C588.123 233.301 550.456 207.662 510.557 180.497C469.629 152.626 427.29 123.816 415.332 96.7682C391.298 42.3489 345.728 8.39929 290.345 3.64165C196.883 -4.37587 93.3736 65.9316 6.37604 196.62C-45.5992 274.651 -31.7019 377.44 38.6953 435.736C75.3336 466.044 116.702 475.794 161.744 464.663C201.144 454.913 233.61 450.038 259.495 450.038Z");
+        z-index: -1;
+    }
+}
+
+.about-checklist {
+    max-width: 513px;
+    margin-bottom: 38px;
+
+    @media(max-width: 520px) {
+        max-width: 100%;
+    }
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px 0;
+        border: 1px solid $th-border-color;
+        padding: 15px 25px;
+
+        @media(max-width: 520px) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        li {
+            font-family: $title-font;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 30px;
+            color: $title-color;
+            margin: 0;
+
+            &:not(:last-child) {
+                margin: 0;
+            }
+
+        }
+    }
+}
+
+.about-area_wrapper {
+    max-width: 410px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 38px;
+    @include vxs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 0 40px; 
+    }
+
+    .client-thumb-group {
+        display: flex;
+
+        @include vxs {
+            margin-bottom: 20px;
+        }
+
+        .thumb {
+            flex: none;
+
+            &:not(:first-child) {
+                margin-left: -15px;
+            }
+
+            img {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+            }
+
+        }
+
+    }
+
+    .about-counter {
+        .box-title {
+            font-size: 20px;
+        }
+    }
+
+}

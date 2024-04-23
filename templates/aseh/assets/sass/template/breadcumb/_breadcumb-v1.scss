@@ -1,0 +1,229 @@
+.breadcumb-menu {
+    max-width: 100%;
+    padding: 0;
+    margin: 20px 0 -0.5em 0;
+    list-style-type: none;
+    position: relative;
+
+    li {
+        display: inline-block;
+        margin-right: 3px;
+        padding-right: 5px;
+        list-style: none;
+        position: relative;
+
+        &:after {
+            content: "\f061";
+            position: relative;
+            margin-left: 10px;
+            font-weight: 400;
+            font-size: 14px;
+            color: $white-color;
+            font-family: $icon-font;
+        }
+
+        &:last-child {
+            padding-right: 0;
+            margin-right: 0;
+            color: $white-color;
+
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    li,
+    a,
+    span {
+        white-space: normal;
+        color: inherit;
+        word-break: break-word;
+        font-weight: 400;
+        font-size: 16px;
+        color: $white-color;
+    }
+}
+
+.breadcumb-title {
+    color: $white-color;
+    margin: -0.20em 0 -0.18em 0;
+    line-height: 1.1;
+    font-size: 64px;
+    font-weight: 600;
+}
+
+.breadcumb-wrapper {
+    position: relative;
+    background-color: $title-color;
+    padding: 310px 0 155px 0;
+    background-position: left center;
+    overflow: hidden;
+}
+
+@include lg {
+    .breadcumb-wrapper {
+        padding: 260px 0 120px 0;
+    }
+
+    .breadcumb-menu {
+        margin: 25px 0 -0.5em 0;
+
+        li,
+        a,
+        span {
+            font-size: 16px;
+        }
+    }
+}
+
+@include md {
+    .breadcumb-title {
+        font-size: 46px;
+    }
+}
+
+@include xs {
+    .breadcumb-wrapper {
+        padding: 240px 0 80px 0;
+    }
+
+    .breadcumb-title {
+        font-size: 28px;
+
+    }
+}
+
+
+.animation-bubble {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%; 
+    z-index: 1;
+    pointer-events: none;
+
+}
+
+.animation-bubble.style2 div[class^=bubble-] {
+    background: url(../img/update_2/shape/bubble_1.png) no-repeat center center; 
+    background-size: cover;
+    opacity: 0.1;
+}
+.animation-bubble.style4 div[class^=bubble-] {
+    background: url(../img/update_3/shape/bubble_1.png) no-repeat center center; 
+    background-size: cover;
+    opacity: 0.3;
+}
+
+.animation-bubble div[class^=bubble-] {
+    height: 1px;
+    width: 1px;
+    position: absolute;
+    background: url(../img/shape/bubble_1.png) no-repeat center center;
+    background-size: cover;
+    border-radius: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    pointer-events: none
+}
+
+@media (max-width:1024px) {
+    .animation-bubble>:nth-child(even) {
+        display: none
+    }
+}
+
+.bubble-1 {
+    bottom: -5px;
+    left: 68%;
+    animation: bubble-animation 4.5s infinite ease-in -6.57s
+}
+
+.bubble-2 {
+    bottom: -71px;
+    left: 97%;
+    animation: bubble-animation 4.5s infinite ease-in -5.07s
+}
+
+.bubble-3 {
+    bottom: -71px;
+    left: 43%;
+    animation: bubble-animation 4.5s infinite ease-in -6.73s
+}
+
+.bubble-4 {
+    bottom: -3.8px;
+    left: 82%;
+    animation: bubble-animation 4.5s infinite ease-in -4.04s
+}
+
+.bubble-5 {
+    bottom: -73.4px;
+    left: 29%;
+    animation: bubble-animation 4.5s infinite ease-in -3.11s
+}
+
+.bubble-6 {
+    bottom: -71px;
+    left: 41%;
+    animation: bubble-animation 4.5s infinite ease-in -5.95s
+}
+
+.bubble-7 {
+    bottom: -79.4px;
+    left: 14%;
+    animation: bubble-animation 4.5s infinite ease-in -3.68s
+}
+
+.bubble-8 {
+    bottom: -115.4px;
+    left: 90%;
+    animation: bubble-animation 4.5s infinite ease-in -3.89s
+}
+
+.bubble-9 {
+    bottom: -44.6px;
+    left: 33%;
+    animation: bubble-animation 4.5s infinite ease-in -1.09s
+}
+
+.bubble-10 {
+    bottom: -6.2px;
+    left: 59%;
+    animation: bubble-animation 4.5s infinite ease-in -.96s
+}
+
+
+
+@keyframes bubble-animation {
+    0% {
+        -webkit-transform: translate3d(-50%, 0, 0);
+        transform: translate3d(-50%, 0, 0);
+        height: 1px;
+        width: 1px
+    }
+
+    100% {
+        -webkit-transform: translate3d(-50%, -280px, 0);
+        transform: translate3d(-50%, -280px, 0);
+        height: 75px;
+        width: 75px
+    }
+}
+@keyframes bubble-animation2 {
+    0% {
+        -webkit-transform: translate3d(-50%, 0, 0);
+        transform: translate3d(-50%, 0, 0);
+        height: 1px;
+        width: 1px
+    }
+
+    100% {
+        -webkit-transform: translate3d(-50%, -280px, 0);
+        transform: translate3d(-50%, -280px, 0);
+        height: 175px;
+        width: 175px
+    }
+}

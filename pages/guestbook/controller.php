@@ -26,7 +26,8 @@ class GuestBook extends Pages
 	public function index ()
 	{
 		$config = Config::GetConfigPage('guestbook');
-		$set['pagination'] = $this->pagination($config->config['MAX_USER'], 'guestbook', constant('TABLE_GUESTBOOK'));
+		$set['pagination
+        '] = $this->pagination($config->config['MAX_USER'], 'guestbook', constant('TABLE_GUESTBOOK'));
         $data['user'] = $this->models->getUser();
         $this->set($set);
         $this->set($data);

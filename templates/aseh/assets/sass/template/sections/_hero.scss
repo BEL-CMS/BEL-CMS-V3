@@ -1,0 +1,819 @@
+/* Hero Global ---------------------------------- */
+.th-hero-wrapper {
+    position: relative;
+    z-index: 2;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+
+    .slick-arrow {
+        margin: 5px 0;
+        border: 2px solid $white-color;
+        color: $white-color;
+        background-color: transparent;
+        overflow: hidden;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $theme-color;
+            border-color: $theme-color;
+        }
+
+        i {
+            text-align: center;
+            display: block;
+            margin: 14px auto;
+        }
+
+        &:first-child {
+            margin-right: 0;
+        }
+    }
+
+    &:hover {
+        .slick-arrow {
+            opacity: 1;
+            visibility: visible;
+            left: var(--pos-x, 100px);
+
+            &.slick-next {
+                right: 100px;
+                left: auto;
+            }
+        }
+    }
+
+    .icon-box {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 56px;
+        display: block;
+    }
+}
+
+.th-hero-bg {
+    position: absolute;
+    inset: 0;
+
+    img {
+        height: 100%;
+    }
+}
+
+.hero-animated-bubble {
+    opacity: 0;
+}
+
+.hero-slider-1 {
+    .slick-slide {
+        &.slick-current {
+            &.slick-active {
+                .hero-animated-bubble {
+                    opacity: 1;
+
+                    .bubbles {
+                        position: absolute;
+                        z-index: 9;
+
+                        &:first-child {
+                            bottom: 20%;
+                            left: 10%;
+                            animation: up 3.5s;
+                        }
+
+                        &:nth-child(2) {
+                            bottom: 10%;
+                            left: 8%;
+                            animation: up 5.5s;
+                        }
+
+                        &:nth-child(3) {
+                            bottom: 5%;
+                            left: 12%;
+                            animation: up 4.5s;
+                        }
+
+                        &:nth-child(4) {
+                            bottom: 26%;
+                            left: 6%;
+                            animation: up 3.5s;
+                        }
+
+                        &:nth-child(5) {
+                            bottom: 44%;
+                            left: 11%;
+                            animation: up 7.5s;
+                        }
+
+                        &:nth-child(6) {
+                            top: 7%;
+                            left: 8%;
+                            animation: up 2.5s;
+                        }
+
+                        &:nth-child(7) {
+                            top: 35%;
+                            left: 3%;
+                            animation: up 3.2s;
+                        }
+
+                        &:nth-child(8) {
+                            bottom: 40%;
+                            left: 5%;
+                            animation: up 4.5s;
+                        }
+
+                        &:nth-child(9) {
+                            top: 1%;
+                            left: 12%;
+                            animation: up 6.5s;
+                        }
+
+                        &:nth-child(10) {
+                            bottom: 22%;
+                            left: 11.5%;
+                            animation: up 7.5s;
+                        }
+
+                        &:nth-child(11) {
+                            bottom: 28%;
+                            left: 11%;
+                            animation: up 9.5s;
+                        }
+
+                        &:nth-child(12) {
+                            top: 36%;
+                            left: 11%;
+                            animation: up 11.5s;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Hero 1 ---------------------------------- */
+.hero-1 {
+    position: relative;
+
+    .icon-box {
+        right: 115px;
+    }
+
+}
+
+.hero-anime-img {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+
+    @media(max-width: 1700px) {
+        display: none;
+    }
+}
+
+.hero-subtitle {
+    position: relative;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: $theme-color;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0px;
+    margin-top: -0.31em;
+
+    @include xs {
+        font-size: 16px;
+    }
+
+    &::before,
+    &:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        height: 3px;
+        width: 60px;
+
+        @include xs {
+            display: none;
+        }
+
+        @include vxs {
+            display: none;
+        }
+    }
+
+    &::before {
+        @include sm {
+            background-color: $theme-color;
+            margin-left: -4.8rem;
+
+            @include xs {
+                margin-left: -5rem;
+            }
+        }
+    }
+
+    &::after {
+        background-color: $theme-color;
+        margin-left: 1rem;
+    }
+}
+
+.hero-title {
+    color: $white-color;
+}
+
+.hero-style1 {
+    padding: 216px 0 187px 0;
+    max-width: 680px;
+    position: relative;
+    z-index: 9;
+
+    .hero-text {
+        max-width: 545px;
+        color: $white-color;
+        margin-bottom: 35px;
+    }
+}
+
+@include ml {
+    .hero-1 {
+        .icon-box {
+            right: 40px;
+        }
+    }
+}
+
+@include lg {
+    .hero-style1 {
+        padding: 180px 0 150px 0;
+    }
+}
+
+@include md {
+    .hero-style1 {
+        padding: 150px 0 150px 0;
+    }
+}
+
+@include sm {
+    .hero-1 {
+        .icon-box {
+            display: none;
+        }
+    }
+
+    .hero-style1 {
+        text-align: center;
+        padding: 120px 0 120px 0;
+
+        .btn-group {
+            justify-content: center;
+        }
+    }
+}
+
+@include xs {
+    .hero-style1 {
+        padding: 90px 0 90px 0;
+
+        .hero-title {
+            font-size: 44px;
+            line-height: 54px;
+        }
+    }
+}
+
+@include vxs {
+    .hero-style1 {
+        .hero-title {
+            font-size: 28px;
+            line-height: 1.3;
+        }
+    }
+}
+
+.hero-animated-bubble {
+    .indicator {
+        position: absolute;
+        top: -2px;
+        left: var(--pos-x);
+        height: 2px;
+        width: var(--width-set);
+        background-color: $theme-color;
+        transition: 0.6s ease;
+    }
+}
+
+/* Hero 1 end ---------------------------------- */
+
+/* Hero 2  Start---------------------------------- */
+.hero-2 {
+    .icon-box {
+        left: 147px;
+
+        @media(max-width: 1700px) {
+            left: 50px;
+        }
+
+        @include xxl {
+            display: none;
+        }
+    }
+}
+
+.hero-style2 {
+    position: relative;
+    z-index: 6;
+    padding: 348px 0 208px 0px;
+
+    .hero-subtitle {
+        margin-bottom: 7px;
+
+        span {
+            display: inline-block;
+            position: relative;
+        }
+
+        &::before {
+            @include md {
+                background-color: $theme-color;
+                margin-left: -4.8rem;
+
+                @include xs {
+                    margin-left: -5rem;
+                }
+            }
+        }
+    }
+
+    .hero-title {
+        text-transform: uppercase;
+    }
+
+    .hero-big-title {
+        font-family: $body-color;
+        font-weight: 700;
+        font-size: 84px;
+        line-height: 94px;
+        text-transform: uppercase;
+        color: $theme-color;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: $theme-color;
+
+    }
+}
+
+.hero-video-1 {
+    position: relative;
+    z-index: 9;
+    margin-top: 50%;
+
+    @include md {
+        margin-top: 0;
+    }
+}
+
+@include ml {
+    .hero-2 {
+        .icon-box {
+            right: 40px;
+        }
+    }
+}
+
+@include lg {
+    .hero-style2 {
+        padding: 280px 0 140px 0;
+    }
+}
+
+@include md {
+    .hero-style2 {
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 64px;
+        line-height: 74px;
+    }
+
+    .hero-big-title {
+        font-size: 64px;
+        line-height: 74px;
+    }
+}
+
+@include sm {
+    .hero-2 {
+        .icon-box {
+            display: none;
+        }
+    }
+
+    .hero-style2 {
+        text-align: center;
+
+        .btn-group {
+            justify-content: center;
+        }
+    }
+}
+
+@include xs {
+    .hero-style2 {
+        padding: 240px 0 110px 0;
+
+        .hero-title {
+            font-size: 44px;
+            line-height: 54px;
+        }
+
+        .hero-big-title {
+            font-size: 44px;
+            line-height: 54px;
+        }
+    }
+}
+
+@include vxs {
+    .hero-style2 {
+        .hero-title {
+            font-size: 28px;
+            line-height: 1.3;
+        }
+    }
+}
+
+/* Hero 2 End ---------------------------------- */
+/* Hero 3 Start ---------------------------------- */
+.hero-3 {
+    .th-hero-img {
+        position: relative;
+        z-index: -1;
+        min-width: 860px;
+        max-height: 860px;
+        margin-left: -60px;
+
+        @media (max-width: 1600px) {
+            z-index: 2;
+        }
+
+        @include xxl {
+            min-width: 760px;
+            max-height: 760px;
+        }
+
+        @include lg {
+            min-width: 660px;
+            max-height: 660px;
+        }
+
+        @include md {
+            min-width: 100%;
+            max-height: 640px;
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .bubble-3 {
+        bottom: 0px;
+        left: 70%;
+    }
+
+    .bubble-5 {
+        bottom: 40%;
+        left: 95%;
+    }
+
+    .bubble-7 {
+        bottom: 79.4px;
+        left: 88%;
+    }
+
+    .bubble-9 {
+        bottom: 44.6px;
+        left: 59%;
+    }
+
+    .bubble-10 {
+        bottom: 40%;
+        left: 90%;
+    }
+}
+
+.hero-style3 {
+    padding: 313px 0 297px 0;
+    max-width: 700px;
+    position: relative;
+    z-index: 5;
+
+    .hero-subtitle {
+        color: $theme-color3;
+        margin-bottom: 7px;
+
+        span {
+            display: inline-block;
+            position: relative;
+        }
+
+        &:after {
+            background-color: $theme-color3;
+        }
+
+        &::before {
+
+            @include md {
+                background-color: $theme-color3;
+                margin-left: -4.8rem;
+
+                @include xs {
+                    margin-left: -5rem;
+                }
+            }
+        }
+    }
+
+    .hero-text {
+        color: $white-color;
+        font-size: 18px;
+        max-width: 700px;
+        margin-bottom: 35px;
+    }
+}
+
+@include xl {
+    .hero-style3 {
+        .hero-title {
+            font-size: 64px;
+            line-height: 74px;
+        }
+    }
+}
+
+@include md {
+    .hero-style3 {
+        max-width: 100%;
+        text-align: center;
+        padding: 280px 0 80px 0;
+    }
+}
+
+@include sm {
+    .hero-style3 {
+        .hero-title {
+            font-size: 44px;
+            line-height: 54px;
+        }
+    }
+}
+
+@include vxs {
+    .hero-style3 {
+        padding: 250px 0 80px 0;
+
+        .hero-subtitle {
+            font-size: 16px;
+
+        }
+
+        .hero-title {
+            font-size: 34px;
+            line-height: 44px;
+        }
+    }
+}
+
+/* Hero 3 End ---------------------------------- */
+/* Hero 2  Start---------------------------------- */
+.hero-4 {
+    background-position: right center;
+
+    .icon-box {
+        left: 147px;
+
+        @media(max-width: 1700px) {
+            left: 50px;
+        }
+
+        @include xxl {
+            display: none;
+        }
+    }
+
+    .th-hero-img {
+        position: relative;
+        background-color: $theme-color;
+        width: 665px;
+        height: 665px;
+        border: 18px solid $white-color;
+        border-radius: 50%;
+        overflow: hidden;
+        z-index: 4;
+        text-align: right;
+        margin: 0 0px 50px -40px;
+
+        @media (max-width: 1699px) {
+            width: 550px;
+            height: 550px;
+            margin: 0 0px 50px -120px;
+        }
+
+        @include lg {
+            display: block;
+            margin: 0 50px 30px auto;
+        }
+
+        @include sm {
+            width: 100%;
+            height: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+
+    .th-hero-shape {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        @media(min-width: 2199px) {
+            right: 320px;
+        }
+
+        @include xxl {
+            right: -100px;
+        }
+
+        @include xl {
+            right: -160px;
+        }
+
+        @include lg {
+            right: -50px;
+        }
+
+        @include md {
+            right: 0;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+.hero-style4 {
+    position: relative;
+    z-index: 6;
+    max-width: 650px;
+    padding: 348px 0 208px 0px;
+
+    .hero-subtitle {
+        margin-bottom: 7px;
+
+        span {
+            display: inline-block;
+            position: relative;
+        }
+
+        &::before {
+            @include lg {
+                background-color: $theme-color;
+                margin-left: -4.8rem;
+
+                @include xs {
+                    margin-left: -5rem;
+                }
+            }
+        }
+    }
+
+    .hero-title {
+        text-transform: uppercase;
+
+        @media (max-width: 1699px) {
+            font-size: 74px;
+            line-height: 84px;
+        }
+
+        @include xl {
+            font-size: 64px;
+            line-height: 74px;
+        }
+    }
+
+    .hero-big-title {
+        font-family: $body-color;
+        font-weight: 700;
+        font-size: 84px;
+        line-height: 94px;
+        text-transform: uppercase;
+        color: $theme-color;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: $theme-color;
+
+        @include xl {
+            font-size: 64px;
+            line-height: 74px;
+        }
+
+    }
+}
+
+@include ml {
+    .hero-4 {
+        .icon-box {
+            right: 40px;
+        }
+    }
+}
+
+@include lg {
+    .hero-style4 {
+        padding: 280px 0 230px 0;
+        text-align: center;
+        display: block;
+        margin: auto;
+
+        .th-btn {
+            display: block;
+            margin: auto auto 30px auto;
+        }
+    }
+}
+
+@include md {
+    .hero-style4 {
+        padding: 280px 0 80px 0;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 64px;
+        line-height: 74px;
+    }
+
+    .hero-big-title {
+        font-size: 64px;
+        line-height: 74px;
+    }
+}
+
+@include sm {
+    .hero-4 {
+        .icon-box {
+            display: none;
+        }
+    }
+
+    .hero-style4 {
+        text-align: center;
+        padding: 220px 0 50px 0;
+
+        .btn-group {
+            justify-content: center;
+        }
+    }
+}
+
+@include xs {
+    .hero-style4 {
+        padding: 200px 0 30px 0;
+
+        .hero-title {
+            font-size: 40px;
+            line-height: 50px;
+        }
+
+        .hero-big-title {
+            font-size: 40px;
+            line-height: 50px;  
+        }
+    }
+}
+
+@include vxs {
+    .hero-style4 {
+        .hero-title {
+            font-size: 28px;
+            line-height: 1.3;
+        }
+    }
+}
+
+/* Hero 4 End ---------------------------------- */

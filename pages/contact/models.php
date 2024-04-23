@@ -33,7 +33,9 @@ final class Contact
 			$insert['subject'] = Common::VarSecure($data['subject'], null);
 			$insert['message'] = Common::VarSecure($data['message'], 'html');
 			$insert['mail']    = Secure::isMail($data['mail']);
-			
+			if (isset($data['tel']) and !empty($data['tel'])) {
+				$insert['tel'] = Common::VarSecure($data['tel']);
+			}
 
 			$sql = new BDD;
 			$sql->table('TABLE_CONTACT');
@@ -48,11 +50,11 @@ final class Contact
 				$mail->output($insert['mail']);
 				$mail->html(self::html($insert));
 				$mail->send();
-				$return['msg']  = constant('ADD_NEW_MAIL');
-				$return['type'] = 'success';	
+				$return['text']  = constant('ADD_NEW_MAIL');
+				$return['type']  = 'success';	
 			} else {
-				$return['msg']  = constant('ADD_NEW_MAIL_ERROR');
-				$return['type'] = 'error';	
+				$return['text']  = constant('ADD_NEW_MAIL_ERROR');
+				$return['type']  = 'error';	
 			}
 			return $return;
 		}

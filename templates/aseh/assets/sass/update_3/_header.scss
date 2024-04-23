@@ -1,0 +1,346 @@
+/* header -------------*/
+.header-layout6 {
+    .header-top {
+        background-color: transparent;
+        border-bottom: 1px solid var(--th-border-color);
+        position: relative;
+        padding: 9px 0;
+        z-index: 2;
+        --body-color: #010F34;
+
+        &:before {
+            content: "";
+            height: calc(100% + 1px);
+            width: 26.7%;
+            background-color: $theme-color;
+            position: absolute;
+            top: 0;
+            left: 0;
+            clip-path: polygon(0 0, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+            z-index: -1;
+
+            @media(min-width: 1930px) {
+                width: 33%;
+            }
+
+            @media(max-width: 1599px) {
+                width: 28%;
+            }
+
+            @media(max-width: 1499px) {
+                width: 32%;
+            }
+
+            @include xl {
+                width: 39%;
+            }
+            @include lg {
+                display: none;
+            }
+        }
+
+
+
+        .header-notice {
+            color: $white-color;
+
+            @include lg {
+                display: none;
+            }
+        }
+    }
+
+    .sticky-wrapper.sticky {
+        .header-logo {
+            position: relative;
+            padding-top: 0px;
+
+            .logo-bg {
+                top: -22px;
+            }
+        }
+
+        .menu-area {
+            @include md {
+                padding: 20px 0;
+
+                &:before {
+                    height: 86px;
+                }
+            }
+        }
+    }
+
+    .header-links {
+        &.style2 {
+            @include md {
+                display: none;
+            }
+
+            li {
+                @media(max-width: 1399px) {
+                    &:first-child {
+                        &:after {
+                            display: none;
+                        }
+                    }
+                }
+
+                &:last-child {
+                    @media(max-width: 1399px) {
+                        display: none;
+
+                        &:after {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        li {
+            font-size: 16px;
+            font-weight: 500;
+
+            &:not(:last-child) {
+                margin: 0 40px 0 0;
+
+                &:after {
+                    background-color: #788094;
+                    right: -20px;
+                }
+            }
+
+
+        }
+    }
+
+    .header-social .social-title {
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .langauge .nice-select span {
+        color: var(--title-color);
+        font-weight: 500;
+    }
+
+    .header-logo {
+        position: relative;
+    }
+
+    .header-button {
+        position: relative;
+
+        .info-card {
+            @include lg {
+                display: none;
+            }
+        }
+    }
+
+
+    .menu-area {
+        position: relative;
+        z-index: 1;  
+
+        @include md {
+            padding: 15px 0;
+        }
+
+        &:before,
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 21.3%;
+            height: 100px;
+            background-color: $title-color;
+            z-index: -1;
+
+            @media(min-width: 1930px) {
+                width: 30%;
+            }
+
+            @include lg {
+                width: 30%;
+            }
+        }
+
+        &:before {
+            left: 0;
+            clip-path: polygon(0 0, 100% 0%, calc(100% - 55px) 100%, 0% 100%);
+
+            @include xl {
+                width: 24%;
+
+            }
+
+            @include lg {
+                width: 30%;
+            }
+
+            @media(max-width: 1024px) {
+                width: 28%;
+            }
+
+            @include md {
+                width: 55%;
+            }
+
+            @include xs {
+                width: 75%;
+            }
+        }
+
+        &:after {
+            right: 0;
+            clip-path: polygon(0 0%, 100% 0, 100% 100%, 60px 100%);
+
+            @include xl {
+                clip-path: polygon(0 0%, 100% 0, 100% 100%, 46px 100%);
+                width: 25%;
+            }
+
+            @include lg {
+                display: none;
+            }
+
+        }
+    }
+
+    .main-menu>ul>li {
+        >a {
+            padding: 36.5px 0;
+            font-weight: 700;
+
+            &:after {
+                color: $title-color !important;
+            }
+
+            &:hover {
+                &:after {
+                    color: $theme-color !important;
+                }
+            }
+        }
+    }
+
+    .info-card {
+        &_link {
+            color: $white-color;
+        }
+    }
+}
+
+@media (min-width: 1300px) {
+    .header-layout6 {
+        .th-container {
+            --main-container: 1760px;
+        }
+    }
+}
+
+
+
+/* header-layout7 --------------------------- */
+.header-layout7 {
+    background-color: #ECF1F5; 
+
+    .header-button {
+        .icon-btn {
+            border: 1px solid transparent;
+            font-size: 18px;
+
+            @include lg {
+                width: var(--btn-size, 36px);
+                height: var(--btn-size, 36px);
+                line-height: var(--btn-size, 36px);
+                font-size: var(--btn-font-size, 16px);
+
+            }
+
+            &:hover {
+                background-color: transparent;
+                border-color: transparent;
+                color: $theme-color;
+            }
+        }
+    }
+
+    .sticky-wrapper.sticky {
+        .header-logo {
+            padding: 0;
+        }
+
+        .menu-area {
+            @include md {
+                padding: 20px 0;
+            }
+        }
+    }
+
+    .menu-area {
+        @include md {
+            padding: 10px 0;
+        }
+    }
+
+    .main-menu a {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .main-menu>ul>li {
+        margin: 0 10px;
+        position: relative;
+
+        @include lg {
+            margin: 0;
+        }
+
+        &:before {
+            content: "";
+            width: 100%;
+            height: 0;
+            background-color: $theme-color;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: 0.6s ease;
+            opacity: 0;
+            visibility: hidden;
+
+        }
+
+        &:hover {
+            &:before {
+                opacity: 1;
+                visibility: visible;
+                height: 100%;
+            }
+
+
+        }
+
+        >a {
+            padding: 36.5px 15px;
+
+            &:hover {
+                color: $white-color;
+
+                &:after {
+                    color: $white-color;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1300px) {
+    .header-layout7 {
+        .th-container {
+            --main-container: 1760px;
+        }
+    }
+}

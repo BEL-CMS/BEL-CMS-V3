@@ -1,0 +1,446 @@
+.footer-wrapper {
+    --border-color: rgba(255, 255, 255, 0.3);
+    position: relative;
+    z-index: 2;
+    background-color: #10131C;
+    overflow: hidden;
+
+    .social-links a {
+        margin: 0 30px 0 0;
+    }
+}
+
+.widget-area {
+    padding-top: $space;
+    padding-bottom: 66px;
+}
+
+.footer-links {
+    text-align: right;
+
+    @include md {
+        display: none;
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        font-family: $body-font;
+        display: inline-block;
+        padding-right: 15px;
+        margin-right: 10px;
+        position: relative;
+
+        &:after {
+            content: "";
+            height: 11px;
+            width: 1px;
+            background-color: $white-color;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            margin: -5px 0;
+            transform: rotate(13deg);
+        }
+
+        &:last-child {
+            margin-right: 0;
+            padding-right: 0;
+
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    a {
+        font-family: inherit;
+        color: $white-color;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+.copyright-wrap {
+    padding: 22px 0;
+    background-size: 100% auto;
+    background-color: #1A1D26;
+
+}
+
+.copyright-text {
+    margin: 0;
+
+    a {
+        color: $theme-color;
+
+        &:hover {
+            color: $white-color;
+        }
+    }
+}
+
+.th-widget-contact {
+    max-width: 265px;
+}
+
+.footer-newsletter {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    padding-left: 60px;
+
+    .newsletter-title {
+        max-width: 425px;
+        margin-bottom: 0;
+    }
+}
+
+.schedule-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba($color: #fff, $alpha: 0.2);
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+
+    &:last-of-type {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+}
+
+.th-widget-schedule {
+    width: 280px;
+    max-width: 100%;
+    margin-top: -6px;
+
+    .footer-info {
+        margin-bottom: 14px;
+    }
+
+    .title {
+        color: $white-color;
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 16px;
+    }
+}
+
+.newsletter-widget {
+    max-width: 290px;
+
+    .form-control {
+        background-color: #2C3240 !important;
+        border: 1px solid #2C3240;
+        border-radius: 10px;
+    }
+
+    .newsletter-form {
+        flex-direction: column;
+        gap: 15px;
+
+        .th-social {
+            width: 100%;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    input {
+        border-radius: 0;
+    }
+
+    .icon-btn {
+        border: none;
+        background-color: $theme-color;
+        color: $white-color;
+        border-radius: 0;
+        min-width: 56px;
+        padding: 0;
+
+        &:hover {
+            background-color: $title-color;
+        }
+    }
+
+    .footer-text {
+        margin-bottom: 25px;
+    }
+}
+
+@include md {
+    .footer-wrapper {
+        .widget-area {
+            padding-top: $space-mobile;
+            padding-bottom: 30px;
+        }
+    }
+
+    .copyright-text {
+        text-align: center;
+    }
+}
+
+/* footer 2 ---------------------------------- */
+.newsletter-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 2px solid $theme-color;
+    padding-left: 25px;
+
+    .newsletter-title {
+        margin-top: -0.3em;
+        margin-bottom: 5px;
+        max-width: 400px;
+        color: $white-color;
+    }
+
+    .newsletter-text {
+        margin-bottom: -0.5em;
+        max-width: 400px;
+    }
+}
+
+.newsletter-form {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    @include md {
+        justify-content: center;   
+    }
+
+    @include xs {
+        display: block;
+        margin: auto;
+        text-align: center;
+    }
+
+    input {
+        background-color: $white-color;
+        max-width: 374px;
+        border-radius: 10px;
+
+        &:focus {
+            background-color: $white-color;
+            color: $body-color;
+        }
+
+        @include xs {
+            max-width: 100%;
+        }
+    }
+
+    .th-btn {
+        &:hover {
+            color: $title-color !important;
+
+            &:before,
+            &:after {
+                background-color: $white-color;
+
+            }
+        }
+
+        @include xs {
+            margin-top: 15px;
+        }
+    }
+}
+
+.footer-inner {
+    display: flex;
+
+    .footer-left {
+        padding-right: var(--gap-x);
+        border-right: 1px solid $th-border-color;
+        padding-top: 105px;
+        padding-bottom: 105px;
+    }
+
+    .footer-top {
+        border-bottom: 1px solid $th-border-color;
+        padding: var(--gap-y) 0 var(--gap-y) var(--gap-x);
+    }
+
+    .widget-area2 {
+        padding-top: var(--gap-y);
+        padding-left: var(--gap-x);
+        padding-bottom: 17px;
+    }
+}
+
+// .footer-layout2 {
+//     --border-color: #2A2F3C;
+//     --gap-x: 70px;
+//     --gap-y: 70px;
+// }
+@include xl {
+    .newsletter-title {
+        font-size: 24px;
+    }
+}
+
+@include md {
+    .newsletter-title {
+        text-align: center;
+        margin-bottom: 15px !important;
+    }
+
+    .newsletter-text {
+        font-size: 16px;
+    }
+}
+
+
+/* footer 2 ---------------------------------- */
+.footer-layout2 {
+    position: relative;
+    z-index: 2;
+    background-color: #127782;
+    --body-color: #fff;
+
+    .widget-area {
+        padding: 0;
+    }
+
+    .footer-border {
+        border-right: 1px solid #5FB1B1;
+        padding: 120px 40px 60px 40px;
+
+        @include md {
+            padding: 80px 40px 40px 40px;
+        }
+
+        &:last-child {
+            border-right: 1px solid transparent;
+            padding-right: 0;
+        }
+
+        @include lg {
+            border-left: 1px solid #5FB1B1;
+            border-bottom: 1px solid #5FB1B1;
+
+            &:last-child {
+                border-bottom: 1px solid transparent;
+                border-right: 1px solid #5FB1B1;
+            }
+        }
+    }
+
+    .th-widget-about .about-logo {
+        margin-bottom: 20px;
+    }
+
+    .widget {
+
+        select,
+        input {
+            border-radius: 10px 0px 0px 10px;
+            background: $white-color;
+            color: #788094;
+            min-width: 247px;
+
+            @include inputPlaceholder {
+                color: #788094;
+            }
+        }
+
+        .th-btn {
+            min-width: 56px;
+            border-radius: 0px 10px 10px 0px;
+            background: $theme-color3;
+            font-size: 20px;
+            padding: 18px 20px;
+        }
+    }
+
+    .footer-search-contact {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .footer-widget {
+        .widget_title {
+            &:before {
+                background: linear-gradient(90deg, #32B4B4 -8.86%, rgba(50, 180, 180, 0.00) 107.59%);
+            }
+        }
+
+        .menu.style2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            @include md {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+    }
+
+    .copyright-wrap {
+        border-top: 1px solid #5FB1B1;
+        background-color: transparent;
+
+        .copyright-text a {
+            color: $title-color;
+        }
+    }
+}
+
+/* footer 3 Start ---------------------------------- */
+.footer-layout3 {
+    background-color: $black-color;
+    background-size: cover;
+    margin-top: -80px;
+    // @include lg {
+    //     margin-top: -250px;  
+    // }
+    // @include md {
+    //     margin-top: -380px;  
+    // }
+
+    // .widget-area {
+    //     padding-top: 200px !important;   
+    //     @include lg {
+    //         padding-top: 340px !important;       
+    //     }
+    //     @include md {
+    //         padding-top: 450px !important;         
+    //     }
+    // }
+
+    .th-social {
+        box-shadow: none;
+    }
+
+    .footer-top {
+        padding-top: 80px;
+        padding-bottom: 80px;
+        border-bottom: 1px solid rgba($color: #fff, $alpha: 0.15);
+        background-color: transparent;
+    }
+
+    .copyright-wrap {
+        --body-color: #fff;
+        background-color: $theme-color;
+
+        .copyright-text a {
+            color: $title-color;
+        }
+    }
+}
+
+/* footer 3 end ---------------------------------- */

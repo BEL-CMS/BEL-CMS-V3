@@ -1,0 +1,75 @@
+@include ml {
+    :root {
+        --main-container: 1250px;
+    }
+}
+
+@media (min-width: 1370px) {
+    .th-container2 {
+        --main-container: 1470px;
+        .container {
+            --main-container: 1220px;
+        }
+    }
+}
+
+@include hd {
+    .th-container2 {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .container-xxl,
+    .container-xl,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container {
+        max-width: calc(var(--main-container) + var(--container-gutters));
+        padding-left: calc(var(--container-gutters) / 2);
+        padding-right: calc(var(--container-gutters) / 2);
+        &.px-0 {
+            max-width: var(--main-container);
+        }
+    }
+}
+
+@media only screen and (min-width: 1300px) {
+    .th-container {
+        --main-container: 1720px;
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    .container-fluid.px-0 {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+
+        .row {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+    }
+}
+
+.th-container3 {
+    max-width: 1520px;
+}
+
+.round-container {
+    max-width: 1620px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+@include lg {
+    .round-container {
+        border-radius: 0;
+    }
+}

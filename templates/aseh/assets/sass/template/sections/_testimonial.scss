@@ -1,0 +1,491 @@
+/* ---------------------------Testimonial  Grid start ---------------------------------- */
+.testi-grid {
+    position: relative;
+    padding: 30px 20px;
+    z-index: 2;
+    filter: drop-shadow(0px 4px 30px rgba(0, 0, 0, 0.05));
+    margin-top: 60px;
+    border-radius: 20px;
+    transition: all 0.4s ease-in-out;
+
+    &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        mask-image: url("../img/shape/testi_shape.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        mask-size: 100% 100%;
+        background-color: $white-color;
+        z-index: -1;
+    }
+
+
+    &_wrapper {
+        display: flex;
+        gap: 30px;
+
+        @include sm {
+            gap: 15px;
+        }
+
+        @include vxs {
+            display: block;
+        }
+    }
+
+    &_profile {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        transition: all 0.4s ease-in-out;
+    }
+
+    &_img {
+        position: relative;
+        min-width: 120px;
+        display: block;
+        margin: auto;
+        transition: all 0.4s ease-in-out;
+        z-index: 2;
+        margin: -50px 0 25px 0;
+        clip-path: polygon(30% 0%, 70% 0%, 100% 0, 100% 75%, 70% 100%, 30% 100%, 0 100%, 0% 30%);
+
+        @include sm {
+            min-width: 80px;
+        }
+
+        @include vxs {
+            clip-path: polygon(6% 0%, 70% 0%, 100% 0, 100% 75%, 70% 100%, 30% 100%, 0 100%, 0% 30%);
+        }
+
+        img {
+            width: 120px;
+            height: 120px;
+            transition: all 0.4s ease-in-out;
+
+            @include sm {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+    }
+
+    &_name {
+        margin-bottom: 2px;
+    }
+
+    &_text {
+        font-style: italic;
+        margin-bottom: 10px;
+    }
+
+    &_desig {
+        font-size: 14px;
+        margin-bottom: -0.3rem;
+    }
+
+    .star-icon i {
+        font-size: 14px;
+        color: #FFC700;
+
+        @include sm {
+            font-size: 10px;
+        }
+    }
+
+    .testi-quote {
+        position: absolute;
+        right: 70px;
+        bottom: 30px;
+        z-index: -1;
+    }
+}
+
+/* ---------------------------Testimonial  Grid end ---------------------------------- */
+/* ---------------------------Testimonial  Item start ---------------------------------- */
+.testi-item {
+    position: relative;
+    background: $white-color;
+    padding: 40px;
+    box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.05);
+    z-index: 3;
+    transition: all 1s ease-in-out;
+
+    @include xs {
+        padding: 30px;
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 70px;
+        height: 70px;
+        background-color: #D8DDE1;
+        clip-path: path("M70 70V0L55 20V55H20L0 70H70Z");
+        z-index: -1;
+
+    }
+
+    &_text {
+        margin-top: -0.3rem;
+        margin-bottom: 30px;
+    }
+
+    &_wrapp {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: -0.3rem;
+    }
+
+    &_profile {
+        min-width: 70px;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .box-title {
+        margin-top: -0.5rem;
+        margin-bottom: 0px;
+    }
+
+    &_desig {
+        font-size: 14px;
+    }
+
+    .star-icon {
+        i {
+            color: #FFC700;
+            font-size: 12px;
+        }
+
+    }
+
+    .testi-quote {
+        position: absolute;
+        top: 15px;
+        left: 25%;
+        z-index: -1;
+    }
+
+    &:hover {
+        &:before {
+            background-color: $theme-color;
+        }
+    }
+}
+
+/* ---------------------------Testimonial  Item start ---------------------------------- */
+/* ---------------------------Testimonial  Box start ---------------------------------- */
+
+
+/* ---------------------------Testimonial  Box start ---------------------------------- */
+/* ---------------------------Testimonial  Card start ---------------------------------- */
+.testi-card {
+    position: relative;
+    border-radius: 50px;
+    padding: 0px 80px 80px;
+    z-index: 9;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 80px;
+    z-index: 2;
+
+    @include lg {
+        padding: 0px 40px 40px;
+        gap: 40px;
+    }
+
+    @include xs {
+        padding: 0px 30px 30px;
+    }
+
+    @include md {
+        display: block;
+    }
+
+    &.style2 {
+        border-radius: 50px;
+
+        &:before {
+            background-color: $white-color;
+            box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.04);
+        }
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 1220px;
+        height: 434px;
+        border-radius: 50px;
+        background-color: #F5F7FA;
+        z-index: -1;
+    }
+
+    &-tab {
+        position: absolute;
+        top: 65%;
+        margin-left: 120px;
+
+        &.style2 {
+            top: 70%;
+
+            @include lg {
+                top: 74%;
+                margin-left: 80px;
+            }
+
+            @include md {
+                top: 64%;
+            }
+
+            @include sm {
+                top: 63%;
+            }
+
+            @media(max-width: 680px) {
+                top: 52%;
+            }
+
+            @include xs {
+                margin-left: 30px;
+                top: 60%;
+            }
+
+            @media(max-width: 480px) {
+                top: 51%;
+            }
+
+            @include vxs {
+                top: 47%;
+            }
+
+            @media(max-width: 320px) {
+                top: 44%;
+            }
+        }
+
+        @include lg {
+            top: 67%;
+            margin-left: 80px;
+        }
+
+        @include md {
+            top: 64%;
+        }
+
+        @include sm {
+            top: 63%;
+        }
+
+        @media(max-width: 680px) {
+            top: 57%;
+        }
+
+        @include xs {
+            margin-left: 30px;
+            top: 60%;
+        }
+
+        @media(max-width: 480px) {
+            top: 51%;
+        }
+
+        @include vxs {
+            top: 50%;
+        }
+
+        @media(max-width: 320px) {
+            top: 44%;
+        }
+
+        .tab-btn {
+            width: 84px;
+            height: 90px;
+            border: none;
+            background-color: #F5F7FA;
+            mask-image: url("../img/shape/testi_thumb_shape.png");
+            border-radius: 10px;
+            padding: 2px;
+            margin: 0 3px;
+            transition: all 0.4s ease-in-out;
+
+            @include xs {
+                width: 64px;
+                height: 70px;
+            }
+
+            &.active {
+                background-color: $theme-color;
+            }
+
+            img {
+                position: relative;
+                z-index: 2;
+                mask-image: url("../img/shape/testi_thumb_shape.png");
+                background-repeat: no-repeat;
+                background-size: cover;
+                mask-repeat: no-repeat;
+                mask-position: center;
+                mask-size: 100% 100%;
+                border-radius: 10px;
+            }
+        }
+    }
+
+    &_wrapper {
+        max-width: 416px;
+        position: absolute;
+        left: 50%;
+
+        @include lg {
+            left: 55%;
+        }
+
+        @include md {
+            max-width: 100%;
+            position: relative;
+            left: auto;
+            display: block;
+            margin: auto;
+            text-align: center;
+        }
+    }
+
+    &_profile {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 0px;
+
+    }
+
+    &_img {
+        position: relative;
+        min-width: 465px;
+        height: 507px;
+        z-index: 2;
+        mask-image: url("../img/shape/test_shape_2.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        mask-size: 100% 100%;
+        margin-bottom: 50px;
+
+        @include md {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+    }
+
+    &_icon {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 18px;
+        color: $white-color;
+        background-color: $theme-color;
+        border-radius: 50%;
+        text-align: center;
+        position: absolute;
+        top: 16%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
+    &_name {
+        font-family: $title-font;
+        font-weight: 600;
+        font-size: 30px;
+        line-height: 30px;
+        color: $title-color;
+        margin-bottom: 10px;
+
+        @include xl {
+            font-size: 16px;
+            line-height: 26px;
+            margin-bottom: 0px;
+        }
+    }
+
+    &_desig {
+        font-family: $body-font;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: $body-color;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    &_review {
+        i {
+            color: #FFC700;
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 3px;
+        }
+    }
+
+    .testi-quote {
+        position: absolute;
+        right: 104px;
+        bottom: 66px;
+
+        @include lg {
+            bottom: 10px;
+        }
+
+        @include xs {
+            right: 0px;
+            bottom: 20px;
+
+            img {
+                width: 50%;
+            }
+        }
+    }
+
+    &_text {
+        font-size: 20px;
+        font-style: italic;
+        font-weight: 500;
+        line-height: 30px;
+        margin-bottom: 25px;
+
+        @include xs {
+            font-size: 16px;
+            line-height: 26px;
+        }
+    }
+
+}
+
+.testi-area2 {
+    .container {
+        @include lg {
+            max-width: 100%;
+        }
+    }
+}
+
+/* ---------------------------Testimonial  Card start ---------------------------------- */

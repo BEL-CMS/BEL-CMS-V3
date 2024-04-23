@@ -1,0 +1,236 @@
+/* service-area ---------------- */
+.service-area3 {
+    background-color: #F8F8F8;
+}
+
+.service-item-2 {
+    position: relative;
+    background-color: $white-color;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    gap: 20px;
+
+    @include xl {
+        padding: 30px 20px;
+    }
+
+    @include lg {
+        gap: 15px;
+    }
+
+    @include vxs {
+        display: block;
+        text-align: center;
+    }
+
+    &_icon {
+        min-width: 50px;
+
+        @include vxs {
+            margin-bottom: 20px;
+        }
+    }
+
+    .box-title {
+        font-size: 20px;
+        line-height: 30px;
+        font-weight: 500;
+        margin-top: -0.4rem;
+        margin-bottom: 6px;
+    }
+
+    &_text {
+        margin-bottom: 15px;
+    }
+
+    .line-btn {
+        color: $title-color;
+        margin-bottom: -0.3rem;
+        transition: all ease 0.4s;
+
+        i {
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 50%;
+            background-color: $smoke-color2;
+            color: $theme-color;
+            margin-left: 0;
+            transition: all ease 0.4s;
+        }
+
+        &:before {
+            display: none;
+        }
+
+        &:hover {
+            color: $theme-color;
+
+            i {
+                background-color: $theme-color;
+                color: $white-color;
+            }
+        }
+    }
+}
+
+/* service-card-3  --------------- */
+.service-card-3 {
+    position: relative;
+    padding: 30px;
+    background-color: $white-color;
+    box-shadow: 0px 10px 15px rgba(0, 53, 101, 0.08);
+    border-radius: 20px;
+
+    @include vxs {
+        padding: 20px;
+    }
+
+    &_img {
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        z-index: 2;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+            clip-path: path("M317 0H10C4.47715 0 0 4.47716 0 10V210C0 215.523 4.47715 220 10 220H54.7606C65.396 220 75.3497 214.764 81.375 206C87.4003 197.236 97.354 192 107.989 192H221.556C231.776 192 241.265 197.299 246.625 206C251.985 214.701 261.474 220 271.694 220H317C322.523 220 327 215.523 327 210V10C327 4.47715 322.523 0 317 0Z");
+            transition: all 1.3s ease;
+
+            @include xl {
+                clip-path: none;
+            }
+        }
+    }
+
+    .service-tag {
+        font-family: $title-font;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 28px;
+        color: $body-color;
+        text-align: center;
+        margin-top: -20px;
+        margin-bottom: 25px;
+
+        @include xl {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .price {
+            color: $theme-color;
+        }
+    }
+
+    &_text {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px dashed #D8DDE1;
+
+    }
+
+    .service-meta {
+        display: flex;
+        justify-content: space-between;
+
+        span {
+            font-size: 14px;
+
+            i {
+                color: $theme-color;
+                margin-right: 2px;
+            }
+        }
+    }
+
+
+}
+
+/* service box 3 -----------------*/
+.service-area8 {
+    padding-top: 220px;
+    background-color: $gray-color;
+    margin-top: -100px;
+    @include md {
+        padding-top: 180px;
+    }
+}
+
+.service-box-3 {
+    position: relative;
+    background: var(--white-color);
+    padding: 50px 15px 00 15px;
+    display: block;
+    border-radius: 20px;
+    box-shadow: 0px 10px 15px rgba(0, 53, 101, 0.08);
+    text-align: center;
+    margin-top: 70px;
+  
+
+    &_icon {
+        position: absolute;
+        top: -70px;
+        left: calc(50% - 70px);
+        width: 140px;
+        height: 140px;
+        line-height: 91px;
+        border: 20px solid $gray-color;
+        background-color: var(--white-color);
+        border-radius: 50%;
+        z-index: 9;
+        transition: 0.4s ease-in-out;
+
+        img {
+            transition: 0.4s ease-in-out;
+        }
+    }
+
+    .box-title {
+        margin: 40px 0 -0.3rem 0;
+        @include xl {
+            font-size: 20px;
+        }
+    }
+
+    .icon-btn {
+        --btn-size: 50px;
+        background-color: $title-color;
+        color: $white-color;
+        border-color: $title-color;
+        transform: translateY(30px);
+        transition: 0.4s ease-in-out;
+       
+
+    }
+
+    &:hover {
+        .service-box-3 {
+            &_icon {
+                background-color: $theme-color;
+
+                img {
+                    filter: brightness(0) invert(1);
+                    transform: rotateY(180deg);
+                }
+            }
+        }
+
+        .icon-btn {
+            background-color: $theme-color;
+            border-color: $theme-color;
+        }
+    }
+
+}
+
+.serviceslider8 {
+    .slick-dots {
+        margin: 100px 0 0 0; 
+    }
+}
