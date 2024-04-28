@@ -9,6 +9,8 @@
 		'capcha',
 		'config_pages',
 		'config_tpl',
+		'contact',
+		'contact_send',
 		'donations',
 		'donations_receive',
 		'downlaods_stats',

@@ -191,6 +191,18 @@ switch ($_POST['table']) {
 
 	break;
 
+	case 'contact_send':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int(11) NOT NULL,
+			`id_msg` int(11) NOT NULL,
+			`author` varchar(32) NOT NULL,
+			`message` text DEFAULT NULL,
+			`date_reply` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`reply` tinyint(1) NOT NULL DEFAULT 0
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+
 	case "donations":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -791,6 +803,7 @@ switch ($_POST['table']) {
 				`tags` text,
 				`cat` varchar(16) DEFAULT NULL,
 				`view` int DEFAULT '0',
+				'img' varchar(255) DEFAULT NULL,
 				PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
