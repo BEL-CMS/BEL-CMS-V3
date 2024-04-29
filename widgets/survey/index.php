@@ -13,7 +13,7 @@ if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-$answer = count($var->answer);
+if ($var !== false):
 ?>
 <div id="belcms_widgets_survey">
 	<div id="belcms_widgets_quest">
@@ -69,3 +69,6 @@ $answer = count($var->answer);
 	?>
 	<p id="belcms_reply_all"><a href="survey"><?=constant('VIEW_ALL_SURVEYS');?></a></p>
 </div>
+<?php
+endif;
+?>

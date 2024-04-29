@@ -13,6 +13,7 @@ namespace BELCMS\Pages\Controller;
 
 use BelCMS\Core\Captcha;
 use BELCMS\Pages\Pages;
+use BelCMS\Requires\Common;
 use BELCMS\User\User as UserInfos;
 
 if (!defined('CHECK_INDEX')):

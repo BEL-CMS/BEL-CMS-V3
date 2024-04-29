@@ -31,9 +31,12 @@ class Survey
         $sql->limit(1);
         $sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
         $sql->queryOne();
-        $sql->data->answer = self::getAnswer($sql->data->id, $sql->data->answer_nb, $sql->data->question);
-        $return = $sql->data;
-        return $return;
+        if ($sql->data !== false) {
+          $sql->data->answer = self::getAnswer($sql->data->id, $sql->data->answer_nb, $sql->data->question);
+        } else {
+            $sql->data = false;
+        }
+        return $sql->data;
     }
 
     private function getAnswer ($id, $limit, $question)

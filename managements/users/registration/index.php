@@ -38,6 +38,9 @@ endif;
 						<tbody>
 							<?php
 							foreach ($user as $k => $v):
+								if (!isset($v->page->last_visit)) {
+									$v->page->last_visit = '01-01-1970';
+								}
 							?>
 							<tr>
 								<td><?=$k;?></td>

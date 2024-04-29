@@ -37,7 +37,6 @@ final class ModelsUsers
 		foreach ($sql->data as $key => $value) {
 			$return[$value->id] = User::getInfosUserAll($value->hash_key);
 		}
-
 		return $return;
 	}
 	public function getAllUsersProfils ($id = null)

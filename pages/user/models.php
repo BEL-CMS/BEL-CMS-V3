@@ -1,16 +1,17 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.1 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
 namespace Belcms\Pages\Models;
 
+use BelCMS\Core\GetHost;
 use BelCMS\Core\Secure;
 use BelCMS\Core\UserNotification;
 use BelCMS\PDO\BDD;
@@ -470,15 +471,25 @@ final class User
 					$sql->table('TABLE_USERS');
 					$sql->where(array('name' => $type,'value'=> $data['value']));
 					$sql->update(array('token' => $token));
+
 					// Contenue du courriel
-					$contentMail = '';
-					$contentMail .= '<p>Token : <strong>' . $hashToken . '</strong></p>';
-					$contentMail .= '<p>Valable : 1h00</p>';
+					$contentMail  = '<tr>';
+					$contentMail .= '<td><p style="text-align:center;">Token de réinitialisation de mot de passe, valable 1h00</p></td>';
+					$contentMail .= '</tr>';
+					$contentMail .= '<tr>';
+					$contentMail .= '<td>';
+					$contentMail .= '<table style="margin: 25px auto;background-color: #EE7716;width:100%;display:block;">';
+					$contentMail .= '<tr style="width:100%;"><td style="width:100%:padding: 15px;color: #FFF;font-size: 14px;"><p style="text-align:center;">' . $hashToken . '</p></td></tr>';
+					$contentMail .= '</table>';
+					$contentMail .= '</td>';
+					$contentMail .= '</tr>';
+
 					$mail = array(
 						'subject'  => 'Demande de nouveau mot de passe',
 						'content'  => self::contentMail('Token', $contentMail),
 						'sendMail' => $results['mail']
 					);
+
 					$returnMail = Common::sendMail($mail);
 					if ($returnMail) {
 						$dataAction = array(
@@ -503,7 +514,7 @@ final class User
 						$sql->where(array('name' => $type,'value'=> $data['value']));
 						$sql->update(array('token'=>''));
 						self::checkToken($data['value']);
-						$return['msg']  = 'Ce token n\'est plus valide, un nouveau a été génère';
+						$return['msg']  = 'Ce token n\'est plus valide, un nouveau a été généré';
 						$return['type'] = 'blue';
 					} else {
 						if (empty($data['token'])) {
@@ -528,8 +539,17 @@ final class User
 							$sql->where(array('name' => $type,'value'=> $data['value']));
 							$sql->update(array('password'=>$password,'token'=>'', 'expire' => 0));
 
-							$contentMail = '';
-							$contentMail .= $generatePass;
+							$contentMail  = '<tr>';
+							$contentMail .= '<td><p style="text-align:center;">Mot de passe, réinitialiser</p></td>';
+							$contentMail .= '</tr>';
+							$contentMail .= '<tr>';
+							$contentMail .= '<td>';
+							$contentMail .= '<table style="margin: 25px auto;background-color: #EE7716;width:100%;display:block;">';
+							$contentMail .= '<tr style="width:100%;"><td style="width:100%:padding: 15px;color: #FFF;font-size: 14px;"><p style="text-align:center;">' . $generatePass . '</p></td></tr>';
+							$contentMail .= '</table>';
+							$contentMail .= '</td>';
+							$contentMail .= '</tr>';
+
 							$name = defined('CMS_WEBSITE_NAME') ? constant('CMS_WEBSITE_NAME') : 'Nom inconnu';
 							$mailInconnu = defined('CMS_MAIL_WEBSITE') ? constant('CMS_MAIL_WEBSITE') : 'no_reply@bel-cms.dev';
 							$mail = array(
@@ -561,42 +581,71 @@ final class User
 	#####################################
 	public static function contentMail($title, $content)
 	{
-		$return = '	<!doctype html>
-					<html>
-						<meta charset="utf-8">
-						<style type="text/css" data-hse-inline-css="true">
-							body, html {font-family: Helvetica, Arial, sans-serif;background: #dbe5ea;margin: 0;margin: 0;padding: 0;border: none;outline: none;list-style: none; }
-							#main {background: #FFF;padding-bottom: 60px; }
-							#main > h1 {margin: 0;padding: 0;font-size: 16px;line-height: 50px;background-color: #ffffff;border-radius: 4px 4px 0px 0px;text-align: center; }
-							#corp {background: #126de5;text-align: center;color: #FFF;line-height: 65px; }
-							#corp > div,
-							#corp > div > img {margin: 0; padding: 0;line-height: normal; }
-							#token {text-align: center;padding: 20px 0; }
-							#token > span {display: inline-block;background: #ebf5fa;margin: auto;line-height: 60px;padding: 0 20px; }
-							#link {background-color: #ffffff;padding-left: 24px;padding-right: 24px;padding-top: 8px;padding-bottom: 8px;						text-align: center; }
-							#link > a {display: inline-block;background: #0ec06e;color: #FFF;padding: 15px 20px;margin: auto;text-decoration: none;}
-							#infos {display: block;background: #FFF;text-align: center;}
-							#infos > span {display: inline-block;background: #242b3d;color: #FFF;padding: 5px 15px;margin: 15px auto;}
-							#copyright {text-align: center;font-size: 11px;margin-bottom: 50px;}
-							.clear {clear: both;}
-						</style>
-						<body>
-							<div id="main">
-								<h1>'.$title.'</h1>
-								<div id="corp">
-									<div><img src=" data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAZlBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+Vn2moAAAAIXRSTlMA9APwcWsX/GUp947VyU3OWCUSBtp1RAyR27e1iHAZvLsH6T7vAAABSUlEQVRo3u3Y626DMAwF4ISQptyh0NLdd97/Jfdn2obZIIpdqZP8PUBPRRLHjlFKKaWUUhsOffU4uTK46b3qD0bYyTdYaPxJ8s9XFiv2+mpkZLnFr+w5MwKKDn/qBsPWWmxwrWE6BmwKR+bvYxcroQ3YFRhfaXCI4JJXOusQpUndrWdEyhPPr0Ukl1aaKkR7TqpvFtHsnBDwAkL6MDRYqfNiHIu8BsP3EoMqffa5fX0pENCDKC/my6XkB1QgvPnB8wOesFRni0NeswMetk9rzg5wWCrIPccOADEuA8ZbB8z3/4n2Fvn+t+nOQfsHpeJWxW6nXA/jzCzXYhcOCPErE4T4pQ9CvG0BId54geC1jrEBVMFofkGIt+8gxAcQEOIjFAjxIRCE+BgLQnwQByH+lABC/DEEROxzTghueruS55yoAKWUUkoptfIBQWw+kbVEMGQAAAAASUVORK5CYII="></div>
-									<p>Récupération de mot de passe</p>
-								</div>
-								<div id="token">
-									<span>'.$content.'</span>
-								</div>
-								<div id="link"><a href="https://bel-cms.dev?token=21241545465">Lien automatique</a></div>
-								<div id="infos"><span>Attention, le Token est valide uniquement pendant 1h00</span></div>
-								<div class="clear"></div>
-								<div id="copyright"><p>Template mail by <a href="https://bel-cms.dev">Bel-CMS</a></p>
-							</div>
-						</body>
-					</html>';
+		$datetime = date_create()->format('Y-m-d H:i:s');
+		$date = Common::TransformDate($datetime, 'FULL', 'MEDIUM');
+		$return = '
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+			<head>
+				<style>
+					* {
+					color: #777777;
+					font-family: monospace, monospace;
+					font-size: 12px;
+					margin: 0; padding: 0;
+					border-collapse: collapse;
+					}
+					body {
+						background-color: #444444;
+						width: 100%;
+						height: 100%;
+					}
+					p {
+						text-align: justify;
+						padding: 0 15px;
+					}
+					.table_content {
+						width:600px; background-color: #FFF; color:#777777; padding:20px; display:block;border:2px solid #EE7716;border-top: 0px; border-bottom: 3px solid #EE7716;
+					}
+				  </style>
+			</head>
+			<body>
+				<table width="100%">
+					<tr>
+						<td style="background-color: #EE7716;height: 80px; color: #FFF;text-align: center;font-size: 32px;">'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'].'</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<table class="table_content">
+								'.$content.'
+								<tr>
+									<td style="background-color: #f4f4f4; height: 80px;">
+										<table style="text-align: left;display: block;padding-left: 25px;width: 100%;">
+											<tbody style="width: 100%; display: block;">
+												<tr style="width: 100%;display: block;overflow: hidden;">
+													<td style="text-align: left; width: 40%;display: block;float: left;">SiteWeb <i style="float: right;">:</i></td>
+													<td style="text-align: left;width: 60%;display: block;float: left;"><b>'.$_SESSION['CONFIG_CMS']['HOST'].'</b></td>
+												</tr>
+												<tr style="width: 100%;display: block;overflow: hidden;">
+													<td style="text-align: left;width: 40%;display: block;float: left;">Date & heure<i style="float: right;">:</i></td>
+													<td style="text-align: left;width: 60%;display: block;float: left;"><b>'.$date.'</b></td>
+												</tr>
+												<tr style="width: 100%;display: block;overflow: hidden;">
+													<td style="text-align: left;width: 40%;display: block;float: left;">IP<i style="float: right;">:</i></td>
+													<td style="text-align: left;width: 60%;display: block;float: left;"><b>'.Common::GetIp().'</b></td>
+												</tr> 
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</body>
+		</html>
+		';
+		
 		return $return;
 	}
 	#########################################

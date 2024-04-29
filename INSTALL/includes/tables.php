@@ -1115,13 +1115,13 @@ switch ($_POST['table']) {
 				UNIQUE KEY `name` (`name`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `title`, `groups_access`, `groups_admin`, `active`, `pos`, `orderby`, `pages`) VALUES
-			('', 'connected', 'Connecté', '0', '1', 0, 'right', 1, '',''),
-			('', 'lastconnected', 'Dernier connecté', '0', '1', 0, 'right', 2, '',''),
-			('', 'newsletter', 'Newsletter', '0', '1', 0, 'left', 2, '', ''),
-			('', 'shoutbox', 'T\'chats', '0', '1', 0, 'bottom', 1, '', '15'),
-			('', 'survey', 'Sondages', '0', '1', 0, 'left', 2, '', ''),
-			('', 'users', 'Utilisateurs', '0', '1', 0, 'left', 1, '', '');";
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `title`, `groups_access`, `groups_admin`, `active`, `pos`, `orderby`, `pages`, `opttions`) VALUES
+			('', 'stats', 'Statistique', '1', '1|2', 1, 'right', 1, 'downloads|forum|games', NULL),
+			('', 'lastconnected', 'Dernier connecté', '1', '1', 1, 'right', 2, '', NULL),
+			('', 'newsletter', 'Newsletter', '0', '1', 0, 'right', 2, '', NULL),
+			('', 'shoutbox', 'Sondages', '1|0', '1|2', 1, 'right', 1, 'guestbook', 'MAX_MSG==0'),
+			('', 'survey', 'Sondages', '1|0', '1|2', 1, 'right', 2, 'articles|comments|forum', NULL),
+			('', 'users', 'Utilisateurs', '0', '1', 0, 'left', 1, '', NULL);";
 	break;
 
 	case "notificaton":

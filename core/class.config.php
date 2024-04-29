@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.1 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -58,7 +58,11 @@ final class Config
 			$sql->where(array('name' => 'name', 'value' => $widget));
 			$sql->queryOne();
 			$return = $sql->data;
-			$return->groups_access = explode('|', $return->groups_access);
+			if (strpos($return->groups_access, '|') !== false) {
+				$return->groups_access = explode('|', $return->groups_access);
+			} else {
+				$return->groups_access = array(0, $return->groups_access);
+			}
 			$return->groups_admin  = explode('|', $return->groups_admin);
 			$return->opttions      = Common::transformOpt($return->opttions);
 			$return->pages  = explode('|', $return->pages);
