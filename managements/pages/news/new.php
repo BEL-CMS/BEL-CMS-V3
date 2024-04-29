@@ -22,7 +22,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 				<h4><?=constant('NEW');?> <?=constant('ARTICLE');?></h4>
 			</div>
 			<div class="p-6">
-				<form action="News/sendnew?management&option=parameter" method="post">
+				<form action="News/sendnew?management&option=pages" method="post">
 					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
 						<div class="col-sm-12">
