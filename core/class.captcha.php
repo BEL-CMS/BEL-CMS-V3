@@ -12,6 +12,7 @@
 namespace BelCMS\Core;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
+use DateTime;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -29,9 +30,9 @@ final class Captcha
         $numberTwoRand = rand(1, 9);
         $OVERALL = $numberOneRand + $numberTwoRand;
 
-        $insert['IP']   = Common::GetIp();
-        $insert['code'] = $OVERALL;
-        $insert['dateinsert'] = microtime(true);
+        $insert['IP']         = Common::GetIp();
+        $insert['code']       = $OVERALL;
+        $insert['timelast']   = time();
 
         self::removeAllCaptcha();
 
@@ -62,12 +63,9 @@ final class Captcha
         $sql->where($where);
         $sql->queryOne();
         if (!empty($sql->data)) {
-            $time_end = microtime(true);
-            $duration = $time_end - $sql->data->dateinsert;
-            $hours = (int) ($duration / 60 / 60);
-            $minutes = (int) ($duration / 60) - $hours * 60;
-            $seconds = (int) $duration - $hours * 60 * 60 - $minutes * 60;
-            if ($seconds <= 3 or $minutes >= 1) {
+            $timeCurrent = time();
+            $testingTime = $timeCurrent - $sql->data->timelast;
+            if ($testingTime >= 3) {
                 $del = new BDD;
                 $del->table('TABLE_CAPTCHA');
                 $del->where(array('name' => 'IP', 'value' => Common::GetIp()));

@@ -74,7 +74,7 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`IP` varchar(45) NOT NULL,
-			`dateinsert` varchar(5) DEFAULT NULL,
+			`timelast` int NOT NULL,
 			`code` varchar(32) NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
