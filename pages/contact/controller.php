@@ -27,6 +27,10 @@ class Contact extends Pages
 	public function index ()
 	{
         $set['captcha'] = Captcha::createCaptcha();
+        if ($set['captcha'] === false) {
+            Notification::warning('Veuillez patienter avant l\'envoi d\'un nouveau message');
+            die();
+        }
         $this->set($set);
         $this->render('index');
     }
@@ -35,26 +39,34 @@ class Contact extends Pages
     {
         if (empty($_POST['name'])) {  
             Notification::warning('Aucun nom donné');
+            die();
         }
         if (empty($_POST['mail'])) {  
             Notification::warning('Aucun e-mail transmit');
+            die();
         }
         if (empty($_POST['subject'])) {  
             Notification::warning('Aucun sujet transmit');
+            die();
         }
         if (empty($_POST['message'])) {
             Notification::warning('Aucun message transmit');
+            die();
         }
-
-        if (Captcha::verifCaptcha($_POST['query_contact']) === false) {
-            $this->error = true;
-            $this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('ERROR_CAPTCHA'), false);
-            return false;
+        if (empty($_POST['captcha'])) {
+            if (Captcha::verifCaptcha($_POST['query_contact']) === false) {
+                $this->error = true;
+                $this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('ERROR_CAPTCHA'), false);
+                return false;
+            } else {
+                $return = $this->models->send($_POST);
+                $this->error = true;
+                $this->errorInfos = array($return['type'], $return['text'], constant('CONTACT'), false);
+                $this->redirect('Contact', 3);
+            }
         } else {
-            $return = $this->models->send($_POST);
-            $this->error = true;
-            $this->errorInfos = array($return['type'], $return['text'], constant('CONTACT'), false);
-            $this->redirect('Contact', 3);
+            Notification::warning('Erreur Captcha');
+            die();
         }
     }
 }

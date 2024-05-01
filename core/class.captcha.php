@@ -26,6 +26,9 @@ final class Captcha
 {
     public static function createCaptcha ()
     {
+        if (isset($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']]) and $_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']] < 4) {
+            return false;
+        }
         $numberOneRand = rand(1, 9);
         $numberTwoRand = rand(1, 9);
         $OVERALL = $numberOneRand + $numberTwoRand;
@@ -35,6 +38,16 @@ final class Captcha
         $insert['timelast']   = time();
 
         self::removeAllCaptcha();
+
+        setcookie(
+            'BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES'],
+            $insert['timelast'],
+            time()+60*60*24*30,
+            "/",
+            $_SERVER['HTTP_HOST'],
+            true,
+            true
+        );
 
         $sql = new BDD;
         $sql->table('TABLE_CAPTCHA');
@@ -49,6 +62,7 @@ final class Captcha
         $sql->table('TABLE_CAPTCHA');
         $sql->where($where);
         $sql->delete();
+		setcookie('BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $_SERVER['HTTP_HOST'], false);
     }
     public static function verifCaptcha ($code)
     {
@@ -65,11 +79,13 @@ final class Captcha
         if (!empty($sql->data)) {
             $timeCurrent = time();
             $testingTime = $timeCurrent - $sql->data->timelast;
-            if ($testingTime >= 3) {
+            $cookie = $_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']];
+            if ($testingTime >= 3 and $cookie >= 3) {
                 $del = new BDD;
                 $del->table('TABLE_CAPTCHA');
                 $del->where(array('name' => 'IP', 'value' => Common::GetIp()));
                 $del->delete();
+                setcookie('BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $_SERVER['HTTP_HOST'], false);
                 return true;
             } else {
                 return false;
