@@ -28,6 +28,7 @@ class News extends AdminPages
 		$this->set($data);
 		$menu[] = array(constant('HOME')   => array('href'=>'News?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD')    => array('href'=>'News/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CAT')    => array('href'=>'News/Cat?management&option=pages','icon'=>'mgc_align_horizontal_center_fill', 'color' => 'bg-warning text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'News/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('index', $menu);
 	}
@@ -39,15 +40,68 @@ class News extends AdminPages
 		$this->set($data);
 		$menu[] = array(constant('HOME')   => array('href'=>'News?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD')    => array('href'=>'News/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CAT')    => array('href'=>'News/Cat?management&option=pages','icon'=>'mgc_align_horizontal_center_fill', 'color' => 'bg-warning text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'News/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$this->render('edit', $menu);
 	}
+	
 
 	public function sendedit ()
 	{
 		$return = $this->models->sendEdit($_POST);
 		$this->error(get_class($this), $return['text'], $return['type']);
 		$this->redirect('News?management&option=pages', 2);
+	}
+
+	public function Cat ()
+	{
+		$menu[] = array(constant('HOME')   => array('href'=>'News?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD')    => array('href'=>'News/addcat?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'News/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+		$data['data'] = $this->models->getCat();
+		$this->set($data);
+		$this->render('cat', $menu);
+	}
+
+	public function addcat ()
+	{
+		$menu[] = array(constant('HOME')   => array('href'=>'News?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('ADD')    => array('href'=>'News/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
+		$menu[] = array(constant('CAT')    => array('href'=>'News/Cat?management&option=pages','icon'=>'mgc_align_horizontal_center_fill', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'News/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+		$this->render('sendcat', $menu);	
+	}
+
+	public function sendnewcat ()
+	{
+		$return = $this->models->sendnewcat ($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('News/Cat?management&option=pages', 2);
+	}
+
+	public function editcat ()
+	{
+		$menu[] = array(constant('HOME')   => array('href'=>'News?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('CAT')    => array('href'=>'News/Cat?management&option=pages','icon'=>'mgc_align_horizontal_center_fill', 'color' => 'bg-warning text-white'));
+		$id = (int) $this->id;
+		$data['cat'] = $this->models->getcatId ($id);
+		$this->set($data);
+		$this->render('editcat', $menu);	
+	}
+
+	public function sendeditcat ()
+	{
+		$return = $this->models->sendeditcat ($_POST);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('News/Cat?management&option=pages', 2);
+	}
+
+	public function delcat ()
+	{
+		$id = (int) $this->id;
+		$return = $this->models->senddelcat ($id);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('News/Cat?management&option=pages', 2);
 	}
 
 	public function parameter ()

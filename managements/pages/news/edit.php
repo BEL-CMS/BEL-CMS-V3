@@ -35,7 +35,7 @@ if ($data->tags != null) {
 				<h4><?=constant('EDITING');?> <?=constant('ARTICLE');?></h4>
 			</div>
 			<div class="p-6">
-				<form action="News/sendedit?management&option=pages" method="post" class="form-horizontal form-bordered">
+				<form action="News/sendedit?management&option=pages" method="post" class="form-horizontal form-bordered" enctype="multipart/form-data">
 					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?> :</label>
 						<div class="col-sm-12">
@@ -51,7 +51,7 @@ if ($data->tags != null) {
 					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Image</label>
 						<div class="col-sm-12">
-							<input name="img" type="file" class="form-input">
+							<input name="img" accept="image/*" type="file" class="form-input">
 						</div>
 					</div>
 					<div>

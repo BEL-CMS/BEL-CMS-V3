@@ -24,6 +24,7 @@ final class ModelsNews
 	# Infos tables
 	#####################################
 	# TABLE_PAGES_NEWS
+	# TABLE_PAGES_NEWS_CAT
 	#####################################
 	public function getAllNews ()
 	{
@@ -168,13 +169,15 @@ final class ModelsNews
 			$send['author']            = $_SESSION['USER']->user->hash_key;
 			$send['authoredit']        = null;
 			$send['tags']              = Common::VarSecure($data['tags'], ''); // autorise que du texte
-			$send['tags']              = str_replace(' ', '', $send['tags']);
+			if (!empty($send['tags'])) {
+				$send['tags']          = str_replace(' ', '', $send['tags']);
+			}
 			$send['cat']               = ''; // à implanter
 			$send['view']              = 0;
 
 			if (isset($_FILES['img'])) {
 				$screen = Common::Upload('img', 'uploads/news', array('.png', '.gif', '.jpg', '.jpeg'));
-				if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
+				if ($screen == constant('UPLOAD_FILE_SUCCESS')) {
 					$send['img'] = 'uploads/news/'.$_FILES['img']['name'];
 				}
 			} else {
@@ -219,6 +222,130 @@ final class ModelsNews
 		}
 
 		return $return;
+	}
+
+	public function getCat ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_PAGES_NEWS_CAT');
+		$sql->queryAll();
+		return $sql->data;
+	}
+
+	public function getcatId ($id)
+	{
+		if (is_numeric($id)) {
+			$sql = new BDD;
+			$sql->table('TABLE_PAGES_NEWS_CAT');
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->queryOne();
+			$return = $sql->data;
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+
+	public function sendnewcat ($data) : array
+	{
+		if (is_array($data) and !empty($data)) {
+			if (isset($data['name']) and !empty($data['name'])) {
+				$insert['name'] = Common::VarSecure($data['name'], null);
+				$testing = new BDD;
+				$testing->table('TABLE_PAGES_NEWS_CAT');
+				$testing->where(array('name' => 'name', 'value' => $insert['name']));
+				$testing->queryAll();
+				if ($testing->rowCount == 0) {
+					$sql = new BDD;
+					$sql->table('TABLE_PAGES_NEWS_CAT');
+					$sql->insert($insert);
+					$return = array(
+						'type' => 'success',
+						'text' => constant('INSERT_CAT_OK')
+					);
+				} else {
+					$return = array(
+						'type' => 'warning',
+						'text' => constant('EXISTING_DATA')
+					);
+				}
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('ERROR_NO_DATA')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+
+	public function sendeditcat ($data)
+	{
+		if (is_array($data) and !empty($data) and is_numeric($data['id'])) {
+			if (isset($data['name']) and !empty($data['name'])) {
+				$where = array('name' => 'id', 'value' => $data['id']);
+				$insert['name'] = Common::VarSecure($data['name'], null);
+				$testing = new BDD;
+				$testing->table('TABLE_PAGES_NEWS_CAT');
+				$testing->where(array('name' => 'name', 'value' => $insert['name']));
+				$testing->queryAll();
+				if ($testing->rowCount == 0) {
+					$update = new BDD;
+					$update->table('TABLE_PAGES_NEWS_CAT');
+					$update->where($where);
+					$update->update($insert);
+					$return = array(
+						'type' => 'success',
+						'text' => constant('EDIT_CAT_OK')
+					);
+				} else {
+					$return = array(
+						'type' => 'warning',
+						'text' => constant('EXISTING_DATA')
+					);
+				}
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('ERROR_NO_DATA')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'warning',
+				'text' => constant('ERROR_NO_DATA')
+			);
+		}
+		return $return;
+	}
+
+	public function senddelcat ($id)
+	{
+        $id = (int) $id;
+        $sql = New BDD();
+        $sql->table('TABLE_PAGES_NEWS_CAT');
+        $sql->where(array('name' => 'id', 'value' => $id));
+        $sql->delete();
+        if ($sql->rowCount == true) {
+            $return = array(
+                'type' => 'success',
+                'text' => constant('DEL_SUCCESS')
+            );    
+        } else {
+            $return = array(
+                'type' => 'success',
+                'text' => constant('DEL_ERROR')
+            ); 
+        }
+        return $return;
 	}
 
 	public function sendparameter($data = null)
