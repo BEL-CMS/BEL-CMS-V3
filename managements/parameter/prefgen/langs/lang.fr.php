@@ -43,4 +43,5 @@ Common::constant(array(
 	'CONTACT_EMAIL'             => 'Email de contact',
 	'DEFAULT'                   => 'Défaut',
 	'NO_THEME_DEFINED'          => 'Aucun thème définit',
+	'ADMIN_CAPTCHA'             => 'Durée du Captcha en seconde'
 ));

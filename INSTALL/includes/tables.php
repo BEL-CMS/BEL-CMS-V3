@@ -126,7 +126,7 @@ switch ($_POST['table']) {
 			('', 'HOST', '".$host."', 1),
 			('', 'LANDING', '0', 1),
 			('', 'COOKIES', '".randomString(6)."', 1),
-			('', 'CAPTCHA', '5', 0);";
+			('', 'CAPTCHA', '120', 0);";
 	break;
 
 	case 'config_pages':

@@ -58,6 +58,10 @@ $checked2 = $data->cms_log->value   == '1' ? 'checked="checked"' : '';
 						<label for="ADMIN_MAIL_WEBSITE" class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('ADMIN_MAIL_WEBSITE');?></label>
 						<input name="cms_mail_website" <?=$data->cms_mail_website->editable;?> value="<?=$mail;?>" type="text" class="form-input" id="ADMIN_MAIL_WEBSITE">
 					</div>
+					<div>
+						<label for="ADMIN_CAPTCHA" class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('ADMIN_CAPTCHA');?></label>
+						<input name="captcha" <?=$data->captcha->editable;?> value="<?=$data->captcha->value;?>" type="number" min="3" class="form-input" id="ADMIN_CAPTCHA">
+					</div>
 				</div>
 			</div>
 			<div class="card">

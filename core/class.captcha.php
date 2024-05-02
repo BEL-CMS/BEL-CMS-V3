@@ -28,7 +28,7 @@ final class Captcha
         if (isset($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']])) {
             $decrypt = Common::decrypt($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
             $testingTime = time() - $decrypt;
-            if ($testingTime < 4 or empty($testingTime)) {
+            if ($testingTime < $_SESSION['CONFIG_CMS']['CAPTCHA'] or empty($testingTime)) {
                 return false;
             }
         }
@@ -86,7 +86,7 @@ final class Captcha
             $timeCurrent = time();
             $testingTime = $timeCurrent - $sql->data->timelast;
             $cookie = $_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']];
-            if ($testingTime >= 3 and $cookie >= 3) {
+            if ($testingTime >= $_SESSION['CONFIG_CMS']['CAPTCHA'] and $cookie >= $_SESSION['CONFIG_CMS']['CAPTCHA']) {
                 $del = new BDD;
                 $del->table('TABLE_CAPTCHA');
                 $del->where(array('name' => 'IP', 'value' => Common::GetIp()));

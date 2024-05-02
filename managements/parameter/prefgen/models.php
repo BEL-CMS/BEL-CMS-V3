@@ -22,6 +22,7 @@ final class ModelsPrefGen
 	{
 		$data['cms_debug'] = isset($data['cms_debug']) ? 1 : 0;
 		$data['cms_log']   = isset($data['cms_log']) ? 1 : 0;
+		$data['captcha']   = empty($data['captcha']) ? 120 : (int) $data['captcha'];
 
 		foreach ($data as $k => $v) {
 			$sql = New BDD();
