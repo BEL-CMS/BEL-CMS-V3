@@ -28,11 +28,12 @@ class Contact extends Pages
 	{
         $set['captcha'] = Captcha::createCaptcha();
         if ($set['captcha'] === false) {
-            Notification::warning('Veuillez patienter avant l\'envoi d\'un nouveau message');
-            die();
+            $this->error = true;
+            $this->errorInfos = array('warning', 'Veuillez patienter avant l\'envoi d\'un nouveau message', constant('INFO'), false);
+        } else {
+            $this->set($set);
+            $this->render('index');
         }
-        $this->set($set);
-        $this->render('index');
     }
 
     public function send ()
