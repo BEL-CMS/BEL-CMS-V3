@@ -113,10 +113,10 @@ switch ($_POST['table']) {
 			('', 'CMS_LOG', '1', 1),
 			('', 'CMS_LOG_MAX', '1 MONTH', 1),
 			('', 'CMS_MAIL_WEBSITE', '', 0),
-			('', 'CMS_REGISTER_CHARTER', 'En poursuivant votre navigation sur ce site, vous acceptez nos conditions générales d\'utilisation et notamment que des cookies soient utilisés afin de vous connecter automatiquement', 1),
+			('', 'CMS_REGISTER_CHARTER', 'En poursuivant votre navigation sur ce site, vous acceptez nos conditions générales d\'utilisation et notamment que des cookies soient utilisés afin de vous connecter automatiquement.', 1),
 			('', 'CMS_TPL_FULL', 'calendar,comments,downloads,events,forum,groups,inbox,market,members,newsletter,page,shoutbox,survey,team,user,readmore', 0),
 			('', 'CMS_TPL_WEBSITE', NULL, 1),
-			('', 'CMS_VERSION', '3.0.0', 1),
+			('', 'CMS_VERSION', '3.0.1', 1),
 			('', 'CMS_WEBSITE_DESCRIPTION', '', 0),
 			('', 'CMS_WEBSITE_KEYWORDS', '', 0),
 			('', 'CMS_WEBSITE_LANG', 'fr', 1),
@@ -125,7 +125,8 @@ switch ($_POST['table']) {
 			('', 'CMS_DEFAULT_PAGE', 'news', 1),
 			('', 'HOST', '".$host."', 1),
 			('', 'LANDING', '0', 1),
-			('', 'COOKIES', '".randomString(6)."', 1);";
+			('', 'COOKIES', '".randomString(6)."', 1),
+			('', 'CAPTCHA', '5', 0);";
 	break;
 
 	case 'config_pages':
@@ -186,6 +187,7 @@ switch ($_POST['table']) {
 			`datecreate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`mail` varchar(64) NOT NULL,
 			`message` text,
+			`ip` varchar(64) DEFAULT '192.168.1.1',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
