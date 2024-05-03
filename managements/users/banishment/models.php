@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.2 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -43,6 +43,7 @@ final class ModelsBan
 		// Variables et récupérations de données.
 		$return  = (object) array();
 		$author  = strlen($data['author']) == 32 ? $data['author'] : false;
+		$author  = str_replace(' ', "_", $author);
 		$ipBan   = Secure::isIp($data['ip_ban']);
 		$date    = Secure::isString($data['date']);
 		$reason  = Common::VarSecure($data['reason'], 'html');
@@ -104,6 +105,7 @@ final class ModelsBan
 		// Vérifie si l'utilisateur existe.
 		$sql = New BDD;
 		$sql->table('TABLE_USERS');
+		$where  = str_replace('author', "hash_key", $where);
 		$sql->where($where);
 		$sql->queryOne();
 		if ($sql->rowCount != 0) {
@@ -116,9 +118,9 @@ final class ModelsBan
 		// Contrôle si l'utilisateur a un compte enregistré [NON].
 		if ($sql->rowCount == 0) {
 			// Contrôle si e-mail d'utilisateur est à bannir est bon.
-			if ($email && $ipBan) {
+			if ($sql->data->mail && $sql->data->ip) {
 				$textTime = defined(strtoupper($timeban)) ? constant(strtoupper($timeban)) : null;
-				self::addBan (null,$ipBan,$email,$date,$endban,$timeban,$reason);
+				self::addBan (null,$sql->data->ip,$sql->data->mail,$date,$endban,$timeban,$reason);
 				return array(
 					'type' => 'success',
 					'text' => constant('EMAIL_USER').' : '.$email.'<br>'.constant('END').' IP : '.$ipBan.' '.constant('EAST').' '.constant('BANNED_SUCCESSFULLY').'<br>'.constant('BAN_DURATION_OF').' '.$textTime.'<br> date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT')
@@ -181,7 +183,7 @@ final class ModelsBan
 			// Contrôle si l'utilisateur à bannir existe et son IP ou son email.
 			if (User::ifUserExist($sql->data->hash_key) and Secure::isIp($sql->data->ip) or $sql->data->email !== false) {
 				$textTime = defined(strtoupper($timeban)) ? constant(strtoupper($timeban)) : null;
-				self::addBan ($sql->data->hash_key,$sql->data->ip,$sql->data->email,$date,$endban,$timeban, $reason);
+				self::addBan ($sql->data->hash_key,$sql->data->ip,$sql->data->mail,$date,$endban,$timeban, $reason);
 				return array(
 					'type' => 'success',
 					'text' => constant('USER').' : '.$sql->data->username.' '.constant('EAST').' '.constant('BANNED_SUCCESSFULLY').'<br>'.constant('WHITE').' ' .constant('SINCE').' '.constant('IP_USER').' : '.$sql->data->ip.'<br>'.constant('TOWARDS').' '.$textTime.', date de fin '.Common::TransformDate($endban, 'MEDIUM', 'SHORT').'.'
@@ -195,7 +197,7 @@ final class ModelsBan
 			}
 		}
 	}
-	private function addBan ($author = null,$ip = null, $email = nul, $date = null, $endban = null, $timeban = null, $reason = null
+	private function addBan ($author = null,$ip = null, $email = null, $date = null, $endban = null, $timeban = null, $reason = null
 	) {
 		$insert['who']      = $_SESSION['USER']->user->hash_key;
 		$insert['author']   = $author;
@@ -209,9 +211,8 @@ final class ModelsBan
 		$sql = New BDD;
 		$sql->table('TABLE_BAN');
 		$sql->insert($insert);
-		$sql->insert();
 		// SQL RETURN NB INSERT
-		if ($sql->rowCount == 1) {
+		if ($sql->rowCount == true) {
 			$return = array(
 				'type' => 'success',
 				'text' => 'SUCCESS'
