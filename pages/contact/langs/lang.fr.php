@@ -23,5 +23,5 @@ Common::constant(array(
 	#####################################
     'ADD_NEW_MAIL'       => 'Le e-mail a bien été envoyé',
     'ADD_NEW_MAIL_ERROR' => 'L\'envoie e-mail à poser une erreur',
-    'CONTACT'            => 'Conact',
+    'CONTACT'            => 'Contact',
 ));

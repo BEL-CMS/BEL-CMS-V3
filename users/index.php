@@ -24,21 +24,110 @@ class User
 {
     public function __construct()
     {
+		if (isset($_SESSION['USER']) and !isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']])) {
+			session_destroy();
+			self::writeCoockies();
+		}
 		if (isset($_SESSION['USER'])) {
 			self::autoUpdateSession();
 		} else {
 			if (Dispatcher::view() != 'logout') {
 				self::autoLogin();
 			}
-		}    
+		}
     }
 	#########################################
-	# is logged true or false
+	# Save cookies if
+	# Are not present.
+	#########################################
+	private function writeCoockies ()
+	{
+		if (
+			!isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+			empty($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+			!isset($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+			empty($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+			!isset($_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
+			empty($_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']])
+		) {
+			$user = self::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			if ($user !== false) {
+				setcookie(
+					'BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'],
+					$user->user->hash_key,
+					time()+60*60*24*30*3,
+					"/",
+					$_SERVER['HTTP_HOST'],
+					true,
+					true
+				);
+				setcookie(
+					'BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES'],
+					$user->user->username,
+					time()+60*60*24*30*3,
+					"/",
+					$_SERVER['HTTP_HOST'],
+					true,
+					true
+				);
+				setcookie(
+					'BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES'],
+					$user->user->password,
+					time()+60*60*24*30*3,
+					"/",
+					$_SERVER['HTTP_HOST'],
+					true,
+					true
+				);
+			}
+		}
+	}
+	#########################################
+	# Delete all user configuration.
+	#########################################
+	public static function delUserAllCofnig ($hash_key = false)
+	{
+		if ($hash_key !== false and strlen($hash_key) == 32) {
+			$delUsers = new BDD;
+			$delUsers->table('TABLE_USERS');
+			$delUsers->where(array('name' => 'hash_key', 'value' => $hash_key));
+			$delUsers->delete();
+
+			$delprofils = new BDD;
+			$delprofils->table('TABLE_USERS_PROFILS');
+			$delprofils->where(array('name' => 'hash_key', 'value' => $hash_key));
+			$delprofils->delete();
+
+			$delSocial = new BDD;
+			$delSocial->table('TABLE_USERS_SOCIAL');
+			$delSocial->where(array('name' => 'hash_key', 'value' => $hash_key));
+			$delSocial->delete();
+
+			$delGaming = new BDD;
+			$delGaming->table('TABLE_USERS_GAMING');
+			$delGaming->where(array('name' => 'hash_key', 'value' => $hash_key));
+			$delGaming->delete();
+
+			$delGaming = new BDD;
+			$delGaming->table('TABLE_USERS_GROUPS');
+			$delGaming->where(array('name' => 'hash_key', 'value' => $hash_key));
+			$delGaming->delete();
+
+			$delGaming = new BDD;
+			$delGaming->table('TABLE_USERS_PAGE');
+			$delGaming->where(array('name' => 'hash_key', 'value' => $hash_key));
+			$delGaming->delete();
+
+			self::logout();
+		}
+	}
+	#########################################
+	# is logged true or false.
 	#########################################
 	public static function isLogged () : bool
 	{
 		if (!empty($_SESSION['USER'])) {
-			$return = true;
+				$return = true;
 		} else {
 			$return = false;
 		}
@@ -262,7 +351,7 @@ class User
 				'name'  => 'hash_key',
 				'value' => $hash_key
 			));
-			$user->fields(array('username','hash_key', 'mail', 'ip', 'valid', 'expire', 'token', 'gold'));
+			$user->fields(array('username','hash_key', 'password', 'mail', 'ip', 'valid', 'expire', 'token', 'gold'));
 			$user->isObject(false);
 			$user->queryOne();
 			if (!empty($user->data)) {

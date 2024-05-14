@@ -70,6 +70,7 @@
 		'users_profils',
 		'users_social',
 		'visitors',
-		'widgets'
+		'widgets',*
+		'stats'
 	);
 	echo json_encode($ajax);

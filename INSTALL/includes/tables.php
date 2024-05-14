@@ -126,7 +126,9 @@ switch ($_POST['table']) {
 			('', 'HOST', '".$host."', 1),
 			('', 'LANDING', '0', 1),
 			('', 'COOKIES', '".randomString(6)."', 1),
-			('', 'CAPTCHA', '120', 0);";
+			('', 'CAPTCHA', '1', 0),
+			('', 'TIME_CAPTCHA', '1', 0),
+			('','VALIDATION', 'mail', 0);";
 	break;
 
 	case 'config_pages':
@@ -792,21 +794,21 @@ switch ($_POST['table']) {
 	break;
 
 	case "page_news":
-			$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-			$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-				`id` int NOT NULL AUTO_INCREMENT,
-				`rewrite_name` varchar(128) NOT NULL,
-				`name` varchar(128) NOT NULL,
-				`date_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				`author` varchar(32) DEFAULT NULL,
-				`authoredit` varchar(32) DEFAULT NULL,
-				`content` text NOT NULL,
-				`additionalcontent` text,
-				`tags` text,
-				`cat` varchar(16) DEFAULT NULL,
-				`view` int DEFAULT '0',
-				'img' varchar(255) DEFAULT NULL,
-				PRIMARY KEY (`id`)
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`rewrite_name` varchar(128) NOT NULL,
+			`name` varchar(128) NOT NULL,
+			`date_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`author` varchar(32) DEFAULT NULL,
+			`authoredit` varchar(32) DEFAULT NULL,
+			`content` text NOT NULL,
+			`additionalcontent` text,
+			`tags` text,
+			`cat` varchar(16) DEFAULT NULL,
+			`view` int DEFAULT '0',
+			`img` varchar(255) DEFAULT NULL,
+			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
@@ -1182,14 +1184,34 @@ switch ($_POST['table']) {
 	break;
 
 	case "links_cat":
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(64) DEFAULT NULL,
 			`color` varchar(16) DEFAULT NULL,
 			`description` text,
 			PRIMARY KEY (`id`)
+
+
+	case "stats":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int(11) NOT NULL,
+			`name` varchar(32) NOT NULL,
+			`value` tinyint(1) DEFAULT 1
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
+			(1, 'yesterday', 1),
+			(2, 'today', 1),
+			(3, 'now', 1),
+			(4, 'page_view', 1),
+			(5, 'users', 1),
+			(6, 'news', 1),
+			(7, 'articles', 1),
+			(8, 'comments', 1),
+			(9, 'links', 1),
+			(10, 'files', 1),
+			(11, 'images', 1);";
 	break;
 }
 

@@ -26,11 +26,17 @@ class Contact extends Pages
 
 	public function index ()
 	{
-        $set['captcha'] = Captcha::createCaptcha();
-        if ($set['captcha'] === false) {
-            $this->error = true;
-            $this->errorInfos = array('warning', 'Veuillez patienter avant l\'envoi d\'un nouveau message', constant('INFO'), false);
+        if (Captcha::getActiveCaptcha() === true) {
+            if (Captcha::getTimeCaptcha() and is_array(Captcha::getTimeCaptcha())) {
+                $this->error = true;
+                $this->errorInfos = array('warning', constant('CODE_CAPTCHA_TIME'), constant('INFO'), false);  
+            } else {
+                $set['captcha'] = Captcha::createCaptcha();
+                $this->set($set);
+                $this->render('index');
+            }
         } else {
+            $set['captcha'] = false;
             $this->set($set);
             $this->render('index');
         }
@@ -54,20 +60,20 @@ class Contact extends Pages
             Notification::warning('Aucun message transmit');
             die();
         }
-        if (empty($_POST['captcha'])) {
-            if (Captcha::verifCaptcha($_POST['query_contact']) === false) {
+        if (Captcha::getActiveCaptcha() === true) {
+            if (Captcha::verifCaptcha($_POST['query_captcha']) === false) {
                 $this->error = true;
                 $this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('ERROR_CAPTCHA'), false);
                 return false;
             } else {
                 $return = $this->models->send($_POST);
                 $this->error = true;
-                $this->errorInfos = array($return['type'], $return['text'], constant('CONTACT'), false);
+                $this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);
                 $this->redirect('Contact', 3);
             }
         } else {
-            Notification::warning('Erreur Captcha');
-            die();
+            Notification::warning(constant('CODE_CAPTCHA_ERROR'));
+            $this->redirect('Contact', 3);
         }
     }
 }
