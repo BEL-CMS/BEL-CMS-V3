@@ -54,6 +54,7 @@ Common::constant(array(
 	'CHOICE_OF_GAMES'              => 'Choix des jeux',
 	'MODIFY_GAMES_SUCCESS'         => 'Liste des jeux, modifié avec succès',
 	'VIDEO_GAMES'                  => 'Jeux vidéos',
+	'SUBJECT_HTML'                 => 'Récupération du code à valider',
 	#####################################
 	# Fichier lang en français - Admin
 	#####################################

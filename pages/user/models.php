@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.1 [PHP8.3]
+ * @version 3.0.3 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -11,12 +11,12 @@
 
 namespace Belcms\Pages\Models;
 
-use BelCMS\Core\GetHost;
 use BelCMS\Core\Secure;
 use BelCMS\Core\UserNotification;
 use BelCMS\PDO\BDD;
 use BelCMS\User\User as Users;
 use BelCMS\Requires\Common;
+use BelCMS\Core\eMail;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -36,7 +36,7 @@ final class User
 	{
 		if ($data) {
 			$error = 0;
-			// Ajout du blacklistage des mail jetables
+			// Ajout du blacklistage des mail jetables & spam
 			$sql = New BDD();
 			$sql->table('TABLE_MAIL_BLACKLIST');
 			$sql->isObject(false);
@@ -98,6 +98,8 @@ final class User
 					$hash_key = md5(uniqid(rand(), true));
 					$password_hash = password_hash($data['passwordhash'], CRYPT_BLOWFISH);
 
+					$pass_key = md5(uniqid(rand(), true));
+
 					$insertUser = array(
 						'id'                => null,
 						'username'          => $data['username'],
@@ -105,11 +107,18 @@ final class User
 						'password'          => $password_hash,
 						'mail'              => $data['email'],
 						'ip'                => Common::getIp(),
-						'valid'             => (int) 1,
 						'expire'            => (int) 0,
 						'token'             => '',
 						'gold'              => (int) 0
 					);
+
+					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
+						$insertUser['valid'] = (int) 0;
+						$insertUser['number_valid'] = $pass_key;
+					} else {
+						$insertUser['valid'] = (int) 1;
+						$insertUser['number_valid'] = null;
+					}
 
 					$test = New BDD();
 					$test->table('TABLE_USERS');
@@ -163,17 +172,89 @@ final class User
 					$insertPage->table('TABLE_USERS_PAGE');
 					$insertPage->insert(array('hash_key'=> $hash_key));
 
-					//unset($_SESSION['TMP_QUERY_REGISTER']);
-					
-					Users::login($data['username'],$data['passwordhash']);
+					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail' and $test->data != 0) {
 
-					$return['msg']  = constant('CURRENT_RECORD');
-					$return['type'] = 'success';
+						$dataMail['author']  = $_SESSION['USER']->user->username;
+						$dataMail['subject'] = constant('SUBJECT_HTML');
+						$dataMail['message'] = $pass_key;
+						$dataMail['mail']    = $insert->sqlInsert['mail'];
+
+						$mail = new eMail();
+						$mail->fromName($_SESSION['USER']->user->username);
+						$mail->fromMail($_SESSION['CONFIG_CMS']['CMS_MAIL_WEBSITE']); 
+						$mail->subject(constant('SUBJECT_HTML'));
+						$mail->message($pass_key);
+						$mail->output($insert->sqlInsert['mail']);
+						$mail->html(self::html($dataMail));
+						$mail->send();
+
+						Users::login($data['username'],$data['passwordhash']);
+					}
 				}
 			}
+			$return['msg']  = constant('CURRENT_RECORD');
+			$return['type'] = 'success';
 			return $return;
 		}
 	}
+
+	private function html ($data)
+	{
+		$return = ' 
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns:v="urn:schemas-microsoft-com:vml">
+			<head>
+				<meta http-equiv="content-type" content="text/html; charset=utf-8">
+				<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
+			</head>
+			<body style="width: 100%;height: 100%;background: #37383a;text-align: center;">
+				<table cellpadding="0" cellspacing="0" style="width: 620px; margin:0 auto;">
+					<tr>
+						<td style="height: 10px; background-color: #5187bd;border-collapse:collapse; text-align:left;"></td>
+					</tr>
+					<tr style="background: #FFF;">
+						<td style="padding: 25px;font-size: 24px;color: #5187bd;font-family: Helvetica, sans-serif;">'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'].'</td>
+					</tr>
+					<tr>
+						<td style="height: 3px; background: #777777;border: 1px dotted #777777;padding: 2px 0; background: #FFF;"></td>
+					</tr>
+					<tr>
+						<td style="background: #5187bd;color:#FFF;padding: 15px 25px;font-size: 24px;">Formulaire de contact</td>
+					</tr>
+					<tr>
+						<td style="height: 3px; background: #777777;border: 1px dotted #777777;padding: 2px 0; background: #FFF;"></td>
+					</tr>
+					<tr style="background: #FFF;">
+						<td style="color:#aaaaaa;padding: 25px 0 0 25px;font-size: 12px;font-family:Arial, Helvetica, sans-serif;">17-04-2024 @ 07h53</td>
+					</tr>
+					<tr style="background: #FFF;">
+						<td style="padding: 0 25px 0px 25px;font-family:Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif; font-size:36px;font-size: 24px;color: #777777;">'.$data['subject'].'</td>
+					</tr>
+					<tr style="background: #FFF;">
+						<td style="padding: 5px 25px 25px 25px;text-align: justify;font-family: Arial, Helvetica, sans-serif;font-size: 13px;line-height: 15pt;color: #777777;">'.$data['message'].'</td>
+					</tr>
+					<tr style="width: 100%;">
+						<td style="width:100%;">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="text-align: left;font-size: 12px;line-height: 15pt;color: #777777;width: 100%;">
+								<tr style="background: #f4f4f4;width: 100%;">
+									<td style="text-align: center;padding: 15px;color: #777777;font-weight: bold;font-size: 16px;">Information</td>
+								</tr>
+								<tr style="background: #f4f4f4;width: 100%;">
+									<td style="padding: 0 25px;"><strong>Nom</strong> : '.$data['author'].'</td>
+								</tr>
+								<tr style="background: #f4f4f4;width: 100%;">
+									<td style="padding: 0 25px 15px 25px;"><strong>E-mail</strong> : '.$data['mail'].'</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr><td style="height: 10px;background-color: #5187bd;"></td></tr>
+				</table>     
+			</body>
+		</html>';
+		return $return;
+	}
+
 	public function sendEditProfil ($data) {
 		$error  = true;
 		$insertProfil = array();
@@ -1005,5 +1086,19 @@ final class User
 		$sql->limit(6);
 		$sql->queryAll();
 		return $sql->data;
+	}
+
+	public function testUser () : bool
+	{
+		if (Users::isLogged()) {
+			$sql = new BDD;
+			$sql->table('TABLE_USERS');
+			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
+			$sql->queryOne();
+			$data = $sql->data;
+			return empty($data->number_valid) ? false : true;
+		} else {
+			return true;
+		}
 	}
 }

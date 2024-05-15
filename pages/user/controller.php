@@ -215,13 +215,26 @@ class User extends Pages
 	#########################################	
 	public function register ()
 	{
-		if (UserInfos::isLogged() === false) {
+		if (UserInfos::isLogged() === true) {
+			$valid  = empty($_SESSION['CONFIG_CMS']['VALIDATION'] and $_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') ? false : true;
+			if ($valid == true) {
+				$this->redirect('user', 0);
+			} else {
+				$testUser = $this->models->testUser;
+				if ($testUser === true) {
+					$this->redirect('user', 0);
+				} else {
+					$return['captcha'] = Captcha::createCaptcha();
+					$this->set($return);
+					$this->data = (bool) true;
+					$this->render('register');					
+				}
+			}
+		} else {
 			$return['captcha'] = Captcha::createCaptcha();
 			$this->set($return);
 			$this->data = (bool) true;
 			$this->render('register');
-		} else {
-			$this->redirect('user', 0);
 		}
 	}
 	#########################################
@@ -254,7 +267,7 @@ class User extends Pages
 		}
 	}
 
-	public function sendRegister ()
+	public function SendRegister ()
 	{
 		if (Captcha::verifCaptcha($_POST['query_register']) === false) {
 			$this->error = true;
