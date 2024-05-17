@@ -351,7 +351,7 @@ class User
 				'name'  => 'hash_key',
 				'value' => $hash_key
 			));
-			$user->fields(array('username','hash_key', 'password', 'mail', 'ip', 'valid', 'expire', 'token', 'gold'));
+			$user->fields(array('username','hash_key', 'password', 'mail', 'ip', 'valid', 'expire', 'token', 'gold', 'number_valid'));
 			$user->isObject(false);
 			$user->queryOne();
 			if (!empty($user->data)) {

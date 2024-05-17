@@ -55,6 +55,9 @@ Common::constant(array(
 	'MODIFY_GAMES_SUCCESS'         => 'Liste des jeux, modifié avec succès',
 	'VIDEO_GAMES'                  => 'Jeux vidéos',
 	'SUBJECT_HTML'                 => 'Récupération du code à valider',
+	'ACCOUNT_REGISTRATION'         => 'Enregistrement du compte',
+	'SERIAL_ACTIVE'                => 'Clé d\'activation',
+	'ACTIVE_TO_SERIAL'             => 'Voici la clé de sécurité pour activer votre compte.',
 	#####################################
 	# Fichier lang en français - Admin
 	#####################################

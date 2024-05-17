@@ -25,6 +25,10 @@ $array = array(
 	'ADMIN_ONLY'                          => 'Administrateur de Nv1 seulement',
 	'INFOS'                               => 'Informations',
 	'ALERT_INFOS'                         => 'Alert ! Information requis',
+	'CAPTCHA'                             => 'Captcha',
+	'CODE_CAPTCHA_ERROR'                  => 'Erreur du code Captcha !',
+	'CODE_CAPTCHA_TIME'                   => 'Veuillez patienter avant l\'envoi d\'un nouveau message',
+	'ERROR_UNKNOW'                        => 'Erreur inconnue du Captcha',
  	#####################################
 	# Langue Français - COMMUN
 	#####################################
