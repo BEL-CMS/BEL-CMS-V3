@@ -62,6 +62,17 @@ $checked2 = $data->cms_log->value   == '1' ? 'checked="checked"' : '';
 						<label for="ADMIN_CAPTCHA" class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('ADMIN_CAPTCHA');?></label>
 						<input name="captcha" <?=$data->captcha->editable;?> value="<?=$data->captcha->value;?>" type="number" min="3" class="form-input" id="ADMIN_CAPTCHA">
 					</div>
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('ADMIN_VALIDATION');?></label>
+
+						<select class="form-select" id="ADMIN_VALIDATION" name="validation">
+						<?php
+						 	echo  $data->validation->value == 'mail' ? '<option selected value="mail">'.constant('ADMIN_VALIDATION').'</option>' : ''; 
+							echo '<option value="0">'.constant('ADMIN_VALIDATION_AUTO').'</option>';
+							echo '<option value="mail">'.constant('ADMIN_VALIDATION').'</option>';
+							?>
+                        </select>
+					</div>
 				</div>
 			</div>
 			<div class="card">

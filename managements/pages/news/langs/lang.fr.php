@@ -39,4 +39,9 @@ Common::constant(array(
 	'CREATION_DATE'           => 'Date de création',
 	'NEW'                     => 'Nouveau',
 	'READMORE_ADMIN'          => 'La suite de l\'article',
+	'LIST_OF_CAT'             => 'Liste des catégories',
+	'NAME_OF_CAT'             => 'Nom de la catégorie',
+	'EXISTING_DATA'           => 'Le nom de la catégorie existe déjà',
+	'INSERT_CAT_OK'           => 'Insertion de la catégorie avec succès',
+	'EDIT_CAT_OK'             => 'Edition de la catégorie avec succès',
 ));

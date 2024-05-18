@@ -29,6 +29,10 @@ $array = array(
 	'CODE_CAPTCHA_ERROR'                  => 'Erreur du code Captcha !',
 	'CODE_CAPTCHA_TIME'                   => 'Veuillez patienter avant l\'envoi d\'un nouveau message',
 	'ERROR_UNKNOW'                        => 'Erreur inconnue du Captcha',
+	'SEND_MAIL_VALID'                     => 'Envoie de votre code de validation par e-mail',
+	'DEL_USERS'                           => 'Votre compte a bien été supprimé',
+	'ERROR_SERIAL_OR_NAME'                => 'L\'email ou la clé d\'activation est incorrecte',
+	'USER_CREATE_ACTIVED'                 => 'Votre compte a bien été activé',
  	#####################################
 	# Langue Français - COMMUN
 	#####################################

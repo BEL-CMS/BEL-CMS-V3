@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.2 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -12,6 +12,7 @@
 namespace BelCMS\Core;
 use BelCMS\Core\Debug as debug;
 use BelCMS\Core\Visitors;
+use BelCMS\Core\Validation as valid;
 use BelCMS\PDO\BDD;
 use BelCMS\User\User;
 use BelCMS\Core\Dispatcher;
@@ -19,6 +20,7 @@ use BelCMS\Templates\Templates as Template;
 use BelCMS\Core\GetHost;
 use BelCMS\Core\Notification;
 use BelCMS\Requires\Common;
+use Belcms\Widgets\Controller\Users\Users;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -39,7 +41,8 @@ final class BelCMS
 				$widgets = array(),
 				$template;
 
-	public		$langs = 'fr';
+	public		$langs = 'fr',
+				$valid;
 
 	public		$host,
 				$tags,
@@ -53,6 +56,9 @@ final class BelCMS
 		if ($this->link != 'Mails') {
 			new Visitors;
 		}
+
+		self::valid();
+
 		$this->widgets  = self::getWidgets ();
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
@@ -65,12 +71,13 @@ final class BelCMS
 	##################################################
 	private function page ()
 	{
+		$content = '';
 		ob_start();
+
 		$this->link	  = Dispatcher::page($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']);
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
 		$landing      = Dispatcher::link();
-		new User;
 		$unavailable = new \Maintenance;
 		if ($unavailable->status() == 'close') {
 			if (User::isLogged()) {
@@ -305,6 +312,75 @@ final class BelCMS
 		$return =  ob_get_contents();
 		ob_end_clean();
 		echo $return;
+	}
+	#########################################
+	# Retourn un message d'information de type
+	# code ou reset du compte
+	#########################################
+	private function valid ()
+	{
+		if (isset($_GET['valid']) && $_GET['valid'] == 'form') {
+			$readUser     = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			$readUserKey  = strlen($readUser->user->number_valid) == 32 ? $readUser->user->number_valid : false;
+			$readUserMail = Secure::isMail($readUser->user->mail) ? $readUser->user->mail : false;
+
+			if ($_GET['validation_mail'] == $readUserMail && $_GET['validation_code'] == $readUserKey) {
+				$update['valid']        = (int) 1;
+				$update['number_valid'] = null;
+				$sql = new BDD;
+				$sql->table('TABLE_USERS');
+				$sql->where(array('name' => 'hash_key', 'value' => $readUser->user->hash_key));
+				$sql->update($update);
+
+				$validation = new Valid();
+				$data = constant('USER_CREATE_ACTIVED');
+				$validation->returnValidMail($data);
+			} else {
+				$validation = new Valid();
+				$data = constant('ERROR_SERIAL_OR_NAME');
+				$validation->returnValidMail($data);
+			}
+		}
+
+		if (isset($_GET['valid']) and $_GET['valid'] == 'resend') {
+			$update['valid'] = (int) 0;
+			$update['number_valid'] = md5(uniqid(rand(), true));
+            $author = $_SESSION['USER']->user->hash_key;
+			$insert = New BDD();
+			$insert->table('TABLE_USERS');
+			$insert->where(array('name' => 'hash_key', 'value' => $author));
+			$insert->update($update);
+			$validation = new Valid();
+			$data = constant('SEND_MAIL_VALID');
+			$validation->returnValidMail($data);
+		}
+
+		if (isset($_GET['valid']) and $_GET['valid'] == 'delUser') {
+			User::delUserAllCofnig($_SESSION['USER']->user->hash_key);
+
+			$domain = ($_SERVER['HTTP_HOST']);
+			setcookie('BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $domain, false);
+			setcookie('BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $domain, false);
+			setcookie('BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $domain, false);
+
+			$validation = new Valid();
+			$data = constant('DEL_USERS');
+			$validation->returnValidMail($data);
+
+			unset($_SESSION['USER'], $_COOKIE["BELCMS_HASH_KEY"],$_COOKIE["BELCMS_NAME"], $_COOKIE["BELCMS_PASS"]);
+
+			session_destroy();
+		}
+
+		if (isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']])) {
+			if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
+				if (User::isLogged() === true) {
+					$validation = new Valid();
+					$user = $validation->getSQLUser();
+					$this->valid = $user->valid;
+				}
+			}
+		}
 	}
 
 }
