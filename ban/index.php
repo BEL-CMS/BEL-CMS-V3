@@ -1,18 +1,18 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.3 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
 namespace BelCMS\Ban;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
-use BelCMS\User\User as Users;
+use BelCMS\User\User;
 use BelCMS\Core\Secure;
 
 if (!defined('CHECK_INDEX')) {
@@ -62,23 +62,20 @@ final class _Ban
 	public function positive ()
 	{
 		// liste le bannissement / return true or false
-		if (self::getBan() !== false) {
-			// Si l'utilisateur est logué
-			if (self::isLogged() === true) {
-				// Vérifie l'IP ou l'auteur, si elle correspond à un des bannissements
-				if (Common::GetIp() == $this->ipBan or $this->author == $_SESSION['USER']->user->hash_key)
-				{
-					$ban  = new \DateTimeImmutable($this->endban);
-					$this->countDate = $ban->format('Y/m/d H:i:s');
-					$diff = $this->currentDate->diff($ban);
-					if ($diff->invert == 0) {
-						return (bool) true;
-					} else {
-						return (bool) false;
-					}
+		if (self::getBan() === true) {
+			// Vérifie l'IP ou l'auteur, si elle correspond à un des bannissements
+			if (Common::GetIp() == $this->ipBan or $this->author == $_SESSION['USER']->user->hash_key)
+			{
+				$ban  = new \DateTimeImmutable($this->endban);
+				$this->countDate = $ban->format('Y/m/d H:i:s');
+				$diff = $this->currentDate->diff($ban);
+				if ($diff->invert == 0) {
+					return (bool) true;
 				} else {
 					return (bool) false;
 				}
+			} else {
+				return (bool) false;
 			}
 		} else {
 			return (bool) false;
@@ -87,7 +84,7 @@ final class _Ban
 	#########################################
 	# return les infos du ban
 	#########################################
-	private function getBan ()
+	private function getBan () : bool
 	{
 		$return = false;
 		$author = self::isLogged() === true ? $_SESSION['USER']->user->hash_key : false;
@@ -99,7 +96,7 @@ final class _Ban
 		$sql->queryOne();
 
 		if ($sql->rowCount == 0) {
-			$return = (bool) false;
+			$return = false;
 		} else {
 			$ban = $sql->data;
 			$this->author  = $ban->author;
@@ -108,7 +105,8 @@ final class _Ban
 			$this->endban  = $ban->endban;
 			$this->timeban = $ban->timeban;
 			$this->reason  = $ban->reason;
-			$return = (bool) true;
+
+			$return = true;
 		}
 
 		return $return;
@@ -142,16 +140,17 @@ final class _Ban
 	private function getUserInfo ()
 	{
 		if (self::isLogged() === true) {
-			$user = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
-		
-			$this->username = $user->user->username;
-			$this->email    = $user->user->mail;
-			$this->hash_key = $user->user->hash_key;
-			$this->groups   = $user->groups->all_groups;
-			$this->ipUser   = $user->user->ip;
-			$this->gold     = $user->user->gold;
+			$user = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			if ($user !== false) {
+				$this->username = $user->user->username;
+				$this->email    = $user->user->mail;
+				$this->hash_key = $user->user->hash_key;
+				$this->groups   = $user->groups->all_groups;
+				$this->ipUser   = $user->user->ip;
+				$this->gold     = $user->user->gold;
+			}
 		} else {
-			$this->ip       = Common::GetIp ();
+			$this->ip = Common::GetIp ();
 		}
 	}
 	#########################################
@@ -159,7 +158,7 @@ final class _Ban
 	#########################################
 	private function isLogged ()
 	{
-		if (Users::isLogged () and Users::ifUserExist ($_SESSION['USER']->user->hash_key)) {
+		if (User::isLogged () and User::ifUserExist ($_SESSION['USER']->user->hash_key)) {
 			return (bool) true;
 		} else {
 			return (bool) false;
@@ -183,4 +182,7 @@ final class _Ban
 			die();
 		}
 	}
+	#########################################
+	# add ban
+	#########################################
 }

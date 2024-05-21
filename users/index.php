@@ -14,6 +14,8 @@ use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
 use BelCMS\Core\Config as BelCMSConfig;
 use BelCMS\Core\Dispatcher;
+use BelCMS\Core\Secure;
+use GetHost;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -215,11 +217,38 @@ class User
 			$results = $sql->data;
 
 			if ($results && is_object($results)) {
-				if ($results->expire >= 4) {
-					$return['msg']  = constant('ACCOUNT_BLOCKED_REQUEST_NEW_PASS');
+				if ($results->expire == 4) {
+					$return['msg']  = constant('ACCOUNT_BLOCKED_FIVE');
 					$return['type'] = 'error';
-					return $return;				
+					self::addBan (Common::GetIp(), 'PT5M', $return['msg']);
+					return $return;	
 				}
+				if ($results->expire == 5) {
+					$return['msg']  = constant('ACCOUNT_BLOCKED_TEN');
+					self::addBan (Common::GetIp(), 'PT10M', $return['msg']);
+					$return['type'] = 'error';
+				}
+				if ($results->expire == 6) {
+					$return['msg']  = constant('ACCOUNT_BLOCKED_FIFTEEN');
+					self::addBan (Common::GetIp(), 'PT15M', $return['msg']);
+					$return['type'] = 'error';
+				}
+				if ($results->expire == 7) {
+					$return['msg']  = constant('ACCOUNT_BLOCKED_TWELVE');
+					self::addBan (Common::GetIp(), 'PT20M', $return['msg']);
+					$return['type'] = 'error';
+				}	
+				if ($results->expire == 8) {
+					$return['msg']  = constant('ACCOUNT_BLOCKED_TWENTY_FOUR');
+					self::addBan (Common::GetIp(), 'P1D', $return['msg']);
+					$return['type'] = 'error';
+				}
+				if ($results->expire == 9) {
+					$return['msg']  = constant('ACCOUNT_BLOCKED_LIFE');
+					self::addBan (Common::GetIp(), 'P99Y', $return['msg']);
+					$return['type'] = 'error';
+				}
+
 				if ($results->valid == 0) {
 					$return['msg']  = constant('VALIDATION_REQUIRED');
 					$return['type'] = 'error';
@@ -230,7 +259,6 @@ class User
 					$check_password = false;
 				}
 				if (password_verify($password, $results->password) OR $check_password) {
-
 					if (
 						!isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) && 
 						!isset($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) && 
@@ -294,6 +322,38 @@ class User
 			}
 		}
 		return $return;
+	}
+	#########################################
+	# ADD Ban
+	#########################################
+	private static function addBan ($ip, $date, $reason)
+	{
+		$dateNow = new \DateTimeImmutable('now');
+		$newDate = $dateNow->add(new \DateInterval($date));
+		$endban  = $newDate->format('Y-m-d H:i:s');
+
+		$where = array('name' => 'ip', 'value' => $ip);
+		$sql = new BDD;
+		$sql->table('TABLE_BAN');
+		$sql->where($where);
+		$sql->queryOne();
+
+		if (empty($sql->data)) {
+			$insert['ip']      = Secure::isIp($ip);
+			$insert['endban']  = $endban;
+			$insert['timeban'] = $date;
+			$insert['reason']  = Common::VarSecure($reason, 'html');
+			$sqlInsert = new BDD;
+			$sqlInsert->table('TABLE_BAN');
+			$sqlInsert->insert($insert);
+		} else {
+			$update['reason']  = Common::VarSecure($reason, 'html');
+			$update['endban']  = $endban;
+			$update['timeban'] = $date;
+			$sqlUpdate = new BDD;
+			$sqlUpdate->table('TABLE_BAN');
+			$sqlUpdate->update($update);
+		}
 	}
 	#########################################
 	# Logout

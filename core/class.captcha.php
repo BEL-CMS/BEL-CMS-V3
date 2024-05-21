@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.2 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -25,14 +25,6 @@ final class Captcha
 {
     public static function createCaptcha ()
     {
-        if (isset($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']])) {
-            $decrypt = Common::decrypt($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
-            $testingTime = time() - $decrypt;
-            if ($testingTime < $_SESSION['CONFIG_CMS']['CAPTCHA'] or empty($testingTime)) {
-                return false;
-            }
-        }
-
         $numberOneRand = rand(1, 9);
         $numberTwoRand = rand(1, 9);
         $OVERALL = $numberOneRand + $numberTwoRand;
@@ -72,29 +64,53 @@ final class Captcha
     }
     public static function verifCaptcha ($code)
     {
-        if (isset($_REQUEST['captcha']) and !empty($_REQUEST['captcha'])) {
+        if ($_SESSION['CONFIG_CMS']['CAPTCHA'] != 1) { 
+            if (isset($_REQUEST['captcha']) and !empty($_REQUEST['captcha'])) {
+                return false;
+            }
+            $code = Common::VarSecure($code, null);
+            $where[] = array('name' => 'IP', 'value' => Common::GetIp());
+            $where[] = array('name' => 'code', 'value' => $code);
+            $sql = new BDD;
+            $sql->table('TABLE_CAPTCHA');
+            $sql->where($where);
+            $sql->queryOne();
+            if (!empty($sql->data)) {
+                $timeCurrent = time();
+                $testingTime = $timeCurrent - $sql->data->timelast;
+                $cookie = $_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']];
+                if ($testingTime >= $_SESSION['CONFIG_CMS']['CAPTCHA'] and $cookie >= $_SESSION['CONFIG_CMS']['CAPTCHA']) {
+                    $del = new BDD;
+                    $del->table('TABLE_CAPTCHA');
+                    $del->where(array('name' => 'IP', 'value' => Common::GetIp()));
+                    $del->delete();
+                    setcookie('BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $_SERVER['HTTP_HOST'], false);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public static function getActiveCaptcha ()
+    {
+        if ($_SESSION['CONFIG_CMS']['CAPTCHA'] == '1') {
+            return true;
+        } else {
             return false;
         }
-        $code = Common::VarSecure($code, null);
-        $where[] = array('name' => 'IP', 'value' => Common::GetIp());
-        $where[] = array('name' => 'code', 'value' => $code);
-        $sql = new BDD;
-        $sql->table('TABLE_CAPTCHA');
-        $sql->where($where);
-        $sql->queryOne();
-        if (!empty($sql->data)) {
-            $timeCurrent = time();
-            $testingTime = $timeCurrent - $sql->data->timelast;
-            $cookie = $_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']];
-            if ($testingTime >= $_SESSION['CONFIG_CMS']['CAPTCHA'] and $cookie >= $_SESSION['CONFIG_CMS']['CAPTCHA']) {
-                $del = new BDD;
-                $del->table('TABLE_CAPTCHA');
-                $del->where(array('name' => 'IP', 'value' => Common::GetIp()));
-                $del->delete();
-                setcookie('BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $_SERVER['HTTP_HOST'], false);
-                return true;
-            } else {
-                return false;
+    }
+
+    public static function getTimeCaptcha ()
+    {
+        if (isset($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']])) {
+            $decrypt = Common::decrypt($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+            $testingTime = time() - $decrypt;
+            if ($testingTime < $_SESSION['CONFIG_CMS']['TIME_CAPTCHA'] or empty($testingTime)) {
+                return array('type' => 'warning', 'msg' => constant('CODE_CAPTCHA_TIME'), 'ìnfos' => constant('INFO'));
             }
         }
     }
