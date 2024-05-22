@@ -65,6 +65,7 @@ switch ($_POST['table']) {
 			`endban` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`timeban` varchar(5) DEFAULT '0',
 			`reason` text NOT NULL,
+			`number` int NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
@@ -996,6 +997,7 @@ switch ($_POST['table']) {
 			`expire` float NOT NULL DEFAULT '0',
 			`token` varchar(50) DEFAULT NULL,
 			`gold` int NOT NULL DEFAULT '0',
+			`number_valid` varchar(32) DEFAULT NULL,
 			PRIMARY KEY (`id`),
 			UNIQUE KEY `name` (`username`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
