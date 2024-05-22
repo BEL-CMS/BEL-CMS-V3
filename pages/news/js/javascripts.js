@@ -1,3 +1,0 @@
-$.each("img", function () { 
-    glightbox();
-});

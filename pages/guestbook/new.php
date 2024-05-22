@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.2 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
  */
 
@@ -26,11 +26,13 @@ $readonly = User::isLogged() ? 'readonly' : '';
 			<input <?=$readonly;?> type="text" value="<?=$user;?>" name="author" id="author" required>
 		</div>
 		<div>
-			<textarea required name="message"></textarea>
+			<textarea style="height: 100px;" required name="message"></textarea>
 		</div>
 		<div>
-			<input required name="query_guestbook" type="number" min="1" max="18" class="form-control" autocomplete="off" placeholder="Captcha resolvé le petit calcul : <?=$captcha['NB_ONE'];?> + <?=$captcha['NB_TWO'];?>">
+			<?php if ($captcha !== false): ?>
+			<input id="captcha" required name="query_captcha" type="number" min="1" autocomplete="off" placeholder="Captcha : resolvé le petit calcul : <?=$captcha['NB_ONE'];?> + <?=$captcha['NB_TWO'];?>">
 			<input type="hidden" value="" name="captcha">
+			<?php endif; ?>
 		</div>
 		<div class="donation_purchase_row">
             <input id="btn_submit" type="submit" value="<?=constant('SUBMIT');?>">

@@ -217,38 +217,6 @@ class User
 			$results = $sql->data;
 
 			if ($results && is_object($results)) {
-				if ($results->expire == 4) {
-					$return['msg']  = constant('ACCOUNT_BLOCKED_FIVE');
-					$return['type'] = 'error';
-					self::addBan (Common::GetIp(), 'PT5M', $return['msg']);
-					return $return;	
-				}
-				if ($results->expire == 5) {
-					$return['msg']  = constant('ACCOUNT_BLOCKED_TEN');
-					self::addBan (Common::GetIp(), 'PT10M', $return['msg']);
-					$return['type'] = 'error';
-				}
-				if ($results->expire == 6) {
-					$return['msg']  = constant('ACCOUNT_BLOCKED_FIFTEEN');
-					self::addBan (Common::GetIp(), 'PT15M', $return['msg']);
-					$return['type'] = 'error';
-				}
-				if ($results->expire == 7) {
-					$return['msg']  = constant('ACCOUNT_BLOCKED_TWELVE');
-					self::addBan (Common::GetIp(), 'PT20M', $return['msg']);
-					$return['type'] = 'error';
-				}	
-				if ($results->expire == 8) {
-					$return['msg']  = constant('ACCOUNT_BLOCKED_TWENTY_FOUR');
-					self::addBan (Common::GetIp(), 'P1D', $return['msg']);
-					$return['type'] = 'error';
-				}
-				if ($results->expire == 9) {
-					$return['msg']  = constant('ACCOUNT_BLOCKED_LIFE');
-					self::addBan (Common::GetIp(), 'P99Y', $return['msg']);
-					$return['type'] = 'error';
-				}
-
 				if ($results->valid == 0) {
 					$return['msg']  = constant('VALIDATION_REQUIRED');
 					$return['type'] = 'error';
@@ -257,6 +225,11 @@ class User
 					$check_password = $password == $results->password ? true : false;
 				} else {
 					$check_password = false;
+					if ($results->expire >= 4) {
+						$return['msg']  = self::addBan ();
+						$return['type'] = 'error';
+						return $return;
+					}
 				}
 				if (password_verify($password, $results->password) OR $check_password) {
 					if (
@@ -326,33 +299,86 @@ class User
 	#########################################
 	# ADD Ban
 	#########################################
-	private static function addBan ($ip, $date, $reason)
+	private static function addBan ()
 	{
-		$dateNow = new \DateTimeImmutable('now');
-		$newDate = $dateNow->add(new \DateInterval($date));
-		$endban  = $newDate->format('Y-m-d H:i:s');
-
-		$where = array('name' => 'ip', 'value' => $ip);
+		$where = array('name' => 'ip', 'value' => Common::GetIp());
 		$sql = new BDD;
 		$sql->table('TABLE_BAN');
 		$sql->where($where);
+		$sql->orderby(array('name' => 'id', 'type' => 'DESC'));
+		$sql->limit(1);
 		$sql->queryOne();
 
 		if (empty($sql->data)) {
-			$insert['ip']      = Secure::isIp($ip);
+			$dateNow = new \DateTimeImmutable('now');
+			$newDate = $dateNow->add(new \DateInterval('PT5M'));
+			$endban  = $newDate->format('Y-m-d H:i:s');
+			$insert['ip']      = Secure::isIp(Common::GetIp());
 			$insert['endban']  = $endban;
-			$insert['timeban'] = $date;
-			$insert['reason']  = Common::VarSecure($reason, 'html');
+			$insert['reason']  = Common::VarSecure(constant('ACCOUNT_BLOCKED_FIVE'), 'html');
+			$insert['number']  = 1;
+			$update['timeban'] = 'PT5M';
 			$sqlInsert = new BDD;
 			$sqlInsert->table('TABLE_BAN');
 			$sqlInsert->insert($insert);
+			return $insert['reason'];
 		} else {
-			$update['reason']  = Common::VarSecure($reason, 'html');
-			$update['endban']  = $endban;
-			$update['timeban'] = $date;
+			$dateNow = new \DateTimeImmutable('now');
+			$count = $sql->data->number;
+			$count = $count + 1;
+
+			switch ($count) {
+				case '1':
+					$update['timeban'] = 'PT10M';
+					$newDate = $dateNow->add(new \DateInterval('PT10M'));
+					$return  = constant('ACCOUNT_BLOCKED_TEN');
+				break;
+
+				case '2':
+					$update['timeban'] = 'PT15M';
+					$newDate = $dateNow->add(new \DateInterval('PT15M'));
+					$return  = constant('ACCOUNT_BLOCKED_FIFTEEN');
+				break;
+
+				case '3':
+					$update['timeban'] = 'PT30M';
+					$newDate = $dateNow->add(new \DateInterval('PT30M'));
+					$return  = constant('ACCOUNT_BLOCKED_THIRTY');
+				break;
+
+				case '4':
+					$update['timeban'] = 'P1D';
+					$newDate = $dateNow->add(new \DateInterval('PT1H'));
+					$return  = constant('ACCOUNT_BLOCKED_ONE_HOUR');
+				break;
+				
+				case '5':
+					$update['timeban'] = 'P1D';
+					$newDate = $dateNow->add(new \DateInterval('P1D'));
+					$return  = constant('ACCOUNT_BLOCKED_TWENTY_FOUR');
+				break;
+
+				case '6':
+					$update['timeban'] = 'P99Y';
+					$newDate = $dateNow->add(new \DateInterval('P99Y'));
+					$return  = constant('ACCOUNT_BLOCKED_LIFE');
+				break;
+				
+				default:
+					$update['timeban'] = 'P99Y';
+					$newDate = $dateNow->add(new \DateInterval('P99Y'));
+					$return  = constant('ACCOUNT_BLOCKED_LIFE');
+				break;
+			}
+
+			$update['reason']  = Common::VarSecure($return, 'html');
+			$update['endban']  = $newDate->format('Y-m-d H:i:s');
+			$update['number']  = $count;
 			$sqlUpdate = new BDD;
 			$sqlUpdate->table('TABLE_BAN');
 			$sqlUpdate->update($update);
+
+			return $return;
 		}
 	}
 	#########################################
