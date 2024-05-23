@@ -45,6 +45,7 @@ $array = array(
 	#####################################
 	'SESSION_COOKIES_DELETE'              => 'Votre session et vos cookies de ce site sont effacés',
 	'ACCOUNT_BLOCKED_REQUEST_NEW_PASS'    => 'Par mesure de sécurité, votre compte est bloqué, veuillez demander un nouveau mot de passe.',
+	'ACCOUNT_BLOCKED_ONE'                 => 'Vous êtes banni temporairement, de 1 minutes, suite à de trop nombreuses tentatives de mot de passe.',
 	'ACCOUNT_BLOCKED_FIVE'                => 'Vous êtes banni temporairement, de 5 minutes, suite à de trop nombreuses tentatives de mot de passe.',
 	'ACCOUNT_BLOCKED_TEN'                 => 'Vous êtes banni temporairement, de 10 minutes, suite à de trop nombreuses tentatives de mot de passe.',
 	'ACCOUNT_BLOCKED_FIFTEEN'             => 'Vous êtes banni temporairement, de 15 minutes, suite à de trop nombreuses tentatives de mot de passe.',
@@ -63,6 +64,7 @@ $array = array(
 	'LOGIN_ID'                            => 'Connexion identifiant',
 	'MEMBER_DELETE'                       => 'Membre supprimé',
 	'CODE_CAPTCHA_ERROR'                  => 'Erreur de code captcha, veuillez réessayer',
+	'NO_BANS_YET'                         => 'Aucun bannissement pour l\'instant',
 	#####################################
 	# Fichier lang en français - Social
 	#####################################

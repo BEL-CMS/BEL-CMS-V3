@@ -69,7 +69,7 @@ final class _Ban
 				$ban  = new \DateTimeImmutable($this->endban);
 				$this->countDate = $ban->format('Y/m/d H:i:s');
 				$diff = $this->currentDate->diff($ban);
-				if ($diff->invert == 0) {
+				if ($diff->invert == 0) { 
 					return (bool) true;
 				} else {
 					return (bool) false;
@@ -91,7 +91,7 @@ final class _Ban
 
 		$sql = New BDD;
 		$sql->table('TABLE_BAN');
-		$where = 'WHERE 1 AND `ip` = "'.Common::GetIp().'" OR `author` = "'.$author.'"';
+		$where = 'WHERE 1 AND `number` >= 4 AND `ip` = "'.Common::GetIp().'" OR `author` = "'.$author.'"';
 		$sql->where ($where);
 		$sql->queryOne();
 
