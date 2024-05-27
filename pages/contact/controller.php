@@ -46,34 +46,34 @@ class Contact extends Pages
     {
         if (empty($_POST['name'])) {  
             Notification::warning('Aucun nom donné');
+            $this->errorInfos = array('error', 'Aucun nom donné', constant('ERROR_DATA'), false);
             die();
         }
-        if (empty($_POST['mail'])) {  
-            Notification::warning('Aucun e-mail transmit');
-            die();
+        if (empty($_POST['mail'])) { 
+            $this->error = true; 
+            $this->errorInfos = array('error', 'Aucun e-mail transmit', constant('ERROR_DATA'), false);
         }
         if (empty($_POST['subject'])) {  
-            Notification::warning('Aucun sujet transmit');
-            die();
+            $this->error = true;
+            $this->errorInfos = array('error', 'Aucun sujet transmit', constant('ERROR_DATA'), false);
         }
         if (empty($_POST['message'])) {
-            Notification::warning('Aucun message transmit');
-            die();
+            $this->error = true;
+            $this->errorInfos = array('error', 'Aucun message transmit', constant('ERROR_DATA'), false);
         }
         if (Captcha::getActiveCaptcha() === true) {
             if (Captcha::verifCaptcha($_POST['query_captcha']) === false) {
                 $this->error = true;
-                $this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('ERROR_CAPTCHA'), false);
-                return false;
+                $this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('ERROR_DATA'), false);
             } else {
-                $return = $this->models->send($_POST);
-                $this->error = true;
-                $this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);
+                Notification::warning(constant('CODE_CAPTCHA_ERROR'));
                 $this->redirect('Contact', 3);
             }
         } else {
-            Notification::warning(constant('CODE_CAPTCHA_ERROR'));
-            $this->redirect('Contact', 3);
+            $return = $this->models->send($_POST);
+            $this->error = true;
+            $this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);
+            //$this->redirect('Contact', 3);
         }
     }
 }

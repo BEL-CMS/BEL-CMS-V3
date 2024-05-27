@@ -11,10 +11,11 @@
 
 namespace Belcms\Pages\Models;
 
-use BelCMS\Core\eMail;
 use BelCMS\Core\Secure;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
+use BelCMS\User\User;
+use BelCMS\Core\eMail;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -42,78 +43,80 @@ final class Contact
 			$sql->insert($insert);
 
 			if ($sql->rowCount == '1') {
-				$mail = new eMail();
-				$mail->fromName($insert['author']);
-				$mail->fromMail($_SESSION['CONFIG_CMS']['CMS_MAIL_WEBSITE']); 
-				$mail->subject($insert['subject']);
-				$mail->message($insert['message']);
-				$mail->output($insert['mail']);
-				$mail->html(self::html($insert));
-				$mail->send();
-				$return['text']  = constant('ADD_NEW_MAIL');
-				$return['type']  = 'success';	
+				require_once ROOT.DS.'core'.DS.'class.mail.php';
+
+				$email = new eMail;
+				$email->subject('Sujets');
+				$email->addAdress($insert['mail'], $insert['author']);
+				$email->body($insert['message']);
+				$email->submit();
+				$return['msg']  = constant('ADD_NEW_MAIL');
+				$return['type'] = 'success';
 			} else {
-				$return['text']  = constant('ADD_NEW_MAIL_ERROR');
-				$return['type']  = 'error';	
+				$return['msg']  = constant('ADD_NEW_MAIL_ERROR');
+				$return['type'] = 'error';
 			}
 			return $return;
 		}
 	}
 
-	private function html ($data)
+	private function sendHtmlBody ($data)
 	{
-		$return = ' 
-		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<html xmlns:v="urn:schemas-microsoft-com:vml">
-			<head>
-				<meta http-equiv="content-type" content="text/html; charset=utf-8">
-				<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
-			</head>
-			<body style="width: 100%;height: 100%;background: #37383a;text-align: center;">
-				<table cellpadding="0" cellspacing="0" style="width: 620px; margin:0 auto;">
-					<tr>
-						<td style="height: 10px; background-color: #5187bd;border-collapse:collapse; text-align:left;"></td>
+		setLocale(LC_TIME, 'fr_FR.utf8');
+
+		$date = new \DateTime();
+		$date = $date->format('d/m/Y à H:i:s');
+
+		if ($_SERVER['SERVER_PORT'] == '80') {
+			$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+		} else {
+			$host = 'https://'.$_SERVER['HTTP_HOST'].'/';
+		}
+
+		return '
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		</head>
+		<body style="background:#717c87;">
+		<table style="border-collapse:collapse;width:100%;">
+			<table style="width:90%;max-width:800px;margin: auto;border-collapse:collapse;">
+				<tr style="background:#d05d68;color:#FFF;height:60px;">
+					<td><h1 style="margin:0;padding:0 25px;font-size:24px;line-height:60px;">Bel-CMS</h1></td>
+				</tr>
+			</table>
+			<table style="width:90%;max-width:800px;margin:auto;border-collapse:collapse;">
+				<tr style="background:#ecebeb;">
+					<td style="padding: 25px;">
+						<p style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at ligula feugiat, fringilla elit mollis, ultrices lectus. Nunc pellentesque diam eu diam blandit, sed lacinia mauris efficitur. Nullam id lectus id felis fringilla euismod nec at ex. In sed ante augue. Sed consequat mauris a rhoncus dictum.</p>
+					</td>
+				</tr>
+			</table>
+			<table style="width:90%;max-width:800px;margin:auto;border-collapse:collapse;background:#FFF;">
+				<tr style="color:rgba(0,0,0,.45);">
+					<td colspan="2">
+						<span style="text-align:center;display: block;"><h2 style="margin:10px 0;">Information</h2></span>
+					</td>
+					<tr style="border-bottom: 1px solid rgba(0,0,0,.45);">
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;">Nom :</td>
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;text-align: right;">Stive</td>
 					</tr>
-					<tr style="background: #FFF;">
-						<td style="padding: 25px;font-size: 24px;color: #5187bd;font-family: Helvetica, sans-serif;">'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'].'</td>
+					<tr style="border-bottom: 1px solid rgba(0,0,0,.45);">
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;">E-mail :</td>
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;text-align: right;">stivedeterme@msn.com</td>
 					</tr>
-					<tr>
-						<td style="height: 3px; background: #777777;border: 1px dotted #777777;padding: 2px 0; background: #FFF;"></td>
+					<tr style="border-bottom: 1px solid rgba(0,0,0,.45);">
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;">Date :</td>
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;text-align: right;">Stive</td>
 					</tr>
-					<tr>
-						<td style="background: #5187bd;color:#FFF;padding: 15px 25px;font-size: 24px;">Formulaire de contact</td>
+					<tr style="border-bottom: 1px solid rgba(0,0,0,.45);">
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;">IP :</td>
+						<td style="border-bottom: 1px solid rgba(0,0,0,.45);line-height:25px;padding: 5px 20px;text-align: right;">192.168.1.1</td>
 					</tr>
-					<tr>
-						<td style="height: 3px; background: #777777;border: 1px dotted #777777;padding: 2px 0; background: #FFF;"></td>
-					</tr>
-					<tr style="background: #FFF;">
-						<td style="color:#aaaaaa;padding: 25px 0 0 25px;font-size: 12px;font-family:Arial, Helvetica, sans-serif;">17-04-2024 @ 07h53</td>
-					</tr>
-					<tr style="background: #FFF;">
-						<td style="padding: 0 25px 0px 25px;font-family:Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif; font-size:36px;font-size: 24px;color: #777777;">'.$data['subject'].'</td>
-					</tr>
-					<tr style="background: #FFF;">
-						<td style="padding: 5px 25px 25px 25px;text-align: justify;font-family: Arial, Helvetica, sans-serif;font-size: 13px;line-height: 15pt;color: #777777;">'.$data['message'].'</td>
-					</tr>
-					<tr style="width: 100%;">
-						<td style="width:100%;">
-							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="text-align: left;font-size: 12px;line-height: 15pt;color: #777777;width: 100%;">
-								<tr style="background: #f4f4f4;width: 100%;">
-									<td style="text-align: center;padding: 15px;color: #777777;font-weight: bold;font-size: 16px;">Information</td>
-								</tr>
-								<tr style="background: #f4f4f4;width: 100%;">
-									<td style="padding: 0 25px;"><strong>Nom</strong> : '.$data['author'].'</td>
-								</tr>
-								<tr style="background: #f4f4f4;width: 100%;">
-									<td style="padding: 0 25px 15px 25px;"><strong>E-mail</strong> : '.$data['mail'].'</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr><td style="height: 10px;background-color: #5187bd;"></td></tr>
-				</table>     
-			</body>
-		</html>';
-		return $return;
+				</tr>
+			</table>
+    	</table>
+		</body></html>';		
 	}
 }

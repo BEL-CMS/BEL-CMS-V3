@@ -21,7 +21,9 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - Contact
 	#####################################
-    'ADD_NEW_MAIL'       => 'Le e-mail a bien été envoyé',
-    'ADD_NEW_MAIL_ERROR' => 'L\'envoie e-mail à poser une erreur',
-    'CONTACT'            => 'Contact',
+    'ADD_NEW_MAIL'         => 'Le e-mail a bien été envoyé',
+    'ADD_NEW_MAIL_ERROR'   => 'L\'envoie e-mail à poser une erreur',
+    'CONTACT'              => 'Contact',
+    'SEND_MAIL'            => 'Email envoyé depuis le site',
+    'ADD_NEW_MAIL_SUCCESS' => 'Mail envoyé avec succès',
 ));

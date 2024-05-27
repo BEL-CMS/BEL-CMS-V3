@@ -54,6 +54,7 @@ $tables = array(
 	'TABLE_LINKS_CAT'           => $DB_PREFIX.'links_cat',
 	'TABLE_MAILS'               => $DB_PREFIX.'mails',
 	'TABLE_MAIL_BLACKLIST'      => $DB_PREFIX.'mails_blacklist',
+	'TABLE_MAIL_CONFIG'         => $DB_PREFIX.'mails_config',
 	'TABLE_MAILS_MSG'           => $DB_PREFIX.'mails_msg',
 	'TABLE_MAIL_UNSUBCRIBE'     => $DB_PREFIX.'mails_unsubscribe',
 	'TABLE_MAINTENANCE'         => $DB_PREFIX.'maintenance',

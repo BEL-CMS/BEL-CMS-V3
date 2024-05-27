@@ -98,6 +98,7 @@ $array = array(
 	### ##################################
 	'ID'                                  => 'ID',
 	'UNKNOWN_ERROR'                       => 'Erreur inconnu',
+	'ERROR_DATA'                          => 'Erreur de donnée',
 	'ACCESS'                              => 'Accès',
 	'NO_ACCESS_REQUEST_PAGE'              => 'L\'accès à la page demandée est interdite',
 	'NO_ACCESS_PAGE'                      => 'La page demandée est actuellement fermée',

@@ -11,104 +11,120 @@
 
 namespace BelCMS\Core;
 
-use DateTime;
+use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
-use BelCMS\Core\Secure;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
-if (!defined('CHECK_INDEX')):
-    header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
-    exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
-endif;
+require ROOT.DS.'core'.DS.'PHPMailer'.DS.'phpmailer.lang-fr.php';
+require ROOT.DS.'core'.DS.'PHPMailer'.DS.'Exception.php';
+require ROOT.DS.'core'.DS.'PHPMailer'.DS.'PHPMailer.php';
+require ROOT.DS.'core'.DS.'PHPMailer'.DS.'SMTP.php';
 
-final class eMail
+# TABLE_MAIL_CONFIG
+
+final class eMail 
 {
-	public	$fromName,
-			$fromMail,
-			$toMail,
-			$senderName,
-			$subject,
-			$header,
-			$body,
-			$footer,
-			$content,
-			$sendMail,
-			$html;
-	private $date;
+	private $phpMailer,
+			$setFrom;
 
-	public function __construct()
-	{
-		$this->date = new DateTime('now');
-		$this->date->format('d/m/Y à H:i:s');
-
-		if (!defined("PHP_EOL_MAIL")) define("PHP_EOL_MAIL", "\r\n");
-
-		$this->fromName   = self::fromName();
-		$this->fromMail   = self::fromMail();
-		$this->toMail     = self::toMail();
-		$this->senderName = self::senderName();
-		$this->subject    = self::subject();
-		$this->header     = self::header();
-		$this->body       = self::body();
-		$this->footer     = self::footer();
+	function __construct() {
+		$this->phpMailer = new PHPMailer(true);
+		$data = self::getConfigSql();
+		$this->setFrom = $data->setFrom;
+		self::configPhpMailer($data);
+		self::setFrom($data);
 	}
 
-    public function fromName ($data = null)
+	private function getConfigSql ()
 	{
-		$this->fromName = !empty($data) ? Common::VarSecure($data, null) : $_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'];
+		$return = (object) array();
+		$sql = new BDD();
+		$sql->table('TABLE_MAIL_CONFIG');
+		$sql->queryAll();
+		$data = $sql->data;
+		foreach ($data as $a) {
+			$return->{$a->name} = $a->config;
+		}
+		return $return;
 	}
 
-	public function fromMail ($data = null)
+	private function configPhpMailer($data)
 	{
-		$this->fromMail = !empty($data) ? Secure::isMail($data) : $_SERVER['SERVER_ADMIN'];
+		$this->phpMailer->SetLanguage("fr", ROOT.DS.'core'.DS.'PHPMailer'.DS.'phpmailer.lang-fr.php');
+		$this->phpMailer->SMTPDebug  = 0;
+		$this->phpMailer->CharSet    = $data->charset;
+		$this->phpMailer->isSMTP();
+		$this->phpMailer->Host       = $data->host;
+		$this->phpMailer->SMTPAuth   = $data->SMTPAuth == 'true' ? true : false;
+		$this->phpMailer->Username   = $data->username;
+		$this->phpMailer->Password   = $data->Password;
+		$this->phpMailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+		$this->phpMailer->Port       = $data->Port;
+		$this->phpMailer->SMTPOptions = array(
+			'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+			)
+		);
+		$IsHTML = $data->IsHTML == '1' ? true : false;
+		$this->phpMailer->IsHTML($IsHTML);
+		$this->phpMailer->WordWrap = $data->WordWrap;
 	}
 
-	public function toMail ($data = null)
+	public function setFrom($data = null)
 	{
-		$this->toMail = !empty($data) ? Secure::isMail($data) : '';
+		if (Secure::isMail($data->setFrom)) {
+			$explode = explode('@', $data->setFrom);
+			$name    = explode('.', $explode[1]);
+			$this->phpMailer->setFrom($data->setFrom, $name[0]);
+		} else if ($data->setFrom == 'null') {
+			$this->phpMailer->setFrom($this->setFrom);
+		} else {
+			return;
+		}
 	}
 
-	public function senderName ($data = null)
+	public function subject($subject = null)
 	{
-		$this->senderName = !empty($data) ? Common::VarSecure($data, 'null') : '';
+		if (Secure::isString($subject)) {
+			$this->phpMailer->Subject = $subject;
+		} else {
+			$this->phpMailer->Subject = 'NONE';
+		}
 	}
 
-	public function subject ($data = null)
+	public function body($body = null)
 	{
-		$this->subject = !empty($data) ? Common::VarSecure($data, 'null') : '';
+		if (Secure::isString($body)) {
+			$this->phpMailer->Body    = Common::VarSecure($body, 'html');
+			$this->phpMailer->AltBody = Common::VarSecure($body, null);
+		}
 	}
 
-	public function header ($data = null)
+	public function addAdress ($email = null, $name = null)
 	{
-		$this->header = Common::VarSecure($data, 'html');
+		if (Secure::isMail($email)) {
+			if (empty($name)) {
+				$explode = explode('@', $email);
+				$name    = explode('.', $explode[1]);
+				$this->phpMailer->addAddress($email, $name[2]);
+			} else {
+				$this->phpMailer->addAddress($email, $name);
+			}
+		} else if ($email == null) {
+			$this->phpMailer->addAddress($_SESSION['CONFIG_CMS']['CMS_MAIL_WEBSITE'], $_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME']);
+		}
 	}
 
-	public function body ($data = null)
+	public function submit ()
 	{
-		$this->body = Common::VarSecure($data, 'html');
-	}
-
-	public function footer ($data = null)
-	{
-		$this->footer = Common::VarSecure($data, 'html');
-	}
-
-	public function send ()
-	{
-		$name     = $this->fromName;
-		$email    = $this->fromMail;
-		$address  = $this->toMail;
-		
-		$e_body    = stripslashes($this->header);
-		$e_content = stripslashes($this->body);
-		$e_reply   = stripslashes($this->footer);
-		
-		$msg = wordwrap( $e_body . $e_content . $e_reply, 70 );
-
-		$headers  = "From: $name" . PHP_EOL_MAIL;
-		$headers .= "Reply-To: $email" . PHP_EOL_MAIL;
-		$headers .= "MIME-Version: 1.0" . PHP_EOL_MAIL;
-		$headers .= "Content-Type: text/html; charset=utf-8" . PHP_EOL_MAIL;
-		$headers .= "Content-Transfer-Encoding: quoted-printable" . PHP_EOL_MAIL;
-		return (mail($address, $this->subject, $msg, $headers));
+		try {
+			return $this->phpMailer->send();
+		} catch (Exception $e) {
+			debug($this->phpMailer->ErrorInfo);
+		}
 	}
 }

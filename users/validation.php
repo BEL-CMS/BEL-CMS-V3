@@ -32,7 +32,7 @@
             <?php
             else: 
             ?>
-            <textarea id="notification" disabled><?=$data;?>.<?=PHP_EOL; ?>Redirection automatique dans 5 secondes</textarea>
+            <textarea id="notification" disabled><?=$data;?>.<?=PHP_EOL;?>Redirection automatique dans 5 secondes</textarea>
             <script language="JavaScript">
                 setTimeout(function () {
                     window.location.href = "index.php"; 

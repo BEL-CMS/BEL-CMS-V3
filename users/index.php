@@ -269,8 +269,6 @@ class User
 				}
 			} else {
 				// En cas de modification manuel des cookies pour tromper le login
-				self::logout();
-				self::addBan ();
 				$return['msg']  = constant('NO_USER_WITH_USER_AND_MAIL');
 				$return['type'] = 'warning';
 			}
@@ -278,7 +276,6 @@ class User
 			if ($hash_key AND strlen($hash_key) == 32) {
 				$return['msg']  = constant('NAME_OR_PASS_REQUIRED');
 				$return['type'] = 'error';
-				self::addBan ();
 			}
 		}
 		return $return;
@@ -399,8 +396,8 @@ class User
 			$sqlUpdate = new BDD;
 			$sqlUpdate->table('TABLE_BAN');
 			$sqlUpdate->update($update);
-			self::logout();
 
+			self::logout();
 			return $return;
 		}
 	}
@@ -422,7 +419,9 @@ class User
 
 		unset($_SESSION['USER'], $_COOKIE["BELCMS_HASH_KEY"],$_COOKIE["BELCMS_NAME"], $_COOKIE["BELCMS_PASS"]);
 
-		session_destroy();
+		if (isset($_SESSION)) {
+			session_destroy();
+		}
 
 		$return['msg']  = constant('SESSION_COOKIES_DELETE');
 		$return['type'] = 'success';
