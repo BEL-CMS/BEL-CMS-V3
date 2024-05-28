@@ -17,7 +17,6 @@ use BelCMS\PDO\BDD;
 use BelCMS\User\User as Users;
 use BelCMS\Requires\Common;
 use BelCMS\Core\eMail;
-use DateTimeImmutable;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -96,16 +95,18 @@ final class User
 					$return['msg']  = constant('THIS_MAIL_IS_ALREADY_RESERVED');
 					$return['type']  = 'warning';
 				} else {
-					$hash_key = md5(uniqid(rand(), true));
-					$password_hash = password_hash($data['passwordhash'], CRYPT_BLOWFISH);
 
-					$pass_key = md5(uniqid(rand(), true));
+					$hash_key = md5(uniqid(rand(), true));
+
+					$passwordCrypt = Common::encryptDecrypt($data['passwordhash'], $hash_key);
+
+					$pass_key      = Common::randomString(32);
 
 					$insertUser = array(
 						'id'                => null,
 						'username'          => $data['username'],
 						'hash_key'          => $hash_key,
-						'password'          => $password_hash,
+						'password'          => $passwordCrypt,
 						'mail'              => $data['email'],
 						'ip'                => Common::getIp(),
 						'expire'            => (int) 0,
@@ -174,9 +175,10 @@ final class User
 					$insertPage->table('TABLE_USERS_PAGE');
 					$insertPage->insert(array('hash_key'=> $hash_key));
 
+					/*
 					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
-						$mail = new eMail;
-
+						//$mail = new eMail;
+/*
 						$fromMail   = $_SESSION['CONFIG_CMS']['CMS_MAIL_WEBSITE'];
 						$fromName   = $_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'];
 						$toMail     = $insertUser['mail'];
@@ -197,8 +199,7 @@ final class User
 
 						$mail->send();
 					}
-
-					Users::login($insertUser['username'],$insertUser['password']);
+					*/
 				}
 			}
 			$return['msg']  = constant('CURRENT_RECORD');
@@ -494,7 +495,7 @@ final class User
 		// initialiser la variable $return
 		$return = '';
 		// Définir tout les caractères possibles dans le mot de passe,
-		$character = "#'/*-&@$%2346789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		$character = "#/*&@$%-+2346789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		// obtenir le nombre de caractères dans la chaîne précédente
 		$max = strlen($character);
 		if ($height > $max) {
