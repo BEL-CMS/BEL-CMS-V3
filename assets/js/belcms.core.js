@@ -87,9 +87,7 @@ if (typeof jQuery === 'undefined') {
 
 	bel_cms_private_message();
 
-	$.each("img", function () { 
-		glightbox();
-	});
+	glightbox();
 
     console.log("Chargement BEL-CMS script Ok");
 

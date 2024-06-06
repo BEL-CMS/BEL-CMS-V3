@@ -4,9 +4,9 @@
 		'articles',
 		'articles_content',
 		'ban',
+		'capcha',
 		'comments',
 		'config',
-		'capcha',
 		'config_pages',
 		'config_tpl',
 		'contact',
@@ -31,6 +31,7 @@
 		'links_cat',
 		'mails',
 		'mails_blacklist',
+		'mails_config',
 		'mails_msg',
 		'mails_unsubscribe',
 		'maintenance',
@@ -54,11 +55,12 @@
 		'page_news_cat',
 		'page_shoutbox',
 		'page_stats',
+		'paypal',
+		'paypal_purchase',
+		'stats',
 		'survey',
 		'survey_answer',
 		'survey_vote',
-		'paypal',
-		'paypal_purchase',
 		'team',
 		'team_users',
 		'uploads_admin',
@@ -70,7 +72,6 @@
 		'users_profils',
 		'users_social',
 		'visitors',
-		'widgets',
-		'stats'
+		'widgets'
 	);
 	echo json_encode($ajax);

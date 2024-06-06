@@ -37,7 +37,6 @@ class User
 		{
 			self::autoUpdateSession();
 		}
-		self::writeCoockies();
     }
 	#########################################
 	# login normal
@@ -129,52 +128,6 @@ class User
 				$_SESSION['USER'] = self::getInfosUserAll($results->hash_key);
 			} else {
 				return false;
-			}
-		}
-	}
-	#########################################
-	# Save cookies if
-	# Are not present.
-	#########################################
-	private function writeCoockies ()
-	{
-		if (
-			!isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
-			empty($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
-			!isset($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
-			empty($_COOKIE['BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
-			!isset($_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']]) AND
-			empty($_COOKIE['BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES']])
-		) {
-			$user = self::getInfosUserAll($_SESSION['USER']->user->hash_key);
-			if ($user !== false) {
-				setcookie(
-					'BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'],
-					$user->user->hash_key,
-					time()+60*60*24*30*3,
-					"/",
-					$_SERVER['HTTP_HOST'],
-					true,
-					true
-				);
-				setcookie(
-					'BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES'],
-					$user->user->username,
-					time()+60*60*24*30*3,
-					"/",
-					$_SERVER['HTTP_HOST'],
-					true,
-					true
-				);
-				setcookie(
-					'BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES'],
-					$user->user->password,
-					time()+60*60*24*30*3,
-					"/",
-					$_SERVER['HTTP_HOST'],
-					true,
-					true
-				);
 			}
 		}
 	}
@@ -363,7 +316,7 @@ class User
 			$update['number']  = $count;
 			$sqlUpdate = new BDD;
 			$sqlUpdate->table('TABLE_BAN');
-			//$sqlUpdate->update($update);
+			$sqlUpdate->update($update);
 
 			self::logout();
 			return $return;
@@ -432,15 +385,6 @@ class User
 			$user->queryOne();
 			if (!empty($user->data)) {
 				$a = array('user' => (object) $user->data);
-				/*
-				if ($user->data['ip'] != Common::GetIp()) {
-					$insert['ip'] = Common::GetIp();
-					$insert['hash_key'] = $user->data['hash_key'];
-					$insert['referer']  = $_SERVER['HTTP_REFERER'];
- 					$sqlUpdateIP = new BDD;
-					$sqlUpdateIP->table('TABLE_USERS_IP');
-					$sqlUpdateIP->insert($insert);
-				}*/
 				/* Return info des groupes de l'user */
 				$group = new BDD();
 				$group->table('TABLE_USERS_GROUPS');

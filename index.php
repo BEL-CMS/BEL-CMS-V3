@@ -12,6 +12,11 @@ use BelCMS\Core\BelCMS as BelCMS;
 use BelCMS\Core\Dispatcher;
 use Belcms\Management\Managements;
 use BelCMS\Ban\_Ban as Ban;
+use BelCMS\Core\Landing;
+use BelCMS\Core\Secure;
+use BelCMS\Core\Validation;
+use BelCMS\Requires\Common;
+
 #########################################
 # TimeZone et charset
 #########################################
@@ -61,6 +66,14 @@ require_once ROOT.DS.'requires'.DS.'requires.all.php';
 # Bannissement
 #########################################
 new Ban();
+#########################################
+# Compte Validation par mail ou auto
+#########################################
+new Validation();
+#########################################
+# Landing page
+#########################################
+new Landing();
 #########################################
 # Initialise le C.M.S
 #########################################

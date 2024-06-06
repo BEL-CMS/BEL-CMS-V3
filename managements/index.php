@@ -237,7 +237,9 @@ final class Managements
 				$sql->queryOne();
 				$data = $sql->data;
 
-				if (password_verify($_REQUEST['passwrd'], $data->password)) {
+				$passwordSQL = Common::encryptDecrypt($data->password, $_SESSION['USER']->user->hash_key ,false);
+
+				if ($passwordSQL == $_REQUEST['passwrd']) {
 					if ($_SESSION['USER']->user->hash_key == $data->hash_key) {
 						new Interaction('success', constant('AUTHORIZED_ACCESS'), constant('LOGGED_IN_TO_ADMIN'));
 						$_SESSION['LOGIN_MANAGEMENT'] = true;
