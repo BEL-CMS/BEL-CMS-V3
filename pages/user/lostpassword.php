@@ -39,7 +39,7 @@ if (Users::isLogged() === false):
 					</div>
 					<form id="Login" action="/User/sendLostPassword" method="post">
 						<div class="form-group">
-							<input type="text" class="form-control" name="value" value="<?=$email?>" placeholder="<?=constant('PRIVATE_MAIL');?>" required="required" autocomplete="off">
+							<input type="text" class="form-control" name="value" value="<?=$email?>" placeholder="<?=constant('PRIVATE_MAIL');?>" required="required" autocomplete="on">
 						</div>
 						<div class="form-group">
 							<input type="text" class="form-control" name="token" placeholder="<?=constant('TOKEN');?>" autocomplete="off" value="<?=$token?>">

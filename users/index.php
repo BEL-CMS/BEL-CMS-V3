@@ -15,6 +15,7 @@ use BelCMS\Requires\Common;
 use BelCMS\Core\Config as BelCMSConfig;
 use BelCMS\Core\Dispatcher;
 use BelCMS\Core\Secure;
+use BelCMS\Core\encrypt;
 use GetHost;
 
 if (!defined('CHECK_INDEX')):
@@ -59,9 +60,10 @@ class User
 			$sql->queryOne();
 			$results = $sql->data;
 
-			$passwordDeCrypt = Common::encryptDecrypt($results->password, $results->hash_key, false);
+			$passwordCrypt =  new encrypt($results->password, $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+			$passwordDecrypt = $passwordCrypt->decrypt();
 
-			if ($password == $passwordDeCrypt) {
+			if ($password == $passwordDecrypt) {
 				setcookie(
 					'BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'],
 					$results->hash_key,
@@ -97,12 +99,14 @@ class User
 			} else {
 				$return['msg']  = constant('WRONG_USER_PASS');
 				$return['type'] = 'error';
-				self::addBan ();
+				//self::addBan ();
+				return $return;
 			}
 		} else {
 			if ($hash_key AND strlen($hash_key) == 32) {
 				$return['msg']  = constant('NAME_OR_PASS_REQUIRED');
 				$return['type'] = 'error';
+				return $return;
 			}
 		}
 	}
@@ -318,9 +322,17 @@ class User
 			$sqlUpdate->table('TABLE_BAN');
 			$sqlUpdate->update($update);
 
-			self::logout();
+			self::dieCoockie();
 			return $return;
 		}
+	}
+	public static function dieCoockie() 
+	{
+		$domain = ($_SERVER['HTTP_HOST']);
+		setcookie('BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'], false, time()-60*60*24*365, '/', $domain, false);
+		setcookie('BELCMS_NAME_'.$_SESSION['CONFIG_CMS']['COOKIES'], false, time()-60*60*24*365, '/', $domain, false);
+		setcookie('BELCMS_PASS_'.$_SESSION['CONFIG_CMS']['COOKIES'], false, time()-60*60*24*365, '/', $domain, false);
+		unset($_SESSION['USER'], $_COOKIE["BELCMS_HASH_KEY"],$_COOKIE["BELCMS_NAME"], $_COOKIE["BELCMS_PASS"]);
 	}
 	#########################################
 	# Logout

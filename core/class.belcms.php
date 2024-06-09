@@ -92,45 +92,40 @@ final class BelCMS
 				die();
 			}
 		}
-		$dirLanding = ROOT.DS.'templates'.DS.$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing.php';
-		if ($_SESSION['CONFIG_CMS']['LANDING'] == '1' && is_file($dirLanding) && count($landing) == 0) {
-			require_once $dirLanding;
-			die();
-		} else {
-			$dir = constant('DIR_PAGES').strtolower($this->link).DS.'controller.php';
-			if (is_file($dir)) {
-				require_once $dir;
-				$require = "Belcms\Pages\Controller\\".$require;
-				$newPage = new $require;
-				if (method_exists($newPage, $view)) {
-					call_user_func_array(array($newPage,$view),Dispatcher::link());
-					if ($newPage->typeMime == 'application/json') {
-						die();
-					}
-					$error = $newPage->error;
-					if ($error === false AND empty($newPage->page)) {
-						Notification::alert('Page '.$this->link.' vide', 'Page', false);
-					} else {
-						echo $newPage->page;
-						self::statsPages();
-					}
-					if ($newPage->error === true) {
-						$error_type = $newPage->errorInfos[0];
-						$error_text = $newPage->errorInfos[1];
-						$error_name = $newPage->errorInfos[2];
-						$error_full = $newPage->errorInfos[3];
-						self::error($error_type, $error_text, $error_name, $error_full);
-					}
-					$content = ob_get_contents();
-				} else {
-					Notification::alert(constant('ERROR_LOADING_INSTANCE'), constant('WARNING'), true);
-					$content = ob_get_contents();
+
+		$dir = constant('DIR_PAGES').strtolower($this->link).DS.'controller.php';
+		if (is_file($dir)) {
+			require_once $dir;
+			$require = "Belcms\Pages\Controller\\".$require;
+			$newPage = new $require;
+			if (method_exists($newPage, $view)) {
+				call_user_func_array(array($newPage,$view),Dispatcher::link());
+				if ($newPage->typeMime == 'application/json') {
+					die();
 				}
-			} else {
-				Common::Redirect('error/404.html');
+				$error = $newPage->error;
+				if ($error === false AND empty($newPage->page)) {
+					Notification::alert('Page '.$this->link.' vide', 'Page', false);
+				} else {
+					echo $newPage->page;
+					self::statsPages();
+				}
+				if ($newPage->error === true) {
+					$error_type = $newPage->errorInfos[0];
+					$error_text = $newPage->errorInfos[1];
+					$error_name = $newPage->errorInfos[2];
+					$error_full = $newPage->errorInfos[3];
+					self::error($error_type, $error_text, $error_name, $error_full);
+				}
 				$content = ob_get_contents();
-				echo $content;
+			} else {
+				Notification::alert(constant('ERROR_LOADING_INSTANCE'), constant('WARNING'), true);
+				$content = ob_get_contents();
 			}
+		} else {
+			Common::Redirect('error/404.html');
+			$content = ob_get_contents();
+			echo $content;
 		}
 
 		if (ob_get_length() != 0) {

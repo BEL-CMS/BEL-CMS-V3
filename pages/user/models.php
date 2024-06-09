@@ -17,6 +17,7 @@ use BelCMS\PDO\BDD;
 use BelCMS\User\User as Users;
 use BelCMS\Requires\Common;
 use BelCMS\Core\eMail;
+use BelCMS\Core\encrypt;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -98,15 +99,15 @@ final class User
 
 					$hash_key = md5(uniqid(rand(), true));
 
-					$passwordCrypt = Common::encryptDecrypt($data['passwordhash'], $hash_key);
-
+					$passwordCrypt =  new encrypt($_POST['passwordrepeat'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+					$password      = $passwordCrypt->encrypt();
 					$pass_key      = Common::randomString(32);
 
 					$insertUser = array(
 						'id'                => null,
 						'username'          => $data['username'],
 						'hash_key'          => $hash_key,
-						'password'          => $passwordCrypt,
+						'password'          => $password,
 						'mail'              => $data['email'],
 						'ip'                => Common::getIp(),
 						'expire'            => (int) 0,
@@ -175,10 +176,10 @@ final class User
 					$insertPage->table('TABLE_USERS_PAGE');
 					$insertPage->insert(array('hash_key'=> $hash_key));
 
-					/*
+
 					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
-						//$mail = new eMail;
-/*
+						$mail = new eMail;
+
 						$fromMail   = $_SESSION['CONFIG_CMS']['CMS_MAIL_WEBSITE'];
 						$fromName   = $_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'];
 						$toMail     = $insertUser['mail'];
@@ -199,7 +200,7 @@ final class User
 
 						$mail->send();
 					}
-					*/
+
 				}
 			}
 			$return['msg']  = constant('CURRENT_RECORD');
@@ -364,8 +365,12 @@ final class User
 		}
 
 		if (!empty($data['newpassword'])) {
-			if (password_verify($data['password'], $results->password)) {
-				$insertUser['password'] = password_hash($data['newpassword'], PASSWORD_DEFAULT);
+
+			$passwordCrypt =  new encrypt($data['password'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+			$passwordDecrypt = $passwordCrypt->decrypt();
+
+			if ($passwordDecrypt == $results->password) {
+				$insertUser['password'] = $passwordCrypt;
 			} else {
 				$return['msg']  = 'Le mot de passe ne correspondent pas avec celui du compte'; ++$error;
 				$return['type'] = 'danger';
@@ -608,13 +613,7 @@ final class User
 							$return['type'] = 'error';
 						} else {
 							$generatePass = self::generatePass(8);
-							$password = password_hash($generatePass, PASSWORD_DEFAULT);
 							// Update du mot de passe & reset du token
-							$sql = New BDD();
-							$sql->table('TABLE_USERS');
-							$sql->where(array('name' => $type,'value'=> $data['value']));
-							$sql->update(array('password'=>$password,'token'=>'', 'expire' => 0));
-
 							$contentMail  = '<tr>';
 							$contentMail .= '<td><p style="text-align:center;">Mot de passe, réinitialiser</p></td>';
 							$contentMail .= '</tr>';
@@ -635,10 +634,17 @@ final class User
 								'content'  => self::contentMail('Mot de passe', $contentMail),
 								'sendMail' => $results['mail']
 							);
+
+							$encrypt = new encrypt($generatePass, $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+							$crpyt = $encrypt->encrypt();
+
 							$returnMail = Common::sendMail($mail);
 							$return['msg']  = 'Voici votre nouveau mot de passe : '. $generatePass;
 							$return['type'] = 'success';
 							$return['pass'] = true;
+							$sqlUpdatePass  = new BDD;
+							$sqlUpdatePass->table('TABLE_USERS');
+							$sqlUpdatePass->update(array('name' => 'password', 'value' => $crpyt));
 						}
 					}
 				}
@@ -826,14 +832,18 @@ final class User
 		$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 		$sql->queryOne();
 		$results = $sql->data;
-		if (password_verify($data['password_old'], $results->password)) {
-			$insert['password'] = password_hash($data['password_new'], PASSWORD_DEFAULT);
+
+		$a = Common::encryptDecrypt($results->password, $_SESSION['USER']->user->hash_key, false);
+		$b = $data['password_old'];
+
+		if ($a == $b) {
+			$insert['password'] = Common::encryptDecrypt($data['password_new'],$_SESSION['USER']->user->hash_key);
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
 			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
 			$sql->update($insert);
 			setcookie('BELCMS_HASH_KEY', $_SESSION['USER']->user->hash_key, time()+60*60*24*30*3, '/');
-			setcookie('BELCMS_NAME', $results['username'], time()+60*60*24*30*3, '/');
+			setcookie('BELCMS_NAME', $_SESSION['USER']->user->username, time()+60*60*24*30*3, '/');
 			setcookie('BELCMS_PASS', $insert['password'], time()+60*60*24*30*3, '/');
 			$return = array('type' => 'success', 'msg' => constant('SEND_PASS_IS_OK'), 'title' => constant('PASSWORD'));
 			New UserNotification($_SESSION['USER']->user->hash_key, constant('SEND_PASS_IS_OK'));

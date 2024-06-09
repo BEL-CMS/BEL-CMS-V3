@@ -272,7 +272,7 @@ class User extends Pages
 		if (Captcha::verifCaptcha($_POST['query_register']) === false) {
 			$this->error = true;
 			$this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('REGISTRATION'), false);
-			return false;	
+			return false;
 		}
 
 		$return = $this->models->sendRegistration($this->data);

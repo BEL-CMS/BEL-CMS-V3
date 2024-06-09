@@ -14,6 +14,7 @@ use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
 use BelCMS\User\User as Users;
 use BelCMS\Core\Dispatcher;
+use DateTime;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -57,13 +58,14 @@ final class Visitors
 			if (Users::isLogged() === true) {
 				$this->visitedUser = $_SESSION['USER']->user->hash_key;
 			} else {
-				if (preg_match('/bot|crawl|slurp|spider|mediapartners|Mb2345Browser|LieBaoFast|MicroMessenger|zh-CN|zh_CN|Kinza/i', $_SERVER["HTTP_USER_AGENT"] )) {
+				if (Common::isBot($_SERVER["HTTP_USER_AGENT"])) {
 					$this->visitedUser = $_SERVER["HTTP_USER_AGENT"];
 				} else {
 					$this->visitedUser = Users::isLogged() === true ? $_SESSION['USER']->user->hash_key : constant('VISITOR');
 				}
 			}
 		}
+		self::delStats();
 		# data insert
 		self::insertBdd();
 	}
@@ -129,6 +131,15 @@ final class Visitors
 			$sql->insert($insert);
 		}
 	}
+
+	public function delStats ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_VISITORS');
+		$sql->where('WHERE visitor_date < date_sub(CURRENT_DATE, INTERVAL 1 MONTH)');
+		$sql->delete();
+	}
+
 	public static function getVisitorDay () {
 		$sql = new BDD;
 		$sql->table('TABLE_VISITORS');

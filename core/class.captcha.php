@@ -35,7 +35,7 @@ final class Captcha
 
         self::removeAllCaptcha();
 
-        $cryptTime = Common::crypt($insert['timelast'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+        $cryptTime = Common::encryptDecrypt($insert['timelast'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
 
         setcookie(
             'BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES'],
@@ -107,7 +107,7 @@ final class Captcha
     public static function getTimeCaptcha ()
     {
         if (isset($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']])) {
-            $decrypt = Common::decrypt($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+            $decrypt = Common::encryptDecrypt($_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']], $_SESSION['CONFIG_CMS']['KEY_ADMIN'], false);
             $testingTime = time() - $decrypt;
             if ($testingTime < $_SESSION['CONFIG_CMS']['TIME_CAPTCHA'] or empty($testingTime)) {
                 return array('type' => 'warning', 'msg' => constant('CODE_CAPTCHA_TIME'), 'ìnfos' => constant('INFO'));

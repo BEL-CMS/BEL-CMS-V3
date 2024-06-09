@@ -21,7 +21,7 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 ################################################
-# Class du CMS Captcha
+# 
 ################################################
 final class Popup
 {

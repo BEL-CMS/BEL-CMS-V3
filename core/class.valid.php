@@ -29,6 +29,7 @@ final class Validation
 
     function __construct() {
         if (!isset($_GET['valid'])) {
+            //debug(User::isLogged());
             $this->author = User::isLogged() == true ? self::getSQLUser() : false;
             $this->valid  = $_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail' ? true : false;
             self::getValid();
