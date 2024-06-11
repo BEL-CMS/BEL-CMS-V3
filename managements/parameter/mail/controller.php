@@ -23,8 +23,13 @@ class Mail extends AdminPages
 
     public function index ()
     {
-        $data = $this->models->getConfig();
+        $data['data'] = $this->models->getConfig();
         $this->set($data);
         $this->render('index');
+    }
+
+    public function send ()
+    {
+        $return = $this->models->saveConfig($_POST);
     }
 }
