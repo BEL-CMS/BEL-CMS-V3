@@ -129,7 +129,7 @@ switch ($_POST['table']) {
 			('', 'COOKIES', '".randomString(6)."', 1),
 			('', 'CAPTCHA', '1', 0),
 			('', 'TIME_CAPTCHA', '1', 0),
-			('','VALIDATION', 'mail', 0);";
+			('','VALIDATION', '0', 0);";
 	break;
 
 	case 'config_pages':
@@ -899,29 +899,29 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `nb_view`, `page`) VALUES
-		('', 0, 'articles'),
-		('', 0, 'calendar'),
-		('', 0, 'comments'),
-		('', 0, 'contact'),
-		('', 0, 'donations'),
-		('', 0, 'downloads'),
-		('', 0, 'faq'),
-		('', 0, 'forum'),
-		('', 0, 'gallery'),
-		('', 0, 'games'),
-		('', 0, 'groups'),
-		('', 0, 'guestbook'),
-		('', 0, 'links'),
-		('', 0, 'mails'),
-		('', 0, 'market'),
-		('', 0, 'members'),
-		('', 0, 'news'),
-		('', 0, 'newsletter'),
-		('', 0, 'shoutbox'),
-		('', 0, 'survey'),
-		('', 0, 'team'),
-		('', 0, 'teams'),
-		('', 0, 'user');";
+			('', 0, 'articles'),
+			('', 0, 'calendar'),
+			('', 0, 'comments'),
+			('', 0, 'contact'),
+			('', 0, 'donations'),
+			('', 0, 'downloads'),
+			('', 0, 'faq'),
+			('', 0, 'forum'),
+			('', 0, 'gallery'),
+			('', 0, 'games'),
+			('', 0, 'groups'),
+			('', 0, 'guestbook'),
+			('', 0, 'links'),
+			('', 0, 'mails'),
+			('', 0, 'market'),
+			('', 0, 'members'),
+			('', 0, 'news'),
+			('', 0, 'newsletter'),
+			('', 0, 'shoutbox'),
+			('', 0, 'survey'),
+			('', 0, 'team'),
+			('', 0, 'teams'),
+			('', 0, 'user');";
 	break;
 
 	case "paypal":
@@ -981,31 +981,17 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
-			(1, 0, 'calendar'),
-			(2, 0, 'comments'),
-			(3, 0, 'downloads'),
-			(4, 0, 'articles'),
-			(5, 0, 'events'),
-			(6, 0, 'forum'),
-			(7, 0, 'groups'),
-			(8, 0, 'inbox'),
-			(9, 0, 'market'),
-			(10, 0, 'members'),
-			(11, 0, 'newsletter'),
-			(12, 0, 'page'),
-			(13, 0, 'shoutbox'),
-			(14, 0, 'survey'),
-			(15, 0, 'user'),
-			(16, 0, 'news'),
-			(17, 0, 'mails'),
-			(18, 0, 'games'),
-			(19, 0, 'guestbook'),
-			(20, 0, 'donations'),
-			(21, 0, 'gallery'),
-			(22, 0, 'faq'),
-			(23, 0, 'links'),
-			(24, 0, 'team'),
-			(25, 0, 'survey');";
+			(1, 'yesterday', 0),
+			(2, 'today', 0),
+			(3, 'now', 0),
+			(4, 'page_view', 0),
+			(5, 'users', 0),
+			(6, 'news', 0),
+			(7, 'articles', 0),
+			(8, 'comments', 0),
+			(9, 'links', 0),
+			(10, 'files', 0),
+			(11, 'images', 0);";
 	break;
 
 	case "survey":

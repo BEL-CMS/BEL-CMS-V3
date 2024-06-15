@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.2 [PHP8.3]
+ * @version 3.0.4 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -29,7 +29,6 @@ final class Validation
 
     function __construct() {
         if (!isset($_GET['valid'])) {
-            //debug(User::isLogged());
             $this->author = User::isLogged() == true ? self::getSQLUser() : false;
             $this->valid  = $_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail' ? true : false;
             self::getValid();
