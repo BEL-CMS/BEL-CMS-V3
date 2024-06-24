@@ -1,13 +1,18 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.5 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
  * @copyright 2015-2023 Bel-CMS
  * @author as Stive - stive@determe.be
  */
+
+define('CHECK_INDEX', true);
+require_once ROOT.'requires'.DS.'common.php';
+require_once ROOT.'core'.DS.'class.encrypt.php';
+use BelCMS\Core\encrypt;
 
 class BelCMS
 {
@@ -22,19 +27,130 @@ class BelCMS
 		require_once ROOT.'INSTALL'.DS.'includes'.DS.'checkCompatibility.php';
 	}
 
+	public static function getIni($key)
+	{
+		foreach (ini_get_all(null, false) as $key => $value) {
+			return $value;
+		}
+	}
+
 	public function VIEW()
 	{
 		ob_start();
-		require ROOT.'INSTALL'.DS.'pages'.DS.$this->page.'.tpl';
+		require ROOT.'INSTALL'.DS.'pages'.DS.$this->page.'.php';
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		return $buffer;
+	}
+
+	function insertUserBDD ()
+	{
+		$passwordCrypt =  new encrypt($_POST['password'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+		$password      = $passwordCrypt->encrypt();
+
+		$sql = array();
+
+		$user['username']	= $_POST['username'];
+		$user['password']	= password_hash($_POST['password'], PASSWORD_DEFAULT);
+		$user['mail']		= $_POST['mail'];
+		$user['hash_key']	= md5(uniqid(rand(), true));
+		$user['ip']		    = getIp();
+
+		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users` (
+					`id`,
+					`username`,
+					`hash_key`,
+					`password`,
+					`mail`,
+					`ip`,
+					`valid`,
+					`expire`,
+					`token`,
+					`gold`
+					`number_valid`
+				) VALUES (
+					NULL , '".$user['username']."','".$user['hash_key']."','".$password."','".$user['mail']."','".$user['ip']."', '1', '0', '', '1',''
+				);";
+
+		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_page` (`id`, `hash_key`, `namepage`, `last_visit`) VALUES (
+					'',
+					'".$user['hash_key']."',
+					NULL,
+					NOW()
+				);";
+
+				$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_groups` (`id`, `hash_key`, `user_group`, `user_groups`) VALUES (
+					'',
+					'".$user['hash_key']."',
+					1,
+					1
+				);";
+
+		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_profils` (
+					`id`,
+					`hash_key`,
+					`gender`,
+					`public_mail`,
+					`websites`,
+					`list_ip`,
+					`avatar`,
+					`info_text`,
+					`birthday`,
+					`country`,
+					`hight_avatar`,
+					`friends`,
+					`date_registration`,
+					`visits` int DEFAULT '0',
+					`gravatar` tinyint(1) NOT NULL DEFAULT '0',
+					`profils` tinyint(1) NOT NULL DEFAULT '0'
+					)
+				VALUES (
+					NULL , '".$user['hash_key']."', '', '', '', '', 'assets/img/default_avatar.jpg', '', '', '', '', '', '', NOW(), '', '0', '0'
+				);";
+
+		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_social` (
+					`id`,
+					`hash_key`,
+					`facebook`,
+					`youtube`,
+					`whatsapp`,
+					`instagram`,
+					`messenger`,
+					`tiktok`,
+					`snapchat`,
+					`telegram`,
+					`pinterest`,
+					`x_twitter`,
+					`reddit`,
+					`linkedIn`,
+					`skype`,
+					`viber`,
+					`teams_ms`,
+					`discord`,
+					`twitch` 	
+					)
+				VALUES (
+					NULL , '".$user['hash_key']."', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+				);";
+		foreach ($sql as $insert) {
+			try {
+				$cnx = new PDO('mysql:host='.$_SESSION['host'].';port='.$_SESSION['port'].';dbname='.$_SESSION['dbname'], $_SESSION['username'], $_SESSION['password']);
+				$cnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$cnx->exec($insert);
+				$return = true;
+			} catch(PDOException $e) {
+				$return = $e->getMessage();
+				return $return;
+			}
+			unset($cnx);
+		}
 	}
 
 	public function HTML()
 	{
 		if ($this->page == 'create_sql') {
 			$table = $_REQUEST['table'];
+			debug($_REQUEST);
 			require_once ROOT.'INSTALL'.DS.'includes'.DS.'tables.php';
 			if ($error === true) {
 				echo json_encode(array($error));
@@ -42,28 +158,41 @@ class BelCMS
 				echo json_encode(array($error));
 			}
 		} else {
+			if ($this->page == 'finish') {
+				self::insertUserBDD();
+				//BelCMS::RepEfface(ROOT.'INSTALL');
+			}
 			ob_start("ob_gzhandler");
 			?>
-			<!DOCTYPE HTML>
+			<!doctype html>
 			<html lang="fr">
 				<head>
-					<title>Installation du C.M.S [BEL-CMS]</title>
-					<meta charset="UTF-8">
-					<meta http-equiv="x-ua-compatible" content="ie=edge">
-					<link href="/INSTALL/img/favicon.ico" rel="shortcut icon">
-					<link type="text/plain" rel="author" href="/INSTALL/humans.txt">
-					<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-					<link rel="stylesheet" href="/INSTALL/css/styles.css">
+					<meta charset="utf-8">
+					<title>Installation de Bel-CMS : V.3.0.5</title>
+					<link href="http://cdn.determe.be/FontAwesome.all.6.5.2.min.css" rel="stylesheet" >
+					<link href="http://cdn.determe.be/bootstrap.5.2.3.min.css" rel="stylesheet">
+					<link href="/INSTALL/css/styles.css" rel="stylesheet" >
 				</head>
 				<body>
-					<main>
-						<h1>Installation de BEL-CMS v3.0.0</h1>
+					<header class="container">
+						<img src="/INSTALL/img/logo.png" alt="Logo Bel-CMS">
+						<a href="https://bel-cms.dev" title="Bel-CMS">Bel-CMS</a>
+					</header>
+					<div id="background" class="container">
+						<canvas class="background"></canvas>
+					</div>
+					<main id="main" class="container">
 						<?=self::VIEW()?>
 					</main>
-					<script src="/INSTALL/js/jquery.min.js"></script>
-					<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-					<script src="/INSTALL/js/scripts.js"></script>
+					<footer class="container">
+					<span>&copy; <a href="https://bel-cms.dev">Bel-CMS <?=date('Y');?></a></span>
+					</footer>
+					<script src="http://cdn.determe.be/jquery.min.3.6.3.js"></script>
+					<script src="http://cdn.determe.be/particles.min.js"></script>
+					<script src="http://cdn.determe.be/FontAwesome.all.6.5.2.min.js"></script>
+					<script src="http://cdn.determe.be/popper_2.11.6.min.js"></script>
+					<script src="http://cdn.determe.be/bootstrap_5.2.3.min.js"></script>
+					<script src="http://cdn.determe.be/scripts.install_cms_3.0.5.js"></script>
 				</body>
 			</html>
 			<?php
@@ -213,136 +342,6 @@ function redirect ($url = null, $time = null)
 	}, <?php echo $time; ?>);
 	</script>
 	<?php
-}
-function insertUserBDD ()
-{
-	$sql = array();
-
-	$user['username']	= $_POST['username'];
-	$user['password']	= password_hash($_POST['password'], PASSWORD_DEFAULT);
-	$user['email']		= $_POST['email'];
-	$user['hash_key']	= md5(uniqid(rand(), true));
-	$user['ip']		    = getIp();
-
-	$domain = ($_SERVER['HTTP_HOST']);
-
-	setcookie(
-		'BELCMS_HASH_KEY',
-		$user['hash_key'],
-		time()+60*60*24*30*3,
-		"/",
-		$domain,
-		true,
-		true
-	);
-	setcookie(
-		'BELCMS_NAME',
-		$user['username'],
-		time()+60*60*24*30*3,
-		"/",
-		$domain,
-		true,
-		true
-	);
-	setcookie(
-		'BELCMS_PASS',
-		$user['password'],
-		time()+60*60*24*30*3,
-		"/",
-		$domain,
-		true,
-		true
-	);
-
-	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users` (
-				`id`,
-				`username`,
-				`hash_key`,
-				`password`,
-				`mail`,
-				`ip`,
-				`valid`,
-				`expire`,
-				`token`,
-				`gold`
-			) VALUES (
-				NULL , '".$user['username']."','".$user['hash_key']."','".$user['password']."','".$user['email']."','".$user['ip']."', '1', '0', '', '1'
-			);";
-
-	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_page` (`id`, `hash_key`, `namepage`, `last_visit`) VALUES (
-				'',
-				'".$user['hash_key']."',
-				NULL,
-				NOW()
-			);";
-
-			$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_groups` (`id`, `hash_key`, `user_group`, `user_groups`) VALUES (
-				'',
-				'".$user['hash_key']."',
-				1,
-				1
-			);";
-
-	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_profils` (
-				`id`,
-				`hash_key`,
-				`gender`,
-				`public_mail`,
-				`websites`,
-				`list_ip`,
-				`avatar`,
-				`info_text`,
-				`birthday`,
-				`country`,
-				`hight_avatar`,
-				`friends`,
-				`date_registration`,
-				`visits` int DEFAULT '0',
-				`gravatar` tinyint(1) NOT NULL DEFAULT '0',
-				`profils` tinyint(1) NOT NULL DEFAULT '0'
-				)
-			VALUES (
-				NULL , '".$user['hash_key']."', '', '', '', '', 'assets/img/default_avatar.jpg', '', '', '', '', '', '', NOW(), '', '0', '0'
-			);";
-
-	$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_social` (
-				`id`,
-				`hash_key`,
-				`facebook`,
-				`youtube`,
-				`whatsapp`,
-				`instagram`,
-				`messenger`,
-				`tiktok`,
-				`snapchat`,
-				`telegram`,
-				`pinterest`,
-				`x_twitter`,
-				`reddit`,
-				`linkedIn`,
-				`skype`,
-				`viber`,
-				`teams_ms`,
-				`discord`,
-				`twitch` 	
-				)
-			VALUES (
-				NULL , '".$user['hash_key']."', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
-			);";
-			$return = false;
-	foreach ($sql as $insert) {
-		try {
-			$cnx = new PDO('mysql:host='.$_SESSION['host'].';port='.$_SESSION['port'].';dbname='.$_SESSION['dbname'], $_SESSION['username'], $_SESSION['password']);
-			$cnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$cnx->exec($insert);
-			$return = true;
-		} catch(PDOException $e) {
-			$return = $e->getMessage();
-			return $return;
-		}
-		unset($cnx);
-	}
-	return $return;
 }
 
 function getIp () {

@@ -1,32 +1,29 @@
 var i = 0;
 (function($) {
 	"use strict";
+
 	$('#submit_bdd').click( function() {
-		$(this).parents("div:first").remove();
 		ajax(i);
 	});
 
-	$('#user').on("change",function() {
-		if ($("#user").val().length >= 3 && $("#email").val().length >= 3 && $("#password").val().length >= 3) {
-			$('.menuuser').show();
+	var particles = Particles.init({
+		selector: '.background',
+	  	color: ['#FFFFFF', '#FFFFFF'],
+	  	connectParticles: true,
+	  	responsive: [{
+		  breakpoint: 800,
+		options: {
+			color: '#FFFFFF',
+			maxParticles: 550,
+		  	connectParticles: true
 		}
-	});
-
-	$('#email').on("change",function() {
-		if ($("#user").val().length >= 3 && $("#email").val().length >= 3 && $("#password").val().length >= 3) {
-			$('.menuuser').show();
-		}
-	});
-
-	$('#password').on("change",function() {
-		if ($("#user").val().length >= 3 && $("#email").val().length >= 3 && $("#password").val().length >= 3) {
-			$('.menuuser').show();
-		}
+	  }]
 	});
 
 	console.log("Chargement Installation BEL-CMS script Ok");
 
 })(jQuery);
+
 
 function ajax (i) {
 	var link = "/INSTALL/includes/ajax.php";
@@ -36,13 +33,10 @@ function ajax (i) {
 		req = data[i];
 		i = i + 1;
 		if (req != undefined) {
-			setTimeout(function() {
 				ajaxSQLInstall(i, req);
-			}, 100);
 		} else {
-			$('.belcms_notification > header').removeClass('infos').addClass("success"); 
-			$('#error_bdd').empty().append('Toutes les tables on bien été crée, vous pouvez passer au suivant en cliquant sur le bouton suivant.');
-			$('#menu').append('<li><a href="?page=sql">Précédent</a></li><li id="next"><a href="?page=finish">Suivant</a></li>');
+			$('#submit_bdd').hide();
+			$('#next_link').removeClass('hidden');
 		}
 	});
 }
@@ -68,10 +62,15 @@ function ajaxSQLInstall (i, e) {
 			console.log(errorThrown);
 		},
 		beforeSend:function() {
-			$('#install').append('<div><span>'+ e +'</span><span id="'+ e +'"><i class="fa-solid fa-circle-xmark"></i></span></div>');
+			$('#code').append('<div id="'+ e +'" class="row_table"><span class="title">'+ e +'</span><span class="wait"><i class="fa-solid fa-spinner fa-spin-pulse"></i></span></div>');
+			document.getElementById('code').scrollTop = 5000;
 		},
 		complete: function() {
-			ajax(i);
+			setTimeout(function() {
+				$('#code #'+e ).remove();
+				$('#code').append('<div id="'+ e +'" class="row_table"><span class="title">'+ e +'</span><span class="green"><i class="fa-regular fa-thumbs-up"></i></span></div>');
+				ajax(i);
+			}, 150);
 		}
 	});
 }

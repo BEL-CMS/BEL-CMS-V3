@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.5 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -100,9 +100,9 @@ function createDirAll ()
 
 	foreach ($dir as $v) {
 		if (is_writable($v)) {
-			$array[$v] = 'La permition du dossier est correcte';
+			$array[$v]   = '<li><span>La permition du dossier '.$v.'</span><span><i style="color:green;" class="fa-regular fa-thumbs-up"></i></span></li>';
 		} else {
-			$array[$v] = 'le dossier '.$v.' n\'est pas en Chmod 0775, verifier vos permissions'; 
+			$array[$v] = '<li>le dossier '.$v.' n\'est pas en Chmod 0775, verifier vos permissions</li>'; 
 		}
 	}
 	return $array;
@@ -113,19 +113,19 @@ function checkPDOConnect ($d)
 		$cnx = new PDO('mysql:host='.$d["serversql"].';port='.$d["port"].';dbname='.trim($d["name"]), $d["user"], $d["password"], array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 		$cnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 
-		$_SESSION['host']       = $d["serversql"];
-		$_SESSION['username']   = $d["user"];
-		$_SESSION['password']   = $d["password"];
-		$_SESSION['dbname']     = $d["name"];
-		$_SESSION['port']       = $d["port"];
-		$_SESSION['prefix']     = $d['prefix'];
+		$_SESSION['host']     = $d["serversql"];
+		$_SESSION['username'] = $d["user"];
+		$_SESSION['password'] = $d["password"];
+		$_SESSION['dbname']   = $d["name"];
+		$_SESSION['port']     = $d["port"];
+		$_SESSION['prefix']   = $d['prefix'];
 
 		createConfig();
 
 		return true;
 	}
 	catch(PDOException $e) {
-		redirect('?page=sql', 3);
+		redirect('?page=pdo', 3);
 		return $e->getMessage();
 	}
 }
@@ -154,7 +154,7 @@ function configIncPhp ()
 	$content  = "<?php".PHP_EOL;
 	$content .= "/**".PHP_EOL;
 	$content .= "* Bel-CMS [Content management system]".PHP_EOL;
-	$content .= "* @version 3.0.0 [PHP8.3]".PHP_EOL;
+	$content .= "* @version 3.0.5 [PHP8.3]".PHP_EOL;
 	$content .= "* @link https://bel-cms.dev".PHP_EOL;
 	$content .= "* @link https://determe.be".PHP_EOL;
 	$content .= "* @license http://opensource.org/licenses/GPL-3.0.-copyleft".PHP_EOL;
