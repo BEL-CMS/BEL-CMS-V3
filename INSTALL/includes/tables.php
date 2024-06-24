@@ -21,7 +21,6 @@ function randomString($length) {
 	$str = substr($str, 0, $length);
 	return $str;
 }
-$_SESSION['CONFIG_CMS']['KEY_ADMIN'] = md5(uniqid(rand(), true));
 $_SESSION['HTTP_HOST'] = $host;
 $current    = new DateTime('now');
 $date       = $current->format('Y-m-d H:i:s');

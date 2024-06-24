@@ -22,6 +22,7 @@ class BelCMS
 	{
 		if (!session_id()) {
 			session_start();
+			$_SESSION['CONFIG_CMS']['KEY_ADMIN'] = md5(uniqid(rand(), true));
 		}
 		$this->page = (!isset($_REQUEST['page'])) ? 'home' : $_REQUEST['page'];
 		require_once ROOT.'INSTALL'.DS.'includes'.DS.'checkCompatibility.php';
@@ -45,13 +46,12 @@ class BelCMS
 
 	function insertUserBDD ()
 	{
-		$passwordCrypt =  new encrypt($_POST['password'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+		$passwordCrypt = new encrypt($_POST['password'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
 		$password      = $passwordCrypt->encrypt();
 
 		$sql = array();
 
 		$user['username']	= $_POST['username'];
-		$user['password']	= password_hash($_POST['password'], PASSWORD_DEFAULT);
 		$user['mail']		= $_POST['mail'];
 		$user['hash_key']	= md5(uniqid(rand(), true));
 		$user['ip']		    = getIp();
@@ -66,10 +66,10 @@ class BelCMS
 					`valid`,
 					`expire`,
 					`token`,
-					`gold`
+					`gold`,
 					`number_valid`
 				) VALUES (
-					NULL , '".$user['username']."','".$user['hash_key']."','".$password."','".$user['mail']."','".$user['ip']."', '1', '0', '', '1',''
+					'' , '".$user['username']."','".$user['hash_key']."','".$password."','".$user['mail']."','".$user['ip']."', '1', '0', '', '1',''
 				);";
 
 		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_page` (`id`, `hash_key`, `namepage`, `last_visit`) VALUES (
@@ -86,7 +86,7 @@ class BelCMS
 					1
 				);";
 
-		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_profils` (
+				$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_profils` (
 					`id`,
 					`hash_key`,
 					`gender`,
@@ -100,13 +100,11 @@ class BelCMS
 					`hight_avatar`,
 					`friends`,
 					`date_registration`,
-					`visits` int DEFAULT '0',
-					`gravatar` tinyint(1) NOT NULL DEFAULT '0',
-					`profils` tinyint(1) NOT NULL DEFAULT '0'
-					)
+					`visits`,
+					`gravatar`,
+					`profils`)
 				VALUES (
-					NULL , '".$user['hash_key']."', '', '', '', '', 'assets/img/default_avatar.jpg', '', '', '', '', '', '', NOW(), '', '0', '0'
-				);";
+					'', '".$user['hash_key']."', NULL, NULL, NULL, NULL, 'assets/img/default_avatar.jpg', NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, NULL, '0', '0');";
 
 		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_social` (
 					`id`,
@@ -140,7 +138,7 @@ class BelCMS
 				$return = true;
 			} catch(PDOException $e) {
 				$return = $e->getMessage();
-				return $return;
+				debug($return);
 			}
 			unset($cnx);
 		}
@@ -150,7 +148,6 @@ class BelCMS
 	{
 		if ($this->page == 'create_sql') {
 			$table = $_REQUEST['table'];
-			debug($_REQUEST);
 			require_once ROOT.'INSTALL'.DS.'includes'.DS.'tables.php';
 			if ($error === true) {
 				echo json_encode(array($error));
