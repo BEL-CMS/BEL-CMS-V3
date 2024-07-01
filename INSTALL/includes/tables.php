@@ -254,7 +254,7 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 	  		`id` int NOT NULL AUTO_INCREMENT,
 	  		`name` varchar(128) NOT NULL,
-	  		`description` text,
+	  		`description` text NOT NULL,
 	  		`idcat` int NOT NULL,
 	  		`size` varchar(64) NOT NULL,
 	  		`uploader` varchar(32) NOT NULL,
@@ -556,6 +556,19 @@ switch ($_POST['table']) {
 			`config` varchar(255) DEFAULT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";	
+
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`) VALUES
+			('', 'host', 'localhost'),
+			('', 'Port', '587'),
+			('', 'SMTPAuth', 'true'),
+			('', 'SMTPAutoTLS', '1'),
+			('', 'WordWrap', '65'),
+			('', 'IsHTML', 'true'),
+			('', 'setFrom', ''),
+			(', 'fromName', 'Unknow'),
+			('', 'charset', 'UTF-8'),
+			('', 'username', ''),
+			('', 'Password', '');";
 	break;
 
 	case "mails_msg":
@@ -981,31 +994,17 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
-			(1, 0, 'calendar'),
-			(2, 0, 'comments'),
-			(3, 0, 'downloads'),
-			(4, 0, 'articles'),
-			(5, 0, 'events'),
-			(6, 0, 'forum'),
-			(7, 0, 'groups'),
-			(8, 0, 'inbox'),
-			(9, 0, 'market'),
-			(10, 0, 'members'),
-			(11, 0, 'newsletter'),
-			(12, 0, 'page'),
-			(13, 0, 'shoutbox'),
-			(14, 0, 'survey'),
-			(15, 0, 'user'),
-			(16, 0, 'news'),
-			(17, 0, 'mails'),
-			(18, 0, 'games'),
-			(19, 0, 'guestbook'),
-			(20, 0, 'donations'),
-			(21, 0, 'gallery'),
-			(22, 0, 'faq'),
-			(23, 0, 'links'),
-			(24, 0, 'team'),
-			(25, 0, 'survey');";
+		(1, 'yesterday', 1),
+		(2, 'today', 1),
+		(3, 'now', 1),
+		(4, 'page_view', 1),
+		(5, 'users', 1),
+		(6, 'news', 1),
+		(7, 'articles', 1),
+		(8, 'comments', 1),
+		(9, 'links', 1),
+		(10, 'files', 1),
+		(11, 'images', 1);";
 	break;
 
 	case "survey":

@@ -157,7 +157,8 @@ class BelCMS
 		} else {
 			if ($this->page == 'finish') {
 				self::insertUserBDD();
-				//BelCMS::RepEfface(ROOT.'INSTALL');
+				BelCMS::RepEfface(ROOT.'INSTALL');
+				redirect('/index.php', 5);
 			}
 			ob_start("ob_gzhandler");
 			?>
@@ -166,8 +167,8 @@ class BelCMS
 				<head>
 					<meta charset="utf-8">
 					<title>Installation de Bel-CMS : V.3.0.5</title>
-					<link href="http://cdn.determe.be/FontAwesome.all.6.5.2.min.css" rel="stylesheet" >
-					<link href="http://cdn.determe.be/bootstrap.5.2.3.min.css" rel="stylesheet">
+					<link href="/INSTALL/css/FontAwesome.all.6.5.2.min.css" rel="stylesheet" >
+					<link href="/INSTALL/css/bootstrap.5.2.3.min.css" rel="stylesheet">
 					<link href="/INSTALL/css/styles.css" rel="stylesheet" >
 				</head>
 				<body>
@@ -184,12 +185,12 @@ class BelCMS
 					<footer class="container">
 					<span>&copy; <a href="https://bel-cms.dev">Bel-CMS <?=date('Y');?></a></span>
 					</footer>
-					<script src="http://cdn.determe.be/jquery.min.3.6.3.js"></script>
-					<script src="http://cdn.determe.be/particles.min.js"></script>
-					<script src="http://cdn.determe.be/FontAwesome.all.6.5.2.min.js"></script>
-					<script src="http://cdn.determe.be/popper_2.11.6.min.js"></script>
-					<script src="http://cdn.determe.be/bootstrap_5.2.3.min.js"></script>
-					<script src="http://cdn.determe.be/scripts.install_cms_3.0.5.js"></script>
+					<script src="/INSTALL/js/jquery.min.3.6.3.js"></script>
+					<script src="/INSTALL/js/particles.min.js"></script>
+					<script src="/INSTALL/js/FontAwesome.all.6.5.2.min.js"></script>
+					<script src="/INSTALL/js/popper_2.11.6.min.js"></script>
+					<script src="/INSTALL/js/bootstrap_5.2.3.min.js"></script>
+					<script src="/INSTALL/js/scripts.js"></script>
 				</body>
 			</html>
 			<?php
