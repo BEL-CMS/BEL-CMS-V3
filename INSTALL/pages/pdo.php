@@ -49,7 +49,7 @@
                 </li>
             </ul>
         </nav>
-        <progress max="100" value="35">35%</progress>
-        <i class="pourcent">35%</i>
+        <progress max="100" value="35">50%</progress>
+        <i class="pourcent">50%</i>
     </div>
 </form>

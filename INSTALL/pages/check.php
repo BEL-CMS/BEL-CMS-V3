@@ -57,6 +57,6 @@ if (checkPhp() && checkPDO() && checkIntl() && checkMysqli() && BelCMS::getIni('
 			?>
 		</ul>
 	</nav>
-	<progress max="100" value="10">10%</progress>
-	<i class="pourcent">10%</i>
+	<progress max="100" value="15">15%</progress>
+	<i class="pourcent">15%</i>
 </div>

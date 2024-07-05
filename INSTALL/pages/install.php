@@ -33,12 +33,12 @@ else:
                 <a id="submit_bdd" class="page-link">Installer</a>
             </li>
             <li class="page-item">
-                <a id="next_link" class="page-link hidden" href="index.php?page=user">Suivant</a>
+                <a id="next_link" class="page-link hidden" href="index.php?page=finish">Suivant</a>
             </li>
         </ul>
     </nav>
-    <progress max="100" value="45">45%</progress>
-    <i class="pourcent">45%</i>
+    <progress max="100" value="65">65%</progress>
+    <i class="pourcent">65%</i>
 </div>
 <?php
 endif;

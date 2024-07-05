@@ -44,106 +44,6 @@ class BelCMS
 		return $buffer;
 	}
 
-	function insertUserBDD ()
-	{
-		$passwordCrypt = new encrypt($_POST['password'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
-		$password      = $passwordCrypt->encrypt();
-
-		$sql = array();
-
-		$user['username']	= $_POST['username'];
-		$user['mail']		= $_POST['mail'];
-		$user['hash_key']	= md5(uniqid(rand(), true));
-		$user['ip']		    = getIp();
-
-		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users` (
-					`id`,
-					`username`,
-					`hash_key`,
-					`password`,
-					`mail`,
-					`ip`,
-					`valid`,
-					`expire`,
-					`token`,
-					`gold`,
-					`number_valid`
-				) VALUES (
-					'' , '".$user['username']."','".$user['hash_key']."','".$password."','".$user['mail']."','".$user['ip']."', '1', '0', '', '1',''
-				);";
-
-		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_page` (`id`, `hash_key`, `namepage`, `last_visit`) VALUES (
-					'',
-					'".$user['hash_key']."',
-					NULL,
-					NOW()
-				);";
-
-				$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_groups` (`id`, `hash_key`, `user_group`, `user_groups`) VALUES (
-					'',
-					'".$user['hash_key']."',
-					1,
-					1
-				);";
-
-				$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_profils` (
-					`id`,
-					`hash_key`,
-					`gender`,
-					`public_mail`,
-					`websites`,
-					`list_ip`,
-					`avatar`,
-					`info_text`,
-					`birthday`,
-					`country`,
-					`hight_avatar`,
-					`friends`,
-					`date_registration`,
-					`visits`,
-					`gravatar`,
-					`profils`)
-				VALUES (
-					'', '".$user['hash_key']."', NULL, NULL, NULL, NULL, 'assets/img/default_avatar.jpg', NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP, NULL, '0', '0');";
-
-		$sql[]  = "INSERT INTO `".$_SESSION['prefix']."users_social` (
-					`id`,
-					`hash_key`,
-					`facebook`,
-					`youtube`,
-					`whatsapp`,
-					`instagram`,
-					`messenger`,
-					`tiktok`,
-					`snapchat`,
-					`telegram`,
-					`pinterest`,
-					`x_twitter`,
-					`reddit`,
-					`linkedIn`,
-					`skype`,
-					`viber`,
-					`teams_ms`,
-					`discord`,
-					`twitch` 	
-					)
-				VALUES (
-					NULL , '".$user['hash_key']."', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
-				);";
-		foreach ($sql as $insert) {
-			try {
-				$cnx = new PDO('mysql:host='.$_SESSION['host'].';port='.$_SESSION['port'].';dbname='.$_SESSION['dbname'], $_SESSION['username'], $_SESSION['password']);
-				$cnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$cnx->exec($insert);
-				$return = true;
-			} catch(PDOException $e) {
-				$return = $e->getMessage();
-				debug($return);
-			}
-			unset($cnx);
-		}
-	}
-
 	public function HTML()
 	{
 		if ($this->page == 'create_sql') {
@@ -156,9 +56,9 @@ class BelCMS
 			}
 		} else {
 			if ($this->page == 'finish') {
-				self::insertUserBDD();
 				BelCMS::RepEfface(ROOT.'INSTALL');
-				redirect('/index.php', 5);
+				redirect('/User/register&echo', 5);
+				$_SESSION['INSTALL'] = true;
 			}
 			ob_start("ob_gzhandler");
 			?>
