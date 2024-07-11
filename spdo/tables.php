@@ -79,6 +79,7 @@ $tables = array(
 	'TABLE_PAGES_NEWS_CAT'      => $DB_PREFIX.'page_news_cat',
 	'TABLE_SHOUTBOX'            => $DB_PREFIX.'page_shoutbox',
 	'TABLE_PAGE_STATS'          => $DB_PREFIX.'page_stats',
+	'TABLE_SEARCH'              => $DB_PREFIX.'search',
 	'TABLE_STATS'               => $DB_PREFIX.'stats', 
 	'TABLE_SURVEY'              => $DB_PREFIX.'survey',
 	'TABLE_SURVEY_QUEST'        => $DB_PREFIX.'survey_answer',

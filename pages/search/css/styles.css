@@ -1,0 +1,143 @@
+@import "/assets/plugins/DataTables-1.13.06/jquery.dataTables.min.css";
+section#search {
+    display: block;
+    padding: 10px;
+    background-color: #F9F9F9;
+    font-size: 13px;
+    position: relative;
+    border-radius: 4px;
+    text-align: justify;
+}
+section#search > h2 {
+    color: #141414;
+    background: #fefefe;
+    border: 1px solid #d8d8d8;
+    border-top-color: rgb(216, 216, 216);
+    border-right-color: rgb(216, 216, 216);
+    border-bottom-color: rgb(216, 216, 216);
+    border-left-color: rgb(216, 216, 216);
+    border-radius: 4px;
+    padding: 14px;
+    box-shadow: rgba(0,0,0,0.08) 0px 1px 4px;
+    border-color: rgba(0,0,0,0.15);
+    margin: 0;
+    font-size: 22px;
+    font-weight: 400;
+    text-align: left;
+    text-transform: none;
+    position: relative;
+}
+section#search > h2 a {
+    position: absolute;
+    right: 15px;
+}
+#search_letter {
+    display: block;
+    margin: auto auto 45px auto;
+    width: 95%;
+    list-style: none;
+    text-align: center;
+    padding: 5px 0;
+    background: #fefefe;
+    border: 1px solid #d8d8d8;
+    border-right-color: rgb(216, 216, 216);
+    border-bottom-color: rgb(216, 216, 216);
+    border-left-color: rgb(216, 216, 216);
+}
+#search_letter li {
+    display: inline-block;
+}
+#search_letter li a {
+    display: block;
+    padding: 0 6px;
+    font-size: 14px;
+}
+#form_search {
+    display: block;
+    margin: 15px;
+    width: 95%; 
+}
+.form_row {
+    display: block;
+    width: 100%;
+    position: relative;
+}
+section#search select,
+section#search input[type="search"] {
+    background-color:rgb(216, 216, 216);
+    color: black;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+section#search select {
+    text-align: center !important;
+}
+label {
+    background-color:rgb(216, 216, 216);
+    position: absolute;
+    left: 25px;
+    color: black;
+    top: -25px;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-bottom: 0;
+    border-radius: 5px;
+    padding: 0 10px;
+    
+}
+#search_list {
+    padding: 15px;
+    border: 1px solid rgba(0,0,0,0.15);
+    background-color:rgb(216, 216, 216);
+    color:#141414;
+}
+#search_list table {
+    display: table;
+    width: 100%;
+}
+#search_list table tr {
+    display: block;
+    width: 100%;
+    border-bottom: rgba(0,0,0,0.15);
+    padding: 0 15px;
+    cursor: pointer;
+    transition: 500ms ease-in-out;
+}
+#search_list table tr:hover {
+    background-color:  rgba(0,0,0,0.15);
+    font-weight: bold;
+    transition: all 500ms ease-in-out;
+}
+#search_content {
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(0,0,0,0.75);
+}
+#search_ul {
+    background-color: rgb(216, 216, 216);
+    color: black;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    list-style: none;
+    padding: 0;
+}
+#search_ul li {
+    display: block;
+    color: rgba(0,0,0,0.75);
+}
+#search_ul li a {
+    display: block;
+    width: 100%;
+    border-bottom: 1px dashed rgba(0,0,0,0.15);
+    padding: 0 15px;
+    transition: all 500ms linear;
+}
+#search_ul li a:hover {
+    background-color: rgba(0,0,0,0.65);
+    font-weight: bold;
+    transition: all 500ms linear;
+}
+#search_ul li:last-child a {
+    border-bottom: none;
+}

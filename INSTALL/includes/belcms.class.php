@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.5 [PHP8.3]
+ * @version 3.0.6 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -66,7 +66,7 @@ class BelCMS
 			<html lang="fr">
 				<head>
 					<meta charset="utf-8">
-					<title>Installation de Bel-CMS : V.3.0.5</title>
+					<title>Installation de Bel-CMS : V.3.0.6</title>
 					<link href="/INSTALL/css/FontAwesome.all.6.5.2.min.css" rel="stylesheet" >
 					<link href="/INSTALL/css/bootstrap.5.2.3.min.css" rel="stylesheet">
 					<link href="/INSTALL/css/styles.css" rel="stylesheet" >
@@ -179,6 +179,7 @@ class BelCMS
 			'page_stats',
 			'paypal',
 			'paypal_purchase',
+			'search',
 			'stats',
 			'survey',
 			'survey_answer',

@@ -167,7 +167,8 @@ switch ($_POST['table']) {
 			('', 'calendar', 1, '0', '1|2', 'MAX_LIST==2'),
 			('', 'faq', 1, '1|2|0', '1|2', NULL),
 			('', 'links', 1, '1|2|0', '1|2', 'MAX_LINKS==6'),
-			('', 'newsletter', 1, '1|2|0', '1|2', 'MAX_LINKS==6');";
+			('', 'newsletter', 1, '1|2|0', '1|2', 'MAX_LINKS==6'),
+			('', 'search', 1, '1|2|0', '1|2', 'MAX_SEARCH==15');";
 	break;
 
 	case 'config_tpl':
@@ -470,6 +471,16 @@ switch ($_POST['table']) {
 			`description` text,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "belcms_listing":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`letter` varchar(1) COLLATE utf8mb4_general_ci DEFAULT NULL,
+			`content` text COLLATE utf8mb4_general_ci,
+			PRIMARY KEY (`id`)
+	  	) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
 	case 'mails':
@@ -876,7 +887,7 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `rewrite_name`, `name`, `date_create`, `author`, `authoredit`, `content`, `additionalcontent`, `tags`, `cat`,`view`, `img`) VALUES
-		('', '1er_news', '1er news', '', '', NULL, '<p style=\"text-align: justify;\">Bonjour et bienvenue sur le CMS (Bel-CMS), aucun compte a &eacute;t&eacute; cr&eacute;&eacute; lors de l\'installation, ne pas l\'oublier parce que c\'est celui qui aura tous les droits.</p>\r\n<p style=\"text-align: justify;\"><br />La version du C.M.S actuel est la <strong>3.0.3</strong> sur <strong>GitHub</strong> et sur le <strong>site</strong> la version <strong>3.0.0</strong>.</p>\r\n<p style=\"text-align: justify;\"><br />Si vous rencontrez le moindre souci, une erreur de frappe, une erreur de toute sorte, essay&eacute; de me pr&eacute;venir svp sur le <strong>Forum</strong>, Merci.</p>', NULL, 'news', '', 1, NULL);";
+		('', '1er_news', '1er news', '', '', NULL, '<p style=\"text-align: justify;\">Bonjour et bienvenue sur le CMS (Bel-CMS), aucun compte a &eacute;t&eacute; cr&eacute;&eacute; lors de l\'installation, ne pas l\'oublier parce que c\'est celui qui aura tous les droits.</p>\r\n<p style=\"text-align: justify;\"><br />La version du C.M.S actuel est la <strong>3.0.6</strong> sur <strong>GitHub</strong> et sur le <strong>site</strong> la version <strong>3.0.6</strong>.</p>\r\n<p style=\"text-align: justify;\"><br />Si vous rencontrez le moindre souci, une erreur de frappe, une erreur de toute sorte, essay&eacute; de me pr&eacute;venir svp sur le <strong>Forum</strong>, Merci.</p>', NULL, 'news', '', 1, NULL);";
 	break;
 
 	case "page_news_cat":
@@ -934,7 +945,8 @@ switch ($_POST['table']) {
 		('', 0, 'survey'),
 		('', 0, 'team'),
 		('', 0, 'teams'),
-		('', 0, 'user');";
+		('', 0, 'user'),
+		('', 0, 'search');";
 	break;
 
 	case "paypal":
@@ -984,6 +996,16 @@ switch ($_POST['table']) {
 			UNIQUE KEY `id_paypal` (`id_paypal`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
+
+	case "search":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`letter` varchar(1) COLLATE utf8mb3 DEFAULT NULL,
+			`title` varchar(64) COLLATE utf8mb3 DEFAULT NULL,
+			`content` text COLLATE utf8mb3,
+			PRIMARY KEY (`id`)
+	  	) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 	case "stats":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';

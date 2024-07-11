@@ -57,6 +57,7 @@
 		'page_stats',
 		'paypal',
 		'paypal_purchase',
+		'search',
 		'stats',
 		'survey',
 		'survey_answer',
