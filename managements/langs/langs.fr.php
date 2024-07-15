@@ -53,4 +53,5 @@ Common::constant(array(
 	'EMPTY_NAME'                  => 'Aucun nom transmis ?',
 	'NEW'                         => 'Nouveau',
 	'ARRANGEMENT'                 => 'Disposition',
+	'DEL_FILE_SUCCESS'            => 'Fichier supprimé avec succès',
 ));

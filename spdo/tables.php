@@ -44,6 +44,7 @@ $tables = array(
 	'TABLE_EVENTS_CAT'          => $DB_PREFIX.'events_cat',
 	'TABLE_FAQ'                 => $DB_PREFIX.'faq',
 	'TABLE_FAQ_CAT'             => $DB_PREFIX.'faq_cat',
+	'TABLE_UPLOADS_ADMIN'       => $DB_PREFIX.'files_admin',
 	'TABLE_GALLERY'             => $DB_PREFIX.'gallery',
 	'TABLE_GALLERY_CAT'         => $DB_PREFIX.'gallery_cat',
 	'TABLE_PAGES_GAMES'         => $DB_PREFIX.'games',
