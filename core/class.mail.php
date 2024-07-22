@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.3 [PHP8.3]
+ * @version 3.0.4 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -69,8 +69,7 @@ final class eMail
 				'allow_self_signed' => true
 			)
 		);
-		$IsHTML = $data->IsHTML == '1' ? true : false;
-		$this->phpMailer->IsHTML($IsHTML);
+		$this->phpMailer->IsHTML($data->IsHTML);
 		$this->phpMailer->WordWrap = $data->WordWrap;
 	}
 

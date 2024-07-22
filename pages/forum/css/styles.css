@@ -27,8 +27,8 @@
     margin-bottom: 15px;
 }
 .belcms_forum_main_block_header {
-    background-color: #212A35;
-    color: rgba(255, 255, 255, .85);
+    background-color:rgba(0,0,0,0.50);
+    color: rgba(255, 255, 255, .85) !important;
     margin-bottom: 5px;
     height: 40px;
     line-height: 40px;
@@ -40,6 +40,7 @@
 .belcms_forum_main_block_header h3 {
     margin: 0;
     line-height: 40px;
+    font-size: 16px !important;
 }
 .belcms_forum_main_block_content {
     background: #fefefe;

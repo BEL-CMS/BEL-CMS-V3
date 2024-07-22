@@ -25,6 +25,12 @@
     border: 1px solid rgba(0,0,0,0.1);
     margin-top: 20px;
 }
+#list_guestbook ul {
+    display: block;
+    list-style: none !important;
+    margin: 0;
+    padding: 0;
+}
 .list_guestbook_row {
     display: inline-flex;
     width: 100%;
@@ -53,7 +59,8 @@
     width: 100%;
 }
 .list_guestbook_author {
-    width: 100px !important;
+    width: 140px;
+    max-width: 90% !important;
     text-align: left;
 }
 .list_guestbook_message {

@@ -30,9 +30,13 @@ endif;
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
 						<input name="name" type="text" class="form-input" required="required">
 					</div>
+					<div class="mt-2 mb-2" style="position: relative;">
+						<label class="col-md-12 control-label" for="ban_author"><?=constant('COLOR')?></label>
+						<input type="color" name="color" class="form-input" value="#333333">
+					</div>
 					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('SCREEN');?> (<?=Common::ConvertSize(Common::GetMaximumFileUploadSize())?> max)</label>
-						<input name="image" type="file" class="form-input">
+						<input name="banner" type="file" class="form-input">
 					</div>
                 </div>
             </div>

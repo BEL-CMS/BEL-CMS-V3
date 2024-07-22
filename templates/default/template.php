@@ -175,6 +175,12 @@
 				var endloading = $('#endloading').text();
 				$('.belcms_genered').append(endloading);
 			});
-		</script>
+        function bookmark(){
+            var url = "https://bel-cms.dev";
+            var title = "SiteW.com";      
+            if (window.sidebar) {window.sidebar.addPanel(title, url, "");} else if( window.external ) { window.external.AddFavorite( url, title);}
+            return false
+        }
+    </script>
     </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.6 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -11,7 +11,6 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
-use BelCMS\Core\Secures;
 use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
@@ -22,39 +21,55 @@ endif;
 class Gallery extends Pages
 {
 	var $useModels = 'Gallery';
-
+    #####################################
+    # Page d'accueil index
+    #####################################
 	public function index ()
 	{
-        $cat['category']['cat'] = $this->models->getCat();
-        $this->set($cat);
-        $img['img']['img'] = $this->models->getImg();
-        $this->set($img);
+		$config = Config::GetConfigPage('gallery');
+		$data['pagination'] = $this->pagination($config->config['MAX_CAT'], 'gallery', constant('TABLE_GALLERY_CAT'));
+
+        $data['count'] = $this->models->countImg ();
+        $data['cat'] = $this->models->geAlltCat ();
+
+        $this->set($data);
         $this->render('index');
     }
-
-    public function category ()
-    {
-        $id = (int) $this->data[2];
-		$config =  Config::GetConfigPage('gallery');
-		$set['pagination'] = $this->pagination($config->config['MAX_IMG'], 'gallery/Category/'.$id, constant('TABLE_GALLERY'), array('name' => 'cat', 'value' => $id));
-        $this->set($set);
-        $cat['category']['cat'] = $this->models->getCat();
-        $this->set($cat);
-        $img['img']['img'] = $this->models->getImgCat($id);
-        $this->set($img);
-        $this->render('cat');
-    }
-
+    #####################################
+    # Affiche les donné d'une image
+    #####################################
     public function detail ()
     {
-        $id = (int) $this->data[2];
-        $data['img'] = $this->models->getImgDetail($id);
-        if (!empty($data['img'])) {
-            $this->models->plusOneView($id);
-        }
-        $cat['category']['cat'] = $this->models->getCat();
-        $this->set($cat);
+        $id = (int) $this->data['2'];
+        $data['data'] = $this->models->getDetail($id);
         $this->set($data);
         $this->render('detail');
+    }
+    #####################################
+    # Ajouter un vote +1 à l'image
+    #####################################
+    public function addvote ()
+    {
+        $id = (int) $this->data['2'];
+        $return = $this->models->votePlusOne($id);
+        $this->redirect('Gallery/detail/'.$id, 3);
+        $this->error = true;
+        $this->errorInfos = array($return["type"], $return["text"], 'Galerie', false);
+    }
+    #####################################
+    # Affiche les nouvelles image
+    #####################################
+    public function new ()
+    {
+        $data['data'] = $this->models->getnew();
+        $this->set($data);
+        $this->render('new');
+    }
+
+    public function popular ()
+    {
+        $data['data'] = $this->models->popular();
+        $this->set($data);
+        $this->render('popular');
     }
 }

@@ -18,7 +18,7 @@ endif;
 ?>
 <section id="section_gallery">
     <h2><?=constant('GALLERY');?></h2>
-    <div id="section_opt">[ <a href="Gallery">Index</a> | <a href="Gallery/New">Nouveaux</a> ]</div>
+    <div id="section_opt">[ <a href="Gallery">Index</a> ]</div>
     <ul>
         <li id="section_gallery_title">
             <span class="section_gallery_title_img">Images :</span>

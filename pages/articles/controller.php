@@ -27,17 +27,22 @@ class Articles extends Pages
 	public function index ()
 	{	
 		$set['data'] = $this->models->getPage();
-		foreach ($set['data'] as $k => $v) {
-			if (Secures::IsAcess($v->groups) == false) {
-				unset($set['data'][$k]);
+		if (!empty($set['data'])) {
+			foreach ($set['data'] as $k => $v) {
+				if (Secures::IsAcess($v->groups) == false) {
+					unset($set['data'][$k]);
+				}
 			}
+			$page = Common::ScanFiles(ROOT.'/pages/page/uploads');
+			if (!empty($page)) {
+				$set['sub'] = str_replace(".php", "", $page);
+			}
+			$this->set($set);
+			$this->render('index');
+		} else {
+			$this->error = true;
+			$this->errorInfos = array('error', 'Aucun ID', constant('INFO'), false);
 		}
-		$page = Common::ScanFiles(ROOT.'/pages/page/uploads');
-		if (!empty($page)) {
-			$set['sub'] = str_replace(".php", "", $page);
-		}
-		$this->set($set);
-		$this->render('index');
 	}
 
 	public function read ($id = null)
@@ -45,13 +50,15 @@ class Articles extends Pages
 		$id = $this->data[2];
 		if (!is_null($id) && is_numeric($id)) {
 			$set['data'] = $this->models->getArticlesContentId($id);
-			$get = $this->models->getArticlesId($set['data']->number);
-			if (Secures::IsAcess($get->groups) == false) {
-				$this->error = true;
-				$this->errorInfos = array('error', constant('NO_ACCESS_GROUP_PAGE'), constant('INFO'), false);
-			} else {
-				$this->set($set);
-				$this->render('read');	
+			if (!empty($set['data'])) {
+				$get = $this->models->getArticlesId($set['data']->number);
+				if (Secures::IsAcess($get->groups) == false) {
+					$this->error = true;
+					$this->errorInfos = array('error', constant('NO_ACCESS_GROUP_PAGE'), constant('INFO'), false);
+				} else {
+					$this->set($set);
+					$this->render('read');	
+				}
 			}
 		} else {
 			$this->error = true;

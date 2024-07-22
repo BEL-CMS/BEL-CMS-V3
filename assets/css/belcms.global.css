@@ -34,15 +34,17 @@ pre, code {
 .belcms_btn {
 	display: block;
 	width: auto;
-	height: 30px;
+	height: 36px;
 	border-radius: 4px;
 	color: #fff;
 	font-family: "Titillium Web",sans-serif;
-	font-size: 0.75em;
+	font-size: 1em;
 	font-weight: 700;
-	line-height: 30px;
+	line-height: 36px;
 	text-align: center;
 	background-color: #647072;
+	cursor: pointer;
+	padding: 0 15px;
 }
 [data-tooltip] {
 	cursor: pointer;

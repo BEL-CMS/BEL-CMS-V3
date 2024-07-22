@@ -25,7 +25,7 @@ Common::constant(array(
 	'ERROR_NO_DATA'         => 'Erreur de transfert de données',
 	'ADD_FILE_SUCCESS'      => 'Ajouté avec succès',
 	'DESCRITPION'           => 'Description',
-	'GALLERY'               => 'Gallerie d\'images',
+	'GALLERY'               => 'Galerie d\'images',
 	'SCREEN'                => 'Images',
 	'GALLERY_CAT'           => 'Gallerie - Catégories',
 	'NO_CATEGORY'           => 'Aucune catégorie',

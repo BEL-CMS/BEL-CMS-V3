@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.3 [PHP8.3]
+ * @version 3.0.4 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -31,5 +31,7 @@ class Mail extends AdminPages
     public function send ()
     {
         $return = $this->models->saveConfig($_POST);
+		$this->error('Parametres', $return['text'], $return['type']);
+        $this->redirect('Mail?management&option=parameter', 2);
     }
 }

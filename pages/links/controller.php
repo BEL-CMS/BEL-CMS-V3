@@ -82,8 +82,9 @@ class Links extends Pages
 
     public function getLinksCat ()
     {
-        if (!empty($this->data[2]) and is_numeric($this->data[2])) {
-            $data['data'] = $this->models->getLinksCat ($this->data[2]);
+        $id = (int) $this->data['2'];
+        if (!empty($id) and is_numeric($id)) {
+            $data['data'] = $this->models->getLinksCat ($id);
             $this->set($data);
             $this->render('linkcat');
         } else {

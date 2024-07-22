@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.5 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -58,8 +58,8 @@ $countPage = number_format($page, 0, ',', '.');
 					} else {
 						if ($visitor != null) {
 							$visitor = strtolower($v->visitor_user);
-							$pos = strpos($visitor, 'bot');
-							if ($pos == false) {
+							$pos = strpos($visitor, 'bot') or Common::isBot($visitor) === false ? true : false; 
+							if ($pos !== false) {
 								$visitor = constant('VISITOR');
 							} else {
 								$visitor = constant('BOT');
@@ -84,3 +84,5 @@ $countPage = number_format($page, 0, ',', '.');
 		</li>
 	</ul>
 </div>
+<?php
+?>

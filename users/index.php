@@ -60,10 +60,10 @@ class User
 			$sql->queryOne();
 			$results = $sql->data;
 
-			$passwordCrypt =  new encrypt($results->password, $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
-			$passwordDecrypt = $passwordCrypt->decrypt();
+			$decrypt = new encrypt($results->password, $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+			$decryptPass = $decrypt->decrypt();
 
-			if ($password == $passwordDecrypt) {
+			if ($password == $decryptPass) {
 				setcookie(
 					'BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES'],
 					$results->hash_key,
@@ -99,7 +99,7 @@ class User
 			} else {
 				$return['msg']  = constant('WRONG_USER_PASS');
 				$return['type'] = 'error';
-				//self::addBan ();
+				self::addBan ();
 				return $return;
 			}
 		} else {

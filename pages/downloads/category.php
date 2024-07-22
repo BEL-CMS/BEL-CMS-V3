@@ -28,7 +28,7 @@ if (empty($data)) {
 			?>
 			<li>
 				<div class="belcms_downloads_avatar">
-					<img src="<?=$value->screen;?>" alt="avatar_<?=$value->name;?>">
+					<img class="glightbox" src="<?=$value->screen;?>" alt="avatar_<?=$value->name;?>">
 				</div>
 				<div class="belcms_downloads_infos">
 					<ul>
@@ -51,5 +51,4 @@ if (empty($data)) {
 		</ul>
 	</div>
 </div>
-
 

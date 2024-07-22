@@ -43,7 +43,7 @@
                                     <?php
                                     if (!empty($this->reason)):
                                     ?>
-                                        <h4 style="display: block;width: 100%;"><?=$this->reason;?></h4>
+                                        <h4 style="display: block;clear: both;"><?=$this->reason;?></h4>
                                     <?php
                                     endif;
                                     ?>

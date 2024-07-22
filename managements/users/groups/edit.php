@@ -46,7 +46,7 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 						<input type="file" name="image" class="form-input" id="upload" accept="image/*">
 					</div>
 					<?php
-					if (is_file($data->image)):
+					if (!empty($data->image)):
 						$img = $data->image;
 					?>
 					<div class="mt-2 mb-2">

@@ -19,17 +19,14 @@ endif;
 <a id="main_menu" href="Links"><i class="fa-solid fa-arrow-rotate-left"></i>&nbsp;Retourné à la page principale</a>
 <div id="links_view">
     <h2><?=$data->name;?></h2>
-    <p id="link_desc"><?=$data->description;?></p>
-    <div id="link_infos">
-        <span><?=$data->nameCat->name;?></span><span><?=constant('CAT');?></span>
-    </div>
-    <div id="link_infos">
+    <div id="link_desc"><?=$data->description;?></div>
+    <div class="link_infos">
         <span><?=Common::TransformDate($data->date_insert, 'FULL', 'LONG');?></span><span><?=constant('ADD_THE');?></span>
     </div>
-    <div id="link_infos">
+    <div class="link_infos">
         <span><?=$data->view;?></span><span><?=constant('VISIT');?></span>
     </div>
-    <div id="link_infos">
+    <div class="link_infos">
         <span><?=$data->click;?></span><span><?=constant('CLICK');?></span>
     </div>
 </div>

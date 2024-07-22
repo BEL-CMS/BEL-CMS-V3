@@ -137,13 +137,14 @@ final class ModelsGallery
 	public function sendAddCat ($data)
 	{
 		if (is_array($data)) {
-			if (isset($_FILES['image'])):
-				$image = Common::Upload('image', 'uploads/gallery/cat', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
+			if (isset($_FILES['banner'])):
+				$image = Common::Upload('banner', 'uploads/gallery/cat', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
 				if ($image == constant('UPLOAD_FILE_SUCCESS')):
-					$insert['screen'] = 'uploads/gallery/cat/'.$_FILES['image']['name'];
+					$insert['banner'] = '/uploads/gallery/cat/'.$_FILES['banner']['name'];
 				endif;
 			endif;
-			$insert['name'] = Common::VarSecure($data['name'], null);
+			$insert['name']  = Common::VarSecure($data['name'], null);
+			$insert['color'] = Common::VarSecure($data['color'], null);
 			$sql = New BDD();
 			$sql->table('TABLE_GALLERY_CAT');
 			$sql->insert($insert);
@@ -175,11 +176,14 @@ final class ModelsGallery
 			if (isset($_FILES['image'])):
 				$image = Common::Upload('image', 'uploads/gallery/cat', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
 				if ($image == constant('UPLOAD_FILE_SUCCESS')):
-					$update['screen'] = 'uploads/gallery/cat/'.$_FILES['image']['name'];
-					@unlink(ROOT.DS.$data['remove']);
+					$update['banner'] = '/uploads/gallery/cat/'.$_FILES['image']['name'];
+					if (file_exists(ROOT.DS.$data['remove'])) {
+						@unlink(ROOT.DS.$data['remove']);
+					}
 				endif;
 			endif;
 			$update['name'] = Common::VarSecure($data['name'], null);
+			$update['color'] = Common::VarSecure($data['color'], null);
 			$sql = New BDD();
 			$sql->table('TABLE_GALLERY_CAT');
 			$sql->where(array('name' => 'id', 'value' => $id));
@@ -242,7 +246,7 @@ final class ModelsGallery
 		if (isset($_FILES['image'])) {
 			$image = Common::Upload('image', 'uploads/gallery', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
 			if ($image == constant('UPLOAD_FILE_SUCCESS')):
-				$insert['image'] = 'uploads'.DS.'gallery'.DS.$_FILES['image']['name'];
+				$insert['image'] = '/uploads/gallery/'.$_FILES['image']['name'];
 			endif;
 		} else {
 			$return = array(

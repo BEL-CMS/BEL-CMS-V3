@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.6 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -260,6 +260,7 @@ $array = array(
 	'PLEASE_ENTER_YOUR_MAIL'              => 'Veuillez entrer votre e-mail',
 	'INVALID_ID'                          => 'ID non valide',
 	'MOBILE'                              => 'Mobile',
+	'SEARCH'                              => 'Rechercher',
 	#####################################
 	# UPLOAD
 	#####################################
@@ -417,12 +418,13 @@ $array = array(
 	'MANAGEMENTS'                         => 'Administration',
 	'GUESTBOOK'                           => 'Livre d\'or',
 	'DONATIONS'                           => 'Don',
-	'GALLERY'                             => 'Gallerie d\'images',
+	'GALLERY'                             => 'Galerie d\'images',
 	'FAQ'                                 => 'Foire aux questions',
-	'FILE_MANAGER'                        => 'Gestionnaire de fichiers',
+	'FILE_MANAGER'                        => 'Geiers',
 	'ARTICLES'                            => 'Articles',
 	'LINKS'                               => 'Liens',
 	'SURVEY'                              => 'Sondages',
+	'MARKET'                              => 'Boutique',
 	#####################################
 	# USER
 	#####################################

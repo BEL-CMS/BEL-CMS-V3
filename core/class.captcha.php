@@ -78,8 +78,7 @@ final class Captcha
             if (!empty($sql->data)) {
                 $timeCurrent = time();
                 $testingTime = $timeCurrent - $sql->data->timelast;
-                $cookie = $_COOKIE['BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES']];
-                if ($testingTime >= $_SESSION['CONFIG_CMS']['CAPTCHA'] and $cookie >= $_SESSION['CONFIG_CMS']['CAPTCHA']) {
+                if ($testingTime >= $_SESSION['CONFIG_CMS']['CAPTCHA']) {
                     $del = new BDD;
                     $del->table('TABLE_CAPTCHA');
                     $del->where(array('name' => 'IP', 'value' => Common::GetIp()));

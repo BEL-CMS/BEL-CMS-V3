@@ -87,7 +87,7 @@ if (typeof jQuery === 'undefined') {
 
 	bel_cms_private_message();
 
-	glightbox();
+	const lightbox = GLightbox({});
 
     console.log("Chargement BEL-CMS script Ok");
 

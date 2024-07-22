@@ -1,11 +1,11 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.4 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
 */
 
@@ -39,11 +39,13 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.error.php',
 	ROOT.DS.'core'.DS.'class.user.notification.php',
 	ROOT.DS.'config'.DS.'class.config.php',
+	ROOT.DS.'core'.DS.'class.encrypt.php',
 	ROOT.DS.'ban'.DS.'index.php',
 	ROOT.DS.'maintenance'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.valid.php',
 	ROOT.DS.'core'.DS.'class.notification.php',
 	ROOT.DS.'core'.DS.'class.popup.user.php',
+	ROOT.DS.'core'.DS.'class.landing.php',
 	ROOT.DS.'core'.DS.'class.comment.php',
 	ROOT.DS.'core'.DS.'class.gesthost.php',
 	ROOT.DS.'core'.DS.'class.captcha.php',
@@ -52,11 +54,11 @@ $files = array (
 	ROOT.DS.'core'.DS.'class.secures.php',
 	ROOT.DS.'core'.DS.'class.interaction.php',
 	ROOT.DS.'core'.DS.'class.config.php',
-	ROOT.DS.'core'.DS.'class.visitors.php',
 	ROOT.DS.'users'.DS.'index.php',
 	ROOT.DS.'pages'.DS.'index.php',
 	ROOT.DS.'widgets'.DS.'index.php',
 	ROOT.DS.'managements'.DS.'index.php',
+	ROOT.DS.'core'.DS.'class.visitors.php',
 	ROOT.DS.'templates'.DS.'index.php',
 	ROOT.DS.'core'.DS.'class.belcms.php',
 );

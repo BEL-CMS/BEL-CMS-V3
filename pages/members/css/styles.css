@@ -96,6 +96,7 @@
 	width: 100%;
 	align-items: center;
 	justify-content: center;
+	list-style: none;
 }
 .members_main_stats li {
 	padding: 0 10px;

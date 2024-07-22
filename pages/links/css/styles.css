@@ -46,9 +46,6 @@
 #section_links_ul li a {
     color: firebrick;
 }
-#section_links_ul li a:hover {
-
-}
 #section_links_ul li span {
     display: block;
     width: 100%;
@@ -197,6 +194,7 @@
     display: block;
     float: left;
     width: 50%;
+    text-align: left;
 }
 .links_cat_row_one {
     float: left;
@@ -236,31 +234,31 @@
     line-height: 30px;
     padding: 10px 15px;
 }
-p#link_desc {
+#link_desc {
     padding: 20px;
     text-align: justify;
     color: rgba(0, 0, 0, .50);
     border: dashed 1px #d5d6d8;
     border-top: 1px solid rgba(0, 0, 0, .30);
 }
-#link_infos {
+.link_infos {
     display: block;
     width: 100%;
     overflow: hidden;
 }
-#link_infos span {
+.link_infos span {
     display: block;
     overflow: hidden;
     border: dashed 1px #d5d6d8;
 }
-#link_infos span {
+.link_infos span {
     display: block;
     width: 50%;
     float: left;
     text-align: left;
     padding: 20px;
 }
-#link_infos span:nth-child(odd) {
+.link_infos span:nth-child(odd) {
     float: right;
     text-align: left;
 }

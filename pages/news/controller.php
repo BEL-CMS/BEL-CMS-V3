@@ -11,8 +11,7 @@
 
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
-use BelCMS\Core\Config as Config;
-use BelCMS\Requires\Common;
+use BelCMS\Core\Config;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -34,7 +33,7 @@ class News extends Pages
 
 	function readmore ()
 	{
-		$id = (int) $this->data[2];
+		$id = (int) $this->data[3];
 		if (strlen($id) == 0) {
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('NAME_OF_THE_UNKNOW'), constant('INFO'), false);

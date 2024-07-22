@@ -81,6 +81,8 @@ form > div {
     width: calc(100% - 30px);
     font-weight: bold;
     border-radius: 6px;
+    border-left: 0;
+    border-right: 0;
 }
 #submit {
     display: block !important;

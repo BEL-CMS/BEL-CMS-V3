@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.3 [PHP8.3]
+ * @version 3.0.4 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -59,5 +59,10 @@ final class ModelsMails
 			$sql->update(array('config' => $v));
             unset($sql);
         }
+        $return = array(
+            'type' => 'success',
+            'text' => constant('PARAMETER_EDITING_SUCCESS')
+        );
+        return $return;
     }
 }

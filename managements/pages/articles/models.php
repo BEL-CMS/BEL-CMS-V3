@@ -190,11 +190,7 @@ final class ModelsArticles
 			$id = (int) $data['id'];
 			$count = self::countPages($id) + 1;
 			// SECURE DATA
-			if (!empty($data['content_pur'])) {
-				$send['content'] = Common::VarSecure($data['content_pur'], 'html');
-			} else {
-				$send['content'] = Common::VarSecure($data['content'], 'html');
-			}
+			$send['content']    = Common::VarSecure($data['content'], 'html');
 			$send['name']       = Common::VarSecure($data['name'], '');
 			$send['pagenumber'] = $count;
 			$send['number']     = $id;

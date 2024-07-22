@@ -162,8 +162,7 @@ class Templates
 		/* HightLight */
 		$files[] = 'assets/plugins/highlight/styles/github-dark-dimmed.min.css';
 		/* glightbox */
-		$files[] = 'assets/plugins/glightbox/css/glightbox.min.css';
-		$files[] = 'assets/plugins/glightbox/css/plyr.min.css';
+		$files[] = 'assets/plugins/glightbox/glightbox.min.css';
 		/* Calendrier */
 		$sql = new BDD;
 		$sql->table('TABLE_WIDGETS');
@@ -233,7 +232,7 @@ class Templates
 		$files[] = 'assets/plugins/tooltip/tippy-bundle.umd.min.js';
 		$files[] = 'assets/plugins/tooltip/tooltip.js';
 		/* glightbox */
-		$files[] = 'assets/plugins/glightbox/js/glightbox.min.js';
+		$files[] = 'assets/plugins/glightbox/glightbox.min.js';
 
 		$sql = new BDD;
 		$sql->table('TABLE_WIDGETS');

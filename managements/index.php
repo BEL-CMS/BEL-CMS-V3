@@ -12,6 +12,7 @@
 namespace Belcms\Management;
 
 use BelCMS\Core\Dispatcher;
+use BelCMS\Core\encrypt;
 use BelCMS\Core\Interaction;
 use BelCMS\Core\Notification;
 use BelCMS\Core\Secure;
@@ -237,7 +238,8 @@ final class Managements
 				$sql->queryOne();
 				$data = $sql->data;
 
-				$passwordSQL = Common::encryptDecrypt($data->password, $_SESSION['USER']->user->hash_key ,false);
+				$passwordCrypt =  new encrypt($data->password, $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+				$passwordSQL = $passwordCrypt->decrypt();
 
 				if ($passwordSQL == $_REQUEST['passwrd']) {
 					if ($_SESSION['USER']->user->hash_key == $data->hash_key) {

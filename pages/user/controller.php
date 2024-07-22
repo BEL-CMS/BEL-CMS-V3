@@ -295,6 +295,7 @@ class User extends Pages
 		} else {
 			$return = UserInfos::login($this->data['username'], $this->data['password']);
 			$this->error = true;
+
 			if ($return['type'] == 'error') {
 				$this->errorInfos = array('error', $return['msg'], $return['type'], false);
 				$this->redirect('User/Login&echo', 3);
@@ -308,7 +309,6 @@ class User extends Pages
 				$this->errorInfos = array('infos', constant('UNKNOWN_ERROR'), constant('INFO'), false);
 				$this->redirect('User/login&echo', 3);
 			}
-
 		}
 	}
 

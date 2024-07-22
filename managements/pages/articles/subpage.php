@@ -35,14 +35,6 @@ endif;
 				<div>
 			</div>
 		</div>
-		<div class="card">
-			<div class="p-6">
-			<div class="mt-2 mb-2">
-					<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('CODE_HTML');?> <?=constant('PRIO');?></label>
-					<textarea style="width: 100%; min-height: 200px;" name="content_pur"></textarea>
-				</div>
-			</div>
-		</div>
 		<div class="mt-2 mb-2">
 			<input type="hidden" name="id" value="<?=$data->id?>">
 			<button type="submit" class="btn bg-primary text-white"><?=constant('SEND');?></button>

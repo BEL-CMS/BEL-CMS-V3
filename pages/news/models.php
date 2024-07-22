@@ -127,7 +127,7 @@ final class News
 			$data = $get->data;
 			if ($get->rowCount != 0) {
 				$count = (int) $data->view;
-				$count++;
+				$count = $count +1;
 				$update = New BDD();
 				$update->table('TABLE_PAGES_NEWS');
 				$update->where($where);

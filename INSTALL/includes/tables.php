@@ -213,13 +213,16 @@ switch ($_POST['table']) {
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
-			`name` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+			`name` text,
 			`last_name` text,
 			`adress` text,
-			`iban` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+			`iban` varchar(32) DEFAULT NULL,
 			`bic` varchar(16) NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `last_name`, `adress`, `iban`, `bic`) VALUES
+		(1, NULL, NULL, NULL, NULL, '');";
 	break;
 
 	case "donations_receive":
@@ -371,23 +374,27 @@ switch ($_POST['table']) {
 	case 'gallery':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL,
+			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(128) DEFAULT NULL,
 			`uploader` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
 			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`image` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
 			`description` text,
 			`cat` int DEFAULT NULL,
-			`view` int NOT NULL
+			`view` int NOT NULL,
+			`vote` int NOT NULL,
+			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
 	case 'gallery_cat':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL,
+			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(64) NOT NULL,
-			`screen` varchar(128) NOT NULL
+			`banner` varchar(128) NOT NULL,
+			`color` text NOT NULL,
+			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 	case "games":

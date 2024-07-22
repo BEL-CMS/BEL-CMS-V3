@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.5 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -23,6 +23,7 @@ $tables = array(
 	# Tables
 	##########################
 );
+
 foreach ($tables as $name => $value) {
 	define($name, $value);
 }

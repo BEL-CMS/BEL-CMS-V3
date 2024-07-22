@@ -114,7 +114,6 @@ final class links
 	public function getLinksCat ($id = null) : array
 	{
 		$return = array();
-		$id = (int) $id;
 		if (is_numeric($id) === true) {
 			$where[] = array('name' => 'cat', 'value' => $id);
 			$where[] = array('name' => 'valid', 'value' => 1);

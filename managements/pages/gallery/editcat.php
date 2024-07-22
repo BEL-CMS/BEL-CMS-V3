@@ -30,15 +30,19 @@ endif;
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('NAME');?></label>
 						<input name="name" type="text" class="form-input" required="required" value="<?=$data->name;?>">
 					</div>
+					<div class="mt-2 mb-2" style="position: relative;">
+						<label class="col-md-12 control-label" for="ban_author"><?=constant('COLOR')?></label>
+						<input type="color" name="color" class="form-input" value="<?=$data->color;?>">
+					</div>
 					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('SCREEN');?> (<?=Common::ConvertSize(Common::GetMaximumFileUploadSize())?> max)</label>
 						<input name="image" type="file" class="form-input">
 					</div>
                     <?php
-                    if (!empty($data->screen) and is_file(ROOT.DS.$data->screen)):
+                    if (!empty($data->banner) and is_file(ROOT.DS.$data->banner)):
                     ?>
                     <div class="mt-2 mb-2">
-                        <img style="width:100px" src="<?=$data->screen;?>" alt="screen_<?=$data->name;?>">
+                        <img style="width:100px" src="<?=$data->banner;?>" alt="screen_<?=$data->name;?>">
                     </div>
                     <?php
                     endif;
@@ -48,7 +52,7 @@ endif;
         </div>
     </div>
 	<div class="text-gray-800 text-sm font-medium inline-block mt-2 p-2">
-		<input type="hidden" name="remove" value="<?=$data->screen;?>">
+		<input type="hidden" name="remove" value="<?=$data->banner;?>">
 		<input type="hidden" name="id" value="<?=$data->id;?>">
 		<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i><?=constant('EDIT')?></button>
 	</div>

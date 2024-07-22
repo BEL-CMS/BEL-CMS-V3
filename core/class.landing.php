@@ -32,11 +32,15 @@ final class Landing
 
     function __construct()
     {
-        if (self::getActiveLanding() === true) {
-            $this->dir = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing'.DS;
-            self::getConfig();
-            self::render();
-            die();
+        if (Dispatcher::isManagement() !== true) {
+            if (self::getActiveLanding() === true) {
+                $this->dir = constant('DIR_TPL').$_SESSION['CONFIG_CMS']['CMS_TPL_WEBSITE'].DS.'landing'.DS;
+                if (is_dir($this->dir)) {
+                    self::getConfig();
+                    self::render();
+                    die();
+                }
+            }
         }
     }
 
@@ -71,12 +75,14 @@ final class Landing
     {
         if (self::getActiveLanding() === true) {
             ob_start();
-            require_once $this->dir.'index.php';
-            $content = ob_get_contents();
-            if (ob_get_length() != 0) {
-                ob_end_clean();
+            if (is_file($this->dir.'index.php')) {
+                require_once $this->dir.'index.php';
+                $content = ob_get_contents();
+                if (ob_get_length() != 0) {
+                    ob_end_clean();
+                }
+                echo $content;
             }
-            echo $content;
         }
     }
 }

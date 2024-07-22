@@ -130,7 +130,7 @@ final class ModelsLinks
             $insert['name'] = Common::VarSecure($data['name'], null);
             $insert['link'] = Common::VarSecure($data['link'], null);
             $insert['description'] = Common::VarSecure($data['description'], 'html');
-            $insert['cat'] = is_int($data['cat']) ? $data['cat'] : 0;
+            $insert['cat']  = (int) $data['cat'];
             $sql = New BDD;
             $sql->table('TABLE_LINKS');
             $sql->insert($insert);

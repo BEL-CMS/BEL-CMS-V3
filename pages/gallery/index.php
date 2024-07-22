@@ -15,53 +15,38 @@ if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
 	exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-if (empty($category['cat']) && empty($img['img'])) {
-    Notification::warning(constant('NO_IMAGES_IN_DATABASE'), constant('GALLERY'));
-}
-?>
-<?php
-if (!empty($category['cat'])):
+$countCat = count($cat);
 ?>
 <section id="section_gallery">
-    <form id="gallery_form" method="get" action="Gallery/Cat/">
-        <select id="jQuery_cat">
-            <option selected disabled>Choisir une catégorie</option>
-            <option value="0">Aucune catégorie</option>
-        <?php
-        foreach ($category['cat'] as $key => $value):
-        ?>
-            <option value="<?=$value->id;?>"><?=$value->name;?></option>
-        <?php
-        endforeach;
-        ?>
-        </select>
-    </form>
+    <h2><?=constant('GALLERY');?></h2>
+    <div id="section_opt">[ <a href="Gallery/New">Nouveaux</a> ]</div>
     <?php
-    if (!empty($img['img'])):
-        foreach ($img['img'] as $key => $value):
+    if ($countCat == 0):
+        Notification::warning(constant('NO_IMAGES_IN_DATABASE'), constant('GALLERY'));
+    endif;
+    ?>
+    <div id="belcms_main_gallery">
+        <?php
+        foreach ($cat as $data):
+            $img = empty($data->banner) ? '/assets/img/dossier.png' : $data->banner;
+            $color = empty($data->color) ? '#205081' : $data->color;
         ?>
-        <div class="gallery">
-            <a data="Voir en popup" href="<?=$value->image;?>" class="belcms_tooltip_top image-popup">
-                <img src="<?=$value->image;?>">
-            </a>
-            <div class="gallery_row">
-                <span>Titre : </span>
-                <span><?=$value->name;?></span>
+        <div class="belcms_main_gallery_box">
+            <div class="belcms_main_gallery_bg" style="background: #fbfbfb;">
+                <div style="background: <?=$color;?>;">
+                    <a href="Gallery/detail/<?=$data->id;?>" title="<?=$data->name;?>">
+                        <img class="belcms_main_gallery_img" src="<?=$img;?>">
+                    </a>
+                </div>
+                <a href="Gallery/detail/<?=$data->id;?>" title="lien - <?=$data->name;?>"><?=$data->name;?></a>
             </div>
-            <div class="gallery_row">
-                <span>Publication : </span>
-                <span><?=Common::TransformDate($value->date_insert, 'FULL', 'NONE')?></span>
-            </div>
-            <div class="gallery_row">
-                <span>Vu : </span>
-                <span><?=$value->view;?></span>
-            </div>
-            <button class="belcms_tooltip_left belcms_btn belcms_bg_grey" data="Voir plus de détail" onclick="window.location.href='gallery/Detail/<?=$value->id?>'">Voir plus de détail</button>
         </div>
         <?php
         endforeach;
-    endif;
-    ?>
+        ?>
+    </div>
+    <div id="section_gallery_footer"><i>( Il y a <?=$count;?> Images & <?=$countCat;?> Catégories dans la base de données )</i></div>
+    <?php
+	echo $pagination;
+	?>
 </section>
-<?php
-endif;

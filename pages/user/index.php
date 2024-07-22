@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.5 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -19,10 +19,16 @@ if (!defined('CHECK_INDEX')):
 endif;
 
 if (UserInfos::isLogged() === true):
-	$user->gender   = strtolower($user->profils->gender);
-	$genderM        = strtoupper($user->profils->gender) == 'MALE' ? 'selected' : '';
-	$genderF        = strtoupper($user->profils->gender) == 'FEMALE' ? 'selected' : '';
-	$genderU        = strtoupper($user->profils->gender) == 'NOSPEC' ? 'selected' : '';
+	if (!empty($user->profils->gender)) {
+		$user->gender   = strtolower($user->profils->gender);
+		$genderM        = $user->gender == 'MALE' ? 'selected' : '';
+		$genderF        = $user->gender == 'FEMALE' ? 'selected' : '';
+		$genderU        = $user->gender == 'NOSPEC' ? 'selected' : '';
+	} else {
+		$genderM        = '';
+		$genderF        = '';
+		$genderU        = 'selected';
+	}
 	$birthday = Common::DatetimeReverse($user->profils->birthday);
 	if (empty($user->profils->avatar)) {
 		$user->profils->avatar = constant('DEFAULT_AVATAR');

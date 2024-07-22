@@ -47,6 +47,7 @@ $tables = array(
 	'TABLE_UPLOADS_ADMIN'       => $DB_PREFIX.'files_admin',
 	'TABLE_GALLERY'             => $DB_PREFIX.'gallery',
 	'TABLE_GALLERY_CAT'         => $DB_PREFIX.'gallery_cat',
+	'TABLE_GALLERY_VOTE'        => $DB_PREFIX.'gallery_vote',
 	'TABLE_PAGES_GAMES'         => $DB_PREFIX.'games',
 	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
 	'TABLE_GUESTBOOK'           => $DB_PREFIX.'guestbook',

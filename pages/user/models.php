@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.3 [PHP8.3]
+ * @version 3.0.4 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -101,6 +101,7 @@ final class User
 
 					$passwordCrypt =  new encrypt($_POST['passwordrepeat'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
 					$password      = $passwordCrypt->encrypt();
+
 					$pass_key      = Common::randomString(32);
 
 					$insertUser = array(
@@ -178,6 +179,7 @@ final class User
 
 
 					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
+						require constant('DIR_CORE').'class.mail.php';
 						$mail = new eMail;
 
 						$fromMail   = $_SESSION['CONFIG_CMS']['CMS_MAIL_WEBSITE'];
@@ -644,7 +646,8 @@ final class User
 							$return['pass'] = true;
 							$sqlUpdatePass  = new BDD;
 							$sqlUpdatePass->table('TABLE_USERS');
-							$sqlUpdatePass->update(array('name' => 'password', 'value' => $crpyt));
+							$sqlUpdatePass->where(array('name' => $type,'value'=> $data['value']));
+							$sqlUpdatePass->update(array('password' => $crpyt));
 						}
 					}
 				}
@@ -833,11 +836,14 @@ final class User
 		$sql->queryOne();
 		$results = $sql->data;
 
-		$a = Common::encryptDecrypt($results->password, $_SESSION['USER']->user->hash_key, false);
+		$a = new encrypt($results->password, $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+		$a = $a->decrypt();
 		$b = $data['password_old'];
 
 		if ($a == $b) {
-			$insert['password'] = Common::encryptDecrypt($data['password_new'],$_SESSION['USER']->user->hash_key);
+			$new = new encrypt($data['password_new'], $_SESSION['CONFIG_CMS']['KEY_ADMIN']);
+			$new = $new->encrypt();
+			$insert['password'] = $new;
 			$sql = New BDD();
 			$sql->table('TABLE_USERS');
 			$sql->where(array('name' => 'hash_key', 'value' => $_SESSION['USER']->user->hash_key));
