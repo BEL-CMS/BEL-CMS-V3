@@ -100,7 +100,12 @@ class Widgets
 	#########################################
 	public function loadLang ($name)
 	{
-		$fileLoadlang = constant('DIR_WIDGETS').strtolower($name).DS.'langs'.DS.'lang.fr.php';
+		if (empty($name)){
+			$name = '';
+		} else {
+			$name = strtolower($name);
+		}
+		$fileLoadlang = constant('DIR_WIDGETS').$name.DS.'langs'.DS.'lang.fr.php';
 		if (is_file($fileLoadlang)) {
 			require $fileLoadlang;
 		}
