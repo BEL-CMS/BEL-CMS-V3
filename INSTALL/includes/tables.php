@@ -563,7 +563,9 @@ switch ($_POST['table']) {
 			('', 'willhackforfood'),
 			('', 'willSelfdestruct'),
 			('', 'wuzupmail'),
-			('', 'yopmail');";
+			('', 'yopmail'),
+			('', 'gmailod.com'),
+			('', 'googl.win');";
 	break;
 
 	case "mails_config":
@@ -1013,6 +1015,7 @@ switch ($_POST['table']) {
 			`content` text COLLATE utf8mb3,
 			PRIMARY KEY (`id`)
 	  	) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
 
 	case "stats":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
@@ -1023,17 +1026,17 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
-		(1, 'yesterday', 1),
-		(2, 'today', 1),
-		(3, 'now', 1),
-		(4, 'page_view', 1),
-		(5, 'users', 1),
-		(6, 'news', 1),
-		(7, 'articles', 1),
-		(8, 'comments', 1),
-		(9, 'links', 1),
-		(10, 'files', 1),
-		(11, 'images', 1);";
+			(1, 'yesterday', 1),
+			(2, 'today', 1),
+			(3, 'now', 1),
+			(4, 'page_view', 1),
+			(5, 'users', 1),
+			(6, 'news', 1),
+			(7, 'articles', 1),
+			(8, 'comments', 1),
+			(9, 'links', 1),
+			(10, 'files', 1),
+			(11, 'images', 1);";
 	break;
 
 	case "survey":
