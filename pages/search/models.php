@@ -67,47 +67,56 @@ final class Search
 	#####################################
 	public function searchOption ($data)
 	{
+		$nbSearch = 0;
 		$search = Common::VarSecure($data['search'], null);
 
 		switch ($data['cat']) {
 			case 'news':
 				$table = 'TABLE_PAGES_NEWS';
 				$category = 'name';
+				$case = 'news';
 			break;
 
 			case 'articles':
 				$table = 'TABLE_ARTICLES_CONTENT';
 				$category = 'content';
+				$case = 'articles';
 			break;
 
 			case 'downloads':
 				$table = 'TABLE_DOWNLOADS';
 				$category = 'description';
+				$case = 'downloads';
 			break;
 
 			case 'members':
 				$table = 'TABLE_USERS';
 				$category = 'username';
+				$case = 'members';
 			break;
 
 			case 'guestbook':
 				$table = 'TABLE_GUESTBOOK';
 				$category = 'author';
+				$case = 'guestbook';
 			break;
 
 			case 'gallery':
 				$table = 'TABLE_GALLERY';
 				$category = 'name';
+				$case = 'table';
 			break;
 
 			case 'links':
 				$table = 'TABLE_LINKS';
 				$category = 'link';
+				$case = 'links';
 			break;
 
 			case 'market':
 				$table = 'TABLE_MARKET';
 				$category = 'name';
+				$case = 'market';
 			break;
 		}
 
@@ -117,6 +126,30 @@ final class Search
 		$sql->where($where);
 		$sql->queryAll();
 		$return = $sql->data;
+		if ($sql->rowCount != 0) {
+			$query = new BDD;
+			$query->table('TABLE_SEARCH_POPULAR');
+			$query->where(array('name' => 'search', 'value' => $search));
+			$query->queryOne();
+			$returnSelect = $query->data;
+			if ($query->rowCount >= 1) {
+				$where = array('name' => 'search', 'value' => $search);
+				$returnSelect = $query->data;
+				$returnSelect->number = $returnSelect->number + 1;
+				$insert['number'] = $returnSelect->number;
+				$update = new BDD;
+				$update->table('TABLE_SEARCH_POPULAR');
+				$update->where($where);
+				$update->update($insert);
+			} else {
+				$dataInsert['search'] = $search;
+				$dataInsert['type']   = $case;
+				$dataInsert['number'] = 1;
+				$insertBDD = new BDD;
+				$insertBDD->table('TABLE_SEARCH_POPULAR');
+				$insertBDD->insert($dataInsert);
+			}
+		}
 		return $return;
 	}
 }

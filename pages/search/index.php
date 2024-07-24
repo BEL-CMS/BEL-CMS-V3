@@ -26,7 +26,7 @@ endif;
     <form id="form_Search" method="post" action="Search/options">
         <div class="form_row">
             <label><?=constant('SEARCH');?></label>
-            <input type="search" value="" name="search" required>
+            <input type="search" value="" name="search" required onkeydown="if(event.keyCode==32) return false;" minlength="3" maxlength="32">
         </div>
         <div class="form_row">
             <select name="cat" id="cat" required>
@@ -42,7 +42,7 @@ endif;
             </select>
         </div>
         <div class="form_row">
-            <input type="submit" value="Rechercher">
+            <input type="submit" value="Rechercher" class="belcms_btn belcms_bg_grey">
         </div>
     </form>
 </section>
