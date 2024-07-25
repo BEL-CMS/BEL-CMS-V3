@@ -180,6 +180,7 @@ class BelCMS
 			'paypal',
 			'paypal_purchase',
 			'search',
+			'search_popular',
 			'stats',
 			'survey',
 			'survey_answer',

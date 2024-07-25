@@ -40,7 +40,6 @@ endif;
 					<div class="mt-2 mb-2">
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2"><?=constant('CATEGORY');?></label>
 						<select name="cat" class="form-select">
-							<option value=""><?=constant('NO_CATEGORY');?></option>
 						<?php
 						foreach ($cat as $a => $b):
 						?>

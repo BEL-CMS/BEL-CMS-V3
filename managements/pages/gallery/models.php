@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.7 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -54,6 +54,36 @@ final class ModelsGallery
 	{
 		$sql = New BDD();
 		$sql->table('TABLE_GALLERY_CAT');
+
+		if ($id !== null) {
+			$where = array(
+				'name' => 'id',
+				'value' => $id
+			);
+			$sql->where($where);
+			$sql->queryOne();
+			if (!empty($sql->data)){
+				return $sql->data;
+			}
+		} elseif ($id == null) {
+			$sql->queryAll();
+			return $sql->data;
+		}
+	}
+
+	public function GetAllCat ()
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_GALLERY_CAT');
+		$sql->queryAll();
+		$return = $sql->data;
+		return $return;
+	}
+
+	public function GetNameSubCat ($id = null)
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_GALLERY_SUB_CAT');
 
 		if ($id !== null) {
 			$where = array(
@@ -166,7 +196,32 @@ final class ModelsGallery
 			);	
 		}
 		return $return;
+	}
 
+	public function sendAddSubCat ($data)
+	{
+		if (is_array($data)) {
+			$sql = New BDD();
+			$sql->table('TABLE_GALLERY_SUB_CAT');
+			$sql->insert($data);
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('ADD_FILE_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);	
+		}
+		return $return;
 	}
 
 	public function sendEditCat ($data)
@@ -299,6 +354,62 @@ final class ModelsGallery
 				'type' => 'warning',
 				'text' => constant('ERROR_NO_DATA')
 			);
+		}
+		return $return;
+	}
+
+	public function delsubcat ($id)
+	{
+		if ($id !== null && is_numeric($id)) {
+			// SQL DELETE
+			$sql = New BDD();
+			$sql->table('TABLE_GALLERY_SUB_CAT');
+			$sql->where(array('name'=>'id','value' => $id));
+			$sql->delete();
+			// SQL RETURN NB DELETE
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('DEL_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('DEL_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ID_ERROR')
+			);
+		}
+		return $return;
+	}
+
+	public function sendEditSubCat($data, $id)
+	{
+		if (is_array($data)) {
+			$sql = New BDD();
+			$sql->table('TABLE_GALLERY_SUB_CAT');
+			$sql->where(array('name' => 'id', 'value' => $id));
+			$sql->update($data);
+			if ($sql->rowCount == true) {
+				$return = array(
+					'type' => 'success',
+					'text' => constant('EDITING_SUCCESS')
+				);
+			} else {
+				$return = array(
+					'type' => 'warning',
+					'text' => constant('EDIT_ERROR')
+				);
+			}
+		} else {
+			$return = array(
+				'type' => 'error',
+				'text' => constant('ERROR_NO_DATA')
+			);	
 		}
 		return $return;
 	}

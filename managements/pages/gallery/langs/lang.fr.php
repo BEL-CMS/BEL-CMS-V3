@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.7 [PHP8.2]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -33,4 +33,10 @@ Common::constant(array(
 	'GALLERY_ACTIVE'        => 'Activer la gallerie',
 	'MAX_IMG'               => 'Maximum d\'images à afficher',
 	'UNKNOW_IMG'            => 'Aucune image trouver',
+	'SUB_CAT'               => 'Sous-Catégories',
+	'PLEASE_ADD_MAIN_CAT'   => 'Veuillez ajouter une catégorie principal',
+	'CHOIS_MAIN_CAT'        => 'Choisir la catégorie principal',
+	'COLOR_TEXT'            => 'Couleur du texte',
+	'BACK_COLOR'            => 'Couleur du fond',
+	'PLEASE_ADD_NAME'       => 'Il manque le nom de la catégorie',
 ));

@@ -371,6 +371,19 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
 
+	case 'files_admin':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+			`sub` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+			`datetime_upload` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`uplaods` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+			`file` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
 	case 'gallery':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -896,7 +909,7 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `rewrite_name`, `name`, `date_create`, `author`, `authoredit`, `content`, `additionalcontent`, `tags`, `cat`,`view`, `img`) VALUES
-		('', '1er_news', '1er news', '', '', NULL, '<p style=\"text-align: justify;\">Bonjour et bienvenue sur le CMS (Bel-CMS), aucun compte a &eacute;t&eacute; cr&eacute;&eacute; lors de l\'installation, ne pas l\'oublier parce que c\'est celui qui aura tous les droits.</p>\r\n<p style=\"text-align: justify;\"><br />La version du C.M.S actuel est la <strong>3.0.6</strong> sur <strong>GitHub</strong> et sur le <strong>site</strong> la version <strong>3.0.6</strong>.</p>\r\n<p style=\"text-align: justify;\"><br />Si vous rencontrez le moindre souci, une erreur de frappe, une erreur de toute sorte, essay&eacute; de me pr&eacute;venir svp sur le <strong>Forum</strong>, Merci.</p>', NULL, 'news', '', 1, NULL);";
+		('', '1er_news', '1er news', '', '', NULL, '<p style=\"text-align: justify;\">Bonjour et bienvenue sur le CMS (Bel-CMS), aucun compte a &eacute;t&eacute; cr&eacute;&eacute; lors de l\'installation, ne pas l\'oublier parce que c\'est celui qui aura tous les droits.</p>\r\n<p style=\"text-align: justify;\"><br />La version du C.M.S actuel est la <strong>3.0.7.</strong> sur <strong>GitHub</strong> et sur le <strong>site</strong> la version <strong>3.0.7</strong>.</p>\r\n<p style=\"text-align: justify;\"><br />Si vous rencontrez le moindre souci, une erreur de frappe, une erreur de toute sorte, essay&eacute; de me pr&eacute;venir svp sur le <strong>Forum</strong>, Merci.</p>', NULL, 'news', '', 1, NULL);";
 	break;
 
 	case "page_news_cat":
@@ -1016,6 +1029,17 @@ switch ($_POST['table']) {
 			PRIMARY KEY (`id`)
 	  	) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 	break;
+
+	case "search_popular":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`search` varchar(64) NOT NULL,
+			`type` text,
+			`number` int NOT NULL DEFAULT '0',
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	 break;
 
 	case "stats":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
