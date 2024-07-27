@@ -172,4 +172,18 @@ final class Gallery
 			return false;
 		}
 	}
+	public function SendPropose ($data)
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_GALLERY');
+		$sql->insert($data);
+		if ($sql->rowCount == 1) {
+			$return['msg']  = constant('PROPOSE_SUCCESS');
+			$return['type'] = 'success';
+		} else {
+			$return['msg']  = constant('PROPOSE_ERROR');
+			$return['type'] = 'error';
+		}
+		return $return;
+	}
 }

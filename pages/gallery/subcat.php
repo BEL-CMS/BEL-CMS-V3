@@ -19,7 +19,7 @@ endif;
 ?>
 <section id="section_gallery_sub">
     <h2><?=constant('GALLERY');?></h2>
-    <div id="section_opt">[ <a href="Gallery">Index</a> | <a href="Gallery/New">Nouveaux</a> | <a href="Gallery/popular">Populaire</a> ]</div>
+    <div id="section_opt">[ <a href="Gallery">Index</a> | <a href="Gallery/New">Nouveaux</a> | <a href="Gallery/popular">Populaire</a> | <a href="Gallery/Propose">Proposé</a> ]</div>
     <?php
     if (empty($data)):
     Notification::infos('Aucune sous-catégorie', constant('GALLERY'));

@@ -32,4 +32,7 @@ Common::constant(array(
 	'GALLERY_ACTIVE'        => 'Activer la gallerie',
 	'MAX_IMG'               => 'Maximum d\'images à afficher',
 	'UNKNOW_IMG'            => 'Aucune image trouver',
+	'YOUR_ANSWER'           => 'Votre Réponse',
+ 	'PROPOSE_SUCCESS'       => 'Proposition de votre image en attende de validation.',
+	'PROPOSE_ERROR'         => 'Erreur lors de l\'enregistrement en base de données',
 ));

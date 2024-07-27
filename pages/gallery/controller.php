@@ -10,10 +10,13 @@
  */
 
 namespace Belcms\Pages\Controller;
+
+use BelCMS\Core\Captcha;
 use Belcms\Pages\Pages;
 use BelCMS\Core\Config;
-use BelCMS\Core\Secure;
 use BelCMS\Core\Secures;
+use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -88,11 +91,52 @@ class Gallery extends Pages
         $this->set($data);
         $this->render('new');
     }
-
+    #####################################
+    # Affiche les plus populaires
+    #####################################
     public function popular ()
     {
         $data['data'] = $this->models->popular();
         $this->set($data);
         $this->render('popular');
+    }
+    #####################################
+    # Proposé une image
+    #####################################
+    public function  propose ()
+    {
+        $return['captcha'] = Captcha::createCaptcha();
+        $this->set($return);
+        $this->render('propose');
+    }
+    #####################################
+    # Envoie la proposition à la BDD
+    #####################################
+    public function SendPropose ()
+    {
+		if (Captcha::verifCaptcha($_POST['query_register']) == false) {
+			$this->error = true;
+			$this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('REGISTRATION'), false);
+            $this->redirect('gallery', 3);
+			return false;
+		}
+
+        $post['name']        = Common::VarSecure($_POST['name']);
+        $post['description'] = Common::VarSecure($_POST['text']);
+        $post['uploader']    = $_SESSION['USER']->user->hash_key;
+        $post['valid']       = 0;
+        
+        if (isset($_FILES['file'])):
+            $image = Common::Upload('file', 'uploads/gallery/tmp/', array('.png', '.gif', '.jpg', '.jpeg', '.ico', '.tif', '.eps', '.svg'));
+            if ($image == constant('UPLOAD_FILE_SUCCESS')):
+                $post['image'] = '/uploads/gallery/tmp/'.$_FILES['file']['name'];
+            endif;
+        endif;
+
+        $return = $this->models->SendPropose($post);
+
+        $this->error = true;
+        $this->errorInfos = array($return['type'], $return['msg'], constant('REGISTRATION'), false);
+        $this->redirect('gallery', 4);
     }
 }

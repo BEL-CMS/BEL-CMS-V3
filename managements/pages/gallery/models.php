@@ -108,7 +108,7 @@ final class ModelsGallery
 			if (isset($_FILES['image'])):
 				$image = Common::Upload('image', 'uploads/gallery', array('.png', '.gif', '.jpg', '.jpeg', '.ico'));
 				if ($image == constant('UPLOAD_FILE_SUCCESS')):
-					$update['image'] = 'uploads/gallery/'.$_FILES['image']['name'];
+					$update['image'] = 'uploads/gallery/tmp/'.$_FILES['image']['name'];
 					@unlink(ROOT.DS.$data['remove']);
 				endif;
 			endif;

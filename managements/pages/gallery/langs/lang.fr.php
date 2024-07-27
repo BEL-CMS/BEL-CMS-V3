@@ -39,4 +39,5 @@ Common::constant(array(
 	'COLOR_TEXT'            => 'Couleur du texte',
 	'BACK_COLOR'            => 'Couleur du fond',
 	'PLEASE_ADD_NAME'       => 'Il manque le nom de la catégorie',
+	'ALERT_ADMIN'           => 'les administrateurs sont automatiquement mis, même en décochant.',
 ));
