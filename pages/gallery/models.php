@@ -128,4 +128,48 @@ final class Gallery
 		$return = $sql->data;
 		return $return;
 	}
+	#####################################
+	# Récupère les sous-catégories avec id
+	#####################################
+	public function GetNameSubCat ($id = null)
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_GALLERY_SUB_CAT');
+
+		if ($id !== null) {
+			$where = array(
+				'name' => 'id',
+				'value' => $id
+			);
+			$sql->where($where);
+			$sql->queryOne();
+			if (!empty($sql->data)){
+				return $sql->data;
+			}
+		} elseif ($id == null) {
+			$sql->queryAll();
+			return $sql->data;
+		}
+	}
+	#####################################
+	# Récupère les sous-catégories avec id
+	#####################################
+	public function GetNameSubCatId ($id = null)
+	{
+		$sql = New BDD();
+		$sql->table('TABLE_GALLERY_SUB_CAT');
+		$where = array(
+			'name' => 'id_gallery',
+			'value' => $id
+		);
+
+		$sql->where($where);
+		$sql->queryAll();
+
+		if (!empty($sql->data)) {
+			return $sql->data;
+		} else {
+			return false;
+		}
+	}
 }

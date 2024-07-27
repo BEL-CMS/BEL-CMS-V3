@@ -19,7 +19,7 @@ $countCat = count($cat);
 ?>
 <section id="section_gallery">
     <h2><?=constant('GALLERY');?></h2>
-    <div id="section_opt">[ <a href="Gallery/New">Nouveaux</a> ]</div>
+    <div id="section_opt">[ <a href="Gallery">Index</a> | <a href="Gallery/New">Nouveaux</a> | <a href="Gallery/popular">Populaire</a> ]</div>
     <?php
     if ($countCat == 0):
         Notification::warning(constant('NO_IMAGES_IN_DATABASE'), constant('GALLERY'));
@@ -34,11 +34,11 @@ $countCat = count($cat);
         <div class="belcms_main_gallery_box">
             <div class="belcms_main_gallery_bg" style="background: #fbfbfb;">
                 <div style="background: <?=$color;?>;">
-                    <a href="Gallery/detail/<?=$data->id;?>" title="<?=$data->name;?>">
+                    <a href="Gallery/subcat/<?=$data->id;?>" title="<?=$data->name;?>">
                         <img class="belcms_main_gallery_img" src="<?=$img;?>">
                     </a>
                 </div>
-                <a href="Gallery/detail/<?=$data->id;?>" title="lien - <?=$data->name;?>"><?=$data->name;?></a>
+                <a href="Gallery/subcat/<?=$data->id;?>" title="lien - <?=$data->name;?>"><?=$data->name;?></a>
             </div>
         </div>
         <?php

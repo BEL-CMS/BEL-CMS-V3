@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.6 [PHP8.3]
+ * @version 3.0.7 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -18,7 +18,7 @@ endif;
 ?>
 <section id="section_gallery">
     <h2><?=constant('GALLERY');?></h2>
-    <div id="section_opt">[ <a href="Gallery">Index</a> | <a href="Gallery/New">Nouveaux</a> ]</div>
+    <div id="section_opt">[ <a href="Gallery">Index</a> | <a href="Gallery/New">Nouveaux</a> | <a href="Gallery/popular">Populaire</a> ]</div>
     <ul>
         <li id="section_gallery_title">
             <span class="section_gallery_title_img">Images :</span>

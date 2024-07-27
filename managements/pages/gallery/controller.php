@@ -59,7 +59,7 @@ class Gallery extends AdminPages
 	{
 		$id = (int) $this->data[2];
 		$data['data'] = $this->models->getImg($id);
-		$data['cat'] = $this->models->GetNameCat(null);
+		$data['cat'] = $this->models->GetNameSubCat(null);
 		$this->set($data);
 		$this->render('edit');
 	}
@@ -176,7 +176,7 @@ class Gallery extends AdminPages
 		} else {
 			$menu[] = array(constant('HOME') => array('href'=>'gallery/subcat?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 			$this->set($data);
-			$this->render('addSubCat', $menu);		
+			$this->render('addsubcat', $menu);		
 		}
 	}
 	public function sendaddsubcat ()
@@ -186,10 +186,19 @@ class Gallery extends AdminPages
 			$this->redirect('gallery/addsubCat?management&option=pages', 3);	
 		}
 
-		$post['name']       = Common::VarSecure($_POST['name']);
-		$post['color']      = Common::VarSecure($_POST['textcolor']);
-		$post['bg_color']   = Common::VarSecure($_POST['bgcolor']);
-		$post['id_gallery'] = Secure::isInt($_POST['main_group']);
+		if (!isset($_POST['groups'])) {
+			$group = 1;
+		} else if (is_array($_POST['groups'])) {
+			$group = implode('|', $_POST['groups']);
+		} else {
+			$group = 1;
+		}
+
+		$post['name']           = Common::VarSecure($_POST['name']);
+		$post['color']          = Common::VarSecure($_POST['textcolor']);
+		$post['bg_color']       = Common::VarSecure($_POST['bgcolor']);
+		$post['id_gallery']     = Secure::isInt($_POST['main_group']);
+		$post['groups_access']  = $group;
 
 		$return = $this->models->sendAddSubCat ($post);
 		$this->error(get_class($this), $return['text'], $return['type']);
@@ -202,10 +211,19 @@ class Gallery extends AdminPages
 			$this->redirect('gallery/addsubCat?management&option=pages', 3);	
 		}
 
-		$post['name']     = Common::VarSecure($_POST['name']);
-		$post['color']    = Common::VarSecure($_POST['textcolor']);
-		$post['bg_color'] = Common::VarSecure($_POST['bgcolor']);
-		$id_gallery       = Secure::isInt($_POST['id_gallery']);
+		if (!isset($_POST['groups'])) {
+			$group = 1;
+		} else if (is_array($_POST['groups'])) {
+			$group = implode('|', $_POST['groups']);
+		} else {
+			$group = 1;
+		}
+
+		$post['name']          = Common::VarSecure($_POST['name']);
+		$post['color']         = Common::VarSecure($_POST['textcolor']);
+		$post['bg_color']      = Common::VarSecure($_POST['bgcolor']);
+		$post['groups_access'] = $group;
+		$id_gallery            = (int) Secure::isInt($_POST['id_gallery']);
 
 		$return = $this->models->sendEditSubCat ($post, $id_gallery);
 		$this->error(get_class($this), $return['text'], $return['type']);

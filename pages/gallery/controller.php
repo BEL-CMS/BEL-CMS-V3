@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.6 [PHP8.3]
+ * @version 3.0.7 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -12,6 +12,8 @@
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
 use BelCMS\Core\Config;
+use BelCMS\Core\Secure;
+use BelCMS\Core\Secures;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -28,15 +30,36 @@ class Gallery extends Pages
 	{
 		$config = Config::GetConfigPage('gallery');
 		$data['pagination'] = $this->pagination($config->config['MAX_CAT'], 'gallery', constant('TABLE_GALLERY_CAT'));
-
-        $data['count'] = $this->models->countImg ();
-        $data['cat'] = $this->models->geAlltCat ();
+        $data['count'     ] = $this->models->countImg ();
+        $data['cat']        = $this->models->geAlltCat ();
 
         $this->set($data);
         $this->render('index');
     }
     #####################################
-    # Affiche les donné d'une image
+    # Page d'accueil - sous catégorie
+    #####################################
+    public function subcat ()
+    {
+        $id = (int) $this->data['2'];
+        if (empty($id) or $id == 0) {
+            $this->error = true;
+            $this->errorInfos = array('warning', constant('INVALID_ID'), 'Galerie', false);
+        } else {
+            $data['data'] = $this->models->GetNameSubCatId($id);
+            if ($data['data'] != false) {
+                foreach ($data['data'] as $key => $value) {
+                    if (Secures::IsAcess($value->groups_access) == false ) {
+                        unset($data['data'][$key]);
+                    }
+                }
+                $this->set($data);
+            } 
+            $this->render('subcat');
+        }
+    }
+    #####################################
+    # Affiche-les données d'une image
     #####################################
     public function detail ()
     {
