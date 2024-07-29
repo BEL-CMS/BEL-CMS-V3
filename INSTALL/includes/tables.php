@@ -406,9 +406,48 @@ switch ($_POST['table']) {
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(64) NOT NULL,
 			`banner` varchar(128) NOT NULL,
-			`color` text NOT NULL,
+			`banner` text NOT NULL,
+			`ico` text NOT NULL,
+			`image` varchar(16),
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "gallery_cat_valid":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`author` varchar(255) NOT NULL,
+			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`image` varchar(255) NOT NULL,
+			`name` varchar(64) NOT NULL,
+			`description` text,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "gallery_sub_cat":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name` text,
+			`id_gallery` int NOT NULL,
+			`color` varchar(64) NOT NULL,
+			`bg_color` varchar(32) NOT NULL,
+			`groups_access` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
+
+	case "gallery_vote":
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL,
+			`author` varchar(32) NOT NULL,
+			`id_vote` int NOT NULL,
+			`date_vote` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+	 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+	break;
 
 	case "games":
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
