@@ -17,51 +17,49 @@ if (!defined('CHECK_INDEX')):
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
 ?>
-<section id="belcms_shoutbox">
-    <div id="belcms_shoutbox_main">
-        <ul>
-			<?php
-			foreach ($var as $value):
-				$user = User::getInfosUserAll($value->hash_key);
-				if ($user == false) {
-					$color = constant('DEFAULT_COLOR_USERNAME');
-					$user  = constant('MEMBER_DELETE');
-				} else {
-					$color = $user->user->color;
-					$user  = $user->user->username;
-				}
-				$date = Common::TransformDate($value->date_msg, 'FULL', 'MEDIUM');
-				$msg  = Common::getSmiley($value->msg);
-			?>
-			<li id="id_<?=$value->id;?>">
-				<span><a href="#" style="color:<?=$color;?>;"><?=$user;?></a></span>
-				<span><?=$msg;?></span>
-				<i><?=$date;?></i>
-				<?php
-				if (!empty($value->file) or !empty($value->image)):
-				echo '<div>';
-				endif;
-					if (!empty($value->file)):
-					?>
-					<a href="<?=$value->file;?>"><i class="fa-solid fa-paperclip" style="color: #74C0FC;"></i></a>
-					<?php
-					endif;
-					if (!empty($value->image)):
-					?>
-					<a href="<?=$value->image;?>"><i class="fa-regular fa-image fa-flip-horizontal" style="color: #FFD43B;"></i></a>
-					</a>
-					<?php
-					endif;
-				if (!empty($value->file) or !empty($value->image)):
-				echo '</div>';
-				endif;
-				?>
-			</li>
-			<?php
-			endforeach;
-			?>
-		</ul>
-	</div>
+<div id="belcms_widgets_shoutbox_main">
+    <ul>
+    <?php
+	foreach ($var as $value):
+		$user = User::getInfosUserAll($value->hash_key);
+        if ($user == false) {
+            $color = constant('DEFAULT_COLOR_USERNAME');
+            $user  = constant('MEMBER_DELETE');
+        } else {
+            $color = $user->user->color;
+            $user  = $user->user->username;
+        }
+		$date = Common::TransformDate($value->date_msg, 'MEDIUM', 'NONE');
+		$msg  = Common::getSmiley($value->msg);
+		?>
+        <li>
+            <div>
+                <img src="/assets/img/default_avatar.jpg">
+            </div>
+            <div>
+                <span><a href="Members/profil/<?=$user;?>" style="color:<?=$color;?>;"><?=$user;?></a></span>
+                <span><i><?=$date;?></i></span>
+                <span class="belcms_widgets_shoutbox_files">
+                    <?php
+                    if (!empty($value->file)):
+                    ?>
+                    <a class="belcms_tooltip_bottom" data="Fichier" href="<?=$value->file;?>"><i class="fa-solid fa-file"></i></a> - 
+                    <?php
+                    endif;
+                    if (!empty($value->image)):
+                    ?>
+                    <a data="Image" class="belcms_tooltip_bottom glightbox" href="<?=$value->image;?>"><i class="fa-solid fa-images"></i></a>
+                    <?php
+                    endif;
+                    ?>
+                </span>
+            </div>
+            <div class="belcms_widgets_shoutbox_main_msg"><?=$msg;?></div>
+		</li>
+		<?php
+		endforeach;
+		?>
+    </ul>
 	<?php
 	if (User::isLogged() === true):
 	?>
@@ -83,4 +81,4 @@ endif;
 	<?php
 	endif;
 	?>
-</section>
+</div>

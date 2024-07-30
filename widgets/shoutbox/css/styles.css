@@ -1,137 +1,56 @@
-#belcms_shoutbox {
-	width: 100%;
+#belcms_widgets_shoutbox_main {
+	padding: 15px;
+	background-image: url(/assets/img/chatbg.png);
+}
+#belcms_widgets_shoutbox_main input {
+	background: #ebebeb;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	margin: 10px auto;
+}
+#belcms_widgets_shoutbox_main ul {
+	background-color: rgba(0, 0, 0, .55);
 	display: block;
-	border-radius: 5px;
-	background-color: #FFF;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	padding: 15px;
+	border-radius: 10px;
+}
+#belcms_widgets_shoutbox_main > ul > li {
+	display: flex;
 	margin-bottom: 15px;
-	font-size: 13px;
-	position: relative;;
 }
-#belcms_shoutbox_main {
-	overflow-y: scroll;
-	padding: 1.25rem;
-	overflow: hidden;
-	position: relative;
-	z-index: 1;
+#belcms_widgets_shoutbox_main > ul > li > div {
+	margin: 0 10px;
 }
-#belcms_shoutbox_main::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	background-image: url('/assets/img/chatbg.png');
-	background-repeat: repeat;
-	opacity: 0.25;
-	z-index: -1;
+#belcms_widgets_shoutbox_main > ul > li > div > img {
+	width: 55px;
+	height: 55px;
+	border-radius: 50%;
 }
-
-#belcms_shoutbox_main ul {
+#belcms_widgets_shoutbox_main > ul > li > div > span {
 	display: block;
-	list-style: none;
-	z-index: 5;
-	opacity: 1;
-	opacity: 0.85;
-	max-height: 300px;
-	overflow-y: auto;
-}
-#belcms_shoutbox_main ul li {
-	display: block;
-	overflow: hidden;
-	width: 100%;
-	border-radius: 5px;
-	background-color: #dbdee0;
-	opacity: 0.85;
-	padding: 5px 15px;
-	margin-bottom: 30px;
-}
-#belcms_shoutbox_main ul li i,
-#belcms_shoutbox_main ul li span {
-	display: block;
-	width: auto;
-	padding: 5px 10px 5px 10px;
-	text-align: justify;
-	opacity: 1;
-	font-size: 0.9rem;
-}
-#belcms_shoutbox_main ul li span a {
-	display: block;
-	font-weight: bold;
-}
-#belcms_shoutbox_main ul li i {
-	display: inline-block;
-	background-color: rgba(0, 0, 0, 0.5);
-	color: #FFF;
-	padding: 4px 15px;
-	border-radius: 5px;
-	line-height: 19px;
-}
-#belcms_shoutbox_main ul li span a {
-	cursor: pointer;
-}
-#belcms_shoutbox_main ul li div {
-	display: inline-block;
-	width: auto;
-	background-color: rgba(0, 0, 0, 0.5);
-	padding: 5px 15px;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 0.9rem;
-}
-#shoutbox_login {
-	position: absolute;
-	background-color: #dbdee0;
-	padding-left: 15px;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 3;
-	opacity: 0.6;
-	color: rgba(0, 0, 0, 0.5);
-}
-#shoutbox_login a {
-	list-style: none;
-	display: block;
-	color: rgba(0, 0, 0, 0.5);
-	line-height: 35px;
-	font-size: 13px;
 	text-align: left;
+	font-size: 13px;
+}
+#belcms_widgets_shoutbox_main > ul > li > div > span i {
+	color: #ebebeb;
+}
+#belcms_widgets_shoutbox_main > ul > li > div > span:first-child {
 	font-weight: bold;
 }
-#belcms_shoutbox_form {
-	display: block;
-	background: #f9f9f9;
-	overflow: hidden;
-	padding: 0px;
-	border-top: 1px solid rgba(0, 0, 0, 0.25);
+.belcms_widgets_shoutbox_main_msg {
+	background: #ebebeb;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	padding: 10px 20px;
+	text-align: left !important;
+	color: black;
 }
-#belcms_shoutbox_input {
-	display: block;
-	width: calc(100% - 60px);
-	float: left;
-	height: 40px;
-	padding: 0 15px;
-	line-height: 40px;
-	background: #f9f9f9;
-	opacity: 0.65;
-	border: none;
-	border-radius: 0;
-	color: darkslategrey;
-	padding: 0 15px;
-}
-#shoutbox_form_file,
-#shoutbox_form_image {
-	display: block;
-	float: right;
-	width: 25px;
-	height: 40px;
-	text-align: center;
-	line-height: 40px;
-	margin-bottom: 0;
-	margin-right: 5px;
-}
-#shoutbox_form_file > input,
-#shoutbox_form_image > input {
-	display: none;
+.belcms_widgets_shoutbox_files a,
+.belcms_widgets_shoutbox_files {
+	color: #FFFFFF;
 }

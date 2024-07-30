@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.2 [PHP8.3]
+ * @version 3.0.7 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -10,7 +10,6 @@
 */
 
 namespace BelCMS\Core;
-use BelCMS\Core\Debug as debug;
 use BelCMS\Core\Visitors;
 use BelCMS\Core\Validation as valid;
 use BelCMS\PDO\BDD;
@@ -20,7 +19,6 @@ use BelCMS\Templates\Templates as Template;
 use BelCMS\Core\GetHost;
 use BelCMS\Core\Notification;
 use BelCMS\Requires\Common;
-use Belcms\Widgets\Controller\Users\Users;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -179,6 +177,7 @@ final class BelCMS
 	##################################################
 	private function getWidgetsActive ()
 	{
+		$page = strtolower($this->link);
 		$return = array();
 		$a      = array();
 		$b      = array();
@@ -193,15 +192,9 @@ final class BelCMS
 		$sql->queryAll();
 		if (!empty($sql->data)) {
 			foreach ($sql->data as $k => $v) {
-				if (empty($v->page)) {
+				$a = explode('|', $v->pages);
+				if (in_array($page, $a)) {
 					$b[$k] = $v;
-				} else {
-					$a = explode('|', $v->pages);
-					if (empty($v->page)) {
-						if (!in_array($this->link, $a)) {
-							$b[$k] = $v;
-						}
-					}
 				}
 			}
 			foreach ($b as $k => $v) {
