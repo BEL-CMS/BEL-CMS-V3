@@ -15,10 +15,9 @@ use BelCMS\Core\GetHost;
 	<link rel="stylesheet" href="assets/plugins/tinymce/skins/lightgray/skin.min.css">
 	<link rel="stylesheet" href="assets/plugins/fontawesome-6.5.1/css/all.min.css">
 	<link rel="stylesheet" href="managements/assets/libs/dropzone/min/dropzone.min.css">
-	<link rel="stylesheet" href="assets/plugins/glightbox/css/glightbox.min.css">
-	<link rel="stylesheet" href="assets/plugins/glightbox/css/plyr.min.css">
-	<script src="assets/js/jQuery/jquery-3.7.1.min.js"></script>
+	<link rel="stylesheet" href="assets/plugins/glightbox/glightbox.min.css">
 	<link rel="stylesheet" href="assets/plugins/quick-events/quick-events.css">
+	<script src="assets/js/jQuery/jquery-3.7.1.min.js"></script>
 	<script src="assets/plugins/quick-events/languages/lang.js"></script>
 	<script src="managements/assets/js/config.js"></script>
 </head>
@@ -272,7 +271,7 @@ use BelCMS\Core\GetHost;
 	</div>
 
 	<script src="managements/assets/js/extract.js"></script>
-	<script src="assets/plugins/glightbox/js/glightbox.min.js"></script>
+	<script src="assets/plugins/glightbox/glightbox.min.js"></script>
 	<script src="assets/plugins/tooltip/popper.min.js"></script>
 	<script src="assets/plugins/tooltip/tippy-bundle.umd.min.js"></script>
 	<script src="assets/plugins/tooltip/tooltip.js"></script>
