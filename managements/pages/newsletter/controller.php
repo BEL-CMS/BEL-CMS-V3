@@ -100,7 +100,7 @@ class Newsletter extends AdminPages
 		} else {
 			$this->error(get_class($this), constant('ID_ERROR'), 'ERROR');
 			$this->redirect('newsletter/tpl?management&option=pages', 2);
-			new Interaction ('error'), constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
+			new Interaction ('error', constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
 		}
 	}
 	#####################################
@@ -117,7 +117,7 @@ class Newsletter extends AdminPages
 		} else {
 			$this->error(get_class($this), constant('ID_ERROR'), 'ERROR');
 			$this->redirect('newsletter/tpl?management&option=pages', 2);
-			new Interaction ('error'), constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
+			new Interaction ('error', constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
 		}
 	}
 	#####################################
@@ -170,7 +170,7 @@ class Newsletter extends AdminPages
 		} else {
 			$this->error(get_class($this), constant('ID_ERROR'), 'ERROR');
 			$this->redirect('newsletter/add?management&option=pages', 2);
-			new Interaction ('error'), constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
+			new Interaction ('error', constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
 		}
 	}
 	#####################################

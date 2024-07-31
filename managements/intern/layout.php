@@ -45,7 +45,7 @@ use BelCMS\Core\GetHost;
 					</li>
 					<li class="menu-item">
 						<a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-							<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+							<span class="menu-icon"><i class="mgc_greatwall_fill"></i></span>
 							<span class="menu-text"> <?=constant('PARAMETERS');?> </span>
 							<span class="menu-arrow"></span>
 						</a>
@@ -65,7 +65,7 @@ use BelCMS\Core\GetHost;
 					</li>
 					<li class="menu-item">
 						<a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-							<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+							<span class="menu-icon"><i class="mgc_inbox_2_fill"></i></span>
 							<span class="menu-text"> <?=constant('TEMPLATES');?> </span>
 							<span class="menu-arrow"></span>
 						</a>
@@ -85,7 +85,7 @@ use BelCMS\Core\GetHost;
 					</li>
 					<li class="menu-item">
 						<a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-							<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+							<span class="menu-icon"><i class="mgc_user_3_fill"></i></span>
 							<span class="menu-text"> <?=constant('USERS');?> </span>
 							<span class="menu-arrow"></span>
 						</a>
@@ -105,7 +105,7 @@ use BelCMS\Core\GetHost;
 					</li>
 					<li class="menu-item">
 						<a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-							<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+							<span class="menu-icon"><i class="mgc_file_code_fill"></i></span>
 							<span class="menu-text"> <?=constant('PAGES');?> </span>
 							<span class="menu-arrow"></span>
 						</a>
@@ -125,7 +125,7 @@ use BelCMS\Core\GetHost;
 					</li>
 					<li class="menu-item">
 						<a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-							<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+							<span class="menu-icon"><i class="mgc_fridge_fill"></i></span>
 							<span class="menu-text"> <?=constant('WIDGETS');?> </span>
 							<span class="menu-arrow"></span>
 						</a>
@@ -145,7 +145,7 @@ use BelCMS\Core\GetHost;
 					</li>
 					<li class="menu-item">
 						<a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-							<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+							<span class="menu-icon"><i class="mgc_game_1_fill"></i></span>
 							<span class="menu-text"> <?=constant('GAMINGS');?> </span>
 							<span class="menu-arrow"></span>
 						</a>
@@ -165,7 +165,7 @@ use BelCMS\Core\GetHost;
 					</li>
 					<li class="menu-item">
 						<a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
-							<span class="menu-icon"><i class="mgc_building_2_line"></i></span>
+							<span class="menu-icon"><i class="mgc_file_more_fill"></i></span>
 							<span class="menu-text"> <?=constant('MISCELLANEOUS');?> </span>
 							<span class="menu-arrow"></span>
 						</a>

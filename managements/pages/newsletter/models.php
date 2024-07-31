@@ -67,7 +67,7 @@ final class ModelsNewsletter
 				);
 			}
 		} else {
-			new Interaction ('error'), 'Erreur d\'array', constant('ADD_TPL_ERROR_ARRAY'));
+			new Interaction ('error', 'Erreur d\'array', constant('ADD_TPL_ERROR_ARRAY'));
 			$return = array(
 				'type' => 'error',
 				'text' => constant('ADD_TPL_ERROR_ARRAY')
@@ -100,7 +100,7 @@ final class ModelsNewsletter
 				);
 			}
 		} else {
-			new Interaction ('error'), 'Erreur d\'array', constant('ADD_TPL_ERROR_ARRAY'));
+			new Interaction ('error', 'Erreur d\'array', constant('ADD_TPL_ERROR_ARRAY'));
 			$return = array(
 				'type' => 'error',
 				'text' => constant('ADD_TPL_ERROR_ARRAY')
@@ -202,7 +202,7 @@ final class ModelsNewsletter
 				'type' => 'error',
 				'text' => constant('ID_ERROR')
 			);
-			new Interaction('error'), constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
+			new Interaction('error', constant('ID_ERROR_TITLE'), constant('ID_ERROR'));
 		}
 		return $return;
 	}
