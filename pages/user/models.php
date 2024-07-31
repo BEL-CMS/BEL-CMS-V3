@@ -181,26 +181,11 @@ final class User
 					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
 						require constant('DIR_CORE').'class.mail.php';
 						$mail = new eMail;
-
-						$fromMail   = $_SESSION['CONFIG_CMS']['CMS_MAIL_WEBSITE'];
-						$fromName   = $_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME'];
-						$toMail     = $insertUser['mail'];
-						$senderName = $_SERVER['SERVER_NAME'];
-						$subject    = constant('ACCOUNT_REGISTRATION');
-						$header     = self::sendHtmlHeader();
-						$body       = self::sendHtmlBody($hash_key);
-						$footer     = self::sendHtmlFooter();
-
-						$mail->fromName   = $fromName;
-						$mail->fromMail   = $fromMail;
-						$mail->toMail     = $toMail;
-						$mail->senderName = $senderName;
-						$mail->subject    = $subject;
-						$mail->header     = $header;
-						$mail->body       = $body;
-						$mail->footer     = $footer;
-
-						$mail->send();
+						$mail->setFrom($_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME']);
+						$mail->addAdress($data['email'], $data['username']);
+						$mail->subject(constant('ACCOUNT_REGISTRATION'));
+						$mail->body(self::sendHtmlBody($hash_key));
+						$mail->submit();
 					}
 
 				}
@@ -209,17 +194,6 @@ final class User
 			$return['type'] = 'success';
 			return $return;
 		}
-	}
-
-	private function sendHtmlHeader ()
-	{
-		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>'.constant('SERIAL_ACTIVE').'</title>
-		</head>
-		<body>';
 	}
 
 	private function sendHtmlBody ($hash_key)
@@ -244,13 +218,7 @@ final class User
 				<table width="90%" border="0" align="center" cellpadding="5" cellspacing="5" bgcolor="#FFF"><tr><td><p>'.constant('ACTIVE_TO_SERIAL').'</p></td></tr></table></td></tr></tbody></table>
 				<table style="color:#FFF; text-align:center" width="100%" border="0" align="center" cellpadding="5" cellspacing="5" bgcolor="#3333"><tr><td>'.$user->user->number_valid.'</td></tr></table>
 				<table style="color:#FFF; text-align:center" width="100%" border="0" align="center" cellpadding="5" cellspacing="5" bgcolor="#8f8e8c"><thead><tr><td colspan="2"><b>'.constant('INFOS').'</b></td></tr></thead><tbody><tr bordercolor="#FFF"><td style="text">'.constant('NAME').'</td><td><b>'.$user->user->username.'</b></td></tr><tr><td>'.constant('DATE').'</td><td><b>'.$date.'</b></td></tr><tr><td>IP</td><td><b>'.Common::GetIp().'</b></td></tr></tbody>
-				</table>';
-	}
-
-
-	private function sendHtmlFooter ()
-	{
-		return '</body></html>';
+				</table></body></html>';
 	}
 
 	public function sendEditProfil ($data) {
