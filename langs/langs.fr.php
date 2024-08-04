@@ -425,6 +425,7 @@ $array = array(
 	'LINKS'                               => 'Liens',
 	'SURVEY'                              => 'Sondages',
 	'MARKET'                              => 'Boutique',
+	'PRICING'                             => 'Tarifs',
 	#####################################
 	# USER
 	#####################################

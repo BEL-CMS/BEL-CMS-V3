@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.7 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -46,8 +46,10 @@ $tables = array(
 	'TABLE_FAQ_CAT'             => $DB_PREFIX.'faq_cat',
 	'TABLE_UPLOADS_ADMIN'       => $DB_PREFIX.'files_admin',
 	'TABLE_GALLERY'             => $DB_PREFIX.'gallery',
+	'TABLE_GALLERY_VALID'       => $DB_PREFIX.'gallery_cat_valid',
 	'TABLE_GALLERY_CAT'         => $DB_PREFIX.'gallery_cat',
 	'TABLE_GALLERY_VOTE'        => $DB_PREFIX.'gallery_vote',
+	'TABLE_GALLERY_SUB_CAT'     => $DB_PREFIX.'gallery_sub_cat',
 	'TABLE_PAGES_GAMES'         => $DB_PREFIX.'games',
 	'TABLE_GROUPS'              => $DB_PREFIX.'groups',
 	'TABLE_GUESTBOOK'           => $DB_PREFIX.'guestbook',
@@ -89,6 +91,8 @@ $tables = array(
 	'TABLE_SURVEY_VOTE'         => $DB_PREFIX.'survey_vote',
 	'TABLE_PAYPAL'              => $DB_PREFIX.'paypal',
 	'TABLE_PURCHASE'            => $DB_PREFIX.'paypal_purchase',
+	'TABLE_PRICING'             => $DB_PREFIX.'pricing',
+	'TABLE_PRICING_LIST'        => $DB_PREFIX.'pricing_list',
 	'TABLE_TEAM'                => $DB_PREFIX.'team',
 	'TABLE_TEAM_USERS'          => $DB_PREFIX.'team_users',
 	'TABLE_UPLOADS'             => $DB_PREFIX.'uploads_admin',

@@ -1,0 +1,99 @@
+#belcms_pricing {
+	padding: 10px;
+	text-align: left;
+}
+#belcms_pricing .light {
+	font-weight: 400;
+	color: #ccc;
+}
+#belcms_pricing > h1 {
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #eee;
+	color: #1e1e1e;
+	font-size: 1.9em;
+	font-weight: 600;
+	margin-top: 12px;
+	text-align: left;
+}
+#belcms_pricing_plan {
+	display: block;
+	overflow: hidden;
+	padding: calc(var(--bs-gutter-x) * .5);
+}
+.belcms_pricing_col {
+	display: block;
+	float: left;
+	width: calc(33% - 15px);
+	margin-right: 15px;
+	margin-bottom: 15px;
+	transition: all 250ms ease-in-out;
+}
+.belcms_pricing_col:last-child {
+	margin-right: 0;
+}
+.belcms_pricing_col:hover {
+	transform: translateY(-10px);
+}
+.belcms_pricing_col > div {
+	padding: 40px 40px 20px;
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	overflow: hidden;
+	position: relative;
+	transition: all .3s ease-out;
+	box-shadow: 0 10px 32px 0px rgba(0, 0, 0, .04);
+}
+.belcms_pricing_col > div > h3 {
+	font-size: 20px;
+	font-weight: bold;
+}
+.belcms_pricing_col > div > h3 > span {
+	padding-right: 6px;
+	font-size: 12px;
+}
+.belcms_pricing_item {
+	padding: 15px 0;
+}
+.belcms_pricing_item .light {
+	font-size: 16px;
+}
+.belcms_pricing_item .strong {
+	font-weight: bold;
+	font-size: 24px;
+}
+.belcms_pricing_description {
+	text-align: justify;
+	border-bottom: 1px solid #eee;
+}
+.belcms_pricing_listing {
+	display: block;
+	list-style: none;
+	margin: 0;
+	margin-top: 15px;
+	padding: 0;
+}
+.belcms_pricing_listing li {
+	display: block;
+	line-height: 28px;
+}
+.belcms_pricing_listing li span {
+	margin-right: 10px ;
+	line-height: 28px;
+}
+.belcms_pricing_listing_green {
+	color: green;
+}
+.belcms_pricing_listing_red {
+	color: red;
+}
+#belcms_pricing form {
+	display: block;
+	margin: 10px auto;
+}
+#belcms_pricing form input {
+	cursor: pointer;
+	font-weight: bold;
+	width: 100%;
+}
