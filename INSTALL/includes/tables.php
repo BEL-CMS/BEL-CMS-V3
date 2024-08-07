@@ -79,6 +79,7 @@ switch ($_POST['table']) {
 			`code` varchar(32) NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+	break;
 
     case 'comment':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
