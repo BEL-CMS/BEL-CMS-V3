@@ -50,7 +50,7 @@ endif;
 									<?=$captcha['NB_TWO']?>
 								</div>
 							</div>
-							<input name="query_register" type="number" min="1" max="18" class="form-control" id="security-password" placeholder="Your Answer" autocomplete="off">
+							<input name="query_register" type="number" min="1" max="18" class="form-control" id="security-password" placeholder="Votre Réponse" autocomplete="off">
 						</div>
 						<div class="forgot">
 							<a href="/user/lostpassword&echo"><?=constant('FORGOT_PASSWORD');?></a>

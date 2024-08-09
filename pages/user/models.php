@@ -875,19 +875,20 @@ final class User
 					$sql->update(array('avatar'=> $data['avatar']));
 					$return['msg']  = 'Avatar changer avec succès';
 					$return['type'] = 'success';
-					$return['ext']  = 'Avatar';
+					$return['title']  = 'Avatar';
 					/* update $_SESSION */
 					New UserNotification($_SESSION['USER']->user->hash_key, 'Avatar changer');
 					$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
+					return $return;
 				} else {
-					$return['msg']  = 'mavaise extention de l\'avatar';
-					$return['type'] = 'warning';
-					$return['ext']  = 'Avatar';
+					$return['msg']    = 'mavaise extention de l\'avatar';
+					$return['type']   = 'warning';
+					$return['title']  = 'Avatar';
 				}
 			} else {
-				$return['msg']  = 'Aucune avatar';
-				$return['type'] = 'warning';
-				$return['ext']  = 'Avatar';
+				$return['msg']       = 'Aucune avatar';
+				$return['type']      = 'warning';
+				$return['etitlext']  = 'Avatar';
 			}
 		} else if ($data['select'] == 'delete') {
 			$sql = New BDD();
@@ -899,9 +900,9 @@ final class User
 			@unlink($link);
 			unset($return);
 			New UserNotification($_SESSION['USER']->user->hash_key, 'Avatar surrpimé');
-			$return['msg']  = $link;
-			$return['type'] = 'success';
-			$return['ext']  = 'Avatar';
+			$return['msg']    = $link;
+			$return['type']   = 'success';
+			$return['title']  = 'Avatar';
 		}
 
 		return $return;

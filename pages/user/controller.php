@@ -367,6 +367,9 @@ class User extends Pages
 	public function addAvatar ()
 	{
 		$return = $this->models->avatarSubmit($_GET);
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
+		$this->redirect('User', 1);
 	}
 	#########################################
 	# recupere le background

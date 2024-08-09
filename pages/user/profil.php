@@ -9,11 +9,14 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\User\User;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-if (Users::isLogged() === true):
+
+if (User::isLogged() === true):
 ?>
 <section id="bel_cms_page_user">
 
