@@ -523,6 +523,7 @@ final class Common
 			if (is_array($data)) {
 				foreach ($data as $k => $v) {
 					$return[$k] = strip_tags($v, $authorised);
+					$return[$k] = trim($return[$k]);
 				}
 			} else {
 				$return = strip_tags($data, $authorised);
@@ -682,6 +683,51 @@ final class Common
 		}
 		return $return;
 	}
+	#########################################
+	# Delete all > dir file
+	#########################################
+	public static function deleteFiles($dir)
+	{
+		// Assigning files inside the directory
+		$dir = new \RecursiveDirectoryIterator(
+			$dir, \FilesystemIterator::SKIP_DOTS);
+		$dir = new \RecursiveIteratorIterator(
+			$dir,\RecursiveIteratorIterator::CHILD_FIRST);
+		foreach ( $dir as $file ) { 
+			$file->isDir() ?  rmdir($file) : unlink($file);
+		}
+	}
+	#########################################
+	# Delete One file
+	#########################################
+	public static function deleteFile ($file)
+	{
+		if (file_exists($file)) {
+			@unlink($file);
+		}
+	}
+	#########################################
+	# Deplace un fichier
+	#########################################
+	public static function moveFile($dossierSource , $dossierDestination){
+
+		$retour = 1; 
+		if(!file_exists($dossierSource)) { 
+		 $retour = -1; 
+		} else { 
+		 if(!copy($dossierSource, $dossierDestination)) { 
+		 $retour = -2; 
+		 } else { 
+		 if(!unlink($dossierSource)) { 
+		 $retour = -3; 
+		 } 
+		 } 
+		} 
+		return($retour);
+	}
+	#########################################
+	# Retire les accents
+	#########################################
 	public static function FormatName ($n)
 	{
 		$n = strtr($n,
@@ -849,13 +895,6 @@ final class Common
 		}
 		return $output;
 	}
-
-	public static function deleteFile ($file)
-	{
-		if (file_exists($file)) {
-			@unlink($file);
-		}
-	}
 	public static function crypt64($data, $key) {
 		$encryption_key = base64_decode($key);
 		$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
@@ -867,6 +906,18 @@ final class Common
 		$encryption_key = base64_decode($key);
 		list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
 		return openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
+	}
+
+	public static function crypt ($string, $key)
+	{
+		$return = openssl_encrypt($string, "AES-128-ECB" ,$key);
+		return $return;
+	}
+
+	public static function decrypt ($string, $key)
+	{
+		$return = openssl_decrypt($string, "AES-128-ECB",$key);
+		return $return;
 	}
 
 	public static function zipAchive ($rootPath, $zipFileName)
