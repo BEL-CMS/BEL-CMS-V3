@@ -11,7 +11,9 @@
 
 namespace BELCMS\Pages\Controller;
 
+use BelCMS\Ban\_Ban;
 use BelCMS\Core\Captcha;
+use BelCMS\Core\Interaction;
 use BELCMS\Pages\Pages;
 use BelCMS\Requires\Common;
 use BELCMS\User\User as UserInfos;
@@ -135,10 +137,41 @@ class User extends Pages
 	public function groups ()
 	{
 		if (UserInfos::isLogged() === true) {
-			$groups = $_SESSION['USER'];
-			$grp['groups'] = $groups->groups->all_groups;
-			$this->set($grp);
+			$groups = UserInfos::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			$d['main'] = $groups->groups->user_group;
+			$d['all']  = explode('|', $groups->groups->user_groups);
+			$this->set($d);
 			$this->render('groups');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	public function ChangeGroup ()
+	{
+		if (UserInfos::isLogged() === true) {
+			$id = (int) $_POST['id'];
+			$groups = UserInfos::getInfosUserAll($_SESSION['USER']->user->hash_key);
+			$d['all']  = explode('|', $groups->groups->user_groups);
+			if (in_array($id, $d['all'])) {
+				$return = $this->models->ChangeGroup($id);
+				$this->redirect('User/Groups', 2);
+				$this->error = true;
+				$this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);
+			} else {
+				_Ban::addBan(
+					null,
+					Common::GetIp(),
+					$_SESSION['USER']->user->mail,
+					'P99Y',
+					'P99Y',
+					constant('ERROR_CHANGE_GROUP')
+				);
+				new Interaction('error', 'GROUPS', constant('INTERACTION_ERROR_GROUP'));
+				$this->error = true;
+				$this->errorInfos = array('error', constant('ERROR_CHANGE_GROUP'), constant('ALERT'), true);
+			}
 		} else {
 			$this->redirect('User/login&echo', 3);
 			$this->error = true;
@@ -384,7 +417,7 @@ class User extends Pages
 	public function NewBg ()
 	{
 		$return = $this->models->bgSubmit($_FILES);
-		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
 		$this->redirect('User', 2);
 	}
 	#########################################
@@ -394,7 +427,7 @@ class User extends Pages
 	{
 		$return = $this->models->sendNewAvatar();
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
 		$this->redirect('User', 2);
 	}
 	#########################################
@@ -404,7 +437,7 @@ class User extends Pages
 	{
 		$return = $this->models->sendSubmitSocial($this->data);
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
 		$this->redirect('User', 2);
 	}
 	#########################################
@@ -431,7 +464,7 @@ class User extends Pages
 			$return = $this->models->sendGames($_POST['game']);
 		}
 		$this->error = true;
-		$this->errorInfos = array($return['type'], $return['msg'], $return['ext'], false);
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
 		$this->redirect('User/Games', 3);
 	}
 }

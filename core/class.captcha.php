@@ -64,7 +64,7 @@ final class Captcha
     }
     public static function verifCaptcha ($code)
     {
-        if ($_SESSION['CONFIG_CMS']['CAPTCHA'] != 1) { 
+        if (self::getActiveCaptcha() === true) {
             if (isset($_REQUEST['captcha']) and !empty($_REQUEST['captcha'])) {
                 return false;
             }
@@ -88,6 +88,8 @@ final class Captcha
                 } else {
                     return false;
                 }
+            } else {
+                return false;
             }
         } else {
             return true;

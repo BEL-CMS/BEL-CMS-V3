@@ -58,6 +58,9 @@ Common::constant(array(
 	'ACCOUNT_REGISTRATION'         => 'Enregistrement du compte',
 	'SERIAL_ACTIVE'                => 'Clé d\'activation',
 	'ACTIVE_TO_SERIAL'             => 'Voici la clé de sécurité pour activer votre compte.',
+	'ERROR_CHANGE_GROUP'           => 'Tentative d\'usurpation de groupe, un administrateur a été prévenue',
+	'ALERT'                        => 'Attention',
+	'INTERACTION_ERROR_GROUP'      => 'L\'utilisateur a tenté de modifier manuellement sont groupe',
 	#####################################
 	# Fichier lang en français - Admin
 	#####################################
@@ -70,5 +73,4 @@ Common::constant(array(
 	'GROUPS'                       => 'Groups',
 	'PRIVATE'                      => 'Priver',
 	'SOCIAL'                       => 'Social',
-
 ));

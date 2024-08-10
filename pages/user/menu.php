@@ -28,6 +28,10 @@ $userProfils = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
 			<div><i class="fa-solid fa-users-gear"></i></div>
 		</li>
 		<li>
+			<a href="User/Groups">Groupe(s)</a>
+			<div><i class="fa-solid fa-layer-group"></i></div>
+		</li>
+		<li>
 			<a href="User/Logout">Se déconnecter</a>
 			<div><i class="fa-solid fa-power-off"></i></div>
 		</li>

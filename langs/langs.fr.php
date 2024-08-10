@@ -33,6 +33,7 @@ $array = array(
 	'DEL_USERS'                           => 'Votre compte a bien été supprimé',
 	'ERROR_SERIAL_OR_NAME'                => 'L\'email ou la clé d\'activation est incorrecte',
 	'USER_CREATE_ACTIVED'                 => 'Votre compte a bien été activé',
+	'NOT_EXISTS'                          => 'L\'utilisateur n\'existe pas',
  	#####################################
 	# Langue Français - COMMUN
 	#####################################
@@ -261,6 +262,7 @@ $array = array(
 	'INVALID_ID'                          => 'ID non valide',
 	'MOBILE'                              => 'Mobile',
 	'SEARCH'                              => 'Rechercher',
+	'MAX_UPLOADS'                         => 'Max taille Upload',
 	#####################################
 	# UPLOAD
 	#####################################

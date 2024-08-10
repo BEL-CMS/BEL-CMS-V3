@@ -46,12 +46,16 @@ final class Validation
 
     public function getSQLUser () 
     {
-        $sql = new BDD;
-        $sql->table('TABLE_USERS');
-        $sql->where(array('name' => 'hash_key', 'value' => $_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]));
-        $sql->fields(array('hash_key', 'mail', 'ip', 'valid'));
-        $sql->queryOne();
-        return $sql->data;
+        if (isset($_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']])) {
+            $sql = new BDD;
+            $sql->table('TABLE_USERS');
+            $sql->where(array('name' => 'hash_key', 'value' => $_COOKIE['BELCMS_HASH_KEY_'.$_SESSION['CONFIG_CMS']['COOKIES']]));
+            $sql->fields(array('hash_key', 'mail', 'ip', 'valid'));
+            $sql->queryOne();
+            return $sql->data;
+        } else  {
+            return false;
+        }
     }
 
     public function html ()

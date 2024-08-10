@@ -839,22 +839,22 @@ final class User
 			if (!in_array($extension, $extensions)) {
 				$return['msg']  = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg';
 				$return['type'] = 'error';
-				$return['ext']  = 'Extention';
+				$return['title']  = 'Extention';
  			} else if (move_uploaded_file($_FILES['avatar']['tmp_name'], $dir.$_FILES['avatar']['name'])) {
 				$return['msg']  = 'Upload effectué avec succès';
 				$return['type'] = 'success';
-				$return['ext']  = 'Avatar';
+				$return['title']  = 'Avatar';
 				$data = array('avatar' => $dir.$_FILES['avatar']['name'], 'select' => 'select');
 				self::avatarSubmit($data);
 			} else {
 				$return['msg']  = 'Echec de l\'upload !';
 				$return['type'] = 'warning';
-				$return['ext']  = 'Erreur inconnu';
+				$return['title']  = 'Erreur inconnu';
 			}
 		} else {
 			$return['msg']  = 'Aucun upload d\'image en cours...';
 			$return['type'] = 'error';
-			$return['ext']  = 'Aucune image';
+			$return['title']  = 'Aucune image';
 		}
 		return $return;
 	}
@@ -888,7 +888,7 @@ final class User
 			} else {
 				$return['msg']       = 'Aucune avatar';
 				$return['type']      = 'warning';
-				$return['etitlext']  = 'Avatar';
+				$return['title']  = 'Avatar';
 			}
 		} else if ($data['select'] == 'delete') {
 			$sql = New BDD();
@@ -917,9 +917,9 @@ final class User
 			$extensions = array('.png', '.gif', '.jpg', '.jpeg');
 			$extension = strrchr($_FILES['hight_avatar']['name'], '.');
 			if (!in_array($extension, $extensions)) {
-				$return['msg']  = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg';
-				$return['type'] = 'error';
-				$return['ext']  = 'Extention';
+				$return['msg']    = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg';
+				$return['type']   = 'error';
+				$return['title']  = 'Extention';
 				return $return;
 			} else {
 				Common::Upload('hight_avatar', $dir, $extensions);
@@ -927,17 +927,17 @@ final class User
 				$sql->table('TABLE_USERS_PROFILS');
 				$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 				$sql->update(array('hight_avatar'=> $dir.$_FILES['hight_avatar']['name']));
-				$return['msg']  = 'Avatar changer avec succès';
-				$return['msg']  = 'Upload effectué avec succès';
-				$return['type'] = 'success';
-				$return['ext']  = 'Avatar';
+				$return['msg']    = 'Avatar changer avec succès';
+				$return['msg']    = 'Upload effectué avec succès';
+				$return['type']   = 'success';
+				$return['title']  = 'Avatar';
 				New UserNotification($_SESSION['USER']->user->hash_key, 'Image de couverture ajouter');
 				$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 			}
 		} else {
 			$return['msg']  = 'Aucun upload d\'image en cours...';
 			$return['type'] = 'error';
-			$return['ext']  = 'Aucune image';
+			$return['title']  = 'Aucune image';
 		}
 		return $return;
 	}
@@ -955,16 +955,16 @@ final class User
 			$sql->table('TABLE_USERS_SOCIAL');
 			$sql->where(array('name'=>'hash_key','value'=>$_SESSION['USER']->user->hash_key));
 			$sql->update($update);
-			$return['msg']  = constant('MODIFY_SOCIAL_SUCCESS');
-			$return['type'] = 'success';
-			$return['ext']  = 'Liens';
+			$return['msg']    = constant('MODIFY_SOCIAL_SUCCESS');
+			$return['type']   = 'success';
+			$return['title']  = 'Liens';
 			/* update $_SESSION */
 			New UserNotification($_SESSION['USER']->user->hash_key, constant('MODIFY_SOCIAL_SUCCESS'));
 			$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 		} else {
-			$return['msg']  = constant('ERROR_UPDATE_BDD');
-			$return['type'] = 'warning';
-			$return['ext']  = 'Liens';
+			$return['msg']    = constant('ERROR_UPDATE_BDD');
+			$return['type']   = 'warning';
+			$return['title']  = 'Liens';
 		}
 
 		return $return;
@@ -1020,7 +1020,7 @@ final class User
 		}
 		$return['msg']  = constant('MODIFY_GAMES_SUCCESS');
 		$return['type'] = 'success';
-		$return['ext']  = constant('VIDEO_GAMES');
+		$return['title']  = constant('VIDEO_GAMES');
 		New UserNotification($_SESSION['USER']->user->hash_key, constant('MODIFY_GAMES_SUCCESS'));
 		return $return;
 	}
@@ -1080,5 +1080,25 @@ final class User
 		} else {
 			return true;
 		}
+	}
+	public function ChangeGroup ($id)
+	{
+		$up['user_group'] = $id;
+		$update = New BDD;
+		$update->table('TABLE_USERS_GROUPS');
+		$update->update($up);
+
+		$return['msg']    = constant('MODIFY_PROFILS_SUCCESS');
+		$return['type']   = 'success';
+		/* Mise à jour du profil */
+		$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
+		return $return; 
+	}
+	public function banGroup ($data)
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_BAN');
+		$sql->insert($data);
+		debug($sql);
 	}
 }

@@ -75,12 +75,12 @@ final class eMail
 
 	public function setFrom($data = null)
 	{
-		if (Secure::isMail($data->setFrom)) {
-			$explode = explode('@', $data->setFrom);
+		if (Secure::isMail($data)) {
+			$explode = explode('@', $data);
 			$name    = explode('.', $explode[1]);
-			$this->phpMailer->setFrom($data->setFrom, $name[0]);
-		} else if ($data->setFrom == 'null') {
-			$this->phpMailer->setFrom($this->setFrom);
+			$this->phpMailer->setFrom($data, $name[0]);
+		} else if ($data == 'null') {
+			$this->phpMailer->setFrom($_SESSION['CONFIG_CMS']['CMS_WEBSITE_NAME']);
 		} else {
 			return;
 		}
