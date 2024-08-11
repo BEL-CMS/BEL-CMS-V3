@@ -12,4 +12,11 @@ $('#belcms_mails_new_author').autocomplete({
     minLength: 3,
     delay: 100
 });
+
+document.getElementById('checkbox_all_mails').addEventListener('change', function() {
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});
+
 console.log( "Mails jQuery loaded" );

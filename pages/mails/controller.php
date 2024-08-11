@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.9 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -10,6 +10,7 @@
  */
 
 namespace BELCMS\Pages\Controller;
+
 use Belcms\Pages\Pages;
 use BelCMS\User\User;
 
@@ -21,53 +22,90 @@ endif;
 class Mails extends Pages
 {
 	var $useModels = 'Mails';
-	#########################################
-	# Index de la page Mail
-	#########################################
+
+	function __construct()
+	{
+		parent::__construct();
+
+		$this->models->deleteAllMsg ();
+	}
+
 	public function index ()
 	{
-		// Si l'utilisateur est logué
-		if (User::isLogged() === true) {
-			// Récupère les messages qui ne sont pas archivés
-			$data['inbox'] = $this->models->getMessages();
-			// Transmet les données à la page index
-			$this->set($data);
-			// le nom de la page
+		if (User::isLogged()) {
+			$mails = $this->models->getMailsAlll();
+			foreach ($mails as $key => $value) {
+				if ($value->close_send == 1 or $value->archive_send == 1) {
+					unset($mails[$key]);
+				}
+			}
+			$result['mails'] = $mails; 
+			$this->set($result);
 			$this->render('index');
 		} else {
-			// Redirection vers le login, après 3 secondes
 			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
 			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
-	#########################################
-	# Vérifie s'il y a un nouveau message
-	#########################################
-	public function testMsg ()
+
+	public function GetMails ()
 	{
-		$this->typeMime = 'application/json';
-		if (User::isLogged() === true) {
-			echo json_encode(array('data' => $this->models->testNewMSG()));
+		self::index();
+	}
+
+	public function MailsSend ()
+	{
+		if (User::isLogged()) {
+			$mails = $this->models->getMailsSend();
+			foreach ($mails as $key => $value) {
+				if ($value->close_send == 1 or $value->archive_send == 1) {
+					unset($mails[$key]);
+				}
+			}
+			$result['mails'] = $mails; 
+			$this->set($result);
+			$this->render('mailsend');
 		} else {
-			echo json_encode(array('data'=> false));
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
-	#########################################
-	# Nouveau message
-	#########################################
-	public function new ()
+
+	public function getMailsArchive ()
 	{
-		if (User::isLogged() === true) {
+		if (User::isLogged()) {
+			$d['mails'] = $this->models->getMailsArchive();
+			$this->set($d);
+			$this->render('archive');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+
+	public function trash ()
+	{
+		if (User::isLogged()) {
+			$d['mails'] = $this->models->getMailTrach();
+			$this->set($d);
+			$this->render('trash');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+
+	public function new () 
+	{
+		if (User::isLogged()) {
 			$this->render('new');
 		} else {
-			// Redirection vers le login, après 3 secondes
 			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
 			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
@@ -100,6 +138,17 @@ class Mails extends Pages
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
+	public function deleteAll ()
+	{
+		// Place tout les messages dans la corbeille
+		$this->models->deleteAll();
+		// Redirection vers les message, après 3 secondes
+		$this->redirect('Mails', 3);
+		// Initialise une erreur / message information
+		$this->error = true;
+		// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
+		$this->errorInfos = array('warning', constant('MESSAGE_DELETE_SUCCESS'), constant('INFO'), false);
+	}
 	#########################################
 	# Récupere les utilisateurs avec minimum 3 lettres
 	#########################################
@@ -111,207 +160,6 @@ class Mails extends Pages
 			echo json_encode(array('username' => $this->models->getUsers($search)));
 		} else {
 			echo json_encode(array('username'=> ''));
-		}
-	}
-	#########################################
-	# lecture des messages
-	#########################################
-	public function read ()
-	{
-		if (User::isLogged() === true) {
-			// Récupère les messages qui ne sont pas archivés
-			$data['inbox'] = $this->models->getMessagesRead($this->data[2]);
-			if ($data['inbox'] === false) {
-				$data['inbox'] = array();
-				$this->redirect('Mails', 3);
-			} else {
-				// Transmet les données à la page receives
-				$this->set($data);
-				$this->render('receives');	
-			}
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Réponse a un message
-	#########################################
-	public function reply ()
-	{
-		if (User::isLogged() === true) {
-			$data['mail_id'] = $this->data[2];
-			$data['test'] = $this->models->getTestReply($this->data[2]);
-			$this->set($data);
-			$this->render('reply');
-			$this->redirect('Mails', 3);
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Envoie la réponse en base de donnée
-	#########################################
-	public function sendReply ()
-	{
-		if (User::isLogged() === true) {
-			$return = $this->models->sendReply($this->data);
-			$this->error = true;
-			$this->errorInfos = array($return['type'], $return['text'], constant('INFO'), false);
-			$this->redirect('Mails', 3);
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# lecture des messages qui sont archivé
-	#########################################
-	public function archive()
-	{
-		if (User::isLogged() === true) {
-			$data['inbox'] = $this->models->getMessages(true);
-			$this->set($data);
-			$this->render('archive');	
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Récupere les messages supprimé.
-	# Si les deux participant ont clos le sujet,
-	# la conversation sera effacée de la base de donnée
-	#########################################
-	public function close ()
-	{
-		if (User::isLogged() === true) {
-			$data['inbox'] = $this->models->getMessagesClose();
-			$this->set($data);
-			$this->render('close');	
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Met le message dans la boîte de suppression
-	#########################################
-	public function remove ()
-	{
-		if (User::isLogged() === true) {
-			$return = $this->models->sendRemove($this->data[2]);
-			$this->error = true;
-			$this->errorInfos = array($return['type'], $return['text'], constant('INFO'), false);
-			$this->redirect('Mails', 3);
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Envoie le message dans la boîte d'archive
-	#########################################
-	public function sendArchive()
-	{
-		if (User::isLogged() === true) {
-			$return = $this->models->sendArchive($this->data[2]);
-			$this->error = true;
-			$this->errorInfos = array($return['type'], $return['text'], constant('INFO'), false);
-			$this->redirect('Mails', 3);
-
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Récupérer les messages archives
-	#########################################
-	public function readArchive ()
-	{
-		if (User::isLogged() === true) {
-			$data['inbox'] = $this->models->readArchive($this->data[2]);
-			$this->set($data);
-			$this->render('readarchive');	
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Vous ajouté à la liste d'envoi e-mail
-	#########################################
-	public function subcribe ()
-	{
-		if (User::isLogged() === true) {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('Mails/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('success', constant('SUBCRIBE_OK'), constant('INFO'), true);
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
-		}
-	}
-	#########################################
-	# Vous retirez de la liste d'envoi e-mail
-	#########################################
-	public function unsubcribe ()
-	{
-		if (User::isLogged() === true) {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('Mails/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('success', constant('SUBCRIBE_REMOVE'), constant('INFO'), true);
-		} else {
-			// Redirection vers le login, après 3 secondes
-			$this->redirect('User/login&echo', 3);
-			// Initialise une erreur / message information
-			$this->error = true;
-			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
-			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
 }

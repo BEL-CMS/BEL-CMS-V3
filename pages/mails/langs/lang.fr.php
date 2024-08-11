@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.9 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -26,6 +26,7 @@ Common::constant(array(
 	'SENT_MSG'   	          => 'Messages envoyés',
 	'CLOSE_MSG'               => 'Conversations supprimé',
 	'NO_MESSAGE_CLOS'         => 'Aucune conversations clos',
+	'NO_TRASH_MESSAGE'        => 'Aucun message dans la corbeille',
 	'MSG_CLOSE_ALL'           => 'Les conversations sont automatiquement supprimées de la boite, quand les deux auront mis clos au sujet.', 
 	'ARCHIVES'   	          => 'archives',
 	'READ'       	          => 'Lire',
@@ -47,4 +48,6 @@ Common::constant(array(
 	'MESSAGE_REPLY_CLOS'      => 'Impossible de répondre au sujet, la destinataire a fermé le message.<br>Retour dans votre boite de réception dans 3s',
 	'SUBCRIBE_OK'             => 'Abonnement au site enregistré',
 	'SUBCRIBE_REMOVE'         => 'Désactivation de l\'abonnement au site enregistré',
+	'NO_SEND_MESSAGE'         => 'Aucune conversation dans l\'envoi',
+	'NO_MSG_MESSAGE'          => 'Aucun message dans votre boite mail',
 ));

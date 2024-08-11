@@ -1,196 +1,200 @@
-#belcms_mails {
-	background-color: rgba(255, 255, 255, 1);
-	border-radius: 4px;
-	padding: 25px 20px;
-	background: #f9f9f9;
-	border: 1px solid rgb(238, 238, 238);
-	max-height: 815px;
-	overflow-y: auto;
+#belcms_section_mails {
+    display: flex;
+    text-align: left;
 }
-#belcms_mails > div {
-	border-right: 1px solid rgb(238, 238, 238);
+#mails_notif {
+	margin: 20px;
 }
-#belcms_mails > div:last-child {
-	border-right: 0;
-}
-ul#belcms_mail_menu {
+section#belcms_section_mails nav {
 	display: block;
-	width: 100%;
+	background-color: #fff;
+	width: 350px;
+	float: left;
+}
+section#belcms_section_mails nav ul {
+	display: block;
 	list-style: none;
 	margin: 0;
-	text-align: center;
+	padding: 0;
 }
-ul#belcms_mail_menu li {
+section#belcms_section_mails nav ul li {
+	display: block;
+	height: 65px;
+	border-radius: 8px;
+	margin-bottom: 5px;
+	position: relative;
+	transition: all linear 350ms;
+}
+section#belcms_section_mails nav ul li:first-child {
+	background-color: #7367f0;
+}
+section#belcms_section_mails nav ul li:first-child a {
+    color: #FFF;
+}
+section#belcms_section_mails nav ul li:hover:first-child a {
+    color: rgba(0, 0, 0, 1);
+}
+section#belcms_section_mails nav ul li:hover {
+	background-color: rgba(0, 0, 0, 0.08);
+}
+section#belcms_section_mails nav ul li:last-child {
+	background-color: rgba(229, 20, 20, 0.65);
+	color: rgba(242, 242, 242, 0.9);
+}
+section#belcms_section_mails nav ul li:last-child > div {
+	background-color: black;
+}
+section#belcms_section_mails nav ul li img {
+	display: block;
+	float: left;
+	width: 50px;
+	height: 50px;
+	margin: 8px;
+	border-radius: 8px;
+}
+section#belcms_section_mails nav ul li a,
+section#belcms_section_mails nav ul li span {
+	display: block;
+	float: left;
+	line-height: 65px;
+	margin-left: 15px;
+	font-weight: bold;
+}
+section#belcms_section_mails nav ul li a {
+	display: block;
+	padding: 0 25px;
+	height: 65px;
+	line-height: 65px;
+	position: relative;
+	text-transform: uppercase;
+	font-weight: 600;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	font-size: .9em;
+	transition: all .2s ease-in-out;
+	width: 100%;
+	margin: 0;
+}
+section#belcms_section_mails nav ul li i {
+	display: block;
+	float: right;
+	line-height: 65px;
+	margin-right: 15px;
+	font-size: 20px;
+	border: 1px soldi;
+}
+section#belcms_section_mails nav ul li div {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	right: 15px;
+	top: 8px;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+}
+section#belcms_section_mails nav ul li div svg {
 	display: block;
 	margin: auto;
+	top: 8px;
+	font-size: 20px;
+	line-height: 65px;
+	margin-top: 15px;
 }
-ul#belcms_mail_menu li a {
-	border-radius: 4px;
-	background-color: #f8f9fa;
+/* end menu */
+#belcms_section_list_mails {
+    display: block;
+    float: left;
+    width: calc(100% - 350px);
+    position: relative;
+    padding: 30px 0;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    margin-left: 20px;
 }
-ul#belcms_mail_menu li.active a {
-	background-color: #686569;
-	color: #FFF;
-}
-#belcms_mails_title {
-	font-weight: bold;
-	text-align: left;
-	border-bottom: 1px solid rgb(238, 238, 238);
-}
-#belcms_mails_list {
-	display: block;
+#belcms_section_list_mails > ul {
+	display: flex;
 	width: 100%;
-	list-style: none;
-	margin: 0;
-	text-align: left;
-	position: relative;
+	border-bottom: 1px solid #eee;
+	padding: 10px 30px;
 }
-#belcms_mails_list > li {
+#belcms_section_list_mails > ul li {
 	display: block;
-	height: 60px;
-	padding-bottom: 10px;
-	padding-top: 10px;
-	border-bottom: 1px solid rgb(238, 238, 238);
-	position: relative;
+	margin-left: 15px;
+	background-color: #f2f2f3;
 }
-#belcms_mails_list > li:first-child {
-	padding-top: 0;
-	height: 50px;
-}
-#belcms_mails_list > li:last-child {
-	border-bottom: 0;
-}
-#belcms_mails_list li div {
-	display: block;
-	float: left;
-	width: calc(100% - 40px);
-	padding-bottom: 2px;
-}
-#belcms_mails_list_screen {
-	width: 40px !important;
-}
-#belcms_mails_list li div > span {
-	display: block;
-	line-height: 18px;
-	height: 18px;
-	padding-left: 10px;
-	padding-top: 5px;
-	font-size: 90%;
-}
-#belcms_mails_list li div > span a {
-	font-weight: bold;
-}
-#belcms_mails_list li div > a {
-	position: absolute;
-	right: 0;
-	top: 10%;
-	background: red;
-	width: 1.25em;
-	text-align: center;
-	color: #FFF;
-	border-radius: 37%;
-	text-decoration: none;
-	font-size: 80%;
-}
-#belcms_mails_list li div > a i {
-	position: relative;
-}
-#belcms_mails_list li div img {
-	display: block;
-	width: 40px;
-	height: 40px;
-	float: left;
-	border-radius: 4px;
-	border: 1px solid rgb(238, 238, 238);
-}
-#belcms_section form {
-	width: 100%;
-}
-#belcms_mails_new {
-	background-color: rgba(255, 255, 255, 1);
-	border-radius: 4px;
-	padding: 25px 20px;
-	background: #f9f9f9;
-	border: 1px solid rgb(238, 238, 238);
-	overflow: hidden;
-}
-#belcms_mails_new > div {
-	display: inline-table;
-	width: 100%;
-	margin-bottom: 10px;
-	line-height: 30px;
-	height: 30px;
-	text-align: left !important;
-}
-#belcms_mails_new > div > div {
-	float: left !important;
-}
-#belcms_mails_new_submit {
-	display: block;
-	width: auto;
-	padding: 8px 12px;
-}
-#belcms_mails_list_read {
-	padding: 15px;
-}
-.belcms_mails_list_read {
-	background-color: rgba(242,242,242,1);
-	display: block;
-	width: 100%;
-	margin-bottom: 15px;
-	text-align: justify;
-	border-bottom: 1px solid rgb(238, 238, 238);
-	padding: 10px;
-}
-.belcms_mails_list_read:last-child {
-	margin-bottom: 0;
-}
-.belcms_mails_list_read_infos ul {
-	display: block;
-	list-style: none;
-	overflow: hidden;
-}
-.belcms_mails_list_read_infos ul li {
-	display: block;
-	float: left;
-	padding: 0 10px;
-}
-.belcms_mails_list_read_infos ul li:last-child {
-	float: right;
-}
-.belcms_mails_list_read_infos ul li::after {
-	clear: both;
-	margin-bottom: 5px;
-}
-.belcms_mails_list_read_msg {
-	margin: 5px auto;
-	background-color: #f9f9f9;
-	color: black;
-	text-align: justify;
-	padding: 5px;
-}
-#belcms_mails_list_archive,
-#belcms_mails_list_reply {
-	background-color: #656266;
-	color: #FFF;
-	display: block;
-	max-width: 110px;
-	text-align: left;
-	padding: 5px 15px;
-	margin-left: 25px;
-	float: left;
-}
-#belcms_mails_list_archive {
-	float: right;
+#belcms_section_list_mails > ul li:first-child {
 	margin-left: 0;
-	margin-right: 25px;
 }
-#belcms_mails_clos {
-	padding: 25px;
+#belcms_section_list_mails > ul li svg {
+	font-size: 16px;
 }
-.iNew {
-	color: red;
+#belcms_section_list_mails [type="checkbox"] {
+	height: 16px;
+	width: 16px;
+	cursor: pointer;
 }
-.Iview {
-	color: greenyellow;
+#checkbox_all_mails:checked[type="checkbox"] {
+	box-shadow: 0 2px 6px 0 rgba(0,0,0, .6);
+}
+.belcms_section_listing_mails {
+	display: flex;
+	width: 100%;
+	height: 70px;
+	padding: 0 30px;
+	transition: all 350ms ease-in-out;
+	position: relative;
+	border-bottom: 1px solid #b08787;
+	background-color: #f5f5f8;
+}
+.belcms_section_listing_mails:hover,
+.belcms_section_listing_mails.new {
+	background-color: #e1dfe1;
+}
+.belcms_section_listing_mails > * {
+	line-height: 70px;
+}
+.belcms_section_listing_mails > span img {
+	display: block;
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	box-shadow: 0 2px 6px 0 rgba(0,0,0, .6);
+	line-height: 70px;
+	margin: 17px 15px;
+}
+.belcms_section_listing_mails:hover {
+	box-shadow: 0 .125rem .5rem 0 #eee;
+	border-bottom-color: rgba(0,0,0,1);
+}
+.belcms_section_listing_mails span:last-child {
+	position: absolute;
+	right: 15px;
+	line-height: 70px;
+}
+/* New */
+#belcms_section_new_mails {
+	display: block;
+	float: left;
+	width: calc(100% - 350px);
+	position: relative;
+	padding: 30px 0;
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	margin-left: 20px;
+	padding: 20px;
+}
+#belcms_section_new_mails > div {
+	display: block;
+	margin-bottom: 15px;
+}
+#belcms_section_new_mails > div label {
+	display: block;
+	line-height: 22px;
+	margin-left: 20px;
+}
+#uploads_new {
+	display: block;
+	width: 100% !important;
 }

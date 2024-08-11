@@ -24,13 +24,6 @@ if (User::isLogged() === true):
         <?php include 'menu.php'; ?>
     </div>
     <div id="belcms_section_list_mails">
-        <ul>
-            <li>
-                <input type="checkbox" id="checkbox_all_mails" class="belcms_tooltip_bottom" data="Sélectionner tout">
-            </li>
-            <li><a href="#" class="belcms_tooltip_bottom" data="Envoyé à la corbeille"><i class="fa-regular fa-trash-can"></i></a></li>
-            <li><a href="#" class="belcms_tooltip_bottom" data="Envoyé au dossier archive"><i class="fa-solid fa-file-zipper"></i></a></li>
-        </ul>
         <?php
         if (count($mails) != 0):
         foreach ($mails as $key => $value):
@@ -48,7 +41,7 @@ if (User::isLogged() === true):
         endforeach;
         else:
         echo '<div id="mails_notif">';
-            Notification::infos(constant('NO_MSG_MESSAGE'), constant('MAILBOX'));
+            Notification::infos(constant('NO_TRASH_MESSAGE'), constant('MAILBOX'));
         echo '</div>';
         endif;
         ?>

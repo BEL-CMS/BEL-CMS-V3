@@ -9,9 +9,9 @@
  * @author as Stive - stive@determe.be
  */
 
-use BelCMS\Core\Notification;
 use BelCMS\Requires\Common;
 use BELCMS\User\User;
+use BelCMS\Core\Notification;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -48,7 +48,7 @@ if (User::isLogged() === true):
         endforeach;
         else:
         echo '<div id="mails_notif">';
-            Notification::infos(constant('NO_MSG_MESSAGE'), constant('MAILBOX'));
+            Notification::infos(constant('NO_SEND_MESSAGE'), constant('MAILBOX'));
         echo '</div>';
         endif;
         ?>
