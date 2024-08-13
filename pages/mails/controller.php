@@ -12,6 +12,7 @@
 namespace BELCMS\Pages\Controller;
 
 use Belcms\Pages\Pages;
+use BelCMS\Requires\Common;
 use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
@@ -27,20 +28,12 @@ class Mails extends Pages
 	{
 		parent::__construct();
 
-		$this->models->deleteAllMsg ();
+		//$this->models->deleteAllMsg ();
 	}
 
 	public function index ()
 	{
 		if (User::isLogged()) {
-			$mails = $this->models->getMailsAlll();
-			foreach ($mails as $key => $value) {
-				if ($value->close_send == 1 or $value->archive_send == 1) {
-					unset($mails[$key]);
-				}
-			}
-			$result['mails'] = $mails; 
-			$this->set($result);
 			$this->render('index');
 		} else {
 			$this->redirect('User/login&echo', 3);
@@ -48,6 +41,64 @@ class Mails extends Pages
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
 	}
+
+	public function new () 
+	{
+		if (User::isLogged()) {
+			$this->render('new');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	#########################################
+	# Envoie le nouveau message
+	#########################################
+	public function sendNew ()
+	{
+		if (User::isLogged() === true) {
+			$testUser = $this->models->GetUser($this->data['author']);
+			debug($_POST);
+			$send['author '] = Common::VarSecure($_POST['author'], null);
+			$send['subject'] = Common::VarSecure($_POST['subject'], null);
+			if ($testUser === true) {
+				$return = $this->models->sendNew($this->data);
+				$this->error = true;
+				$this->errorInfos = array($return['type'], $return['text'], constant('INFO'), false);
+				$this->redirect('Mails', 3);
+			} else {
+				// Redirection vers le login, après 3 secondes
+				$this->redirect('Mails/New', 3);
+				// Initialise une erreur / message information
+				$this->error = true;
+				// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
+				$this->errorInfos = array('warning', constant('USER_FALSE'), constant('INFO'), false);
+			}
+		} else {
+			// Redirection vers le login, après 3 secondes
+			$this->redirect('User/login&echo', 3);
+			// Initialise une erreur / message information
+			$this->error = true;
+			// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+	}
+	#########################################
+	# Récupere les utilisateurs avec minimum 3 lettres
+	#########################################
+	public function getUsers ()
+	{
+		if (User::isLogged() === true) {
+			$this->typeMime = 'application/json';
+			$search = $_GET['term'];
+			echo json_encode(array('username' => $this->models->getUsers($search)));
+		} else {
+			echo json_encode(array('username'=> ''));
+		}
+	}
+
+	/*
 
 	public function GetMails ()
 	{
@@ -89,14 +140,30 @@ class Mails extends Pages
 	public function trash ()
 	{
 		if (User::isLogged()) {
-			$d['mails'] = $this->models->getMailTrach();
-			$this->set($d);
+			$mails = $this->models->getMailsSend();
+			foreach ($mails as $key => $value) {
+				if ($value->close_send == 0) {
+					unset($mails[$key]);
+				}
+			}
+			$result['mails'] = $mails; 
+			$this->set($result);
 			$this->render('trash');
 		} else {
 			$this->redirect('User/login&echo', 3);
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
+	}
+
+	public function TrashCheckbox ()
+	{
+		foreach ($_POST['checkbox_select'] as $value) {
+			$value = Common::VarSecure($value, null);
+			$this->models->TrashCheckbox($value);
+		}
+		$this->error = true;
+		$this->errorInfos = array('success', constant('MESSAGE_DELETE_SUCCESS'), constant('INFO'), true);
 	}
 
 	public function new () 
@@ -149,17 +216,5 @@ class Mails extends Pages
 		// message information (alert error infos success warning), le message, le titre, full page ou non (true-false)
 		$this->errorInfos = array('warning', constant('MESSAGE_DELETE_SUCCESS'), constant('INFO'), false);
 	}
-	#########################################
-	# Récupere les utilisateurs avec minimum 3 lettres
-	#########################################
-	public function getUsers ()
-	{
-		if (User::isLogged() === true) {
-			$this->typeMime = 'application/json';
-			$search = $_GET['term'];
-			echo json_encode(array('username' => $this->models->getUsers($search)));
-		} else {
-			echo json_encode(array('username'=> ''));
-		}
-	}
+	*/
 }

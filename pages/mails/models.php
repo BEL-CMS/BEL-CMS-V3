@@ -21,93 +21,13 @@ endif;
 
 # TABLE_MAILS
 # TABLE_MAILS_MSG
+# TABLE_MAILS_STATUS
 final class Mails
 {
-	public function getMailsAlll ()
+	public function sendNew ($data)
 	{
-		$user = $_SESSION['USER']->user->hash_key;
-		$where = 'WHERE `author_send` = "'.$user.'" OR `author_receives` = "'.$user.'"';
-		$sql = new BDD;
-		$sql->table('TABLE_MAILS');
-		$sql->where($where);
-		$sql->queryAll();
-		$return = $sql->data;
-		foreach ($return as $key => $value) {
-			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
-		}
-		return $return;
+		
 	}
-	public function getMails()
-	{
-		$where[] = array('name' => 'author_receives', 'value' => $_SESSION['USER']->user->hash_key);
-		$where[] = array('name' => 'close_receives', 'value' => '0');
-		$sql = new BDD;
-		$sql->table('TABLE_MAILS');
-		$sql->where($where);
-		$sql->queryAll();
-		$return = $sql->data;
-		foreach ($return as $key => $value) {
-			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
-		}
-		return $return;
-	}
-
-	public function getMailsSend ()
-	{
-		$where = 'WHERE `author_send` = "'.$_SESSION['USER']->user->hash_key.'"';
-		$sql = new BDD;
-		$sql->table('TABLE_MAILS');
-		$sql->where($where);
-		$sql->queryAll();
-		$return = $sql->data;
-		foreach ($return as $key => $value) {
-			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
-		}
-		return $return;
-	}
-
-	public function getMailsArchive ()
-	{
-		$where[] = array('name' => 'author_send', 'value' => $_SESSION['USER']->user->hash_key);
-		$where[] = array('name' => 'archive_send', 'value' => '1');
-		$where[] = array('name' => 'close_receives', 'value' => '0');
-		$sql = new BDD;
-		$sql->table('TABLE_MAILS');
-		$sql->where($where);
-		$sql->queryAll();
-		$return = $sql->data;
-		foreach ($return as $key => $value) {
-			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
-		}
-		return $return;
-	}
-
-	public function getMailTrach ()
-	{
-		$where = 'WHERE `author_send` = "'.$_SESSION['USER']->user->hash_key.'"';
-		$sql = new BDD;
-		$sql->table('TABLE_MAILS');
-		$sql->where($where);
-		$sql->queryAll();
-		$return = $sql->data;
-		foreach ($return as $key => $value) {
-			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
-		}
-		return $return;
-	}
-
-	public function getMsgMails ($id)
-	{
-		$sql = new BDD;
-		$sql->table('TABLE_MAILS_MSG');
-		$sql->where(array('name' => 'mail_id', 'value' => $id));
-		$sql->orderby('ORDER BY `'.TABLE_MAILS_MSG.'`.`id` DESC', true);
-		$sql->limit(1);
-		$sql->queryOne();
-		$return = $sql->data;
-		return $return;
-	}
-
 	public function getUsers ($user = null)
 	{
 		$return = array();
@@ -182,6 +102,94 @@ final class Mails
 				$return = false;
 			}
 		}
+		return $return;
+	}
+
+
+
+/*
+	public function getMailsAlll ()
+	{
+		$user = $_SESSION['USER']->user->hash_key;
+		$where = 'WHERE `author_receives` = "'.$user.'"';
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS');
+		$sql->where($where);
+		$sql->queryAll();
+		$return = $sql->data;
+		foreach ($return as $key => $value) {
+			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
+		}
+		return $return;
+	}
+	public function getMails()
+	{
+		$where[] = array('name' => 'author_receives', 'value' => $_SESSION['USER']->user->hash_key);
+		$where[] = array('name' => 'close_receives', 'value' => '0');
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS');
+		$sql->where($where);
+		$sql->queryAll();
+		$return = $sql->data;
+		foreach ($return as $key => $value) {
+			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
+		}
+		return $return;
+	}
+
+	public function getMailsSend ()
+	{
+		$where = 'WHERE `author_send` = "'.$_SESSION['USER']->user->hash_key.'"';
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS');
+		$sql->where($where);
+		$sql->queryAll();
+		$return = $sql->data;
+		foreach ($return as $key => $value) {
+			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
+		}
+		return $return;
+	}
+
+	public function getMailsArchive ()
+	{
+		$where[] = array('name' => 'author_send', 'value' => $_SESSION['USER']->user->hash_key);
+		$where[] = array('name' => 'archive_send', 'value' => '1');
+		$where[] = array('name' => 'close_receives', 'value' => '0');
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS');
+		$sql->where($where);
+		$sql->queryAll();
+		$return = $sql->data;
+		foreach ($return as $key => $value) {
+			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
+		}
+		return $return;
+	}
+
+	public function getMailTrach ()
+	{
+		$where = 'WHERE `author_receives` = "'.$_SESSION['USER']->user->hash_key.'" AND `close_receives` = "1"';
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS');
+		$sql->where($where);
+		$sql->queryAll();
+		$return = $sql->data;
+		foreach ($return as $key => $value) {
+			$return[$key]->last_msg = self::getMsgMails($value->mail_id);
+		}
+		return $return;
+	}
+
+	public function getMsgMails ($id)
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS_MSG');
+		$sql->where(array('name' => 'mail_id', 'value' => $id));
+		$sql->orderby('ORDER BY `'.TABLE_MAILS_MSG.'`.`id` DESC', true);
+		$sql->limit(1);
+		$sql->queryOne();
+		$return = $sql->data;
 		return $return;
 	}
 
@@ -280,4 +288,16 @@ final class Mails
 			}
 		}
 	}
+
+	public function TrashCheckbox ($data)
+	{
+		$update['close_send'] = 1;
+		$where = 'WHERE `mail_id` = "'.$data.'" AND `close_receives` = "'.$_SESSION['USER']->user->hash_key.'"';
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS');
+		$sql->where($where);
+		$sql->update($update);
+		debug($sql);
+	}
+	*/
 }

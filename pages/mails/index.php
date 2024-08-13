@@ -28,9 +28,10 @@ if (User::isLogged() === true):
             <li>
                 <input type="checkbox" id="checkbox_all_mails" class="belcms_tooltip_bottom" data="Sélectionner tout">
             </li>
-            <li><a href="#" class="belcms_tooltip_bottom" data="Envoyé à la corbeille"><i class="fa-regular fa-trash-can"></i></a></li>
+            <li><a href="#" id="checkbox_trash" class="belcms_tooltip_bottom" data="Envoyé à la corbeille"><i class="fa-regular fa-trash-can"></i></a></li>
             <li><a href="#" class="belcms_tooltip_bottom" data="Envoyé au dossier archive"><i class="fa-solid fa-file-zipper"></i></a></li>
         </ul>
+        <form id="belcms_section_mails_form" action="Mails/TrashCheckbox">
         <?php
         if (count($mails) != 0):
         foreach ($mails as $key => $value):
@@ -38,14 +39,17 @@ if (User::isLogged() === true):
             $userReceive = $userReceive->user->username;
             $date = Common::TransformDate($value->last_msg->date_send, 'MEDIUM', 'MEDIUM');
         ?>
-        <a href="#" class="belcms_section_listing_mails">
-            <span><input type="checkbox"></span>
-            <span><img src="/assets/img/default_avatar.jpg"></span>
-            <span><b><?=$userReceive;?></b> - <?=$value->subject;?></span>
-            <span><?=$date;?></span>
-        </a>
+            <a href="#" class="belcms_section_listing_mails">
+                <span><input name="checkbox_select[]" type="checkbox" value="<?=$value->mail_id;?>"></span>
+                <span><img src="/assets/img/default_avatar.jpg"></span>
+                <span><b><?=$userReceive;?></b> - <?=$value->subject;?></span>
+                <span><?=$date;?></span>
+            </a>
         <?php
         endforeach;
+        ?>
+        </form>
+        <?php
         else:
         echo '<div id="mails_notif">';
             Notification::infos(constant('NO_MSG_MESSAGE'), constant('MAILBOX'));

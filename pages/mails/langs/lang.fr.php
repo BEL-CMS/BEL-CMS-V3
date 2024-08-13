@@ -42,6 +42,7 @@ Common::constant(array(
 	'REPLY'                   => 'Répondre',
 	'NO_ARCHIVE_MESSAGE'      => 'Aucun message archiver',
 	'MESSAGE_ARCHIVE_SUCCESS' => 'Message archiver',
+	'MESSAGE_DELETE_SUCCESS'  => 'Message placer dans la corbeille',
 	'MESSAGE_READ'            => 'Message lu',
 	'UNREAD_MESSAGE'          => 'Message non lu',
 	'MESSAGE_DELETE_SUCCESS'  => 'Message mis dans la boite supprimé',
