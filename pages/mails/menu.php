@@ -9,10 +9,6 @@
 			<div><i class="fa-solid fa-envelopes-bulk"></i></div>
 		</li>
 		<li>
-			<a href="Mails/MailsSend">Message envoyés</a>
-			<div><i class="fa-solid fa-envelope-circle-check"></i></div>
-		</li>
-		<li>
 			<a href="Mails/getMailsArchive">Archive</a>
 			<div><i class="fa-solid fa-envelope"></i></div>
 		</li>
