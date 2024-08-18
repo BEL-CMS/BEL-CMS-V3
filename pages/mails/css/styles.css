@@ -100,3 +100,136 @@ section#belcms_section_mails nav ul li div svg {
 	line-height: 65px;
 	margin-top: 15px;
 }
+/* page new */
+#belcms_section form {
+	width: 100%;
+}
+/* New */
+#belcms_section_new_mails {
+	display: block;
+	float: left;
+	width: calc(100% - 350px);
+	position: relative;
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	margin-left: 20px;
+	padding: 20px;
+}
+#belcms_section_new_mails > div {
+	display: block;
+	margin-bottom: 15px;
+}
+#belcms_section_new_mails > div label {
+	display: block;
+	line-height: 22px;
+	margin-left: 20px;
+}
+#uploads_new {
+	display: block;
+	width: 100% !important;
+}
+/* Page principal "droite" */
+#belcms_section_mails_msg {
+	display: block;
+	width: calc(100% - 350px);
+}
+#belcms_section_mails_msg > h3 {
+	background-color: #FFF;;
+	display: block;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	margin: 0 20px 20px 20px;
+	padding: 20px;
+	font-weight: bold;
+}
+.belcms_section_mails_list {
+	display: block;
+	width: 100%;
+	padding: 0 20px;
+	margin-bottom: 1px;
+}
+.belcms_section_mails_list > a {
+	display: block;
+	height: 70px;
+	line-height: 70px;
+	background-color: #FFF;
+	padding: 0 15px;
+	position: relative;
+	border: 1px solid rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #e6e6e8;
+	transition: all 350ms ease-in;
+}
+.belcms_section_mails_list > a:hover {
+	background-color: #fbfbfb;
+	box-shadow: 0 .125rem .5rem 0 rgba(47,43,61,.12);
+}
+.belcms_section_mails_list > a img {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+}
+.belcms_section_mails_list_name {
+	font-weight: bold;
+	margin-left: 15px;
+}
+.belcms_section_mails_list_text {
+	margin-left: 15px;
+}
+.belcms_section_mails_list_date {
+	position: absolute;
+	right: 15px;
+}
+/* Read Message */
+.belcms_section_mails_message {
+	background-color: #FFF;
+	margin: 20px;
+	padding: 20px;
+}
+.belcms_section_mails_message_infos ul {
+	display: flex;
+	width: 100%;
+}
+.belcms_section_mails_message_infos ul li {
+	width: 100%;
+	padding: 0 15px;
+}
+.belcms_section_mails_message_infos  i {
+	font-weight: bold;
+}
+.belcms_section_mails_message_infos li:last-child
+{
+	text-align: right;
+}
+.belcms_section_mails_message_content {
+	width: 95%;
+	margin: 10px 15px 0 15px;
+	border: 1px dashed;
+	padding: 10px;
+}
+.belcms_section_mails_message_content p {
+	margin: 0;
+	padding: 3px;
+	text-align: justify;
+}
+.belcms_section_mails_message_content p img {
+	max-width: 80%;
+	margin: auto;
+}
+#form_mails {
+	display: block;
+	margin: 20px;
+}
+#form_mails label {
+	display: block;
+	width: 100%;
+	line-height: 20px;
+	font-size: 11px;
+}
+#form_mails input {
+	width: 100%;
+}
+.belcms_section_mails_message_file {
+	display: block;
+	margin: 0 20px;
+}

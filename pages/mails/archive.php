@@ -1,6 +1,4 @@
 <?php
-
-use BelCMS\Requires\Common;
 ?>
 <section id="belcms_section_mails">
 	<div id="belcms_section_mails_list">

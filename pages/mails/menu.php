@@ -9,7 +9,7 @@
 			<div><i class="fa-solid fa-envelopes-bulk"></i></div>
 		</li>
 		<li>
-			<a href="Mails/getMailsArchive">Archive</a>
+			<a href="Mails/Archive">Archive</a>
 			<div><i class="fa-solid fa-envelope"></i></div>
 		</li>
 		<li>
