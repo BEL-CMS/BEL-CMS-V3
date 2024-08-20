@@ -100,11 +100,7 @@ class Downloads extends Pages
 		if ($id != null && is_numeric($id)) {
 			if ($this->models->ifAccess($id) == true) {
 				$download = $this->models->getDownloads($id);
-				if (stristr($download, 'http') === true or stristr($download, 'https')) {
-					$this->link($download, 0);
-				} else {
-					$this->redirect($download, 0);
-				}
+				$this->linkHeader($download);
 				$this->error = true;
 				$this->errorInfos = array('success', constant('DOWNLOADING'), constant('INFO'), false);
 				$c['data'] = current($this->models->getDlsDetail($id));

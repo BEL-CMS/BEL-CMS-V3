@@ -205,9 +205,11 @@ class Pages
 	#########################################
 	# Redirection direct
 	#########################################
-	function link ($url = null, $time = null)
+	function linkHeader ($url = null)
 	{
-		header("refresh:$time;url='$url'");
+		header("Content-disposition: attachment; filename=$url");
+		header("Content-Type: application/force-download");
+		readfile($url);
 	}
 	#########################################
 	# Pagination count nb ligne
