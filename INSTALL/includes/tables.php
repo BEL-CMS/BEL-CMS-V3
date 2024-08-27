@@ -148,30 +148,30 @@ switch ($_POST['table']) {
 			UNIQUE KEY `name` (`name`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
-		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (id`, `name`, `active`, `access_groups`, `access_admin`, `config`) VALUES
-		(1, 'articles', 1, '1|0', '1|2', 'MAX_ARTICLES==20{||}EMOTE==FALSE'),
-		(2, 'members', 1, '0', '1', 'MAX_USER==6'),
-		(3, 'team', 1, '0', '1', 'MAX_USER==10'),
-		(4, 'shoutbox', 1, '0', '1', 'MAX_MSG==15'),
-		(5, 'forum', 1, '1|2|0', '1', 'NB_MSG_FORUM==5{||}EMOTE==TRUE'),
-		(6, 'user', 1, '0', '1', 'MAX_USER==5{||}MAX_USER_ADMIN==20'),
-		(7, 'page', 1, '0', '1', ''),
-		(8, 'downloads', 1, '1|2|0', '1|2', 'MAX_DL==6'),
-		(9, 'inbox', 1, '0', '1', ''),
-		(10, 'events', 1, '0', '1', ''),
-		(11, 'gallery', 1, '1|2|0', '1|2', 'MAX_IMG==5{||}MAX_CAT==6'),
-		(12, 'managements', 1, '1', '1', ''),
-		(13, 'news', 1, '1|0', '1', 'MAX_NEWS==1'),
-		(14, 'mails', 1, '2', '1', NULL),
-		(15, 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
-		(16, 'guestbook', 1, '1|2|0', '1|2', 'MAX_USER==6'),
-		(17, 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10'),
-		(18, 'donations', 1, '1|2|0', '1', NULL),
-		(19, 'calendar', 1, '0', '1|2', 'MAX_LIST==2'),
-		(20, 'faq', 1, '1|2|0', '1|2', NULL),
-		(21, 'links', 1, '1|2|0', '1|2', 'MAX_LINKS==6'),
-		(22, 'newsletter', 1, '1|2', '1', 'MAX_LINKS==6'),
-		(23, 'search', 1, '1|2|0', '1', 'MAX_SEARCH==15');";
+		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `active`, `access_groups`, `access_admin`, `config`) VALUES
+			('', 'articles', 1, '1|0', '1|2', 'MAX_ARTICLES==20{||}EMOTE==FALSE'),
+			('', 'members', 1, '0', '1', 'MAX_USER==6'),
+			('', 'team', 1, '0', '1', 'MAX_USER==10'),
+			('', 'shoutbox', 1, '0', '1', 'MAX_MSG==15'),
+			('', 'forum', 1, '1|2|0', '1', 'NB_MSG_FORUM==5{||}EMOTE==TRUE'),
+			('', 'user', 1, '0', '1', 'MAX_USER==5{||}MAX_USER_ADMIN==20'),
+			('', 'page', 1, '0', '1', ''),
+			('', 'downloads', 1, '1|2|0', '1|2', 'MAX_DL==6'),
+			('', 'inbox', 1, '0', '1', ''),
+			('', 'events', 1, '0', '1', ''),
+			('', 'gallery', 1, '1|2|0', '1|2', 'MAX_IMG==5{||}MAX_CAT==6'),
+			('', 'managements', 1, '1', '1', ''),
+			('', 'news', 1, '1|0', '1', 'MAX_NEWS==1'),
+			('', 'mails', 1, '2', '1', NULL),
+			('', 'games', 1, '1|0', '1', 'MAX_GAMING_PAGE==5'),
+			('', 'guestbook', 1, '1|2|0', '1|2', 'MAX_USER==6'),
+			('', 'market', 1, '1|0', '1', 'NB_BUY==6{||}NB_BILLING==10'),
+			('', 'donations', 1, '1|2|0', '1', NULL),
+			('', 'calendar', 1, '0', '1|2', 'MAX_LIST==2'),
+			('', 'faq', 1, '1|2|0', '1|2', NULL),
+			('', 'links', 1, '1|2|0', '1|2', 'MAX_LINKS==6'),
+			('', 'newsletter', 1, '1|2', '1', 'MAX_LINKS==6'),
+			('', 'search', 1, '1|2|0', '1', 'MAX_SEARCH==15');";
 	break;
 
 	case 'config_tpl':
@@ -182,7 +182,6 @@ switch ($_POST['table']) {
 			`value` text,
 			KEY `id` (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-
 	break;
 
 	case 'contact':
