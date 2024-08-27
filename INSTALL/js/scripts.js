@@ -70,7 +70,7 @@ function ajaxSQLInstall (i, e) {
 				$('#code #'+e ).remove();
 				$('#code').append('<div id="'+ e +'" class="row_table"><span class="title">'+ e +'</span><span class="green"><i class="fa-regular fa-thumbs-up"></i></span></div>');
 				ajax(i);
-			}, 150);
+			}, 100);
 		}
 	});
 }

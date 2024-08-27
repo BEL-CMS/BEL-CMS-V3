@@ -81,6 +81,13 @@
 		'users_profils',
 		'users_social',
 		'visitors',
-		'widgets'
+		'widgets',
+		'rgpd',
+		'contact_send',
+		'coockie_opt',
+		'gallery_sub_cat',
+		'mails_msg',
+		'mails_status',
+		'gallery_sub_cat'
 	);
 	echo json_encode($ajax);
