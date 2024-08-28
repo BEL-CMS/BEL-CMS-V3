@@ -55,7 +55,10 @@ final class User
 				$tmpNdd =  explode('.', $tmpMailSplit[1]);
 			}
 
-			if (empty($data['username']) OR empty($data['email']) OR empty($data['passwordhash'])) {
+			if (!isset($data['charter'])) {
+				$return['msg']   = constant('CHARTER_ERROR'); $error++;
+				$return['type']  = 'error';
+			} else if (empty($data['username']) OR empty($data['email']) OR empty($data['passwordhash'])) {
 				$return['msg']   = constant('UNKNOW_USER_MAIL_PASS'); $error++;
 				$return['type']  = 'error';
 			} else if (in_array($tmpNdd[0], $arrayBlackList)) {

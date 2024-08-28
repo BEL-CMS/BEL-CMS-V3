@@ -61,6 +61,7 @@ Common::constant(array(
 	'ERROR_CHANGE_GROUP'           => 'Tentative d\'usurpation de groupe, un administrateur a été prévenue',
 	'ALERT'                        => 'Attention',
 	'INTERACTION_ERROR_GROUP'      => 'L\'utilisateur a tenté de modifier manuellement sont groupe',
+	'CHARTER_ERROR'                => 'Le règlement doit être approuvé avant de poursuivre l\'enregistrement',
 	#####################################
 	# Fichier lang en français - Admin
 	#####################################
