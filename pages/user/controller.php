@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.9 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -257,15 +257,13 @@ class User extends Pages
 				if ($testUser === true) {
 					$this->redirect('user', 0);
 				} else {
-					$return['captcha'] = Captcha::createCaptcha();
-					$this->set($return);
-					$this->data = (bool) true;
-					$this->render('register');					
+					$this->render('register');
 				}
 			}
 		} else {
-			$return['captcha'] = Captcha::createCaptcha();
-			$this->set($return);
+			$captcha['captcha'] = new Captcha();
+			$captcha['captcha'] = $captcha['captcha']->createCaptcha();
+			$this->set($captcha);
 			$this->data = (bool) true;
 			$this->render('register');
 		}
@@ -305,6 +303,7 @@ class User extends Pages
 		if (Captcha::verifCaptcha($_POST['query_register']) === false) {
 			$this->error = true;
 			$this->errorInfos = array('error', constant('CODE_CAPTCHA_ERROR'), constant('REGISTRATION'), false);
+			$this->redirect('User/register&echo', 5);
 			return false;
 		}
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.9 [PHP8.3]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -18,7 +18,7 @@ endif;
 	<div class="card">
 		<div class="card-header">
 			<div class="flex justify-between items-center">
-				<h4 class="card-title">Liste des membres</h4>
+				<h4 class="card-title">Liste des membres non valider</h4>
 			</div>
 		</div>
 		<div class="p-6">
@@ -29,7 +29,7 @@ endif;
 							<tr>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">#<?=constant('ID');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">e-mail></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">e-mail</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">Dernière visite</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">Date d'inscription</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
@@ -49,8 +49,8 @@ endif;
 								<td><?=$v->page->last_visit;?></td>
 								<td><?=$v->profils->date_registration;?></td>
 								<td>
-									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/registration/edit/<?=$v->user->hash_key?>?management&option=users'">
-										<i class="mgc_edit_2_fill text-base me-4"></i><?=constant('EDIT');?></button>
+									<button class="btn btn-sm bg-primary text-white" onclick="window.location.href='/registration/Ban/<?=$v->user->hash_key?>?management&option=users'">
+										<i class="mgc_edit_2_fill text-base me-4"></i><?=constant('BAN');?></button>
 									<?php
 									if ($v->user->hash_key != $_SESSION['USER']->user->hash_key):
 									?>

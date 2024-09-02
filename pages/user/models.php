@@ -1104,4 +1104,13 @@ final class User
 		$sql->insert($data);
 		debug($sql);
 	}
+
+	public function getCaptcha ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_CAPTCHA');
+		$sql->where(array('name' => 'IP', 'value' => Common::GetIp()));
+		$sql->queryOne();
+		return $sql->data;
+	}
 }

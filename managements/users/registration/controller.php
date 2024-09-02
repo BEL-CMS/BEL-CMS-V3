@@ -25,9 +25,41 @@ class Registration extends AdminPages
 
 	public function index ()
 	{
+		$menu[] = array(constant('HOME') => array('href'=>'registration?management&option=users','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('VALIDATION') => array('href'=>'registration/validation?management&option=users','icon'=>'mgc_department_fill', 'color' => 'bg-warning text-white'));
 		$data['user'] = $this->models->getAllUsers();
 		$this->set($data);
-		$this->render('index');
+		$this->render('index', $menu);
+	}
+
+	public function validation()
+	{
+		$menu[] = array(constant('HOME') => array('href'=>'registration?management&option=users','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$data['user'] = $this->models->getAllUsersValid();
+		$this->set($data);
+		$this->render('valid', $menu);
+	}
+
+	public function Ban ()
+	{
+		$id      = Common::hash_key($this->data['2']) ? $this->data['2'] : false;
+		$user    = User::getInfosUserAll($id);
+		$author  = $id;
+		$ipBan   = $user->user->ip;
+		$reason  = constant('FALSE_USER');
+		$email   = $user->user->mail;
+
+		$data = array(
+			'author' => $author,
+			'ip_ban' => $ipBan,
+			'date'   => 'P99Y',
+			'reason' => $reason,
+			'email'  => $email
+		);
+
+		$return = $this->models->sendaddBan ($data);
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('registration/validation?management&option=users', 3);
 	}
 
 	public function edit ()

@@ -47,8 +47,18 @@ endif;
 						</div>
 						<div class="input-group form-group">
 							<div class="input-group">
-								<span class="input-group-text"><?=$captcha['NB_ONE']?> + <?=$captcha['NB_TWO']?></span>
-								<input name="query_register" type="text" class="form-control" id="security-password" placeholder="Votre Réponse" autocomplete="off">
+								<div id="code"><?php echo $captcha['code'];?></div>
+								<select name="query_register" require id="patcha_id">
+									<option>==-- Veuillez choisir le bon nombre -- ==</option>
+									<?php
+									shuffle($captcha);
+									foreach ($captcha as $key => $value) {
+										?>
+										<option value="<?=$value;?>"><?=$value;?></option>
+										<?php
+									}
+									?>
+								</select>
 							</div>
 						</div>
 						<div class="form-group">
@@ -77,9 +87,9 @@ endif;
 						<div class="nouser">
 							<a href="/user/Login&echo"><?=constant('YOU_HAVE_ACCOUNT');?></a>
 						</div>
-						<input type="hidden" name="captcha" value="">
+						<input type="hidden" name="captcha" value="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="nom@domaine.com">
 						<input type="hidden" name="send" value="register">
-						<button type="submit" class="btn btn-primary"><?=constant('REGISTER');?></button>
+						<button type="submit" class="submit btn btn-primary"><?=constant('REGISTER');?></button>
 						<p id="checkText"></p>
 					</form>
 				</div>

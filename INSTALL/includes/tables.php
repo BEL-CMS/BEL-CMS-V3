@@ -56,16 +56,16 @@ switch ($_POST['table']) {
 	case 'ban':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL AUTO_INCREMENT,
+			`id` int(11) NOT NULL,
 			`who` varchar(32) DEFAULT NULL,
 			`author` varchar(32) DEFAULT NULL,
-			`ip` text,
-			`email` text NOT NULL,
+			`ip` text DEFAULT NULL,
+			`email` text DEFAULT NULL,
 			`date` datetime DEFAULT NULL,
-			`endban` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`endban` datetime NOT NULL DEFAULT current_timestamp(),
 			`timeban` varchar(5) DEFAULT '0',
-			`reason` text NOT NULL,
-			`number` int NOT NULL DEFAULT '0',
+			`reason` text DEFAULT NULL,
+			`number` int(11) NOT NULL DEFAULT 0,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
