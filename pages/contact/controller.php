@@ -26,15 +26,11 @@ class Contact extends Pages
 
 	public function index ()
 	{
-        if (Captcha::getActiveCaptcha() === true) {
-            if (Captcha::getTimeCaptcha() and is_array(Captcha::getTimeCaptcha())) {
-                $this->error = true;
-                $this->errorInfos = array('warning', constant('CODE_CAPTCHA_TIME'), constant('INFO'), false);  
-            } else {
-                $set['captcha'] = Captcha::createCaptcha();
-                $this->set($set);
-                $this->render('index');
-            }
+        if (Captcha::getActiveCaptcha() == true) {
+			$captcha['captcha'] = new Captcha();
+			$captcha['captcha'] = $captcha['captcha']->createCaptcha();
+			$this->set($captcha);
+            $this->render('index');
         } else {
             $set['captcha'] = false;
             $this->set($set);

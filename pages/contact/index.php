@@ -28,10 +28,23 @@ endif;
 		<div class="belcms_contact_form_br">
 			<textarea name="message" class="bel_cms_textarea_simple" placeholder="Votre message"></textarea>
 		</div>
-			<?php if ($captcha !== false): ?>
-			<input id="captcha" required name="query_captcha" type="number" min="1" autocomplete="off" placeholder="Captcha : resolvé le petit calcul : <?=$captcha['NB_ONE'];?> + <?=$captcha['NB_TWO'];?>">
-			<input type="hidden" value="" name="captcha">
-			<?php endif; ?>
+			<div class="input-group form-group">
+				<div class="input-group">
+					<div id="code"><?php echo $_SESSION['CAPTCHA']['CODE'];?></div>
+					<legend>Sélectionner la réponse:</legend>
+					<select name="query_register">
+					<?php
+					shuffle($captcha);
+					foreach ($captcha as $key => $value) {
+						?>
+						<option value="<?=$value;?>"><?=$value;?></option>
+						<?php
+					}
+					?>
+					</select>
+				</div>
+			</div>
+			<input type="hidden" name="captcha" value="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" placeholder="nom@domaine.com">
 		<div class="belcms_contact_form_br">
 			<button type="submit" class="belcms_btn belcms_bg_grey">Envoyer</button>
 		</div>
