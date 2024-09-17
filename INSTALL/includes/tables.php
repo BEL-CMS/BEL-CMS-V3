@@ -120,7 +120,7 @@ switch ($_POST['table']) {
 			('', 'CMS_REGISTER_CHARTER', 'En poursuivant votre navigation sur ce site, vous acceptez nos conditions générales d\'utilisation et notamment que des cookies soient utilisés afin de vous connecter automatiquement.', 1),
 			('', 'CMS_TPL_FULL', 'calendar,comments,downloads,events,forum,groups,inbox,market,members,newsletter,page,shoutbox,survey,team,user,readmore', 0),
 			('', 'CMS_TPL_WEBSITE', NULL, 1),
-			('', 'CMS_VERSION', '3.0.5', 1),
+			('', 'CMS_VERSION', '3.0.9', 1),
 			('', 'CMS_WEBSITE_DESCRIPTION', '', 0),
 			('', 'CMS_WEBSITE_KEYWORDS', '', 0),
 			('', 'CMS_WEBSITE_LANG', 'fr', 1),
@@ -623,7 +623,9 @@ switch ($_POST['table']) {
 		(43, 'willhackforfood'),
 		(44, 'willSelfdestruct'),
 		(45, 'wuzupmail'),
-		(46, 'yopmail');";
+		(46, 'yopmail'),
+		(47, 'shaw.ca'),
+		(48, 'netzero.net');";
 	break;
 
 	case 'mails_config':
@@ -1236,6 +1238,29 @@ switch ($_POST['table']) {
 			`author` varchar(32) NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+	break;
+
+	case 'tickets':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`subject` varchar(60) NOT NULL,
+			`mail` varchar(128) DEFAULT NULL,
+			`cat` tinyint DEFAULT '0',
+			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`text_sbiject` text,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+	break;
+
+	case 'tickets_cat':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`name_cat` varchar(128) DEFAULT NULL,
+			`id_cat` tinyint NOT NULL DEFAULT '0',
+			PRIMARY KEY (`id`)
+	  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
 
 	case 'uploads_admin':

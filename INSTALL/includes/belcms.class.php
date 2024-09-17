@@ -56,7 +56,6 @@ class BelCMS
 			}
 		} else {
 			if ($this->page == 'finish') {
-				BelCMS::RepEfface(ROOT.'INSTALL');
 				redirect('/User/register&echo', 5);
 				$_SESSION['INSTALL'] = true;
 			}
@@ -191,6 +190,8 @@ class BelCMS
 			'survey_vote',
 			'team',
 			'team_users',
+			'tickets',
+			'tickets_cat',
 			'uploads_admin',
 			'users',
 			'users_gaming',

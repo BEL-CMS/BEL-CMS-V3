@@ -72,6 +72,8 @@
 		'survey_vote',
 		'team',
 		'team_users',
+		'tickets',
+		'tickets_cat',
 		'uploads_admin',
 		'users',
 		'users_gaming',
