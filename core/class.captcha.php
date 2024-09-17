@@ -79,12 +79,12 @@ final class Captcha
 		if (!empty($sql->data)) {
 			$timeCurrent = time();
 			$testingTime = $timeCurrent - $sql->data->timelast;
-			if ($testingTime >= $_SESSION['CONFIG_CMS']['CAPTCHA']) {
+			if ($testingTime >= $_SESSION['CONFIG_CMS']['TIME_CAPTCHA']) {
 				$del = new BDD;
 				$del->table('TABLE_CAPTCHA');
 				$del->where(array('name' => 'IP', 'value' => Common::GetIp()));
 				$del->delete();
-				setcookie('BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['COOKIES'], 'data', time()-60*60*24*365, '/', $_SERVER['HTTP_HOST'], false);
+				setcookie('BELCMS_CAPTCHA_'.$_SESSION['CONFIG_CMS']['CMS_COOKIES'], 'data', time()-60*60*24*365, '/', $_SERVER['HTTP_HOST'], false);
 				return true;
 			} else {
 				return false;
