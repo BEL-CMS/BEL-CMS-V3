@@ -34,6 +34,7 @@ $tables = array(
 	'TABLE_CONFIG_TPL'          => $DB_PREFIX.'config_tpl',
 	'TABLE_CONTACT'             => $DB_PREFIX.'contact',
 	'TABLE_CONTACT_REPLY'       => $DB_PREFIX.'contact_send',
+	'TABLE_COOKIES'             => $DB_PREFIX.'coockie_opt',
 	'TABLE_DONATIONS'           => $DB_PREFIX.'donations',
 	'TABLE_DONATIONS_REVEIVE'   => $DB_PREFIX.'donations_receive',
 	'TABLE_DOWNLOADS_STATS'     => $DB_PREFIX.'downlaods_stats',
@@ -56,10 +57,10 @@ $tables = array(
 	'TABLE_INTERACTION'         => $DB_PREFIX.'interaction',
 	'TABLE_LINKS'               => $DB_PREFIX.'links',
 	'TABLE_LINKS_CAT'           => $DB_PREFIX.'links_cat',
-	'TABLE_MAILS'               => $DB_PREFIX.'mails',
+	'TABLE_MAILS_STATUS'        => $DB_PREFIX.'mails_status',
 	'TABLE_MAIL_BLACKLIST'      => $DB_PREFIX.'mails_blacklist',
 	'TABLE_MAIL_CONFIG'         => $DB_PREFIX.'mails_config',
-	'TABLE_MAILS_MSG'           => $DB_PREFIX.'mails_msg',
+	'TABLE_MAIL_MSG'            => $DB_PREFIX.'mails_msg',
 	'TABLE_MAIL_UNSUBCRIBE'     => $DB_PREFIX.'mails_unsubscribe',
 	'TABLE_MAINTENANCE'         => $DB_PREFIX.'maintenance',
 	'TABLE_MARKET'              => $DB_PREFIX.'market',
@@ -93,8 +94,12 @@ $tables = array(
 	'TABLE_PURCHASE'            => $DB_PREFIX.'paypal_purchase',
 	'TABLE_PRICING'             => $DB_PREFIX.'pricing',
 	'TABLE_PRICING_LIST'        => $DB_PREFIX.'pricing_list',
+	'TABLE_PRICING_SALES'       => $DB_PREFIX.'pricing_sales',
+	'TABLE_RGPD'                => $DB_PREFIX.'rgpd',  
 	'TABLE_TEAM'                => $DB_PREFIX.'team',
 	'TABLE_TEAM_USERS'          => $DB_PREFIX.'team_users',
+	'TABLE_TICKETS'             => $DB_PREFIX.'tickets',
+	'TABLE_TICKETS_CAT'         => $DB_PREFIX.'tickets_cat',
 	'TABLE_UPLOADS'             => $DB_PREFIX.'uploads_admin',
 	'TABLE_USERS'               => $DB_PREFIX.'users',
 	'TABLE_USERS_GAMING'        => $DB_PREFIX.'users_gaming',
@@ -109,9 +114,5 @@ $tables = array(
 );
 foreach ($tables as $name => $value) {
 	define($name, $value); unset($tables);
-}
-$custom = Common::ScanFiles(constant('DIR_TABLE_CUSTOM'), '.php', true);
-foreach ($custom as $v) {
-	include $v;
 }
 ?>

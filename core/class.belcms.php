@@ -90,7 +90,6 @@ final class BelCMS
 				die();
 			}
 		}
-
 		$dir = constant('DIR_PAGES').strtolower($this->link).DS.'controller.php';
 		if (is_file($dir)) {
 			require_once $dir;
@@ -208,7 +207,8 @@ final class BelCMS
 						}
 					}
 				} else {
-					if ($v->groups_access == 0) {
+					$groups = explode('|', $v->groups_access);
+					if (in_array(0, $groups)) {
 						$return[$k] = $v;
 					}
 				}

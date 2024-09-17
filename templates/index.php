@@ -28,6 +28,7 @@ class Templates
 		$var->javaScript    = self::javaScript($var->link);
 		$var->tags          = self::getTagsTPL();
 		$var->fullwide      = self::getFullWide();
+		$RGPD               = self::RGPD();
 		if (is_file($fileLoadTpl) === true) {
 			require $fileLoadTpl;
 		} else {
@@ -133,11 +134,31 @@ class Templates
 						}
 					}
 				} else {
-					if ($v->groups_access == 0) {
+					$groups = explode('|', $v->groups_access);
+					if (in_array(0, $groups)) {
 						$return[$k] = $v;
 					}
 				}
 			}
+		}
+		return $return;
+	}
+
+	public function RGPD ()
+	{
+		$return = '';
+		$sql = new BDD;
+		$sql->table('TABLE_RGPD');
+		$sql->where(array('name' => 'ip', 'value' => Common::GetIp()));
+		$sql->count();
+		if ($sql->data == 0) {
+			$return  = '<div id="RGPD">';
+			$return .= '<a id="RGPD_logo" href="#" class="belcms_tooltip_right" data="Cookies" title="cookie">';
+			$return .= '<i class="fa-solid fa-cookie"></i>';
+			$return .= '</a>';
+			$return .= '</div>';
+		} else {
+			$return = false;
 		}
 		return $return;
 	}
