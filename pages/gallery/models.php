@@ -14,6 +14,7 @@ namespace Belcms\Pages\Models;
 use BelCMS\PDO\BDD;
 use BelCMS\Core\Config;
 use BelCMS\Core\Dispatcher;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -92,23 +93,52 @@ final class Gallery
 	#####################################
 	public function votePlusOne($id)
 	{
-		$query = new BDD;
-		$query->table('TABLE_GALLERY_VOTE');
-		$query->where(array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key));
-		$query->count();
+		if (User::isLogged()) {
+			$querySource = new BDD;
+			$querySource->table('TABLE_GALLERY');
+			$querySource->where(array('name' => 'id', 'value' => $id));
+			$querySource->queryOne();
+			$source = $querySource->data;
 
-		if ($query->data != 0) {
-			$return['text'] = 'Vous avez déjà voté';
-			$return['type'] = 'warning';
-			return $return;
+			if (!empty($source)) {
+				$where[] = array('name' => 'id_vote', 'value' => $id);
+				$where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+				$query = new BDD;
+				$query->table('TABLE_GALLERY_VOTE');
+				$query->where($where);
+				$query->count();
+		
+				if ($query->data != 0) {
+					$return['text'] = 'Vous avez déjà voté';
+					$return['type'] = 'warning';
+					return $return;
+				} else {
+					$insert['author']  = $_SESSION['USER']->user->hash_key;
+					$insert['id_vote'] = $id;
+					$sql = new BDD;
+					$sql->table('TABLE_GALLERY_VOTE');
+					$sql->insert($insert);
+
+					$pts = $source->vote;
+					$vote['vote'] = $pts + 1;
+
+					$update = new BDD;
+					$update->table('TABLE_GALLERY');
+					$update->where(array('name' => 'id', 'value' => $id));
+					$update->update($vote);
+					
+					$return['text'] = 'Merci pour votre vote';
+					$return['type'] = 'success';
+					return $return;
+				}
+			} else {
+				$return['text'] = 'ID Vote inconnu';
+				$return['type'] = 'error';
+				return $return;
+			}
 		} else {
-			$insert['author']  = $_SESSION['USER']->user->hash_key;
-			$insert['id_vote'] = $id;
-			$sql = new BDD;
-			$sql->table('TABLE_GALLERY_VOTE');
-			$sql->insert($insert);
-			$return['text'] = 'Vous avez voté, merci';
-			$return['type'] = 'success';
+			$return['text'] = 'Seuls les membres peuvent vote';
+			$return['type'] = 'warning';
 			return $return;
 		}
 	}
@@ -172,10 +202,13 @@ final class Gallery
 			return false;
 		}
 	}
+	#####################################
+	# Envoie à la BDD la proposition d'image
+	#####################################
 	public function SendPropose ($data)
 	{
 		$sql = new BDD;
-		$sql->table('TABLE_GALLERY');
+		$sql->table('TABLE_GALLERY_VALID');
 		$sql->insert($data);
 		if ($sql->rowCount == 1) {
 			$return['msg']  = constant('PROPOSE_SUCCESS');
@@ -184,6 +217,19 @@ final class Gallery
 			$return['msg']  = constant('PROPOSE_ERROR');
 			$return['type'] = 'error';
 		}
+		return $return;
+	}
+	#####################################
+	# Récupère les plus polulaire
+	#####################################
+	public function popular ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_GALLERY');
+		$sql->orderby('ORDER BY `'.TABLE_GALLERY.'`.`vote` DESC', true);
+		$sql->limit(6);
+		$sql->queryAll();
+		$return = $sql->data;
 		return $return;
 	}
 }

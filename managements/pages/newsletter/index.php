@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.8 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -9,6 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Requires\Common;
 use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
@@ -29,15 +30,27 @@ endif;
 					<table class="DataTableBelCMS min-w-full divide-y divide-gray-200 dark:divide-gray-700 p-2 hover cell-border stripe">
 						<thead class="bg-gray-50 dark:bg-gray-700">
 							<tr>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400">#<?=constant('ID');?></th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"># <?=constant('ID');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('NAME');?></th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('MAIL');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('REGISTERED');?></th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase dark:text-gray-400"><?=constant('OPTIONS');?></th>
 							</tr>
 						</thead>
 						<tbody>
 						<?php
+                        foreach ($user as $v):
 						?>
+                            <tr>
+                                <td><?=$v->id;?>
+                                <td><?=$v->name;?></td>
+                                <td><?=$v->email;?></td>
+                                <td><?=Common::TransformDate($v->registered, 'MEDIUM', 'MEDIUM');?></td>
+                                <td></td>
+                            </tr>
+                        <?php
+                        endforeach;
+                        ?>
 						</tbody>
 					</table>
 				</div>

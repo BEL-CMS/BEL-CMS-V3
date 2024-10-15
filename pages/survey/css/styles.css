@@ -1,0 +1,76 @@
+#bel_cms_survey {
+	display: block;
+	background-color: #fcfcfd;
+	color: #8f91ac;
+	padding: 25px;
+	border-radius: 8px;
+	border: 1px solid #eaeaf5 !important;
+}
+#bel_cms_survey ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	width: 100%;
+}
+#bel_cms_survey ul li {
+	display: flex;
+	padding: 0 10px;
+	line-height: 30px;
+	width: 100%;
+	padding: 10px 0;
+	border-bottom: 1px solid rgba(0,0,0,.15);
+}
+.bel_cms_survey_count {
+	display: block;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	background-color: rgba(0,0,0,.80);
+	color: rgba(242, 242, 242, 0.80);
+	margin-right: 15px;
+	border-radius: 6px;
+}
+.bel_cms_survey_answer {
+	display: block;
+	line-height: 50px;
+	font-weight: bold;
+	width: 150px;
+}
+.bel_cms_survey_progress_bar {
+	display: block;
+	margin-left: 10px;
+	margin-top: 15px;
+	width: 200px;
+	border-radius: 6px;
+	background-color: rgba(0,0,0,.15);
+	border: 1px solid rgba(0,0,0,.35);;
+	height: 22px;
+}
+.bel_cms_survey_progress_bar_width {
+	display: inline-block;
+	background-color: #1da0e6;
+	height: 22px;
+	border-radius: 6px;
+	line-height: 22px;
+	transition: width 1s ease 0s;
+}
+.bel_cms_survey_progress_bar_pourcent {
+	display: inline-block;
+	line-height: 50px;
+	font-weight: bold;
+	margin-left: 15px;
+}
+#belcms_widgets_survey_page_form {
+	display: block;
+	display: flex;
+}
+#belcms_widgets_survey_page_form input {
+	width: calc(100% - 45px);
+}
+#belcms_widgets_survey_page_form button {
+	width: 45px;
+	cursor: pointer;
+	margin-right: -1px;
+}

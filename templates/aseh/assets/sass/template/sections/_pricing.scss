@@ -1,0 +1,167 @@
+/* Pricing 1 ---------------------------------- */
+.available-list {
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    li {
+        position: relative;
+        font-family: $body-font;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 26px;
+        padding-left: 30px;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+        color: $body-color;
+
+        &:after {
+            content: "\f560";
+            font-family: var(--icon-font);
+            font-weight: 600;
+            color: var(--theme-color);
+            font-size: 1.1em;
+            position: absolute;
+            top: 1px;
+            left: 0;
+        }
+
+        &.unavailable {
+            &:after {
+                content: "\f560";
+                right: 4px;
+                color: #D8DDE1;
+            }
+        }
+
+        img {
+            max-width: 18px;
+            margin-right: 10px;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &.unavailable {
+            font-weight: 400;
+            color: #D8DDE1;
+
+            img {
+                opacity: 0.2;
+            }
+        }
+    }
+}
+
+/* Pricing card  Start -----------------------------*/
+.price-card {
+    position: relative;
+    background: $white-color;
+    padding: 40px;
+    box-shadow: 0px 6px 50px 0px rgba(0, 0, 0, 0.06);
+    margin-top: 10px;
+
+    @include md {
+        padding: 30px;
+    }
+
+    @include vxs {
+        padding: 25px;
+    }
+
+    &-wrapp {
+        display: flex;
+        margin-bottom: 40px;
+
+        @include md {
+            margin-bottom: 60px;
+        }
+    }
+
+    .price-border {
+        position: absolute;
+        background-color: $theme-color;
+        width: 256px;
+        height: 4px;
+        top: 96px;
+        right: 40px;
+
+        @media(max-width: 1399px) {
+            width: 267px;
+        }
+
+        @include xl {
+            width: 226px;
+        }
+
+        @include lg {
+            width: 71.4%;
+        }
+
+        @media(max-width: 768px) {
+            width: 61%;
+        }
+
+        @include sm {
+            width: 75%;
+        }
+
+        @include xs {
+            width: 76.5%; 
+        }
+    }
+
+    &_content {
+        min-width: 120px;
+    }
+
+    &_price {
+        position: absolute;
+        top: 0;
+        left: 40px;
+        width: 100px;
+        height: 100px;
+        font-size: 36px;
+        line-height: 46px;
+        font-weight: 700;
+        text-align: center;
+        padding: 10px 0;
+        color: $white-color;
+        background-color: $theme-color;
+        clip-path: polygon(50% 0%, 100% 0, 100% 75%, 50% 100%, 0% 75%, 0 0);
+        z-index: 2;
+
+        .currency {
+            font-size: 16px;
+            position: absolute;
+            top: 0px;
+            left: 10px;
+            right: auto;
+        }
+
+        .duration {
+            font-size: 18px;
+            font-weight: 500;
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+        }
+    }
+
+    .box-title {
+        @include vxs {
+            font-size: 16px;
+        }
+    }
+}
+
+/* Pricing card  End -----------------------------*/
+.price-title-wrapper {
+    max-width: 660px;
+    display: block;
+    margin: 0 auto;
+}

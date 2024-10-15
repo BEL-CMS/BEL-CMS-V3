@@ -24,6 +24,8 @@ final class ModelsGallery
 	#####################################
 	# TABLE_GALLERY
 	# TABLE_GALLERY_CAT
+	# TABLE_GALLERY_VALID
+	# TABLE_GALLERY_SUB_CAT
 	#####################################
 	public function getImg ($id = null)
 	{
@@ -35,7 +37,7 @@ final class ModelsGallery
 				$data = $sql->data;
 				foreach ($data as $key => $value) {
 					if (!empty($value->cat)) {
-						$data[$key]->cat = self::GetNameCat($value->cat)->name;
+						$data[$key]->cat = self::GetNameSubCat($value->cat)->name;
 					}
 				}
 				return $data;
@@ -411,6 +413,59 @@ final class ModelsGallery
 				'text' => constant('ERROR_NO_DATA')
 			);	
 		}
+		return $return;
+	}
+
+	public function getNoValid ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_GALLERY_VALID');
+		$sql->queryAll();
+		$return = $sql->data;
+		return $return;
+	}
+	
+	public function deleteAll ()
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_GALLERY_VALID');
+		$sql->delete();
+		$return = array(
+			'type' => 'success',
+			'text' => constant('DELETE_SUCCESS')
+		);
+
+		$dir = ROOT.DS.'/uploads/gallery/tmp/';
+		Common::deleteFiles($dir);
+
+		return $return;
+	}
+
+	public function getTmpID ($id)
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_GALLERY_VALID');
+		$sql->where(array('name' => 'id', 'value' => $id));
+		$sql->queryOne();
+		$return = $sql->data;
+		return $return;
+	}
+
+	public function accept ($data, $id)
+	{
+		$sql = new BDD;
+		$sql->table('TABLE_GALLERY');
+		$sql->insert($data);
+
+		$delete = new BDD;
+		$delete->table('TABLE_GALLERY_VALID');
+		$delete->where(array('name' => 'id', 'value' => $id));
+		$delete->delete();
+
+		$return = array(
+			'type' => 'success',
+			'text' => constant('DEPLACE_ACTIF')
+		);
 		return $return;
 	}
 }

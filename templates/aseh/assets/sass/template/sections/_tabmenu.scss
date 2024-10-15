@@ -1,0 +1,419 @@
+/* Tab Menu 1 ---------------------------------- */
+.request-quote-wrapper {
+    margin-right: -200px;
+    position: relative;
+    z-index: 9;
+
+    @include md {
+        margin-right: 0;
+    }
+
+
+    &.style2 {
+        margin-right: 0;
+        background-color: var(--smoke-color);
+
+        .request-wrapper {
+            background-color: transparent;
+        }
+
+        .tab-content {
+            @include md {
+                margin-right: 0;
+            }
+        }
+    }
+
+}
+
+// .tab-content {
+//     @include md {
+//         margin-right: 7px;
+//     }
+// }
+
+.tabs-menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 22px;
+    position: relative;
+    gap: 12px;
+
+    @include md {
+        gap: 30px 12px;
+    }
+
+    &.nav-tabs {
+        border-bottom: 1px solid transparent;
+    }
+
+    button {
+        position: relative;
+        min-width: 176px;
+        min-height: 60px;
+        border: none;
+        background-color: transparent;
+
+        @include xs {
+            min-width: 170px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            min-width: 176px;
+            min-height: 60px;
+            background-color: $white-color;
+            z-index: -2;
+
+            @include xs {
+                min-width: 170px;
+            }
+        }
+
+        &.active {
+            background-color: transparent;
+            color: $white-color;
+        }
+    }
+
+    .indicator {
+        position: absolute;
+        height: var(--height-set);
+        width: var(--width-set);
+        left: var(--pos-x);
+        top: var(--pos-y);
+        transition: all 0.4s ease;
+        background-color: $theme-color;
+        z-index: -2;
+
+        @media(max-width:1400px) {
+            left: 67px;
+        }
+
+        @include xl {
+            left: 0;
+        }
+
+        @include lg {
+            left: 4px;
+        }
+
+        @include md {
+            left: 72px;
+        }
+
+        @include sm {
+            left: 76px;
+        }
+
+        @include xs {
+            left: 9px;
+        }
+
+        @media(max-width:559px) {
+            left: 90px;
+        }
+
+        @media(max-width:480px) {
+            left: var(--pos-x);
+        }
+
+        @include vxs {
+            left: inherit;
+        }
+
+
+        &:after {
+            content: "";
+            position: absolute;
+            height: 30px;
+            width: 41px;
+            left: 0;
+            top: 95%;
+            background-color: inherit;
+            clip-path: path('M0 1.00022L35.8614 1.00012C35.8619 1.00009 35.8625 1.00005 35.8631 1.00001C37.5068 0.894766 39.2181 0.891015 41 1.00011L35.8614 1.00012C14.906 2.34284 4.94531 20.1824 0 31.0002V1.00022Z');
+        }
+
+    }
+}
+
+.request-quote-tabs {
+    display: flex;
+    align-items: center;
+
+    @media(max-width: 440px) {
+        display: block;
+    }
+
+    &.style2 {
+        justify-content: flex-start;
+
+
+        &.nav-tabs {
+            border: 1px solid #F4F4F4;
+            // &:last-child{
+            //     border-right: 1px solid transparent !important;
+            // }
+        }
+
+        .nav-link {
+            border-right: 1px solid #F4F4F4;
+            background-color: $white-color;
+            color: $title-color;
+            width: 429px;
+
+            @media(max-width: 1399px) {
+                width: 416px;
+            }
+
+            @include xl {
+                width: 371px;
+            }
+
+            @include lg {
+                width: 311px;
+            }
+
+            @include md {
+                width: 231px;
+                // width: 171px; 
+            }
+
+            @include sm {
+                width: 171px;
+            }
+
+            @include xs {
+                width: 100%;
+            }
+
+            @media(max-width: 460px) {
+                width: 100%;
+            }
+
+            &:hover,
+            &.active {
+                background-color: $smoke-color;
+                color: $title-color;
+            }
+        }
+    }
+
+    &.style3 {
+        justify-content: flex-start;
+        border: 1px solid #F4F4F4;
+        margin-right: 0;
+
+        @include xs {
+            margin-right: -4px;
+        }
+
+        @media(max-width: 460px) {
+            margin-right: 0px;
+        }
+
+        .tab-content {
+            margin-right: 0;
+
+            @include md {
+                margin-right: 0;
+            }
+        }
+
+
+        .nav-link {
+            width: 280px;
+
+            @media(max-width: 1399px) {
+                width: 271px;
+            }
+
+            @include xl {
+                width: 241px;
+            }
+
+            @include lg {
+                width: 201px;
+            }
+
+            @include md {
+                width: 228px;
+            }
+
+            @include sm {
+                width: 168px;
+            }
+
+            @include xs {
+                width: 33%;
+            }
+
+            @media(max-width: 460px) {
+                width: 100%;
+                border-right: none !important;
+            }
+
+            &:last-child {
+                border-right: 1px solid transparent !important;
+            }
+
+            &:hover,
+            &.active {
+                background-color: $theme-color;
+                color: $white-color;
+            }
+        }
+    }
+
+    &.nav-tabs {
+        border-bottom: 1px solid transparent;
+    }
+
+    .nav-link {
+        background-color: $white-color;
+        padding: 20px 40px;
+        width: 277.6px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 26px;
+        border: none;
+        border-right: 1px solid #1212121a !important;
+        text-align: center;
+        border-radius: 0;
+        color: $title-color;
+        transition: all 0.4s ease-in-out;
+
+        @media(max-width: 1399px) {
+            width: 271px;
+        }
+
+        @include xl {
+            width: 248.6px;
+        }
+
+        @include lg {
+            padding: 20px;
+            width: 218.5px;
+        }
+
+        @include md {
+            width: 33%;
+        }
+
+        @include xs {
+            width: 100%;
+        }
+
+        @include sm {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        @include vxs {
+            padding: 5px;
+        }
+
+        &:hover,
+        &.active {
+            background-color: $theme-color;
+            color: $white-color;
+        }
+    }
+}
+
+.filter-menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+
+    @include md {
+        justify-content: center;    
+        gap: 10px 10px;
+        margin-bottom: 40px;
+    }
+
+    &.style2 {
+        background-color: $smoke-color;
+        padding: 30px 0;
+        margin-bottom: 25px;
+        justify-content: center;
+
+        @include lg {
+            padding-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 4px 18px;
+            border: 1px solid $theme-color;
+            color: $theme-color;
+
+            &:first-child {
+                margin: 0;
+            }
+
+            @include xl {
+                padding: 4px 15px;
+            }
+
+            @include lg {
+                margin-bottom: 10px;
+            }
+
+            &.active {
+                background-color: $theme-color;
+                border-color: $theme-color;
+            }
+        }
+    }
+
+    &.style3 {
+        .tab-btn {
+            border: 1px solid $white-color;
+            color: $white-color;
+
+            &.active {
+                background-color: $title-color;
+                border-color: $title-color;
+            }
+        }
+
+    }
+
+
+    .tab-btn {
+        font-family: $body-color;
+        background-color: transparent;
+        color: $theme-color;
+        border: 1px solid $theme-color;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 4px 20px;
+        margin-left: 10px;
+        transition: all 0.4s ease-in-out;
+
+        @include md {
+            margin: 0;
+        }
+
+        &.active {
+            background-color: $theme-color;
+            color: $white-color;
+        }
+    }
+}
+
+@include lg {
+    .filter-menu.tab-menu1 {
+        gap: 10px 30px;
+    }
+}
+
+@include sm {
+    .filter-menu.tab-menu1 {
+        gap: 10px 20px;
+    }
+}

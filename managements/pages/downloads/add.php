@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -59,6 +59,7 @@ endif;
 					</div>
 				</div>
 			</div>
+			<input type="hidden" name="MAX_FILE_SIZE" value="<?=Common::GetMaximumFileUploadSize();?>" />
 			<div class="text-gray-800 text-sm font-medium inline-block mt-2 p-2">
 				<button type="submit" class="btn bg-violet-500 border-violet-500 text-white"><i class="fa fa-dot-circle-o"></i><?=constant('ADD')?></button>
 			</div>

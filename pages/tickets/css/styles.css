@@ -1,0 +1,41 @@
+#belcms_tickets {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+#belcms_tickets > form {
+	display: block;
+	width: 100%;
+	margin: auto;
+	padding: 0;
+	overflow: hidden;
+}
+#belcms_tickets_subject {
+	display: block;
+	float: left;
+	width: 33.33336%;
+	line-height: 40px;
+}
+#belcms_tickets_subject span {
+	display: block;
+	width: 100%;
+	text-align: left;
+	line-height: 40px;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+#belcms_tickets_subject span i {
+	color: red;
+}
+#belcms_tickets_value {
+	display: block;
+	float: left;
+	width: 66.3334%;
+}
+#belcms_tickets_value > input {
+	display: block;
+	width: 100% !important;
+	margin-bottom: 15px;
+}

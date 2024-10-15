@@ -12,6 +12,7 @@
 use BelCMS\Core\Config;
 use BelCMS\Core\Secure;
 use BelCMS\Requires\Common;
+use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -28,10 +29,10 @@ class Gallery extends AdminPages
 	#####################################
 	public function index ()
 	{
-		$menu[] = array(constant('HOME') => array('href'=>'gallery?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
 		$menu[] = array(constant('ADD') => array('href'=>'gallery/add?management&option=pages','icon'=>'mgc_add_fill', 'color' => 'bg-success text-white'));
 		$menu[] = array(constant('CAT') => array('href'=>'gallery/cat?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
 		$menu[] = array(constant('SUB_CAT') => array('href'=>'gallery/subcat?management&option=pages','icon'=>'mgc_archive_fill', 'color' => 'bg-dark/80 text-white'));
+		$menu[] = array(constant('A_VALID') => array('href'=>'gallery/Valid?management&option=pages','icon'=>'mgc_check_2_fill', 'color' => 'bg-violet-500 border-violet-500 text-white'));
 		$menu[] = array(constant('CONFIG') => array('href'=>'gallery/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
 		$data['data'] = $this->models->getImg();
 		$this->set($data);
@@ -249,5 +250,78 @@ class Gallery extends AdminPages
 		$d['data'] = $this->models->GetNameSubCat($id);
 		$this->set($d);
 		$this->render('editsubcat', $menu);	
+	}
+	#####################################
+	# Page de validation
+	#####################################
+	public function Valid() {
+		$menu[] = array(constant('HOME') => array('href'=>'gallery?management&option=pages','icon'=>'mgc_home_3_line', 'color' => 'bg-primary text-white'));
+		$menu[] = array(constant('CAT') => array('href'=>'gallery/cat?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('SUB_CAT') => array('href'=>'gallery/subcat?management&option=pages','icon'=>'mgc_archive_fill', 'color' => 'bg-dark/80 text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'gallery/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+
+		$data['data'] = $this->models->getNoValid();
+		if (!empty($data['data'])) {
+			foreach ($data['data'] as $key => $v) {
+				if (User::ifUserExist($v->author)) {
+					$user = User::getInfosUserAll($v->author);
+					$data['data'][$key]->author = $user->user->username;
+				}
+			}
+		}
+		$this->set($data);
+
+		$this->render('valid', $menu);
+	}
+	#####################################
+	# Tout validées
+	#####################################
+	public function DeleteAll ()
+	{
+		$return = $this->models->deleteAll ();
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('gallery?management&option=pages', 2);
+	}
+	#####################################
+	# Tmp File : édition
+	#####################################
+	public function tmpEdit ()
+	{
+		$menu[] = array(constant('CAT') => array('href'=>'gallery/cat?management&option=pages','icon'=>'mgc_binance_coin_BNB_fill', 'color' => 'bg-warning text-white'));
+		$menu[] = array(constant('SUB_CAT') => array('href'=>'gallery/subcat?management&option=pages','icon'=>'mgc_archive_fill', 'color' => 'bg-dark/80 text-white'));
+		$menu[] = array(constant('CONFIG') => array('href'=>'gallery/parameter?management&option=pages','icon'=>'mgc_box_3_fill', 'color' => 'bg-dark text-white'));
+
+		$cat['cat'] = $this->models->GetNameSubCat();
+		$this->set($cat);
+
+		$id = (int) $this->data[2];
+	    $data['data'] = $this->models->getTmpID($id);
+		if (User::ifUserExist($data['data']->author)) {
+			$user = User::getInfosUserAll($data['data']->author);
+			$data['data']->author = $user->user->username;
+		}
+		$this->set($data);
+		$this->render('tmpedit', $menu);
+	}
+	#####################################
+	# Accept File and move file gallery
+	#####################################
+	public function accept()
+	{
+		$id                  = (int) $_POST['id'];
+
+		$post['name']        = Common::VarSecure($_POST['name']);
+		$post['uploader']    = Common::VarSecure($_POST['author']);
+		$post['date_insert'] = Secure::validateDate($_POST['date']) ? $_POST['date'] : Common::DatetimeSQL($_POST['date']);
+		$post['image']       = str_replace("tmp/", '', $_POST['image']);
+		$post['description'] = Common::VarSecure($_POST['description'], 'html');
+		$post['cat']         = Common::VarSecure($_POST['cat']);
+
+		$destination = ROOT.$post['image'];
+		$return = $this->models->accept ($post, $id);
+	    rename(ROOT.$_POST['image'], $destination);
+
+		$this->error(get_class($this), $return['text'], $return['type']);
+		$this->redirect('gallery?management&option=pages', 2);
 	}
 }

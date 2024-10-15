@@ -1,0 +1,130 @@
+/* footer area ---------------------------- */
+.footer-layout4 {
+    background-color: #010F34;
+
+    .copyright-wrap {
+        background-color: transparent;
+        border-top: 1px solid rgba(120, 128, 148, 0.8);
+
+    }
+}
+
+.footer-icon-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(120, 128, 148, 0.8);
+    margin-bottom: 60px;
+    padding-bottom: 60px;
+
+    .footer-wrapp {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 200px;
+
+        @include xl {
+            gap: 150px;
+        }
+
+        @include lg {
+            gap: 50px;
+        }
+
+        @include xs {
+            gap: 30px;
+
+        }
+
+        @media(max-width: 520px) {
+            display: block;
+        }
+    }
+
+    @include md {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 20px 0;
+    }
+
+    .footer-info {
+        display: flex;
+        gap: 25px;
+
+        &_label {
+            font-family: $title-font;
+            color: $white-color;
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 34px;
+
+        }
+
+        &_link {
+            font-family: $body-font;
+            color: $white-color;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 26px;
+
+            a {
+                color: inherit;
+            }
+        }
+    }
+}
+
+.newletter-wrapper {
+    .newsletter-form {
+        position: relative;
+        overflow: hidden;
+        display: block;
+
+        .form-control {
+            min-width: 374px;
+            border-radius: 10px;
+            min-height: 56px;
+            background-color: transparent;
+            border: 1px solid $theme-color;
+            transition: all 0.3s ease-in-out;
+
+            @include md {
+                min-width: 100%;
+            }
+        }
+
+        .th-btn {
+            max-width: 144px;
+            padding: 16px 35px;
+            text-transform: uppercase;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            border-radius: 10px;
+            margin-top: 0;
+        }
+    }
+}
+
+.footer-widget {
+    .sidebar-gallery {
+        &.style2 {
+            max-width: 265px;
+            .gallery-thumb {
+                min-width: 75px; 
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}
+
+/* footer 5 ---------------------------*/
+.footer-layout5 {
+    background-repeat: repeat;
+    background-size: auto;
+    background-position: top center;
+}

@@ -30,7 +30,7 @@ endif;
     foreach ($data as $value):
     ?>
         <li>
-            <a href="Gallery/Detail/<?=$value->id_gallery;?>/<?=Common::FormatName($value->name);?>>">
+            <a href="Gallery/Detail/<?=$value->id;?>/<?=Common::FormatName($value->name);?>>">
                 <i style="color: <?=$value-> bg_color;?>;" class="fa-solid fa-folder"></i>
                 <span style="color: <?=$value->color;?>"><b><?=$value->name;?></b></span>
             </a>

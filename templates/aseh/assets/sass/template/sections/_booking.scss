@@ -1,0 +1,270 @@
+/* appointment 1 ---------------------------------- */
+.appointment-form {
+    border-radius: 30px;
+    background: $white-color;
+    padding: 60px;
+
+    @include lg {
+        margin-top: 40px;
+        padding: 40px;
+    }
+
+    @include sm {
+        padding: 30px;
+    }
+
+    &.style2 {
+        box-shadow: -6px 6px 50px 0px rgba(0, 0, 0, 0.06);
+        border-radius: 0;
+        padding: 50px;
+
+        @include xl {
+            padding: 40px;
+        }
+
+        @include sm {
+            padding: 30px;
+        }
+        .form-title {
+            @include vxs { 
+                font-size: 22px;  
+                margin-bottom: 20px;   
+            }
+        }
+    }
+
+    .form-group {
+
+        select,
+        .form-control,
+        .form-select.nice-select,
+        .nice-select,
+        textarea,
+        input {
+            height: 56px;
+            padding: 0 25px 0 25px;
+            padding-right: 45px;
+            border: 0;
+            border-radius: 5px;
+            background: $smoke-color;
+            font-size: 14px;
+            color: $body-color;
+            width: 100%;
+            transition: 0.4s ease-in-out;
+        }
+
+
+        textarea.form-control,
+        textarea {
+            min-height: 120px;
+            padding-top: 16px;
+            padding-bottom: 17px;
+        }
+    }
+
+    .nice-select {
+        .option {
+            color: $title-color;
+
+            &.selected {
+                color: $theme-color !important;
+                background: $theme-color !important;
+
+                &.focus {
+                    color: #fff !important;
+                    background: $theme-color !important;
+                }
+            }
+        }
+    }
+
+    .th-btn {
+        @include lg {
+            padding: 18px 16px;
+        }
+    }
+}
+
+.appointment-video {
+    .video-play-btn {
+        position: absolute;
+        top: 50%;
+        left: auto;
+        transform: translate(-50%, -50%);
+        right: 22%;
+
+        @include md {
+            display: none;
+        }
+
+        &:after,
+        &:before {
+            background-color: $white-color;
+        }
+    }
+
+}
+
+.appointment-quote-form {
+    .form-group {
+
+        i {
+            color: $theme-color;
+        }
+
+        select,
+        .form-control,
+        .form-select.nice-select,
+        .nice-select,
+        textarea,
+        input {
+            height: 56px;
+            padding: 0 25px 0 25px;
+            padding-right: 45px;
+            border: 0;
+            background-color: $white-color;
+            border-radius: 0;
+            font-size: 16px;
+            color: $body-color;
+            width: 100%;
+            transition: 0.4s ease-in-out;
+        }
+    }
+}
+
+.pricing-form {
+    background-color: $theme-color;
+    padding: 40px;
+    margin-left: 30px;
+
+    @include lg {
+        padding: 30px;
+        margin: 30px 0 0 0;
+    }
+
+    @include md {
+        padding: 25px;
+    }
+
+    .form-group {
+
+        i {
+            color: $theme-color;
+        }
+
+        select,
+        .form-control,
+        .form-select.nice-select,
+        .nice-select,
+        textarea,
+        input {
+            height: 56px;
+            padding: 0 25px 0 25px;
+            padding-right: 45px;
+            border: 0;
+            background-color: $white-color;
+            border-radius: 0;
+            font-size: 16px;
+            color: $body-color;
+            width: 100%;
+            transition: 0.4s ease-in-out;
+        }
+    }
+}
+
+.booking-title-area {
+    max-width: 530px;
+    display: block;
+    margin: auto;
+}
+
+.booking-form-area {
+    background: $smoke-color;
+    padding: 60px;
+
+    @include lg {
+        padding: 40px;
+    }
+
+    @include md {
+        padding: 30px;
+    }
+
+    .form-group {
+
+        i {
+            color: $theme-color;
+        }
+
+        select,
+        .form-control,
+        .form-select.nice-select,
+        .nice-select,
+        textarea,
+        input {
+            height: 56px;
+            padding: 0 25px 0 25px;
+            padding-right: 45px;
+            border: 0;
+            background-color: $white-color;
+            border-radius: 0;
+            font-size: 16px;
+            color: $body-color;
+            width: 100%;
+            transition: 0.4s ease-in-out;
+        }
+    }
+}
+
+.booking-section {
+    margin-top: -145px;
+    position: relative;
+    z-index: 6;
+
+    @include md {
+        margin-top: -200px;
+    }
+
+    @include sm {
+        margin-top: -250px;
+    }
+
+    @include xs {
+        margin-top: 0;
+        padding-top: 80px;
+    }
+}
+
+.booking-form {
+    .input-wrap {
+        background-color: var(--white-color);
+        padding: 50px 50px 20px 50px;
+        box-shadow: -6px 6px 50px 0px rgba(0, 0, 0, 0.06);
+
+        @include md {
+            padding: 25px 30px 15px 30px;
+        }
+
+        @include sm {
+            padding: 35px;
+        }
+
+        select,
+        .form-control,
+        .form-select.nice-select,
+        .nice-select,
+        textarea,
+        input {
+            border-radius: 0;
+        }
+
+        .sec-title {
+            margin-top: -0.4rem;
+
+            @include vxs {
+                font-size: 22px;  
+                margin-bottom: 20px;   
+            }
+        }
+    }
+}

@@ -12,6 +12,7 @@
 namespace Belcms\Pages\Controller;
 use Belcms\Pages\Pages;
 use BelCMS\Core\Notification;
+use BelCMS\Core\Secure;
 use BelCMS\User\User;
 
 if (!defined('CHECK_INDEX')):
@@ -38,11 +39,43 @@ class Pricing extends Pages
     public function choise ()
     {
         if (User::isLogged()) {
+            $id = Secure::isInt($_POST['id']);
+
+            $d['data'] = $this->models->getPlan ($id);
+            $d['data']->listing = $this->models->getListing ($d['data']->listing);
+
+            $this->set($d);
             $this->render('choise');
 		} else {
 			$this->redirect('User/login&echo', 3);
 			$this->error = true;
 			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
 		}
+    }
+
+    public function sale ()
+    {
+        $id = (int) $this->data['id'];
+        if (User::isLogged()) {
+            $data['data'] = $this->models->getPlan ($id);
+            $data['user'] = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
+            $data['BC'] = $this->models->bank();
+            $this->set($data);
+            $this->render('send');
+		} else {
+			$this->redirect('User/login&echo', 3);
+			$this->error = true;
+			$this->errorInfos = array('warning', constant('LOGIN_REQUIRE'), constant('INFO'), false);
+		}
+    }
+
+    public function Preorder ()
+    {
+        $id = (int) $this->data['id'];
+        $price = (int) $this->data['price'];
+        $return = $this->models->preorder($id, $price);
+        $this->error = true;
+        $this->errorInfos = array($return["type"], $return["text"], 'PréCommande', false);
+        $this->redirect('index.php', 3);
     }
 }

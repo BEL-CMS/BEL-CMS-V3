@@ -61,7 +61,7 @@ final class Mails
 		$sql = new BDD;
 		$sql->table('TABLE_MAIL_MSG');
 		$sql->where(array('name' => 'mail_id', 'value' => $id));
-		$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
+		$sql->orderby(array(array('name' => 'id', 'type' => 'ASC')));
 		$sql->queryOne();
 		$return = $sql->data;
 		return $return;
@@ -261,10 +261,78 @@ final class Mails
 		$sql = new BDD;
 		$sql->table('TABLE_MAIL_MSG');
 		$sql->where(array('name' => 'mail_id', 'value' => $id));
+		$sql->orderby(array(array('name' => 'id', 'type' => 'ASC')));
 		$sql->queryAll();
 		$return = $sql->data;
 		#########################################
 		return $return;
 		#########################################
+	}
+	#########################################
+	# Archive le message
+	#########################################
+	public function archiving ($id)
+	{
+		#########################################
+		$update['read_msg'] = 1;
+		$update['receive']  = 1;
+		$update['archive']  = 1;
+		$update['close']    = 0;
+		#########################################
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS_STATUS');
+		$where[] = array('name' => 'mail_id', 'value' => $id);
+		$where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+		$sql->where($where);
+		$sql->update($update);
+		unset($sql);
+		#########################################
+		$return['text']	= constant('MESSAGE_ARCHIVE_SUCCESS');
+		$return['type']	= 'success';
+		#########################################
+		return $return;
+	}
+	#########################################
+	# Cloture le sujet
+	#########################################
+	public function close ($id)
+	{
+		#########################################
+		$update['read_msg'] = 1;
+		$update['receive']  = 1;
+		$update['archive']  = 1;
+		$update['close']    = 1;
+		#########################################
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS_STATUS');
+		$where[] = array('name' => 'mail_id', 'value' => $id);
+		$where[] = array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key);
+		$sql->where($where);
+		$sql->update($update);
+		unset($sql);
+		#########################################
+		$return['text']	= constant('MESSAGE_DELETE_SUCCESS');
+		$return['type']	= 'success';
+		#########################################
+		return $return;
+	}
+
+	public function closeall ()
+	{
+		$update['read_msg'] = 1;
+		$update['receive']  = 1;
+		$update['archive']  = 1;
+		$update['close']    = 1;
+		#########################################
+		$sql = new BDD;
+		$sql->table('TABLE_MAILS_STATUS');
+		$sql->where(array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key));
+		$sql->update($update);
+		unset($sql);
+		#########################################
+		$return['text']	= constant('MESSAGE_ALL_CLOS_SUCCESS');
+		$return['type']	= 'success';
+		#########################################
+		return $return;
 	}
 }

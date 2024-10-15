@@ -1,0 +1,21 @@
+.par-dec  , .btn  , .ser-title h3:before , .custom-skillbar , .header-decor:before  , .con-link  , header:before , nav li a:before , .brochure-box a i.pdf-ic , .footer-info h4:before , .footer-serv-holder ul li:before , .l-line span  , .to-top ,  .owl-dots .owl-dot.active span  , .color-bg , .section-title h2:before  , ul.tabs li.current .tb-item , .separator , .vis-filter li a.gallery-filter-active , .con-heading:before , .team-item  h3:before , #submit , .form-submit button , .serv-nav  li a.act-ser , .serv-nav  li a:hover , .btn-nav li a i , .serv-sidebar  h3:before , .page-title-dec , .selectbox li:hover , .irs-single , .por-link , .line-filter .count-folio , .sidebar-filters li a.gallery-filter-active , .sidebar-filters .count-folio , .dec-filter li a.gallery-filter-active , .sidebar-social  li a , .page-nav a , .single-slider-holder .customNavigation a , .single-carousel-holder .customNavigation a ,  .post-tags li a:hover , article h4:before , .pagination a.current-page , .search-submit , .widget-sidebar  h3:before , .nav-button  span  , .ajaxPageSwitchBacklink , .hero-wrap h3:before{
+	background:#F1C311
+}
+.num , .accordion-title a i , .color-text , .topbar-social li a , .copy-right a , .footer-contacts li a i  , .slider-box-item h4  , .sl-tabs li i  , .testimon-slider-holder .item a , .det-list li span , .det-list li a , .det-list li:before  , .box-item a , .team-item  h3:hover a , .con-list ul li i , .det-box h3 a:hover , .dynamic-title h2 a ,   .panel-button , .top-bar-header-contact li a:hover , nav ul li ul li a.act-link , .footer-serv-holder li a:hover , .footer-social li a:hover{
+	color:#F1C311
+}
+.border-decor:before , footer  , nav li ul  , .nice-select:after {
+	border-color:#F1C311
+}
+.loader {
+	border-top: 10px solid  #F1C311;
+	border-right: 10px solid #F1C311;
+	border-bottom: 10px solid #F1C311;
+} 
+.btn.dark-bg i {
+	color:#F1C311!important
+}
+.line-filter .count-folio:before {
+ 
+border-color: #F1C311 transparent transparent transparent;
+}

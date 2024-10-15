@@ -1,0 +1,419 @@
+/* process-block ------------------------------- */
+.process-block {
+    position: relative;
+    background-color: $white-color;
+    padding: 40px;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    max-width: 347px;
+    transition: all 0.4s ease;
+    margin-bottom: 35px;
+
+    @include lg {
+        margin-bottom: 0;
+    }
+
+    @include md {
+        max-width: 100%;
+        padding: 25px;
+    }
+
+    &_shape {
+        position: absolute;
+        inset: 0;
+        top: -50%;
+        background-size: auto;
+    }
+
+    &:after {
+        content: "";
+        position: absolute;
+        inset: -35px;
+        left: -22px;
+        background: url(../img/update_3/shape/process-shape.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+
+        @include sm {
+            display: none;
+        }
+    }
+
+    &:nth-child(even) {
+        &:after {
+            transform: rotate3d(12, 0, 0, 180deg);
+        }
+
+        .process-block_icon {
+            order: 1;
+            margin-bottom: 10px;
+
+            @include lg {
+                order: 3;
+            }
+        }
+
+        .process-block_content {
+            order: 2;
+
+            @include lg {
+                order: 2;
+            }
+        }
+
+        .process-block_img {
+            order: 3;
+
+            @include lg {
+                order: 1;
+            }
+        }
+    }
+
+    &_wrapp {
+        display: flex;
+        justify-content: space-between;
+        gap: 50px;
+
+        @include lg {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px 30px;
+
+        }
+
+        @include md {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px;
+            margin-top: 50px;
+        }
+
+        @include sm {
+            grid-template-columns: repeat(1, 1fr);
+            gap: 30px;
+        }
+
+        .process-block_icon {
+            order: 3;
+        }
+
+        .process-block_content {
+            order: 2;
+        }
+
+        .process-block_img {
+            order: 1;
+        }
+    }
+
+    &_img {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        border-radius: 50%;
+        background: #ECF1F5;
+        margin-bottom: 20px;
+
+    }
+
+    &_icon {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: $title-color;
+        font-family: $title-font;
+        font-weight: 600;
+        font-size: 36px;
+        color: $white-color;
+    }
+
+    &:hover {
+        .process-block {
+            &_icon {
+                background-color: $theme-color;
+            }
+        }
+    }
+}
+
+/* brand --------------------------*/
+.brand-slide3 {
+    background-color: #F8F8F8;
+    padding: 35px;
+    border-radius: 20px;
+}
+
+/* cta area -----------------*/
+.cta-overlay {
+    position: absolute;
+    inset: 0;
+
+}
+
+.cta-btn {
+    .th-btn {
+        padding: 14px 35px;
+        font-family: $title-font;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 28px;
+    }
+}
+
+.cta-desc {
+    font-family: $title-font;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    margin-bottom: 0;
+}
+
+
+/* history  ------------------------------- */
+.history-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+
+    &.nav-tabs {
+        border: none;
+    }
+
+    .nav-link {
+        position: relative;
+        background-color: transparent;
+        padding: 8px 0;
+        min-width: 31.5%;
+        text-align: left;
+        font-family: $title-font;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 30px;
+        color: $title-color;
+        border: none;
+        border-bottom: 2px solid #D8DDE1;
+
+
+        &:after {
+            content: '';
+            height: 2px;
+            background: var(--theme-color);
+            width: 0;
+            left: 0;
+            bottom: -2px;
+            position: absolute;
+            transition: 0.5s all;
+        }
+
+        &.active {
+            background-color: transparent;
+            color: $title-color;
+
+            &:after {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.history-content {
+    position: relative;
+    z-index: 3;
+}
+
+.history-image {
+    text-align: right;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.hostory-box {
+    background-color: $white-color;
+    max-width: 387px;
+    padding: 40px;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.06);
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    @include xs {
+        position: relative;
+        padding: 30px;
+    }
+
+    .box-title {}
+
+    .history-text {
+        margin-bottom: -0.3rem;
+    }
+}
+
+/*gallery sec ----------------------- */
+
+
+.gallery-box {
+    position: relative;
+    z-index: 2;
+    --space: 10px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+
+    &:not(:last-child) {
+        border-right: 2px solid $title-color;
+    }
+
+    &_wrapp {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+
+        @include lg {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include xs {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+    }
+
+    .gallery-img {
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .gallery-content {
+        background: rgba(16, 19, 28, 0.4);
+        backdrop-filter: blur(20px);
+        position: absolute;
+        bottom: -30%;
+        max-width: calc(90% - var(--space)*2);
+        left: var(--space);
+        padding: 40px;
+        opacity: 1;
+        visibility: hidden;
+        transition: all 1.3s ease;
+
+        @media(max-width: 1399px) {
+            max-width: calc(100% - var(--space)*2);
+            padding: 30px;
+        }
+
+        @include xl {
+            padding: 30px 20px;
+        }
+
+    }
+
+    .box-title {
+        margin-top: -0.5rem;
+    }
+
+    .gallery-text {
+        color: $white-color;
+        margin-bottom: -0.3rem;
+    }
+
+    &:hover {
+        .gallery-content {
+            bottom: 10px;
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+
+
+/* price-area --------------- */
+.price-area2 {
+    position: relative;
+    z-index: 3;
+}
+
+.price-area {
+    padding: 120px;
+
+    @include xl {
+        padding: 120px 40px;
+    }
+
+    @include md {
+        padding: 80px 40px;
+    }
+    @include xs {
+        padding: 80px 20px;
+    }
+}
+
+.price-box {
+    background-color: $white-color;
+    padding: 20px;
+    @include xs {
+        padding: 20px 15px;
+    }
+
+    &-wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+
+        @include md {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include sm {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+    &_content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 6px;
+    }
+
+    &_price {
+        font-family: $title-font;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 20px;
+        color: $theme-color;
+        @include xs {
+            font-size: 18px;
+            line-height: 18px;
+        }
+    }
+
+    .box-title {
+        font-size: 20px;
+        line-height: 20px;
+        margin-bottom: 0;
+        @include xs {
+            font-size: 18px;
+            line-height: 18px;
+        }
+    }
+
+    &_desc {
+        font-size: 14px;
+        line-height: 24px;
+        margin-bottom: -0.4rem;
+    }
+}

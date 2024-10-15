@@ -1,22 +1,20 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.9 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
  * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
 */
-use BelCMS\Core\BelCMS as BelCMS;
+#########################################
+use BelCMS\Core\BelCMS;
 use BelCMS\Core\Dispatcher;
 use Belcms\Management\Managements;
 use BelCMS\Ban\_Ban as Ban;
 use BelCMS\Core\Landing;
-use BelCMS\Core\Secure;
 use BelCMS\Core\Validation;
-use BelCMS\Requires\Common;
-
 #########################################
 # TimeZone et charset
 #########################################
@@ -45,7 +43,7 @@ $_SESSION['NB_REQUEST_SQL'] = 0;
 # Définit comme l'index
 #########################################
 define('CHECK_INDEX', true);
-define('VERSION_CMS', '3.0.0');
+define('VERSION_CMS', '3.0.9');
 define('ERROR', true);
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', __DIR__);
@@ -86,6 +84,9 @@ if (Dispatcher::isManagement() === true) {
 	$typeMime = $belcms->typeMime;
 	if (isset($_GET['echo'])) {
 		header('Content-Type: text/html; charset=UTF-8');
+		echo $belcms->page;
+	} else if (isset($_GET['img'])) {
+		header('Content-Type: image/png');
 		echo $belcms->page;
 	} else if ($typeMime == 'text/html') {
 		header('Content-Type: text/html; charset=UTF-8');

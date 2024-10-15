@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -253,7 +253,7 @@ final class ModelsDownloads
 		}
 
 		if (!empty($_FILES['download']['name'])) {
-			Common::Upload('download', 'uploads/downloads',
+			$file = Common::Upload('download', 'uploads/downloads',
 			array(
 				'.png', '.bmp', '.gif', '.jpg', '.ico', '.svg', '.tiff', '.webp', '.jpeg', '.doc', '.txt', '.pdf', '.rar',
 				'.zip', '.7zip', '.exe', '.tar', '.psd', '.jar','.avi', '.mpg', '.mpeg', '.av4', '.ac3', '.docx', '.doc', '.mp3',
@@ -268,11 +268,11 @@ final class ModelsDownloads
 		$sql = New BDD();
 		$sql->table('TABLE_DOWNLOADS');
 		$sql->insert($insert);
-
 		$return = array(
 			'type' => 'success',
-			'text' => constant('ADD_FILE_SUCCESS')
+			'text' => $file
 		);
+
 		return $return;
  	}
 

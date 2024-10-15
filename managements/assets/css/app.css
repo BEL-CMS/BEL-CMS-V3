@@ -8929,3 +8929,9 @@ th.fc-day-header {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+.help-box {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.logo-box .logo-lg {
+  height: 45px;
+}

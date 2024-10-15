@@ -1,0 +1,43 @@
+#belcms_cookies {
+	display: block;
+	position: relative;
+	margin-bottom: 20px;
+}
+#belcms_cookies h1,
+#belcms_cookies h2,
+#belcms_cookies h3,
+#belcms_cookies h4,
+#belcms_cookies h5,
+#belcms_cookies h6 {
+	font-weight: bold !important;
+}
+.belcms_cookies_row {
+	display: block;
+	padding: 20px;
+	margin-bottom: 20px;
+	border-radius: 20px;
+	border: 1px solid #eee;
+	background: #fff;
+}
+.belcms_cookies_row:last-child {
+	margin-bottom: 0;
+}
+.belcms_cookies_row > h3 {
+	text-align: left;
+	font-size: 1.5em;
+	font-weight: 600;
+	margin-bottom: 15px !important;
+}
+.belcms_cookies_row ul {
+	display: block;
+	list-style: circle;
+	margin: 5px;
+	margin-left: 15px;
+}
+#belcms_cookies_valid form input {
+	display: block;
+	background-color: aquamarine;
+	color: black;
+	font-weight: bold;
+	cursor: pointer;
+}

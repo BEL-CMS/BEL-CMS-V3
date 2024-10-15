@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -50,7 +50,7 @@ endif;
                                 <td><?=$v->id;?></td>
                                 <td><?=$v->name;?></td>
                                 <td>
-                                    <a href="<?=$v->image;?>" class="image-popup">
+                                    <a href="<?=$v->image;?>" class="glightbox">
                                         <img style="height: 60px;" src="<?=$v->image;?>" alt="work-thumbnail" class="rounded-lg">
                                     </a>
                                 </td>

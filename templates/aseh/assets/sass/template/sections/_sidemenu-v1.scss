@@ -1,0 +1,94 @@
+.sidemenu-wrapper {
+  position: fixed;
+  z-index: 99999;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background-color: rgba(0, 0, 0, 0.70);
+  opacity: 0;
+  visibility: hidden;
+  transition: all ease 0.8s;
+
+  .th-social {
+    a {
+      background-color: transparent;
+      border: 1px solid;
+      &:hover {
+        background-color: $theme-color;
+        border-color: $theme-color;
+      }
+    }
+  }
+
+
+  .closeButton {
+    display: inline-block;
+    border: 2px solid;
+    @include equal-size(50px);
+    line-height: 50px;
+    font-size: 24px;
+    padding: 0;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: $white-color;
+    border-radius: 50%;
+    transform: rotate(0);
+    transition: all ease 0.4s;
+
+    &:hover {
+      color: $theme-color;
+      border-color: $theme-color;
+      transform: rotate(90deg);
+    }
+  }
+
+
+  .sidemenu-content {
+    background-color: $white-color;
+    width: 450px;
+    margin-left: auto;
+    padding: 80px 30px;
+    height: 100%;
+    overflow: scroll;
+    position: relative;
+    right: -500px;
+    cursor: auto;
+    transition-delay: 1s;
+    transition: right ease 1s;
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.1);
+      box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.1);
+      background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar {
+      width: 2px;
+      background-color: #F5F5F5;
+    }
+
+  } 
+
+  .widget {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+  }
+
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    width: 100%;
+    transition: all ease 0.8s;
+
+    .sidemenu-content {
+      right: 0;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+}

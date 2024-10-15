@@ -25,6 +25,7 @@ section#section_user nav ul li {
 	margin-bottom: 5px;
 	position: relative;
 	transition: all linear 400ms;
+	padding: 0 !important;
 }
 section#section_user nav ul li:first-child {
 	background-color: rgba(0, 0, 0, 0.1);
@@ -77,6 +78,7 @@ section#section_user nav ul li i {
 	margin-right: 15px;
 	font-size: 20px;
 	border: 1px soldi;
+	line-height: 50px;
 }
 section#section_user nav ul li div {
 	position: absolute;
@@ -122,6 +124,7 @@ section#section_user div#section_user_profil > h2 {
 	position: relative;
 	margin-bottom: 15px;
 }
+.section_user_profil_form_row > i,
 .section_user_profil_form_row > svg {
 	position: absolute;
 	left: 15px;

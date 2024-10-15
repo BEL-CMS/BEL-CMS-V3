@@ -1,0 +1,140 @@
+/* footer area ------ */
+.footer-layout8 {
+    .widget-area {
+        padding-top: 163px !important;
+    }
+}
+
+.footer-menu {
+    margin: 0;
+    padding: 16px 0;
+    text-align: center;
+
+    li {
+        display: inline-block;
+        margin-right: 53px;
+
+        @include md {
+            margin-right: 30px;
+        }
+
+        @include md {
+            margin-right: 18px;
+        }
+
+        @include sm {
+            margin-right: 16px;
+        }
+
+        a {
+            padding: 43px 0;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;
+            color: var(--white-color);
+            text-transform: uppercase;
+
+            @include md {
+                font-size: 14px;
+            }
+
+            @include sm {
+                font-size: 12px;
+            }
+
+            &:hover {
+                color: $theme-color;
+            }
+
+        }
+    }
+}
+
+.info-box {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    padding: 20px 0;
+
+    &:not(:last-child) {
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+        @include md {
+            border: none;
+        }
+
+    }
+
+    &:last-child {
+        max-width: 231px;
+        display: inline-flex;
+        margin: auto;
+    }
+
+    &_wrapper {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: auto auto auto;
+        margin: 40px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        @include md {
+            grid-template-columns: auto auto;
+        }
+        @include xs {
+            grid-template-columns: auto; 
+        }
+    }
+
+    &_icon {
+        margin-top: 5px;
+
+        i {
+            font-size: 20px;
+            color: $theme-color;
+        }
+    }
+
+    &_text {
+        margin-bottom: 0;
+
+        a {
+            font-family: $body-font;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 26px;
+            color: $body-color;
+            display: block;
+        }
+    }
+}
+
+.newsletter-form {
+    &.style5 {
+        display: block;
+
+        .form-control {
+            position: relative;
+            max-width: 100%;
+            width: 100%;
+            height: 56px;
+            background: #1F2432;
+            border-radius: 30px;
+
+        }
+
+        .newsletter-btn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            background: transparent;
+            border: none;
+            color: $theme-color;
+            font-size: 20px;
+            padding: 0;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            padding-left: 26px;
+        }
+    }
+}

@@ -1,0 +1,455 @@
+/* Contact 1 ---------------------------------- */
+.appoitment-form {
+
+    select,
+    .form-control,
+    .form-select,
+    textarea,
+    input {
+        background-color: $white-color;
+        border: 1px solid $th-border-color;
+    }
+}
+
+.appointment-quote-form {
+    background-color: $smoke-color3;
+    padding: 50px;
+
+    @include lg {
+        padding: 40px;
+    }
+
+    @include sm {
+        padding: 30px;
+    }
+}
+
+.contact-feature {
+    &-wrap {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 24px;
+        border-top: 1px solid $th-border-color;
+        padding-top: 40px;
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: $white-color;
+    box-shadow: 0px 10px 30px rgba(8, 14, 28, 0.06);
+    border-radius: 5px;
+
+    .icon-btn {
+        background-color: $theme-color;
+        color: $white-color;
+        font-size: 24px;
+        box-shadow: 0px 6px 20px rgba($color: #684DF4, $alpha: 0.6);
+        border-radius: 5px;
+        border: none;
+    }
+
+    &_label {
+        margin-bottom: 0;
+    }
+
+    &_link {
+        font-size: 20px;
+        font-weight: 600;
+        color: $title-color;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+@include xl {
+    .contact-feature {
+        padding: 20px;
+    }
+}
+
+@include sm {
+    .contact-feature {
+        &-wrap {
+            gap: 15px;
+        }
+
+        gap: 15px;
+        padding: 15px;
+    }
+}
+
+@include xs {
+    .contact-feature {
+        &-wrap {
+            grid-template-columns: auto;
+        }
+
+        padding: 22px;
+    }
+}
+
+/* Contact Info ------------------------------*/
+.contact-info-area {
+    position: relative;
+    z-index: 5;
+}
+
+.contact-media {
+    padding: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    min-width: 453px;
+
+    @include xl {
+        min-width: 50%;
+    }
+
+    @include md {
+        min-width: 100%;
+        justify-content: center;
+    }
+
+    @include vxs {
+        display: block;
+        margin: auto;
+        text-align: center;
+    }
+
+    &.style1 {
+        background-color: $white-color;
+        box-shadow: 0px -6px 30px 0px rgba(0, 0, 0, 0.05);
+        min-height: 150px;
+        justify-content: center;
+        align-items: center;
+        min-width: 283px;
+
+        @include md {
+            min-width: 100%;
+        }
+    }
+
+    &-wrapp {
+        background: #1F2432;
+        box-shadow: 0px -6px 30px 0px rgba(0, 0, 0, 0.05);
+        display: flex;
+
+        @include md {
+            display: block;
+        }
+    }
+
+    &_icon {
+        @include vxs {
+            margin-bottom: 20px;
+        }
+    }
+
+    &_subtitle {
+        color: $white-color;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 28px;
+        margin-bottom: 6px;
+
+        @include xs {
+            font-size: 16px;
+            line-height: 26px;
+        }
+    }
+
+    &_title {
+        font-size: 30px;
+        line-height: 40px;
+        font-weight: 600;
+        color: $white-color;
+        margin-bottom: 0;
+        transition: 0.4s;
+
+        @include xs {
+            font-size: 24px;
+            line-height: 34px;
+        }
+
+        a {
+            color: inherit;
+            transition: 0.4s;
+
+            &:hover {
+                color: $title-color;
+            }
+        }
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+
+/* Quote Form faq page ----------------------- */
+.quote-form {
+    background: $theme-color;
+    padding: 40px;
+
+    &.style2 {
+        background-color: $smoke-color3;
+    }
+
+    @include lg {
+        margin-bottom: 40px;
+    }
+
+    @include xs {
+        padding: 30px;
+    }
+
+    @include vxs {
+        padding: 20px;
+    }
+
+    select,
+    .form-control,
+    .form-select,
+    textarea,
+    input {
+        background-color: $white-color;
+    }
+
+    .form-group {
+        >i {
+            background-color: $white-color;
+            color: $theme-color;
+            width: 18px;
+            text-align: right;
+        }
+
+    }
+
+    textarea.form-control,
+    textarea {
+        min-height: 180px;
+        padding-top: 16px;
+        padding-bottom: 17px;
+    }
+}
+
+/* Contact Page ---------------------------------- */
+.contact-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+    background-color: $white-color;
+    border-radius: 20px;
+    box-shadow: 0px 6px 30px 0px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-top: 30px;
+
+    &:nth-child(2) {
+        .contact-info {
+            &_icon {
+                background-color: $theme-color2;
+            }
+        }
+    }
+
+    &:nth-child(3) {
+        .contact-info {
+            &_icon {
+                background-color: $theme-color3;
+            }
+        }
+    }
+
+    &:nth-child(4) {
+        .contact-info {
+            &_icon {
+                background-color: $title-color;
+            }
+        }
+    }
+
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &-wrap {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 31px;
+
+        @include sm {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+    .box-title {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 0px;
+    }
+
+    &_icon {
+        display: inline-block;
+        width: 70px;
+        min-width: 70px;
+        height: 70px;
+        line-height: 70px;
+        background-color: $theme-color;
+        color: $white-color;
+        text-align: center;
+        font-size: 35px;
+        border-radius: 12px;
+        position: relative;
+
+
+    }
+
+    &_text {
+        margin-bottom: -0.2em;
+        font-family: $body-font;
+        margin-top: 5px;
+        max-width: 153px;
+
+        span,
+        a {
+            display: block;
+            max-width: fit-content;
+        }
+
+        a {
+            display: block;
+            color: $body-color;
+
+            &:hover {
+                color: $theme-color;
+            }
+        }
+    }
+}
+
+.contact-form {
+    background-color: $white-color;
+    border-radius: 30px;
+    box-shadow: -6px 6px 50px 0px rgba(0, 0, 0, 0.06);
+    padding: 60px;
+
+    @include lg {
+        padding: 40px;
+    }
+
+    @include sm {
+        padding: 25px;
+    }
+
+    .form-title {
+        margin-top: -0.5rem;
+    }
+
+    select,
+    .form-control,
+    .form-select.nice-select,
+    .nice-select,
+    textarea,
+    input {
+        border-radius: 5px;
+    }
+
+    textarea.form-control,
+    textarea {
+        background-color: $smoke-color;
+        min-height: 120px;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        >i {
+            color: $body-color;
+            width: 18px;
+            text-align: right;
+        }
+    }
+
+    .form-btn {
+        .th-btn {
+            border-radius: 5px;
+
+            &:before,
+            &:after {
+                display: none;
+            }
+
+            &:hover {
+                background-color: $title-color;
+            }
+        }
+    }
+}
+
+.map-sec6 {
+    position: relative;
+    line-height: 0px;
+    margin-bottom: -66px;
+    z-index: 2;
+
+    .appointment-form {
+        position: relative;
+        background-color: $white-color;
+        padding: 60px;
+        max-width: 521px;
+        display: block;
+        margin-left: auto;
+        z-index: 1;
+        margin-bottom: 66px;
+
+        @include md {
+            margin-left: 0;
+            max-width: 100%;
+        }
+    }
+
+    iframe {
+        position: absolute;
+        filter: grayscale(100);
+        height: 630px;
+
+        @include md {
+            position: relative;
+        }
+
+        @include sm {
+            height: 400px;  
+        }
+    }
+}
+
+@include xs {
+    .contact-info {
+        padding: 20px;
+    }
+}
+
+.map-sec {
+    line-height: 0;
+
+    iframe {
+        width: 100%;
+        height: 550px;
+
+        @include xl {
+            height: 400px;
+        }
+
+        @include sm {
+            height: 300px;
+        }
+    }
+}

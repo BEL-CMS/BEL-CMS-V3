@@ -78,6 +78,8 @@ final class User
 				$return['type']  = 'info';
 			}
 
+			$data['username'] = str_replace(' ', '_', $data['username']);
+
 			if ($error == 0) {
 
 				$sql = New BDD();

@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -108,7 +108,7 @@ final class ModelsNews
 			$edit['authoredit']        = $_SESSION['USER']->user->hash_key;
 			$edit['tags']              = Common::VarSecure($data['tags'], ''); // autorise que du texte
 			$edit['tags']              = str_replace(' ', '', $edit['tags']);
-			$edit['cat']               = ''; // à implanter
+			$edit['cat']               = (int) $data['cat'];
 			if (isset($_FILES['img'])) {
 				$screen = Common::Upload('img', 'uploads/news', array('.png', '.gif', '.jpg', '.jpeg'));
 				if ($screen = constant('UPLOAD_FILE_SUCCESS')) {
@@ -172,7 +172,7 @@ final class ModelsNews
 			if (!empty($send['tags'])) {
 				$send['tags']          = str_replace(' ', '', $send['tags']);
 			}
-			$send['cat']               = ''; // à implanter
+			$send['cat']               = (int) $data['cat'];
 			$send['view']              = 0;
 
 			if (isset($_FILES['img'])) {

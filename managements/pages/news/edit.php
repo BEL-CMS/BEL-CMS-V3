@@ -49,6 +49,22 @@ if ($data->tags != null) {
 						</div>
 					</div>
 					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Catégories</label>
+						<div class="col-sm-12">
+							<select class="form-input" name="cat">
+								<option value="0">Aucune Catégories</option>
+								<?php
+								foreach ($cat as $key => $value):
+									$selected = $value->id == $cat->id ? 'selected' : '';
+								?>
+								<option <?=$selected;?> class="form-input" value="<?=$value->id;?>"><?=$value->name;?></option>
+								<?php
+								endforeach;
+								?>
+							</select>
+						</div>
+					</div>
+					<div>
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Image</label>
 						<div class="col-sm-12">
 							<input name="img" accept="image/*" type="file" class="form-input">

@@ -316,7 +316,7 @@ class User extends Pages
 		} else {
 			$this->error = true;
 			$this->errorInfos = array($return['type'], $return['msg'], constant('LOGIN'), false);
-			$this->redirect('User', 3);
+			$this->redirect('User/login?echo', 3);
 		}
 	}
 	public function sendLogin ()

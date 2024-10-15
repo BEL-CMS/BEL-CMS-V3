@@ -9,11 +9,14 @@
  * @author as Stive - stive@determe.be
  */
 
+use BelCMS\Core\Notification;
+
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
     exit('<!doctype html><html><head><meta charset="utf-8"><title>BEL-CMS : Error 403 Forbidden</title><style>h1{margin: 20px auto;text-align:center;color: red;}p{text-align:center;font-weight:bold;</style></head><body><h1>HTTP Error 403 : Forbidden</h1><p>You don\'t permission to access / on this server.</p></body></html>');
 endif;
-debug($plan, false);
+
+if (count($plan) != 0):
 ?>
 <section id="belcms_pricing">
     <h1>Tarification simple pour tous les utilisateurs :</h1>
@@ -118,8 +121,8 @@ debug($plan, false);
                 <?php
                 endif;
                 ?>
-                <form action="pricing/choise">
-                    <input type="hidden" value="<?=$v->id;?>">
+                <form action="pricing/choise" method="post">
+                    <input type="hidden" name="id" value="<?=$v->id;?>">
                     <input type="submit" value="Choisissez ce plan">
                 </form>
             </div>
@@ -129,3 +132,8 @@ debug($plan, false);
         ?>
     </div>
 </section>
+<?php
+else:
+    Notification::infos('Aucune donnée, en base de donnée', constant('INFO'));
+endif;
+?>

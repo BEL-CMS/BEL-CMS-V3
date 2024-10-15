@@ -1,0 +1,27 @@
+/* TEAM */
+	BEL-CMS
+	Contact: admin [at] bel-cms.dev
+	Meta: https://www.facebook.com/Bel.CMS
+	From: Belgium
+
+	Developper: Determe Stive
+	Contact: Stive [at] determe.be
+	From: Belgium
+
+	Designer: themforest kwst
+	Last update: 19 February 2024
+	From: Ukraine
+                   [...]					
+/* THANKS */					
+    Name: https://palacewar.eu
+    Name: https://bel-cms.dev
+    Name: https://determe.be
+    NAME: https://www.aseh.be
+                   [...]                         
+/* SITE */                        
+	Last update: 19 February 2024
+                   [...]
+/* Software */  
+	Standards: HTML5, CSS3, PHP 8.3
+	Components: jQuery, jQuery Ui, bootstrap 5
+	Software: Visual Studio Code used for the development

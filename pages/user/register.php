@@ -34,31 +34,32 @@ endif;
 					</div>
 					<form id="Login" action="/User/SendRegister" method="post">
 						<div class="form-group">
-							<input name="email" type="email" class="form-control" id="inputEmail" placeholder="Email">
+							<input name="email" type="email" class="form-control" id="inputEmail" placeholder="Email" required>
 						</div>
 						<div class="form-group">
-							<input name="username" type="text" class="form-control" id="inputEmail" placeholder="Username">
+							<input name="username" type="text" class="form-control" id="inputEmail" placeholder="Username" required>
 						</div>				
 						<div class="form-group">
-							<input name="passwordhash" type="password" class="form-control" id="inputPassword" placeholder="Password">
+							<input name="passwordhash" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
 						</div>
 						<div class="form-group">
-							<input name="passwordrepeat" type="password" class="form-control" id="inputPassword" placeholder="Repeat Password">
+							<input name="passwordrepeat" type="password" class="form-control" id="inputPassword" placeholder="Repeat Password" required>
 						</div>
 						<div class="input-group form-group">
 							<div class="input-group">
-								<div id="code"><?php echo $captcha['code'];?></div>
-								<select name="query_register" require id="patcha_id">
-									<option>==-- Veuillez choisir le bon nombre -- ==</option>
-									<?php
-									shuffle($captcha);
-									foreach ($captcha as $key => $value) {
-										?>
-										<option value="<?=$value;?>"><?=$value;?></option>
-										<?php
-									}
+								<div id="code"><?php echo $_SESSION['CAPTCHA']['CODE'];?></div>
+								<legend>Sélectionner la réponse:</legend>
+								<?php
+								shuffle($captcha);
+								foreach ($captcha as $key => $value) {
 									?>
-								</select>
+									<div class="form-check form-switch">
+										<input name="query_register" value="<?=$value;?>" class="form-check-input" type="checkbox" id="<?=$value;?>">
+										<label class="form-check-label" for="<?=$value;?>"><?=$value;?></label>
+									</div>
+									<?php
+								}
+								?>
 							</div>
 						</div>
 						<div class="form-group">

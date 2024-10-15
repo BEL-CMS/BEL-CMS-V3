@@ -30,15 +30,9 @@ endif;
         <?php
         foreach ($data as $v):
         ?>
-        <li id="section_gallery_content">
-            <span class="section_gallery_title_img"><a data="#img_<?=$v->id;?>" href="<?=$v->image;?>" class="glightbox"><img src="<?=$v->image;?>"><div id="img_<?=$v->id;?>" class="section_gallery_title_bg">Ouvrir</div></a></span>
-            <span class="section_gallery_title_name"><h3><?=$v->name;?></h3></span>
-            <span class="section_gallery_title_desc"><?=$v->description;?></span>
-            <span class="section_gallery_title_date"><?=Common::TransformDate($v->date_insert, 'FULL', 'NONE');?><br><?=Common::TransformDate($v->date_insert, 'NONE', 'LONG');?></span>
-            <span class="section_gallery_title_vote"><a href="gallery/addvote/<?=$v->id;?>"><i class="fa-regular fa-thumbs-up"></i></a><br>
-            <span>+ <?=$v->vote;?> Vote</span></span>
-        </span>
-        </li>
+        <div class="section_gallery_title_row">
+            <img src="<?=$v->image;?>" alt="<?=$v->name;?>">
+        </div>
         <?php
         endforeach;
         ?>

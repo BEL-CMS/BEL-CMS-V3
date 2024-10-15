@@ -1,0 +1,30 @@
+/* counter area ---------------------*/
+.counter-sec {
+    &.style3 {
+        padding: 0;
+
+        .th-counterup {
+            padding: 40px 70px 40px 0px;
+            @include sm {
+                padding: 40px;
+            }
+            @media(max-width: 480px) {
+                padding: 20px 40px; 
+            }
+
+            .content .counter { 
+                font-size: 64px;
+                line-height: 74px;
+                @include xl {
+                    font-size: 54px;
+                    line-height: 64px; 
+                    margin-top: 0;
+                }
+                @include sm {
+                    font-size: 34px;
+                    line-height: 44px; 
+                }
+            }
+        }
+    }
+}

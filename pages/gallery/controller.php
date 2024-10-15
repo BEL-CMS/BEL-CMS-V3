@@ -17,6 +17,7 @@ use BelCMS\Core\Config;
 use BelCMS\Core\Secures;
 use BelCMS\Requires\Common;
 use BelCMS\User\User;
+use GetHost;
 
 if (!defined('CHECK_INDEX')):
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -123,8 +124,11 @@ class Gallery extends Pages
 
         $post['name']        = Common::VarSecure($_POST['name']);
         $post['description'] = Common::VarSecure($_POST['text']);
-        $post['uploader']    = $_SESSION['USER']->user->hash_key;
-        $post['valid']       = 0;
+        if (User::isLogged() == true) {
+            $post['author'] = $_SESSION['USER']->user->hash_key;
+        } else {
+            $post['author'] = Common::GetIp();
+        }
         
         if (isset($_FILES['file'])):
             $image = Common::Upload('file', 'uploads/gallery/tmp/', array('.png', '.gif', '.jpg', '.jpeg', '.ico', '.tif', '.eps', '.svg'));

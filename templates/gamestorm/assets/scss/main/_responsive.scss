@@ -1,0 +1,733 @@
+// Responsive Area
+@media (max-width: 1799px) {
+	.header-section.header-menu .single-item.cart-area {
+		padding-left: 30px;
+	}
+	.banner-section .shape-area .shape-1 {
+		width: 8%;
+	}
+	.banner-section.index .overlay::after {
+		left: 25%;
+	}
+	.our-games::before, .our-games::after {
+		width: 350px;
+		height: 230px;
+		background-size: 90%;
+		top: 20%;
+	}
+	.our-focus .shape-area .shape-1 {
+		top: 0;
+	}
+	.our-gaming-community .community-box .community-area .community-item img {
+		width: 65%;
+	}
+	.our-games.top-features {
+		&::before, &::after {
+			display: none;
+		}
+	}
+}
+
+@media (max-width: 1699px) {
+	.about-block .shape-area img.shape-2{
+		right: 0;
+	}
+	.banner-section.about {
+		background-size: 50%;
+	}
+	.banner-section.about .shape-area .shape-2 {
+		top: 5%;
+	}
+	.our-gaming-community .community-box .community-area .community-item img {
+		width: 55%;
+	}
+	.banner-section.pricing-plan{
+		background-position: left;
+		background-size: cover;
+	}
+}
+
+@media (max-width: 1599px) {
+	.banner-section.index::before {
+		right: 8%;
+	}
+	.banner-section.index::after {
+		right: 4%;
+	}
+	.sidebar-wrapper .side-menubar {
+		width: 40px;
+	}
+}
+
+@media (max-width: 1499px) {
+	.sidebar-wrapper .sidebar-content {
+		left: 40px;
+		width: 100%;
+	}
+	.gaming-character.ongoing-values .slick-arrow.bottom-right.arafat-next {
+		left: 19%;
+	}
+}
+
+@media (max-width: 1399px) {
+	.life-gamestorm .post-img{
+		width: 100% !important;
+		.single{
+			flex: 0 0 calc(50% - 6px);
+		}
+	}
+	.banner-section.index-two .shape-area .shape-2 {
+		top: 0;
+	}
+	.banner-section.index-three .sec-image img {
+		max-width: 55%;
+	}
+	.our-games .thumb-img {
+		margin-bottom: 0;
+	}
+	.banner-section.game-details .banner-content {
+		padding: 340px 0 180px;
+	}
+	.shop-details .shop-section::before {
+		width: 74%;
+	}
+}
+
+@media (max-width: 1199px) {
+	h1, h1>a {
+		font-size: 57px;
+		line-height: 74.1px;
+	}
+	h2, h2>a {
+		font-size: 43px;
+		line-height: 55.9px;
+	}
+	.preloader {
+		background-size: 30%;
+	}
+	.scrollToTop {
+		right: -15px;
+	}
+	.sidebar-wrapper.sidebar-active .sidebar-content .navbar-nav {
+		gap: 20px !important;
+	}
+	.sidebar-wrapper .sidebar-content{
+		position: absolute;
+		z-index: 9999;
+		left: 100px;
+		top: 70px;
+		height: calc(100vh - 70px);
+		overflow: scroll;
+		overflow-x: hidden;
+		padding-bottom: 0;
+	}
+	.sidebar-wrapper .side-menubar {
+		position: absolute;
+		top: 70px;
+		width: 100px;
+		height: calc(100vh - 70px);
+	}
+	.sidebar-wrapper{
+		position: fixed;
+		width: 100%;
+		z-index: 5;
+		.side-menubar{
+			opacity: 0;
+			transform: translateX(-100px);
+			transition: 0.5s;
+		}
+		&.active-mobile{
+			.side-menubar{
+				opacity: 1;
+				transform: translateX(0);
+				transition: 0.5s;
+			}
+		}
+		.header-section {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: calc(100vh - 230px);
+			z-index: 999;
+			background-color: var(--body-color);
+			display: flex !important;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+	.mobile-menu{
+		span{
+			font-size: 12px;
+		}
+		i{
+			color: var(--n0);
+		}
+	}
+	.header-section .navbar .navbar-nav {
+		li {
+			position: initial !important;
+		}
+		ul {
+			position: initial !important;
+		}
+	}
+	.header-section.header-menu .single-item.cart-area {
+		padding-left: 0;
+	}
+	.sidebar-wrapper #navbar-clone .navbar-nav{
+		display: flex !important;
+	}
+	.header-section .navbar {
+		width: 80%;
+		.navbar-nav {
+			overflow: auto;
+			top: 50px;
+			position: sticky;
+			flex-direction: column !important;
+			max-height: 40vh;
+			width: 80%;
+		}
+	}
+	.header-section .navbar .navbar-nav li {
+		button{
+			justify-content: center !important;
+			align-items: center !important;
+		}
+		a{
+			justify-content: start !important;
+			align-items: center !important;
+		}
+		ul li{
+			button, a{
+				justify-content: start !important;
+				align-items: start !important;
+			}
+		}
+	}
+	.header-section .navbar .navbar-nav a{
+		justify-content: start !important;
+		align-items: start !important;
+	}
+	.header-section .navbar .navbar-nav button{
+		display: inline-flex !important;
+	}
+	.sidebar-wrapper .sidebar-content .footer-items {
+		overflow: auto;
+		overflow-x: hidden;
+	}
+	.banner-section .shape-area .shape-2 {
+		left: calc(50% - 220px);
+		bottom: 5%;
+	}
+	.about-block .shape-area img.shape-2{
+		bottom: 5%;
+	}
+	.our-games.index-two{
+		&::after, &::before{
+			display: none;
+		}
+	}
+	.our-games .shape-area img.shape-1 {
+		top: 12%;
+		left: 2%;
+		width: 10%;
+	}
+	.recently-completed .slick-double-dots {
+		width: 230px;
+	}
+	.gaming-character .section-dots {
+		width: 85%;
+	}
+	.banner-section.index-one::before {
+		right: -2%;
+	}
+	.banner-section.index-one::after {
+		right: -5%;
+	}
+	.gaming-character.ongoing-values .slick-arrow.bottom-right.arafat-prev {
+		left: 14%;
+	}
+	.our-focus .shape-area img {
+		display: none;
+	}
+	.our-gaming-community .community-box .community-area .community-item img {
+		width: 40%;
+	}
+	.our-focus.game-trailers{
+		.circle-text {
+			width: 200px;
+			height: 200px;
+			.box-style.btn-box-second {
+				width: 80px;
+				height: 80px;
+			}
+			.text {
+				span {
+					font-size: 14px;
+					transform-origin: 0 90px;
+				}
+				p {
+					transform: translate(50%, 10px);
+				}
+			}
+		}
+	}
+	.our-focus::before {
+		height: 80%;
+	}
+	.shop-details .shop-section::before {
+		width: 70%;
+	}
+	.banner-section.store .shape-area .shape-2 {
+		top: 5%;
+		width: 100px;
+	}
+}
+
+@media (max-width: 991px) {
+	// Normalize
+	.display-one {
+		font-size: 72px;
+		line-height: 86.4px;
+	}
+	
+	.display-two {
+		font-size: 64px;
+		line-height: 76.8px;
+	}
+	
+	.display-three {
+		font-size: 56px;
+		line-height: 67.2px;
+	}
+	
+	.display-four {
+		font-size: 48px;
+		line-height: 46.4px;
+	}
+	
+	.display-five {
+		font-size: 42px;
+		line-height: 54.6px;
+	}
+	
+	.display-six {
+		font-size: 32px;
+		line-height: 38.4px;
+	}
+	
+	.fs-one,
+	h1,
+	h1 > a {
+		font-size: 40px;
+		line-height: 48px;
+	}
+	
+	.fs-two,
+	h2,
+	h2 > a {
+		font-size: 32px;
+		line-height: 38.4px;
+	}
+	
+	.fs-three,
+	h3,
+	h3 > a {
+		font-size: 24px;
+		line-height: 31.2px;
+	}
+	
+	.fs-four,
+	h4,
+	h4 > a {
+		font-size: 20px;
+		line-height: 26px;
+	}
+	
+	.fs-five,
+	h5,
+	h5 > a {
+		font-size: 16px;
+		line-height: 20.8px;
+	}
+	
+	.fs-six,
+	h6,
+	h6 > a {
+		font-size: 14px;
+		line-height: 18.8px;
+	}
+	
+	.fs-seven {
+		font-size: 13px;
+		line-height: 18.8px;
+	}
+	
+	table thead tr th {
+		font-size: 15px;
+		line-height: 20.8px;
+	}
+	
+	a,
+	p,
+	span,
+	label,
+	li {
+		font-size: 14px;
+		line-height: 22px;
+	}
+
+	.banner-section.about {
+		background-image: none;
+	}
+	.section-header {
+		margin-bottom: 40px;
+	}
+	
+	.title {
+		margin-bottom: 20px;
+	}
+
+	.sidebar-wrapper .sidebar-content .footer-items {
+		height: 30vh;
+	}
+
+	.banner-section .overlay .sec-img{
+		display: none;
+	}
+	.banner-section .overlay .banner-content {
+		padding: 160px 0 110px;
+	}
+	.banner-section.inner-banner .banner-content {
+		padding: 160px 0 100px;
+	}
+	.sec-img {
+		text-align: center;
+		margin-top: 30px;
+		max-width: 65%;
+		img{
+			max-width: 100% !important;
+		}
+	}
+	.banner-section.index::after,
+	.banner-section.index::before {
+		display: none;
+	}
+	.banner-section .shape-area .shape-3 {
+		left: initial;
+		width: 30%;
+		right: 0;
+	}
+	.banner-section .shape-area .shape-2 {
+		left: initial;
+		right: 0;
+	}
+	.banner-section.index .overlay::after {
+		left: 44%;
+	}
+	.banner-section .ellipse-area.ellipse-one {
+		top: 1%;
+		left: 15%;
+	}
+	.banner-section .ellipse-area.ellipse-two {
+		top: 2%;
+		left: 0;
+	}
+	.call-to-action .video-bg span {
+		width: 100px;
+		height: 100px;
+	}
+	.banner-section.index-two.index-three .overlay .banner-content {
+		padding: 160px 0 110px;
+	}
+	.banner-section.index-two .overlay .banner-content {
+		padding: 160px 0 0;
+	}
+	.banner-section.index-two .btn-item {
+		i{
+			right: 5%;
+		}
+		a {
+			letter-spacing: 1px;
+			&:hover span {
+				letter-spacing: 5px;
+			}
+		}
+	}
+	.about-block .shape-area img.shape-1 {
+		top: 5%;
+		left: 0;
+		width: 10%;
+	}
+	.our-games .feature-tag.start {
+		left: 15px;
+	}
+	.box-style.btn-box-second {
+		height: 60px;
+		width: 60px;
+	}
+	.our-games .thumb-img {
+		clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
+	}
+	.recently-completed .cus-position{
+		position: initial !important;
+		margin-top: -40px;
+	}
+	.banner-section.index-three .sec-image img {
+		display: none;
+	}
+	.gaming-character .section-dots {
+		width: 75%;
+	}
+	.gaming-character.ongoing-values .slick-arrow.bottom-right.arafat-prev {
+		left: 13%;
+	}
+	.call-to-action .about .video-bg span {
+		width: 60px;
+		height: 60px;
+	}
+	.our-gaming-community .community-box .community-area .community-item img {
+		width: 30%;
+	}
+	.banner-section.inner-banner.game-details .banner-content {
+		padding: 70px 0 100px;
+	}
+	.our-focus.game-trailers{
+		.circle-text {
+			width: 100px;
+			height: 100px;
+			.box-style.btn-box-second {
+				width: 60px;
+				height: 60px;
+			}
+			.text {
+				span {
+					font-size: 10px;
+					transform-origin: 0 50px;
+				}
+				p {
+					transform: translate(50%, 0);
+				}
+			}
+		}
+	}
+	.services .single-box:hover .abs-area{
+		width: 80px;
+		height: 80px;
+	}
+	.shop-details .shop-section::before {
+		width: 62%;
+	}
+}
+
+@media (max-width: 767px) {
+	.input-area {
+		padding: 15px 10px;
+	}
+	.banner-section .shape-area .shape-2 {
+		bottom: 15%;
+	}
+	.our-games .nav button {
+		width: 45px;
+		height: 45px;
+	}
+	.our-games .tab-content li::before {
+		right: -10px;
+	}
+	.call-to-action .video-bg span {
+		width: 75px;
+		height: 75px;
+	}
+	.scrollToTop {
+		right: -30px;
+	}
+	.gaming-character.ongoing-values .slick-arrow.slick-arrow {
+		display: none !important;
+	}
+	.gaming-character .slick-track {
+		padding-bottom: 40px;
+	}
+	.gaming-character.our-story .section-dots {
+		width: 75%;
+	}
+	.gaming-character.our-story .slick-track {
+		padding-bottom: 60px;
+	}
+	.our-gaming-community .main-content {
+		width: 380px;
+		height: 380px;
+	}
+	.our-gaming-community .community-box .community-area .community-item img {
+		width: 25%;
+	}
+	.our-focus::before {
+		height: 90%;
+	}
+	.our-game-features.benefits .icon-box {
+		min-width: 45px;
+		height: 45px;
+	}
+	.store .single-box{
+		display: inline-flex !important;
+		.box-style.btn-box {
+			padding: 10px 12px;
+		}
+	}
+	.shop-details .shop-section::before {
+		width: 48%;
+	}
+	.our-games .tabcontents li::before {
+		right: -10px;
+	}
+	.recently-completed.blog-section .comment-form .box-style {
+		width: 55px;
+		height: 55px;
+	}
+}
+
+@media (max-width: 575px) {
+	.display-one {
+		font-size: 56px;
+		line-height: 67.2px;
+	}
+	
+	.display-two {
+		font-size: 48px;
+		line-height: 46.4px;
+	}
+	
+	.display-three {
+		font-size: 42px;
+		line-height: 54.6px;
+	}
+	
+	.display-four {
+		font-size: 32px;
+		line-height: 38.4px;
+	}
+	
+	.display-five {
+		font-size: 24px;
+		line-height: 31.2px;
+	}
+	
+	.display-six {
+		font-size: 32px;
+		line-height: 38.4px;
+	}
+	
+	.section-header {
+		margin-bottom: 35px;
+	}
+	.title {
+		margin-bottom: 15px;
+	}
+	.sub-title {
+		margin-bottom: 14px;
+	}
+
+	.slick-double-dots {
+		bottom: 30px;
+		right: 55px;
+	}
+	.call-to-action {
+		background-size: 20%;
+		.video-bg span {
+			width: 65px;
+			height: 65px;
+		}
+	}
+	.gaming-character.our-story .single-area .year-box {
+		min-width: 80px;
+		height: 80px;
+	}
+	.gaming-character.our-story .section-dots {
+		width: 65%;
+	}
+	.our-gaming-community .community-box .community-area .community-item img {
+		width: 15%;
+	}
+	.header-section.header-menu .single-item .main-area {
+		right: -130px;
+		min-width: 300px;
+	}
+	.how-it-works .abs-area {
+		right: 0;
+	}
+	.store .single-box img{
+		width: 100px;
+	}
+}
+
+@media (max-width: 480px) {
+	.sidebar-wrapper .side-menubar {
+		width: 50px;
+	}
+	.sidebar-wrapper .sidebar-content {
+		left: 50px;
+	}
+	.banner-section .col-10{
+		width: 100% !important;
+	}
+	.call-to-action .video-bg span {
+		width: 50px;
+		height: 50px;
+	}
+	.footer-section .social-items li{
+		span{
+			display: none;
+		}
+		i{
+			font-size: 20px;
+		}
+	}
+	.our-games .shape-area img.shape-1 {
+		display: none;
+	}
+	.feature-tag {
+		width: 60px;
+		height: 85px;
+		font-size: 12px;
+	}
+	.our-games.all-games .col-8{
+		width: 100% !important;
+	}
+	.team-members .col-6{
+		width: 80% !important;
+	}
+	.gaming-character .section-dots {
+		width: 60%;
+	}
+	.banner-section.index-one::before,
+	.banner-section.index-one::after {
+		display: none;
+	}
+	.sidebar-wrapper .sidebar-content .header-fixed, .sidebar-wrapper .sidebar-content .header-section {
+		justify-content: start;
+	}
+	.header-section .navbar .navbar-nav{
+		width: 100%;
+	}
+	.our-gaming-community .main-content {
+		width: 290px;
+		height: 290px;
+	}
+	.cart-details .content-box .icon-box img{
+		width: 60px;
+	}
+	.pagination .page-item .page-link {
+		width: 35px;
+		height: 35px;
+		margin: 0 5px;
+	}
+}
+
+@media (max-width: 375px) {
+	.col-6{
+		width: 70% !important;
+	}
+	.shop-details .slider-nav img {
+		height: 80px;
+	}
+}

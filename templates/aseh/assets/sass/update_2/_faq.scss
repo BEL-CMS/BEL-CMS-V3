@@ -1,0 +1,116 @@
+/* faq area ---------------- */
+.faq-image2 {
+    position: relative;
+    margin-right: 110px;
+    z-index: 2;
+
+    &.style2 {
+        margin-right: 0;
+
+        @media(max-width: 1399px) {
+            margin-right: 50px;
+        }
+        @media(max-width: 320px) { 
+           margin-right: 0;
+        }
+
+        .faq-shape {
+            @include xl {
+                width: 545.25px;
+            }
+
+            @include sm {
+                width: 510px;
+            }
+
+            @media(max-width: 480px) {
+                width: 385px;
+            }
+            @include vxs {
+                width: 330px; 
+            }
+        }
+    } 
+
+    @include lg {
+        margin: 70px 0 0 0;
+    }
+
+    .img1 {
+        img {
+            border-radius: 50%;
+            border: 7px solid $theme-color3;
+        }
+    }
+
+    .faq-shape {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 545.25px;
+
+
+        @include xl {
+            width: 480px;
+        }
+
+        @include lg {
+            width: 540px;
+        }
+
+        @media(max-width: 480px) {
+            width: 440px;
+        }
+
+        @include vxs {
+            width: 388px;
+        }
+
+        @media(max-width: 320px) {
+            width: 328px;
+        }
+
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+        }
+    }
+
+    .th-experience {
+        position: absolute;
+        top: 50%;
+        right: -10%;
+        z-index: 2;
+        border-radius: 50%;
+        background: var(--theme-color);
+        box-shadow: 0px 13px 25px 0px rgba(0, 0, 0, 0.05);
+        width: 207.03px;
+        min-height: 207.03px;
+        color: var(--white-color);
+        text-align: center;
+        padding: 40px 30px 30px 30px;
+
+        @include lg {
+            right: unset;
+            left: 0;
+        }
+
+        .experience-year {
+            font-size: 64px;
+            line-height: 64px;
+            color: $white-color;
+
+        }
+
+        .experience-text {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 26px;
+            color: $white-color;
+            margin-bottom: -0.3rem;
+        }
+    }
+}

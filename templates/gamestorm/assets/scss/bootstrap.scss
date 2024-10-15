@@ -1,0 +1,23 @@
+// Custom.scss
+
+$spacer: 1rem !default;
+$spacers: (
+  0: 0,
+) !default;
+
+@for $i from 1 through 20 {
+    $spacers: map-merge(
+      (
+        $i: (
+          $spacer * $i * 0.25,
+        ),
+      ),
+      $spacers
+    );
+}
+
+// Include any default variable overrides here (though functions won't be available)
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here

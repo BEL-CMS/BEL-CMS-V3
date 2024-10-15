@@ -219,3 +219,74 @@
 #div_captcha {
     margin-top: 45px;
 }
+
+.boutique{ margin:0; padding:0; position:relative; z-index:1; border: none !important; }
+.boutique-frame{ margin:0; padding:0; list-style:none; position:absolute; z-index:1; display:none; border-width:0; }
+.boutique-frame-image{ border:0; vertical-align:bottom; }
+.boutique-frame-title{ cursor:default; }
+.boutique-frame-text{ display:block; position:absolute; left:0; right:0; bottom:0; text-align:left; cursor:default; margin:0; }
+.boutique-frame-link, .boutique-frame-link:hover{ display:block; cursor:default; text-decoration:none; outline:none; }
+.boutique-frame-image, .boutique-frame, .boutique-frame-link{ -webkit-user-select:none; -khtml-user-select:none; -moz-user-select:none; -o-user-select:none; user-select:none; -webkit-user-drag:none; -moz-user-drag:none; user-drag:none; }
+.boutique.rtl .boutique-frame-title, .boutique.rtl .boutique-frame-text{ text-align:right; }
+#boutique,
+.boutique{
+	display: none;
+	margin: 0 auto;
+}
+.boutique-frame{
+	background: #eee3db url('/assets/img/loading_belcms.gif') center no-repeat;
+	border: 1px solid;
+	border-color: #f5eee9 #d0c2b6 #d0c2b6 #f5eee9;
+}
+.boutique-frame-title{
+	margin: 0;
+	line-height: 1.3;
+	font-family: sans-serif;
+	font-weight: normal;
+	color: #222;
+}
+.boutique-frame-text{
+	font-family: Verdana, sans-serif;
+	line-height: 1.2;
+	color: #444;
+	background: #eee3db;
+	margin: 0;
+	padding: 10px 15px 14px;
+}
+.boutique .front .boutique-frame-image{
+	margin: 6px;
+}
+.boutique .front .boutique-frame-title{
+	font-size: 28px;
+}
+.boutique .front .boutique-frame-text{
+	font-size: 14px;
+}
+.boutique .behind .boutique-frame-image{ 
+	margin: 3px;
+}
+.boutique .behind .boutique-frame-title{
+	font-size: 18px;
+}
+.boutique .behind .boutique-frame-text{
+	font-size: 10px;
+}
+.boutique .back .boutique-frame-image{
+	margin: 1px;
+}
+.boutique .back .boutique-frame-title{
+	font-size: 11px;
+}
+.boutique .back .boutique-frame-text{
+	font-size: 6px;
+}
+
+.section_gallery_title_row {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.section_gallery_title_row > img {
+    width: 100%;
+    height: 300px;
+}

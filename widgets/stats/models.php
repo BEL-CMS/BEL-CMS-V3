@@ -69,15 +69,10 @@ class Stats
 
 	function getNbDownloads ()
 	{
-		$count = (int) 0;
 		$sql = new BDD;
 		$sql->table('TABLE_DOWNLOADS');
-		$sql->queryAll();
-	
-		foreach ($sql->data as $view) {
-		   $count += $view->dls ;
-		}
-		return $count;
+		$sql->count();
+		return $sql->data;
 	}
 
 	function getNbUsers ()

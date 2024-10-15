@@ -1,0 +1,247 @@
+.shape-mockup-wrap {
+    z-index: 1; 
+    position: relative;
+}
+
+.shape-mockup {
+    position: absolute;
+    z-index: -1;
+
+    &.hero_wrap {
+        z-index: 1;
+    }
+
+    &.shape-wrapp {
+        z-index: 1; 
+    }
+
+    &.z-index-3 {
+        z-index: 3;
+    }
+}
+
+.z-index-step1 {
+    position: relative;
+    z-index: 4 !important;
+}
+
+.z-index-common {
+    position: relative;
+    z-index: 3;
+}
+
+.z-index-3 {
+    z-index: 3;
+}
+
+.z-index-n1 {
+    z-index: -1;
+}
+
+.media-body {
+    flex: 1;
+}
+
+.badge {
+    position: absolute;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    display: inline-block;
+    text-align: center;
+    background-color: $theme-color;
+    color: $white-color;
+    padding: 0.28em 0.45em;
+    font-size: 8px;
+    border-radius: 50%;
+    top: 18px;
+    right: -10px;
+    min-width: 16px;
+    min-height: 16px;
+    line-height: 12px;
+    font-weight: 400;
+    transition: 0.3s ease-in-out;
+}
+
+.th-social {
+    &.author-social {
+        a {
+            background-color: $smoke-color2;
+            @include equal-size(var(--icon-size, 45px));
+            line-height: var(--icon-size, 45px);
+            font-size: 18px;
+            color: #0A0A0A;
+            transition: 0.4s;
+
+            &:hover {
+                background-color: $theme-color;
+                color: $white-color;
+                transform: rotate(360deg);
+            }
+        }
+
+        .info-title {
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 28px;
+        }
+    }
+
+    a {
+        display: inline-block;
+        @include equal-size(var(--icon-size, 45px));
+        line-height: var(--icon-size, 45px);
+        background-color: $white-color;
+        color: $title-color;
+        font-size: 16px;
+        text-align: center;
+        margin-right: 5px;
+        border-radius: 50%;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            background-color: $theme-color;
+            color: $white-color;
+        }
+    }
+
+    &.style2 {
+        a {
+            font-size: 14px;
+            background-color: $smoke-color; 
+            color: $title-color; 
+            border: 1px solid;
+
+            &:hover {
+                border-color: $theme-color;
+                color: $white-color;
+                background-color: $theme-color;
+            }
+        }
+    }
+
+    &.color-theme {
+        a {
+            color: $body-color;
+            border-color: $theme-color;
+        }
+    }
+}
+
+.slider-shadow {
+    .slick-list {
+        padding-top: 30px;
+        padding-bottom: 30px;
+        margin-bottom: -30px;
+        margin-top: -30px;
+    }
+}
+
+#blog-sec {
+    .btn-group {
+        @include md {
+            margin-bottom: 30px;
+        }
+    }
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 30px;  
+
+
+    @include sm {
+        gap: 20px;
+        // justify-content: center;
+    }
+
+    &.style1 {
+        gap: 30px;
+        align-items: flex-end;
+
+        @include sm {
+            gap: 20px;
+        }
+    }
+
+    &.style2 {
+        margin-top: 50px;
+    }
+
+    &.style3 {
+        justify-content: center;
+    }
+
+    &.style4 {
+        gap: 10px;
+    }
+
+    // &.style6 {
+    //     justify-content: flex-end;
+
+    //     @include md {
+    //         justify-content: center;
+    //         margin-top: 20px;
+    //     }
+    // }
+
+    &.style7 {
+        @include sm {
+            justify-content: center;
+        }
+    }
+
+    &.style8 {
+        justify-content: flex-end;
+        gap: 20px;
+
+        @include lg {
+            justify-content: center;
+        }
+    }
+
+}
+
+.call-btn {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    @include xs {
+        gap: 20px;
+    }
+
+    @media(max-width: 470px) {
+        display: block;
+
+        .th-btn {
+            display: flex;
+            max-width: 204px;
+            margin-bottom: 20px;
+        }
+    }
+
+    &:has(.call-btn) {
+        gap: 50px;
+    }
+
+    .btn-title {
+        font-family: $body-font;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        text-decoration-line: underline;
+        text-transform: uppercase;
+        color: $white-color;
+
+        &:hover {
+            color: $theme-color;
+        }
+    }
+}
+

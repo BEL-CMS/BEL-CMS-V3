@@ -22,21 +22,50 @@ foreach ($news as $k => $v):
         $username = $user->user->username;
         $avatar   = !empty($user->profils->avatar) ? $user->profils->avatar : constant('DEFAULT_AVATAR');
     }
+    if (!empty($v->img)) {
+        $returnImg = '<div class="blog-media">
+                        <div class="single-slider-wrap">
+                                <div class="single-slider">
+                                    <div class="swiper-container">
+                                        <div class="swiper-wrapper lightgallery">
+                                            <div class="swiper-slide hov_zoom">
+                                                <img src="'.$v->img.'" alt="img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+    } else {
+        $returnImg = '';
+    }
+    if (!empty($v->tags)) {
+        $returnTags = '<div class="tagcloud tc_single">';
+        $returnTags .= '<span class="tc_single_title">Tags:</span>';
+        foreach ($v->tags as $key => $value) {
+            $returnTags .= '<a href="#">'.$value.'</a>';
+        }
+        $returnTags .= '</div>';
+    } else {
+        $returnTags = '';
+    }
 ?>
-<div class="post">
-    <div class="post-item fl-wrap">
-        <h4><a href="<?=$v->link;?>"><?=$v->name;?></a></h4>
-        <div class="post-opt single_post-opt">
-            <ul class="no-list-style">
-                <li><i class="fal fa-calendar"></i> <span><?=Common::transformDate($v->date_create, 'MEDIUM', 'NONE')?></span></li>
-                <li><i class="fal fa-eye"></i> <span><?=$v->view;?> Vu</span></li>
-                <li><i class="fal fa-comments"></i> <span><?=$comment;?></span></li>
+<?=$returnImg;?>
+<div class="text-block post-single_tb">
+    <div class="text-block-container">
+        <div class="tbc_subtitle"><?=$v->name;?></div>
+        <div class="room-card-details" style="margin-bottom: 20px">
+            <ul>
+                <li><i class="fa-light fa-calendar-days"></i><span><?=Common::transformDate($v->date_create, 'MEDIUM', 'MEDIUM')?></span></li>
+                <li><i class="fa-light fa-comment"></i><span><?=$comment;?></span></li>
             </ul>
         </div>
         <?=$v->content?>
-        <a href="<?=$v->link;?>" class="btn hide-icon ajax"><i class="fas fa-caret-right"></i><span>Details +</span></a> 
     </div>
-</div>
+    <div class="tbc-separator"></div>
+    <?=$returnTags;?>
+</div> 
 <?php
 endforeach;
 ?>

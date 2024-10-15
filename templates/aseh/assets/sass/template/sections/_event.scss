@@ -1,0 +1,94 @@
+/* Event 1 ---------------------------------- */
+.event-card {
+    background-color: $white-color;
+    box-shadow: 0px 4px 15px rgba(1, 15, 28, 0.06);
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 55px;
+    &_img {
+        img {
+            width: 100%;
+        }
+    }
+    &_title {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 20px 0 5px 0;
+        a {
+            color: inherit;
+            &:hover {
+                color: $theme-color;
+            }
+        }
+    }
+    &_shape {
+        margin-bottom: 20px;
+    }
+    &_date, 
+    &_time {
+        display: block;
+    }
+    &_time {
+        margin-bottom: 15px;
+    }
+    &_text {
+        max-width: 290px;
+        margin: 0 auto 16px auto;
+    }
+    &_flower {
+        margin-bottom: -85px;
+        margin-top: 26px;
+    }
+}
+
+.event-img-sec {
+    height: 600px;
+    margin-bottom: -310px;
+}
+
+@include lg {
+    .event-card_title {
+        font-size: 26px;
+    }
+}
+
+@include lg {
+    .event-img-sec {
+        height: 400px;
+        margin-bottom: -180px;
+    }
+}
+
+/* Event 1 ---------------------------------- */
+.event-box {
+    position: relative;
+    &_img {
+        margin-bottom: 25px;
+        img {
+            width: 100%;
+        }
+    }
+    &_title {
+        margin-bottom: 0;
+    }
+    &_subtitle {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+    .icon-btn {
+        --btn-size: 50px;
+        position: absolute;
+        bottom: 7px;
+        right: 0;
+        border-color: $theme-color;
+        background-color: $white-color;
+        color: $body-color;
+        &:hover {
+            background-color: $theme-color;
+            color: $white-color;
+        }
+    }
+}

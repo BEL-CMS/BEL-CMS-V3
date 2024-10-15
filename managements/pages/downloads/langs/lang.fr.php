@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -41,5 +41,6 @@ Common::constant(array(
 	'DOWNLOAD_ACTIVE'       => 'Téléchargement actif',
 	'DOWNLOAD_PAGE_ACTIVE'  => 'Activer la page téléchargements',
 	'NB_DL'                 => 'Nombre de téléchargement',
+	'ADD_FILE_ERROR'        => 'Erreur lors de l\'upload',
 	
 ));

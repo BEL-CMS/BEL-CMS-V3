@@ -28,6 +28,8 @@ endif;
 # id, name, cat_1, cat_2, cat_3 
 # cat_4, cat_5
 #####################################
+# TABLE_PRICING_SALES
+# author, date_insert, plan, sales, type, verif 
 final class Pricing
 {
 	#####################################
@@ -62,5 +64,32 @@ final class Pricing
             
         }
         return $return;
+    }
+
+	public function bank ()
+	{
+		$sql  = New BDD;
+		$sql->table('TABLE_DONATIONS');
+		$sql->where(array('name' => 'id', 'value' => 1));
+		$sql->queryOne();
+		return $sql->data;
+	}
+
+    public function preorder ($id, $price)
+    {
+        $insert['author'] = $_SESSION['USER']->user->hash_key;
+        $insert['plan']   = $id;
+        $insert['sales']  = $price;
+        $sql = new BDD;
+        $sql->table('TABLE_PRICING_SALES');
+        $sql->insert($insert);
+		if ($sql->rowCount == 1) {
+			$return['text']  = constant('PREORDER_SUCCESS');
+			$return['type']  = 'success';
+		} else {
+			$return['text']  = constant('PREORDER_ERROR');
+			$return['type']  = 'error';
+		}
+		return $return;
     }
 }

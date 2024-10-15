@@ -136,12 +136,24 @@ section#belcms_section_mails nav ul li div svg {
 }
 #belcms_section_mails_msg > h3 {
 	background-color: #FFF;;
-	display: block;
 	border: 1px solid #eee;
 	border-radius: 10px;
 	margin: 0 20px 20px 20px;
 	padding: 20px;
 	font-weight: bold;
+	display: block;
+	overflow: hidden;
+}
+#belcms_section_mails_msg > h3 a.red {
+	font-size: 16px;
+	color: red;
+	float: right;
+	margin: 0 15px;
+}
+#belcms_section_mails_msg > h3 a.blue {
+	float: right;
+	font-size: 16px;
+	color: blue;
 }
 .belcms_section_mails_list {
 	display: block;
@@ -168,6 +180,13 @@ section#belcms_section_mails nav ul li div svg {
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
+}
+.belcms_section_mails_list > a input {
+	display: inline-block;
+	margin-right: 5px;
+	height: 20px;
+	width: 20px;
+	vertical-align: text-bottom;
 }
 .belcms_section_mails_list_name {
 	font-weight: bold;
@@ -233,3 +252,4 @@ section#belcms_section_mails nav ul li div svg {
 	display: block;
 	margin: 0 20px;
 }
+

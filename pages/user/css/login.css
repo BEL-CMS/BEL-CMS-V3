@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap');
+@font-face {
+    font-family: 'captcha';
+    src: url('/pages/captcha/captcha.ttf');
+}
 /** LOGIN **/
 html {
 	margin: 0;
@@ -245,14 +249,7 @@ button i {
 	margin-bottom: 5px;
 	color: rgba(0, 0, 0, 1);
 	font-size: 24px;
-	font-family: "Handjet", sans-serif;
-	font-optical-sizing: auto;
-	font-weight: bold;
-	font-style: normal;
-	font-variation-settings:
-	  "ELGR" 1,
-	  "ELSH" 2;
-  }
+	font-family: 'captcha';
 }
 #patcha_id {
 	display: block;
@@ -268,4 +265,17 @@ button i {
 	margin-top: 50px !important;;
 	padding: 10px 15px !important;
 	width: 100% !important;
+}
+.form-check {
+	display: block;
+	width: 100%;
+}
+.form-check-input {
+	margin: 0 15px;
+	border-radius: 50%;
+}
+.label {
+	display: block;
+	float: left;
+	line-height: 20px;
 }

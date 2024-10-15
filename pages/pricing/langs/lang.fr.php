@@ -21,5 +21,15 @@ Common::constant(array(
 	#####################################
 	# Fichier lang en français - Pricing
 	#####################################
-	'PRICE' => 'Prix',
+	'PRICE'                 => 'Prix',
+    'BIC'                   => 'BIC',
+    'ACCOUNT_NUMBER'        => 'N° de Compte',
+    'COMMUNICATION'         => 'Communication',
+	'FIRST_NAME_PSEUDO'     => 'Pseudo / Prénom',
+    'LAST_NAME'             => 'Nom de famille',
+    'EMAIL_ADRESS'          => 'Adresse e-mail',
+	'ADRESS_POSTAL'         => 'Adresse postal',
+    'PREORDER_SUCCESS'      => 'PréCommande éffectué avec succès',
+    'PREORDER_ERROR'        => 'PreCommande annulé, contacté un administrateur',
+
 )); 

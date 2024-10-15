@@ -1,0 +1,335 @@
+/* hero area  */
+.hero-7 {
+    .th-hero-slide {
+        position: relative;
+        clip-path: path("M1920 1.98158e-05L0 0V750.5C58.2084 791.575 80.2368 807.448 101.978 823.114C123.99 838.975 145.707 854.623 204.38 896H206.14C646.14 727.297 1268.36 727.297 1708.36 896H1710.12C1768.08 855.131 1791.34 839.363 1814.44 823.698C1837.83 807.839 1861.07 792.085 1920 750.5V1.98158e-05Z");
+
+        @media(min-width: 1930px) {
+            clip-path: path("M1920 1.98158e-05L0 0V750.5C58.2084 791.575 80.2368 807.448 101.978 823.114C123.99 838.975 145.707 854.623 204.38 896H206.14C646.14 727.297 1268.36 727.297 1708.36 896H1710.12C1768.08 855.131 1791.34 839.363 1814.44 823.698C1837.83 807.839 1861.07 792.085 7520 750.5V1.98158e-05Z");
+        }
+
+        // &:before {
+        //     content: "";
+        //     position: absolute;
+        //     width: 100%;
+        //     height: 300px;
+        //     left: 0;
+        //     bottom: -90px;
+        //     background-color: $white-color;
+        //     clip-path: path("M207.085 211C692.033 28.1102 1227.97 28.1102 1712.92 211C1842.12 121.599 1887.79 89.9889 2017 0.527344V211H1712.92H207.085H-97V0.527344C32.2055 89.9889 77.8793 121.599 207.085 211Z");
+        //     z-index: 2;
+        // }
+    }
+
+    .th-hero-bg {
+        &:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-color: rgba(1, 15, 52, 0.8);
+        }
+    }
+
+    .bubble-1 {
+        bottom: -5px;
+        left: 68%;
+        animation: bubble-animation2 4.5s infinite ease-in -6.57s
+    }
+
+    .bubble-2 {
+        bottom: -71px;
+        left: 97%;
+        animation: bubble-animation 4.5s infinite ease-in -5.07s
+    }
+
+    .bubble-3 {
+        bottom: -71px;
+        left: 43%;
+        animation: bubble-animation2 4.5s infinite ease-in -6.73s
+    }
+
+    .bubble-4 {
+        bottom: -3.8px;
+        left: 82%;
+        animation: bubble-animation2 4.5s infinite ease-in -4.04s
+    }
+
+    .bubble-5 {
+        bottom: -73.4px;
+        left: 29%;
+        animation: bubble-animation2 4.5s infinite ease-in -3.11s
+    }
+
+    .bubble-6 {
+        bottom: -71px;
+        left: 41%;
+        animation: bubble-animation2 4.5s infinite ease-in -5.95s
+    }
+
+    .bubble-7 {
+        bottom: -79.4px;
+        left: 14%;
+        animation: bubble-animation2 4.5s infinite ease-in -3.68s
+    }
+
+    .bubble-8 {
+        bottom: -115.4px;
+        left: 90%;
+        animation: bubble-animation2 4.5s infinite ease-in -3.89s
+    }
+
+    .bubble-9 {
+        bottom: -44.6px;
+        left: 33%;
+        animation: bubble-animation2 4.5s infinite ease-in -1.09s
+    }
+
+    .bubble-10 {
+        bottom: -6.2px;
+        left: 59%;
+        animation: bubble-animation2 4.5s infinite ease-in -.96s
+    }
+
+    .hero-shape {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .hero-shape2 {
+        position: absolute;
+        left: 0;
+        bottom: -12px;
+    }
+}
+
+.hero-style7 {
+    padding: 194px 0 326px 0;
+    text-align: center;
+    max-width: 1030px;
+    display: block;
+    margin: auto;
+
+    @include sm {
+        padding: 120px 0 120px 0;
+    }
+
+    .hero-subtitle {
+        color: $theme-color3;
+
+        &:before,
+        &:after {
+            display: none;
+        }
+    }
+
+    .hero-title {
+        .title-bg {
+            font-family: $body-font;
+            text-transform: capitalize;
+            color: $theme-color;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: $white-color;
+
+        }
+
+        @include xs {
+            font-size: 40px;
+            line-height: 50px;
+        }
+    }
+
+    .hero-text {
+        color: $white-color;
+        max-width: 704px;
+        display: block;
+        margin: auto auto 35px auto;
+    }
+
+}
+
+.animation-bubble.style5 div[class^=bubble-] {
+    background: url(../img/update_3/shape/hero-bubble_1.png) no-repeat center center;
+    background-size: cover;
+    opacity: 0.1;
+}
+
+.marquee-section {
+    padding: 40px 0;
+}
+
+.marquee-wrapper {
+    .marquee {
+        position: relative;
+        --duration: 120s;
+        --gap: 0px;
+        display: -ms-flexbox;
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        gap: var(--gap);
+
+        &:first-child {
+            --duration: 100s;
+        }
+
+        &:last-child {
+            --duration: 80s;
+        }
+
+        &.marquee--reverse {
+            .marquee-group {
+                animation-direction: reverse;
+            }
+        }
+
+        .marquee-group {
+            -ms-flex-negative: 0;
+            flex-shrink: 0;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-pack: distribute;
+            justify-content: space-around;
+            gap: var(--gap);
+            min-width: 100%;
+            animation: scroll var(--duration) linear infinite;
+
+            .text {
+                font-family: $title-font;
+                font-weight: 600;
+                font-size: 30px;
+                line-height: 40px;
+                text-transform: uppercase;
+                color: $white-color;
+                padding: 6px 30px;
+                margin: 8px 5px;
+                display: inline-block;
+                cursor: pointer;
+                transition: all 0.4s ease-in-out;
+
+                &.style2 {
+                    font-family: $body-font;
+                    font-weight: 600;
+                    font-size: 30px;
+                    line-height: 40px;
+                    text-transform: uppercase;
+                    color: $theme-color;
+                    -webkit-text-fill-color: transparent;
+                    -webkit-text-stroke-width: 1px;
+                    -webkit-text-stroke-color: $white-color;
+                }
+
+                img {
+                    margin-right: 20px;
+                }
+            }
+        }
+    }
+}
+
+/* hero 8 ---------------------------- */
+.hero-8 {
+    position: relative;
+
+    .th-hero-bg {
+        background-size: auto;
+        background-position: top right;
+
+        .hero-shape {
+            position: absolute;
+            width: 62%;
+            height: 800px;
+            left: 0px;
+            top: 0;
+            background: #F5F7FA;
+            border-radius: 0px 600px 600px 0px;
+            background-repeat: no-repeat;
+
+            @media(min-width: 1930px) {
+                width: 70%;
+            }
+
+            @media(max-width: 1699px) {
+                width: 70%;
+            }
+
+            @include xl {
+                width: 75%;
+            }
+
+            @include lg {
+                width: 90%;
+                border-radius: 0px 400px 400px 0px;
+            }
+
+            @include md {
+                border-radius: 0px 200px 200px 0px;
+            }
+
+            @include sm {
+                background-image: none !important;
+                width: 95%;
+            }
+            @include vxs {
+                width: 100%;
+                border-radius: 0; 
+            }
+        }
+    }
+
+
+}
+
+.hero-style8 {
+    padding: 200px 0 266px 0;
+    max-width: 747px;
+    @include md {
+        padding: 150px 0 190px 0;
+        max-width: 100%;
+    }
+    @include xs {
+        padding: 120px 0 150px 0; 
+    }
+
+    .hero-title {
+        font-family: $title-font;
+        font-weight: 700;
+        font-size: 74px;
+        line-height: 84px;
+        color: $title-color;
+
+        @include md {
+            font-size: 64px;
+            line-height: 74px;
+        }
+
+        @include sm {
+            font-size: 54px;
+            line-height: 64px;
+        }
+        @include xs {
+            font-size: 44px;
+            line-height: 54px; 
+        }
+        @include vxs {
+            font-size: 34px;
+            line-height: 44px;  
+        }
+    }
+
+    .hero-text {
+        font-size: 18px;
+        line-height: 28px;
+        max-width: 586px;
+        margin-bottom: 35px;
+
+        @include sm {
+            max-width: 450px; 
+        }
+    }
+}

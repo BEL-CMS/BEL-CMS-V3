@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.0.8 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -26,7 +26,10 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 				<div class="p-6">
 					<div>
 						<div class="flex items-center opacity-60">
-							<input class="form-switch" <?=$config->active == 1 ? 'checked' : ''?> name="active" type="checkbox" checked="checked" value="1" role="switch" id="active">
+							<?php 
+							$checked = $config->active == 1 ? 'checked' : '';
+							?>
+							<input class="form-switch" <?=$checked;?> name="active" type="checkbox" value="1" role="switch" id="active">
 							<label class="ms-1.5" for="active">Activer la page NewsLetter</label>
 						</div>
 					</div>

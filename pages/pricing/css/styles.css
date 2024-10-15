@@ -6,6 +6,7 @@
 	font-weight: 400;
 	color: #ccc;
 }
+#belcms_pricing_choise > h1,
 #belcms_pricing > h1 {
 	margin-bottom: 20px;
 	padding-bottom: 20px;
@@ -96,4 +97,123 @@
 	cursor: pointer;
 	font-weight: bold;
 	width: 100%;
+}
+
+/* CHOISE */
+#belcms_pricing_choise > h1 {
+	padding-left: 30px;
+}
+
+section#belcms_pricing_choise {
+	display: block;
+	border: 1px solid rgba(0,0,0,0.1);
+	width: 100%;
+	overflow: hidden;
+}
+#belcms_pricing_choise table thead {
+	display: block;
+	width: 100%;
+}
+#belcms_pricing_choise table th {
+	padding: 15px 0;
+	background-color: #eaebec;
+	width: 100%;
+	display: block;
+	font-weight: bold;
+}
+#belcms_pricing_choise_table {
+	width: 100%;
+	border-radius: 4px;
+	width: 100%;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+#belcms_pricing_choise_table tr {
+	display: flex;
+	width: 100%;
+}
+#choise_table_full {
+	display: block;
+	width: 100%;
+	padding: 15px;
+	text-align: justify;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.choise_table_middle {
+	display: flex;
+}
+.choise_table_middle td {
+	width: 50%;
+	text-align: left;
+	padding: 15px 10px;
+	background: #fff;
+	border-bottom: 1px dashed #e0e0e0;
+	border-right: 1px solid #e0e0e0;
+}
+.choise_table_middle td:first-child {
+	font-weight: bold;
+	text-align: right;
+}
+.choise_table_middle td:last-child {
+	border-right: none;
+}
+#belcms_pricing_choise_table form input {
+	cursor: pointer;
+}
+
+.pricing_purchase_row_line_full {
+    padding: 0 15px;
+    width: 100%;  
+}
+.pricing_purchase_row_line_full label,
+.donation_purchase_row_line label {
+    float: left;
+    padding-left: 10px;
+}
+.pricing_purchase_row_line_full label i,
+.donation_purchase_row_line label i {
+    color: red;
+}
+
+#section_pricing table {
+    text-align: left;
+    border-collapse: collapse;
+    background: #eaebec;
+    border: 1px solid #e0e0e0;
+	width: 100%;
+}
+#section_pricing table thead {
+    display: block;
+    font-weight: 700;
+    text-align: center !important;  
+    width: 100%;
+}
+#section_pricing table thead tr {
+    display: block;
+    width: 100%;
+}
+#section_pricing table thead tr th {
+    display: block;
+    width: 100%;
+}
+#section_pricing table thead th {
+    width: 100%;
+    border-bottom-width: 1px solid #e0e0e0;
+    padding: 15px 0;
+}
+#section_pricing table tbody {
+    display: inline-table;
+    width: 100%;
+}
+#section_pricing table tr {
+    width: 100%;
+}
+#section_pricing table tr td {
+    text-align: left !important;
+    padding: 15px 10px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    width: 50%;
+}
+#section_pricing table tbody td:first-child {
+    font-weight: bold;
 }

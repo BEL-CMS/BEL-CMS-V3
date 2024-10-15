@@ -1,0 +1,275 @@
+/* hero area start-----------------------*/
+.hero-5 {
+    position: relative;
+    z-index: 3;
+
+    .bottom-shape {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 452px;   
+        background-size: cover; 
+        background-repeat: repeat-x;
+        background-position: bottom center; 
+        z-index: 5;
+    }
+}
+
+.hero-style5 {
+    padding: 140px 0 180px 0;
+    text-align: center;
+    min-height: 1023px;
+    @include xs {
+        padding: 100px 0 100px 0;  
+    }
+
+    .hero-title {
+        position: relative;
+        font-size: 74px;
+        line-height: 100px;
+        text-transform: uppercase;
+        color: $title-color;
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+
+        @include lg {
+            font-size: 54px;
+
+        }
+
+        @include md {
+            font-size: 40px;
+            line-height: 80px;
+
+        }
+
+        @include sm {
+            line-height: 70px;
+
+        }
+
+        .hero-title2 {
+            font-weight: 500;
+        }
+
+        .hero-video {
+            display: inline-flex;
+            align-self: center;
+            line-height: normal;
+            padding: 0 18px;
+        }
+
+        img {
+            margin: 0 3px; 
+            border-radius: 16px;
+        }
+
+    }
+
+
+    .hero-play-btn {
+        position: relative;
+        display: inline-block;
+        width: var(--icon-size, 40px);
+        height: var(--icon-size, 40px);
+        line-height: var(--icon-size, 40px);
+        text-align: center;
+        background-color: var(--theme-color);
+        color: var(--white-color);
+        font-size: 14px;
+        border-radius: 50%;
+        z-index: 1;
+        transition: all ease 0.4s;
+        transform: translate(-50% 50%);
+
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: -1;
+            bottom: 0;
+            left: 0;
+            transition: 0.3;
+            border-radius: 50%;
+            border: 1px solid $theme-color;
+            animation: ripple 2s linear 1s infinite;
+        }
+    }
+}
+
+// .hero4-image {
+//     position: relative;
+//     max-width: 1620px;
+//     display: block;
+//     margin: auto;
+
+//     .hero-img {
+//         border-radius: 30px;
+
+//         img {
+//             clip-path: path("M181 30C181 13.4315 194.431 0 211 0H1590C1606.57 0 1620 13.4314 1620 30V573.145C1620 589.713 1606.57 603.145 1590 603.145H1469C1452.43 603.145 1439 616.576 1439 633.145V691C1439 707.569 1425.57 721 1409 721L30 721C13.4315 721 0 707.569 0 691V147.856C0 131.287 13.4315 117.856 30 117.856H151C167.569 117.856 181 104.424 181 87.8558V30Z");
+//             border-radius: 30px;
+
+//             @media(max-width: 480px) {
+//                 clip-path: none;
+//                 border-radius: 0;
+//             }
+//         }
+//     }
+
+//     .hero-shape1 {
+//         z-index: 2;
+//     }
+
+
+// }
+
+/*hero 4 end -----------------------*/
+/*hero 6 start  -----------------------*/
+.hero-6 {
+    position: relative;
+
+    .th-hero-img {
+        position: absolute;
+        right: 100px;
+        top: 140px;
+
+        @media(max-width: 1699px) {
+            right: 0px;
+        }
+
+        @include md {
+            position: relative;
+            top: 0px;
+
+        }
+    }
+
+    .hero-img6 {
+        position: absolute;
+        right: 0;
+        top: 0;
+        max-width: 990px;
+        height: 634px;
+
+        @include xl {
+            max-width: 850px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            clip-path: path("M638.122 0H990V307.891L658.177 634H0L638.122 0Z");
+
+            @include sm {
+                clip-path: none;
+            }
+        }
+    }
+
+    .hero-shape {
+        width: 100%;
+        height: 100%;
+
+        @include xl {
+            max-width: 850px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+.hero-style6 {
+    padding: 301px 0 161px 0;
+    max-width: 700px;
+    position: relative;
+    z-index: 5;
+    text-align: left;
+
+    @include xl {
+        max-width: 600px;
+    }
+
+    @include md {
+        padding: 250px 0 80px 0;
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .hero-subtitle {
+        color: $theme-color3;
+        margin-bottom: 0px;
+
+        span {
+            display: inline-block;
+            position: relative;
+        }
+
+        &:after {
+            background-color: $theme-color3;
+        }
+
+        &::before {
+
+            @include md {
+                background-color: $theme-color3;
+                margin-left: -4.8rem;
+
+                @include xs {
+                    margin-left: -5rem;
+                }
+            }
+        }
+    }
+
+    .hero-title {
+        line-height: 94px;
+        color: $title-color;
+
+        @include xxl {
+            font-size: 74px;
+            line-height: 84px;
+        }
+
+        @include xl {
+            font-size: 64px;
+            line-height: 74px;
+        }
+
+        @include xs {
+            font-size: 54px;
+            line-height: 64px;
+        }
+
+        @media(max-width: 480px) {
+            font-size: 44px;
+            line-height: 54px;
+        }
+    }
+
+    .hero-text {
+        color: $title-color;
+        max-width: 530px;
+        margin-bottom: 30px;
+
+        @include xl {
+            max-width: 400px;
+        }
+
+        @include md {
+            max-width: 100%;
+        }
+    }
+}
+
+/*hero 6 end -----------------------*/

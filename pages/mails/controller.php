@@ -95,6 +95,8 @@ class Mails extends Pages
 			$data['mails'][$k]->status   = $status;
 		}
 		#########################################
+		$data['type'] = 'read';
+		#########################################
 		$this->set($data);
 		$this->render('readmsg');
 		#########################################
@@ -219,10 +221,15 @@ class Mails extends Pages
 			#########################################
 		}
 		#########################################
+		$get['type'] = 'archive';
+		#########################################
 		$this->set($get);
 		$this->render('archive');
 		#########################################
 	}
+	#########################################
+	# Récupère les messages de la corbeille
+	#########################################
 	public function Trash ()
 	{
 		#########################################
@@ -254,8 +261,50 @@ class Mails extends Pages
 			#########################################
 		}
 		#########################################
+		$get['type'] = 'close';
+		#########################################
 		$this->set($get);
 		$this->render('trash');
+		#########################################
+	}
+	#########################################
+	# Place le messaqe en archive
+	#########################################
+	public function Archiving ()
+	{
+		$id = ctype_alnum($this->data['2']) ? $this->data['2'] : false;
+		#########################################
+		$return = $this->models->archiving($id);
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['text'], constant('INFO'), false);
+		#########################################
+		$this->redirect('Mails', 3);
+		#########################################
+	}
+	#########################################
+	# Clos le message, plus possible de répondre
+	#########################################
+	public function close ()
+	{
+		$id = ctype_alnum($this->data['2']) ? $this->data['2'] : false;
+		#########################################
+		$return = $this->models->close($id);
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['text'], constant('INFO'), false);
+		#########################################
+		$this->redirect('Mails', 3);
+		#########################################
+	}
+	#########################################
+	# Place tous les messages dans la corbeille
+	#########################################
+	public function deleteAll ()
+	{
+		$return = $this->models->closeall();
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['text'], constant('INFO'), false);
+		#########################################
+		$this->redirect('Mails', 3);
 		#########################################
 	}
 }

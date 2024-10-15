@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -44,4 +44,5 @@ Common::constant(array(
 	'EXISTING_DATA'           => 'Le nom de la catégorie existe déjà',
 	'INSERT_CAT_OK'           => 'Insertion de la catégorie avec succès',
 	'EDIT_CAT_OK'             => 'Edition de la catégorie avec succès',
+	'SUBJECT'                 => 'News',
 ));

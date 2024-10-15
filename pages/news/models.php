@@ -95,7 +95,7 @@ final class News
 		$return = false;
 
 		$sql = New BDD();
-		$sql->table('TABLE_PAGES_NEWS');
+		$sql->table('TABLE_NEWS');
 		$sql->orderby(array(array('name' => 'id', 'type' => 'DESC')));
 		$sql->limit('1');
 		$sql->queryOne();
@@ -117,7 +117,7 @@ final class News
 		if ($id) {
 			$id = Common::secureRequest($id);
 			$get = New BDD();
-			$get->table('TABLE_PAGES_NEWS');
+			$get->table('TABLE_NEWS');
 			$where = array(
 				'name'  => 'id',
 				'value' => (int) $id

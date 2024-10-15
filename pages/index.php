@@ -1,19 +1,19 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.2]
+ * @version 3.0.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
- * @copyright 2015-2023 Bel-CMS
+ * @copyright 2015-2024 Bel-CMS
  * @author as Stive - stive@determe.be
 */
 
 namespace Belcms\Pages;
-use BelCMS\Core\Dispatcher as Dispatcher;
-use BelCMS\Core\Notification as Notification;
-use BelCMS\PDO\BDD as BDD;
-use BelCMS\Core\Secures as Secures;
+use BelCMS\Core\Dispatcher;
+use BelCMS\Core\Notification;
+use BelCMS\PDO\BDD;
+use BelCMS\Core\Secures;
 
 if (!defined('CHECK_INDEX')):
 	header($_SERVER['SERVER_PROTOCOL'] . ' 403 Direct access forbidden');
@@ -51,7 +51,9 @@ class Pages
 		$this->subPageName = Dispatcher::view();
 		$this->id          = isset($_GET['id']) ? $_GET['id'] : 0 ;
 		$dirLangs = constant('DIR_PAGES').strtolower($this->pageName).DS.'langs'.DS.'lang.'.$_SESSION['CONFIG_CMS']['CMS_WEBSITE_LANG'].'.php';
-		require $dirLangs;
+		if (is_file($dirLangs)) {
+			include $dirLangs;
+		}
 	}
 	#########################################
 	# Retourne le rendu de la page,

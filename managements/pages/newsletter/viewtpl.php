@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.0 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -24,7 +24,7 @@ endif;
 			</div>
 		</div>
 		<div class="p-6">
-            <div style="width:800px;margin:auto;"><?=$data->template;?></div>
+            <div style="width:800px;height:600px;margin:auto;border:1px solid #333;"><?=$data->template;?></div>
         </div>
     </div>
 </div>

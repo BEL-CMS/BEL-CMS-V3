@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.1 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -33,6 +33,21 @@ if (isset($_SESSION['LOGIN_MANAGEMENT']) && $_SESSION['LOGIN_MANAGEMENT'] === tr
 						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Tags</label>
 						<div class="col-sm-12">
 							<input name="tags" placeholder="( séparer par des => , )" type="text" class="form-input">
+						</div>
+					</div>
+					<div>
+						<label class="text-gray-800 text-sm font-medium inline-block mt-2 mb-2">Catégories</label>
+						<div class="col-sm-12">
+							<select name="cat">
+								<option value="0">Aucune Catégories</option>
+								<?php
+								foreach ($cat as $key => $value):
+								?>
+								<option class="form-input" value="<?=$value->id;?>"><?=$value->name;?></option>
+								<?php
+								endforeach;
+								?>
+							</select>
 						</div>
 					</div>
 					<div>
