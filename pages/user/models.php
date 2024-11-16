@@ -182,6 +182,9 @@ final class User
 					$insertPage->table('TABLE_USERS_PAGE');
 					$insertPage->insert(array('hash_key'=> $hash_key));
 
+					$hardware = New BDD();
+					$hardware->table('TABLE_USERS_PAGE');
+					$hardware->insert(array('hash_key'=> $hash_key));
 
 					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
 						require constant('DIR_CORE').'class.mail.php';
@@ -1114,5 +1117,15 @@ final class User
 		$sql->where(array('name' => 'IP', 'value' => Common::GetIp()));
 		$sql->queryOne();
 		return $sql->data;
+	}
+
+	public function updateComputer ($data)
+	{
+		if (is_array($data)) {
+			$sql = new BDD;
+			$sql->table('TABLE_USERS_HARDWARE');
+			$sql->update($data);
+			$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
+		}
 	}
 }

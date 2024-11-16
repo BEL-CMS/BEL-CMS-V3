@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.9 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -465,5 +465,21 @@ class User extends Pages
 		$this->error = true;
 		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
 		$this->redirect('User/Games', 3);
+	}
+	#########################################
+	# Matériel informatique
+	#########################################
+	public function computer ()
+	{
+		$_SESSION['USER'] = UserInfos::getInfosUserAll($_SESSION['USER']->user->hash_key);
+		$this->render ('computer');
+	}
+	public function sendComputer ()
+	{
+		$insert = array();
+		foreach ($_POST as $key => $value) {
+			$insert[$key] = Common::VarSecure($value, null);
+		}
+		$this->models->updateComputer ($insert);
 	}
 }

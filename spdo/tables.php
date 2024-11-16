@@ -104,6 +104,7 @@ $tables = array(
 	'TABLE_USERS'               => $DB_PREFIX.'users',
 	'TABLE_USERS_GAMING'        => $DB_PREFIX.'users_gaming',
 	'TABLE_USERS_GROUPS'        => $DB_PREFIX.'users_groups',
+	'TABLE_USERS_HARDWARE'      => $DB_PREFIX.'users_hardware',
 	'TABLE_USERS_NOTIFICATION'  => $DB_PREFIX.'users_notification',
 	'TABLE_USERS_PAGE'          => $DB_PREFIX.'users_page',
 	'TABLE_USERS_PROFILS'       => $DB_PREFIX.'users_profils',

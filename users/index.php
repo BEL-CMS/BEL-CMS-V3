@@ -463,7 +463,19 @@ class User
                 $game->isObject(false);
                 $game->queryOne();
                 $f = array('games' => (object) $game->data);
-                $return = (object) array_merge($a, $b, $c, $d, $e, $f);
+                /* Return info de la table hardware */
+                $hardware = new BDD();
+                $hardware->table('TABLE_USERS_HARDWARE');
+                $hardware->where(array(
+                    'name'  => 'author ',
+                    'value' => $hash_key
+                ));
+                $hardware->fields(array('internet_connection', 'OS', 'tower', 'model_tower', 'cooling', 'model_cooling', 'cpu', 'model_cpu', 'motherboard', 'model_motherboard', 'ram', 'model_ram', 'qty_ram', 'graphics_card', 'model_graphics_card', 'ssd_m2', 'size_hdd', 'psu', 'watt', 'screen', 'screen_resolution', 'keyboard', 'mouse'));
+                $hardware->isObject(false);
+                $hardware->queryOne();
+                $g = array('hardware' => (object) $hardware->data);
+                /* return */
+                $return = (object) array_merge($a, $b, $c, $d, $e, $f, $g);
                 if (empty($game->data['name_game'])) {
                     $return->games->name_game = array();
                 } else if (!empty($game->data['name_game'])) {

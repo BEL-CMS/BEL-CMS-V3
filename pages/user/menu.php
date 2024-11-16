@@ -24,6 +24,10 @@ $userProfils = User::getInfosUserAll($_SESSION['USER']->user->hash_key);
 			<div><i class="fa-solid fa-retweet"></i></div>
 		</li>
 		<li>
+			<a href="User/Computer">Matériels</a>
+			<div><i class="fa-solid fa-computer"></i></div>
+		</li>
+		<li>
 			<a href="User/sessions">Historique des sessions</a>
 			<div><i class="fa-solid fa-users-gear"></i></div>
 		</li>
