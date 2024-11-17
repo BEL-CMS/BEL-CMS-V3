@@ -394,3 +394,25 @@ section#section_user div#section_user_profil.full {
 	opacity: 0;
 	cursor: pointer;
 }
+/* Computer */
+#section_user_computer {
+	display: block;
+	float: left;
+	width: calc(100% - 380px);
+	position: relative;
+	padding: 30px;
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	margin-left: 20px;
+}
+.section_user_computer {
+	display: block;
+	float: left;
+	width: 50%;
+	padding: 0 10px;
+}
+.section_user_computer_row {
+	display: block;
+	margin-bottom: 5px;
+}

@@ -23,7 +23,7 @@ if (User::isLogged() === true):
     <form action="User/sendComputer" id="section_user_computer" method="post">
         <div class="section_user_computer">
             <div class="section_user_computer_row">
-                <label for="connect">Choisir sa connexion</label>
+                <label for="connect"><?=constant('CHOOSE_YOUR_CONNECTION');?></label>
                 <select id="connect" name="internet_connection">
                     <option selected value="<?=$hardware->internet_connection;?>"><?=$hardware->internet_connection;?></option>
                     <option value="Modem 56K">Modem 56K</option>
@@ -53,7 +53,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="tower">Choisir sa tour</label>
+                <label for="tower"><?=constant('CHOOSE_YOUR_CASE');?></label>
                 <select id="tower" name="tower" class="form-control">
                     <option selected value="<?=$hardware->tower;?>"><?=$hardware->tower;?></option>
                     <option value="Génerique">Génerique</option>
@@ -82,7 +82,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="keyboard">Choisir son clavier</label>
+                <label for="keyboard"><?=constant('CHOOSE_YOUR_KEYBOARD');?></label>
                 <select id="keyboard" name="keyboard" class="form-control">
                     <option selected value="<?=$hardware->keyboard;?>"><?=$hardware->keyboard;?></option>
                     <option value="Génerique">Génerique</option>
@@ -156,7 +156,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="cooling">Refroidissement</label>
+                <label for="cooling"><?=constant('COOLING');?></label>
                 <select id="cooling" name="cooling" class="form-control">
                     <option selected value="<?=$hardware->cooling;?>"><?=$hardware->cooling;?></option>
                     <option value="Origine">Origine</option>
@@ -185,7 +185,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="cpu">Processeur (CPU)</label>
+                <label for="cpu"><?=constant('CPU');?></label>
                 <select id="cpu" name="cpu" class="form-control">
                     <option selected value="<?=$hardware->cpu;?>"><?=$hardware->cpu;?></option>
                     <option value="AMD Athlon">AMD Athlon</option>
@@ -209,7 +209,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="motherboard">Carte mère</label>
+                <label for="motherboard"><?=constant('MOTHERBOARD');?></label>
                 <select selected id="motherboard" name="motherboard" class="form-control">
                     <option value="<?=$hardware->motherboard;?>"><?=$hardware->motherboard;?></option>
                     <option value="Aorus" selected="">Aorus</option>
@@ -227,7 +227,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="memory">Mémoire RAM</label>
+                <label for="memory"><?=constant('RAM');?></label>
                 <select id="memory" name="ram" class="form-control">
                     <option selected value="<?=$hardware->ram;?>"><?=$hardware->ram;?></option>
                     <option value="Adata">Adata</option>
@@ -250,7 +250,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="graphics_card">Carte graphique (GPU)</label>
+                <label for="graphics_card"><?=constant('GPU');?></label>
                 <select id="graphics_card" name="graphics_card" class="form-control">
                     <option selected value="<?=$hardware->graphics_card;?>"><?=$hardware->graphics_card;?></option>
                     <option value="Aorus">Aorus</option>
@@ -275,7 +275,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="ssd_m2">Stockage</label>
+                <label for="ssd_m2"><?=constant('STORAGE');?></label>
                 <select id="ssd_m2" name="ssd_m2" class="form-control">
                     <option selected value="<?=$hardware->ssd_m2;?>"><?=$hardware->ssd_m2;?></option>
                     <option value="SSD">SSD</option>
@@ -284,7 +284,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="psu">Alimentation (PSU)</label>
+                <label for="psu"><?=constant('PSU');?></label>
                 <select id="psu" name="psu" class="form-control">
                     <option selected value="<?=$hardware->psu;?>"><?=$hardware->psu;?></option>
                     <option value="be quiet">be quiet</option>
@@ -312,7 +312,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="screen">Marque de l'écran</label>
+                <label for="screen"><?=constant('SCREEN');?></label>
                 <select id="screen" name="screen" class="form-control">
                     <option selected value="<?=$hardware->screen;?>"><?=$hardware->screen;?></option>
                     <option value="ASUS">ASUS</option>
@@ -355,7 +355,7 @@ if (User::isLogged() === true):
         </div>
         <div class="section_user_computer">
             <div class="section_user_computer_row">
-                <label for="os">Système d'exploitation</label>
+                <label for="os"><?=constant('OS');?></label>
                 <select id="os" name="OS">
                     <option selected value="<?=$hardware->OS;?>"><?=$hardware->OS;?></option>
                     <option value="Windows XP">Windows XP</option>
@@ -379,7 +379,7 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label>Modèle de boîtier</label>
+                <label><?=constant('CASE_MODEL');?></label>
                 <input name="model_motherboard" type="text" value="<?=$hardware->model_motherboard;?>">
             </div>
             <div class="section_user_computer_row">
@@ -428,19 +428,19 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="model_cooling">Modèle de refroidissement</label>
+                <label for="model_cooling"><?=constant('COOLING_MODEL');?></label>
                 <input id="model_cooling" type="text" name="model_cooling" value="<?=$hardware->model_cooling;?>">
             </div>
             <div class="section_user_computer_row">
-                <label for="model_cpu">Modèle processeur</label>
+                <label for="model_cpu"><?=constant('MODEL_CPU');?></label>
                 <input id="model_cpu" type="text" name="model_cpu" value="<?=$hardware->model_cpu;?>">
             </div>
             <div class="section_user_computer_row">
-                <label for="model_motherboard">Modèle carte mère</label>
+                <label for="model_motherboard"><?=constant('MOTHERBOARD_MODEL');?></label>
                 <input id="model_motherboard" type="text" name="model_motherboard" value="<?=$hardware->model_motherboard;?>">
             </div>
             <div class="section_user_computer_row">
-                <label for="qty_ram">Quantité RAM</label>
+                <label for="qty_ram"><?=constant('RAM_QUANTITY');?></label>
                 <select id="qty_ram" name="qty_ram" class="form-control">
                     <option selected value="<?=$hardware->qty_ram;?>"><?=$hardware->qty_ram;?></option>
                     <option value="256 Mo">256 Mo</option>
@@ -456,11 +456,11 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="model_graphics_card">Modèle carte graphique</label>
+                <label for="model_graphics_card"><?=constant('MODEL_GPU');?></label>
                 <input id="model_graphics_card" type="text" name="model_graphics_card" value="<?=$hardware->model_graphics_card;?>">
             </div>
             <div class="section_user_computer_row">
-                <label for="size_hdd">Taille (SSD, HDD, M2)</label>
+                <label for="size_hdd"><?=constant('SIZE_SSD');?></label>
                 <select name="size_hdd" class="form-control">
                     <option selected value="<?=$hardware->qty_ram;?>"><?=$hardware->qty_ram;?></option>
                     <option value="1 TO">1 TO</option>
@@ -479,11 +479,11 @@ if (User::isLogged() === true):
                 </select>
             </div>
             <div class="section_user_computer_row">
-                <label for="watt">Détail du PSU</label>
+                <label for="watt"><?=constant('DETAIL_PSU');?></label>
                 <input id="watt" type="text" name="watt" value="<?=$hardware->watt;?>">
             </div>
             <div class="section_user_computer_row">
-                <label for="screen_resolution">Résolution</label>
+                <label for="screen_resolution"><?=constant('RESOLUTION');?></label>
                 <select id="screen_resolution" name="screen_resolution" class="form-control">
                     <option selected value="<?=$hardware->screen_resolution;?>"><?=$hardware->screen_resolution;?></option>
                     <option value="352 x 240 pixels">352 x 240 pixels</option>

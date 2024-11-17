@@ -481,5 +481,11 @@ class User extends Pages
 			$insert[$key] = Common::VarSecure($value, null);
 		}
 		$this->models->updateComputer ($insert);
+		$return['msg']    = constant('MODIFY_PROFILS_SUCCESS');
+		$return['type']   = 'success';
+		$return['title']  = 'Hardware';
+		$this->error = true;
+		$this->errorInfos = array($return['type'], $return['msg'], $return['title'], false);
+		$this->redirect('User/Computer', 3);
 	}
 }

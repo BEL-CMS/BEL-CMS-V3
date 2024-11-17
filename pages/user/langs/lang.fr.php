@@ -62,6 +62,28 @@ Common::constant(array(
 	'ALERT'                        => 'Attention',
 	'INTERACTION_ERROR_GROUP'      => 'L\'utilisateur a tenté de modifier manuellement sont groupe',
 	'CHARTER_ERROR'                => 'Le règlement doit être approuvé avant de poursuivre l\'enregistrement',
+	'CHOOSE_YOUR_CONNECTION'       => 'Choisir sa connexion',
+	'CHOOSE_YOUR_CASE'             => 'Choisir son boitier',
+	'CHOOSE_YOUR_KEYBOARD'         => 'Choisir son clavier',
+	'COOLING'                      => 'Refroidissement',
+	'CPU'                          => 'Processeur (CPU)',
+	'MOTHERBOARD'                  => 'Carte mère',
+	'RAM'                          => 'Ram',
+	'GPU'                          => 'Carte graphique (GPU)',
+	'STORAGE'                      => 'Stockage',
+	'PSU'                          => 'Alimentation (PSU)',
+	'SCREEN'                       => 'Marque de l\'écran',
+	'OS'                           => 'Système d\'exploitation',
+	'CASE_MODEL'                   => 'Modèle de boîtier',
+	'COOLING_MODEL'                => 'Modèle de refroidissement',
+	'MODEL_CPU'                    => 'Modèle processeur',
+	'MOTHERBOARD_MODEL'            => 'Modèle carte mère',
+	'RAM_QUANTITY'                 => 'Quantité RAM',
+	'MODEL_GPU'                    => 'Modèle carte graphique',
+	'SIZE_SSD'                     => 'Taille (SSD, HDD, M2)',
+	'DETAIL_PSU'                   => 'Detail du PSU',
+	'RESOLUTION'                   => 'Résolution',
+	
 	#####################################
 	# Fichier lang en français - Admin
 	#####################################
