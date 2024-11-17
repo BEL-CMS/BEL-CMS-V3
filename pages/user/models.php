@@ -1124,6 +1124,7 @@ final class User
 		if (is_array($data)) {
 			$sql = new BDD;
 			$sql->table('TABLE_USERS_HARDWARE');
+			$sql->where(array('name' => 'author', 'value' => $_SESSION['USER']->user->hash_key));
 			$sql->update($data);
 			$_SESSION['USER'] = Users::getInfosUserAll($_SESSION['USER']->user->hash_key);
 		}
