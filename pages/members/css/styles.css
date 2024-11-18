@@ -370,3 +370,49 @@
 	float: left;
 	padding: 0 15px;
 }
+#belcms_members_profil_hardware {
+	display: block;
+	width: 100%;
+	position: relative;
+	padding: 0 15px;
+	margin: 20px auto;
+}
+#belcms_members_profil_hardware {
+	display: block;
+	width: 100%;
+	position: relative;
+	padding: 0 15px;
+	margin: 20px auto;
+}
+#belcms_members_profil_hardware ul {
+	background-color: #fff;
+	display: block;
+	list-style: none;
+	margin: 0;
+	width: 100%;
+	overflow: hidden;
+	padding: 15px;
+}
+#belcms_members_profil_hardware_title {
+	background-image: linear-gradient(to right top, #a8eb12, #00bf72, #008793, #004d7a, #051937) !important;
+	text-align: left !important;
+	font-weight: bold;
+	color: #FFF !important;
+	line-height: 30px;
+	padding-left: 15px !important;
+}
+#belcms_members_profil_hardware ul li {
+	background-color: #F2F2F2;
+	color: #333333;
+	padding: 4px 5px;
+}
+#belcms_members_profil_hardware li div {
+	text-align: left !important;
+	line-height: 30px;
+}
+#belcms_members_profil_hardware li div:first-child {
+	font-weight: bold;
+}
+#belcms_members_profil_hardware ul li:nth-child(odd) {
+	background-color: #FFF;
+}
