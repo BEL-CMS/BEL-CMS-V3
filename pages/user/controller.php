@@ -11,7 +11,8 @@
 
 namespace BELCMS\Pages\Controller;
 
-use BelCMS\Ban\_Ban;
+use Ban as GlobalBan;
+use BelCMS\Ban\Ban;
 use BelCMS\Core\Captcha;
 use BelCMS\Core\Interaction;
 use BELCMS\Pages\Pages;
@@ -160,7 +161,7 @@ class User extends Pages
 				$this->error = true;
 				$this->errorInfos = array($return['type'], $return['msg'], constant('INFO'), false);
 			} else {
-				_Ban::addBan(
+				GlobalBan::addBan(
 					null,
 					Common::GetIp(),
 					$_SESSION['USER']->user->mail,

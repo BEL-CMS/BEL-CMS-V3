@@ -57,6 +57,8 @@ final class BelCMS
 
 		self::valid();
 
+		new User;
+
 		$this->widgets  = self::getWidgets ();
 		$this->typeMime = self::typeMime ();
 		$this->page     = $this->page();
@@ -73,6 +75,7 @@ final class BelCMS
 		ob_start();
 
 		$this->link	  = Dispatcher::page($_SESSION['CONFIG_CMS']['CMS_DEFAULT_PAGE']);
+		
 		$require	  = ucfirst($this->link);
 		$view		  = Dispatcher::view();
 		$landing      = Dispatcher::link();

@@ -9,7 +9,7 @@
  * @author as Stive - stive@determe.be
  */
 namespace BelCMS\Core;
-use BelCMS\PDO\BDD as BDD;
+use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
 use BELCMS\User\User as UserInfos;
 

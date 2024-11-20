@@ -183,8 +183,8 @@ final class User
 					$insertPage->insert(array('hash_key'=> $hash_key));
 
 					$hardware = New BDD();
-					$hardware->table('TABLE_USERS_PAGE');
-					$hardware->insert(array('hash_key'=> $hash_key));
+					$hardware->table('TABLE_USERS_HARDWARE');
+					$hardware->insert(array('author'=> $hash_key));
 
 					if ($_SESSION['CONFIG_CMS']['VALIDATION'] == 'mail') {
 						require constant('DIR_CORE').'class.mail.php';
