@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.5 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -11,7 +11,7 @@
 
 ?>
 <div id="main_content">
-	<h1>Bienvenue sur l'installation de Bel-CMS V.3.0.5</h1>
+	<h1>Bienvenue sur l'installation de Bel-CMS V.3.1.0</h1>
 	<div class="main_content">
 		<p>Nous vous remercions d'avoir choisi notre CMS, en espérant qu'il vous plaira, n'hésitez pas à poster sur le Forum ou Discord pour demander des nouveautés.</p>
 		<p>Bel-CMS est un CMS open source. Il permet d'installer et d'administrer un site web de manière simple et interactive. Il nécessite simplement un hébergement PHP8/MySQL (MariaDB) pour fonctionner.</p>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.9 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -19,7 +19,7 @@ function randomString($length) {
 	$str = base64_encode($str);
 	$str = str_replace(["+", "/", "="], "", $str);
 	$str = substr($str, 0, $length);
-	return $str;
+	return strtoupper($str);
 }
 $_SESSION['HTTP_HOST'] = $host;
 $current    = new DateTime('now');
@@ -70,7 +70,6 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
 
-
 	case 'capcha':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -83,7 +82,6 @@ switch ($_POST['table']) {
 	break;
 
 	case 'comments':
-
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
@@ -98,7 +96,6 @@ switch ($_POST['table']) {
 	break;
 
 	case 'config':
-
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
@@ -120,7 +117,7 @@ switch ($_POST['table']) {
 			('', 'CMS_REGISTER_CHARTER', 'En poursuivant votre navigation sur ce site, vous acceptez nos conditions générales d\'utilisation et notamment que des cookies soient utilisés afin de vous connecter automatiquement.', 1),
 			('', 'CMS_TPL_FULL', 'calendar,comments,downloads,events,forum,groups,inbox,market,members,newsletter,page,shoutbox,survey,team,user,readmore', 0),
 			('', 'CMS_TPL_WEBSITE', NULL, 1),
-			('', 'CMS_VERSION', '3.0.9', 1),
+			('', 'CMS_VERSION', '3.1.0', 1),
 			('', 'CMS_WEBSITE_DESCRIPTION', '', 0),
 			('', 'CMS_WEBSITE_KEYWORDS', '', 0),
 			('', 'CMS_WEBSITE_LANG', 'fr', 1),
@@ -171,7 +168,8 @@ switch ($_POST['table']) {
 			('', 'faq', 1, '1|2|0', '1|2', NULL),
 			('', 'links', 1, '1|2|0', '1|2', 'MAX_LINKS==6'),
 			('', 'newsletter', 1, '1|2', '1', 'MAX_LINKS==6'),
-			('', 'search', 1, '1|2|0', '1', 'MAX_SEARCH==15');";
+			('', 'search', 1, '1|2|0', '1', 'MAX_SEARCH==15'),
+			('', 'tickets', 1, '2', '1', '');";
 	break;
 
 	case 'config_tpl':
@@ -225,7 +223,7 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `title_cookies`, `action`) VALUES
-		(1, 'Le cookie', '<p style=\"text-align: justify;\">Les termes de &laquo; cookie &raquo; ou &laquo; traceur &raquo; recouvrent par exemple :</p>\r\n<ul style=\"text-align: justify;\">\r\n<li>les cookies HTTP,</li>\r\n<li>les cookies &laquo;&nbsp;flash&nbsp;&raquo;,</li>\r\n<li>le r&eacute;sultat du calcul d&rsquo;une empreinte unique du terminal dans le cas du &laquo;&nbsp;<a title=\"D&eacute;finition - Fingerprinting - Nouvelle fen&ecirc;tre \" href=\"https://www.cnil.fr/fr/definition/fingerprinting\" target=\"_blank\" rel=\"noopener\" data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"e83c2420-67f6-4fa5-82d4-420d90174e38\">fingerprinting</a>&nbsp;&raquo; (calcul d\'un identifiant unique du terminal bas&eacute;e sur des &eacute;l&eacute;ments de sa configuration &agrave; des fins de tra&ccedil;age),</li>\r\n<li>les pixels invisibles ou &laquo;&nbsp;web bugs&nbsp;&raquo;,</li>\r\n<li>tout autre identifiant g&eacute;n&eacute;r&eacute; par un logiciel ou un syst&egrave;me d\'exploitation (num&eacute;ro de s&eacute;rie, adresse MAC, identifiant unique de terminal (IDFV), ou tout ensemble de donn&eacute;es qui servent &agrave; calculer une empreinte unique du terminal (par exemple via une m&eacute;thode de &laquo; fingerprinting &raquo;).</li>\r\n</ul>\r\n<p style=\"text-align: justify;\">Ils peuvent &ecirc;tre d&eacute;pos&eacute;s et/ou lus, par exemple lors de la consultation d\'un site web, d&rsquo;une application mobile, ou encore de l\'installation ou de l\'utilisation d\'un logiciel et ce, quel que soit le type de terminal utilis&eacute;&nbsp;: ordinateur, smartphone, tablette num&eacute;rique ou console de jeux vid&eacute;o connect&eacute;e &agrave; internet.</p>\r\n<p style=\"text-align: justify;\">&nbsp;</p>\r\n<h2 style=\"text-align: justify;\">Quel est le cadre juridique applicable&nbsp;?</h2>\r\n<p>L\'article 5(3) de la directive 2002/58/CE modifi&eacute;e en 2009 pose le principe :&nbsp;</p>\r\n<ul>\r\n<li class=\"nomarker\">d\'un <span class=\"glossary-tooltips\" data-definition=\"consentement\"><span class=\"glossary-tooltips-title\">consentement</span></span> pr&eacute;alable de l\'utilisateur avant le&nbsp;stockage d\'informations sur son terminal ou l\'acc&egrave;s &agrave; des informations d&eacute;j&agrave; stock&eacute;es sur celui-ci&nbsp;;</li>\r\n<li>sauf&nbsp;si ces actions sont strictement n&eacute;cessaires &agrave; la fourniture d\'un service de communication en ligne express&eacute;ment demand&eacute; par l\'utilisateur ou ont pour finalit&eacute; exclusive de permettre ou faciliter une communication par voie &eacute;lectronique.</li>\r\n</ul>\r\n<p>L&rsquo;article 82 de la loi Informatique et Libert&eacute;s transpose ces dispositions en droit fran&ccedil;ais.</p>\r\n<p>La CNIL rappelle que le consentement pr&eacute;vu par ces dispositions renvoie &agrave; la d&eacute;finition et aux conditions pr&eacute;vues aux articles 4(11) et 7 du RGPD. Il doit donc &ecirc;tre libre, sp&eacute;cifique, &eacute;clair&eacute;, univoque et l&rsquo;utilisateur doit &ecirc;tre en mesure de le retirer, &agrave; tout moment, avec la m&ecirc;me simplicit&eacute; qu&rsquo;il l&rsquo;a accord&eacute;.</p>\r\n<p>Afin de rappeler et d&rsquo;expliciter le droit applicable au d&eacute;p&ocirc;t et &agrave; la lecture de traceurs dans le terminal de l&rsquo;utilisateur, la CNIL a adopt&eacute; le 17 septembre 2020 des <a title=\"Lignes directrices sur les cookies et autres traceurs (PDF, 287 ko) - Nouvelle fen&ecirc;tre \" href=\"https://www.cnil.fr/sites/cnil/files/atoms/files/lignes_directrices_de_la_cnil_sur_les_cookies_et_autres_traceurs.pdf\" target=\"_blank\" rel=\"noopener\">lignes directrices</a>, compl&eacute;t&eacute;es par une <a title=\"Recommandation sur les cookies et autres traceurs (PDF, 951 ko) - Nouvelle fen&ecirc;tre \" href=\"https://www.cnil.fr/sites/cnil/files/atoms/files/recommandation-cookies-et-autres-traceurs.pdf\" target=\"_blank\" rel=\"noopener\">recommandation </a>visant notamment&nbsp;&agrave; proposer des exemples de modalit&eacute;s pratiques de recueil du consentement.</p>'),
+		(1, 'Le cookie', '<p style=\"text-align: justify;\">Les termes de &laquo; cookie &raquo; ou &laquo; traceur &raquo; recouvrent par exemple :</p>\r\n<ul style=\"text-align: justify;\">\r\n<li>les cookies HTTP,</li>\r\n<li>les cookies &laquo;&nbsp;flash&nbsp;&raquo;,</li>\r\n<li>le r&eacute;sultat du calcul d&rsquo;une empreinte unique du terminal dans le cas du &laquo;&nbsp;<a title=\"D&eacute;finition - Fingerprinting - Nouvelle fen&ecirc;tre \" href=\"https://www.cnil.fr/fr/definition/fingerprinting\" target=\"_blank\" rel=\"noopener\" data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"e83c2420-67f6-4fa5-82d4-420d90174e38\">fingerprinting</a>&nbsp;&raquo; (calcul d\'un identifiant unique du terminal bas&eacute;e sur des &eacute;l&eacute;ments de sa configuration &agrave; des fins de tra&ccedil;age),</li>\r\n<li>les pixels invisibles ou &laquo;&nbsp;web bugs&nbsp;&raquo;,</li>\r\n<li>tout autre identifiant g&eacute;n&eacute;r&eacute; par un logiciel ou un syst&egrave;me d\'exploitation (num&eacute;ro de s&eacute;rie, adresse MAC, identifiant unique de terminal (IDFV), ou tout ensemble de donn&eacute;es qui servent &agrave; calculer une empreinte unique du terminal (par exemple via une m&eacute;thode de &laquo; fingerprinting &raquo;).</li>\r\n</ul>\r\n<p style=\"text-align: justify;\">Ils peuvent &ecirc;tre d&eacute;pos&eacute;s et/ou lus, par exemple lors de la consultation d\'un site web, d&rsquo;une application mobile, ou encore de l\'installation ou de l\'utilisation d\'un logiciel et ce, quel que soit le type de terminal utilis&eacute;&nbsp;: ordinateur, smartphone, tablette num&eacute;rique ou console de jeux vid&eacute;o connect&eacute;e &agrave; internet.</p>\r\n<p style=\"text-align: justify;\">&nbsp;</p>\r\n<h2 style=\"text-align: justify;\">Quel est le cadre juridique applicable&nbsp;?</h2>\r\n<p>L\'article 5(3) de la directive 2002/58/CE modifi&eacute;e en 2009 pose le principe :&nbsp;</p>\r\n<ul>\r\n<li class=\"nomarker\">d\'un <span class=\"glossary-tooltips\" data-definition=\"consentement\"><span class=\"glossary-tooltips-title\">consentement</span></span> pr&eacute;alable de l\'utilisateur avant le&nbsp;stockage d\'informations sur son terminal ou l\'acc&egrave;s &agrave; des informations d&eacute;j&agrave; stock&eacute;es sur celui-ci&nbsp;;</li>\r\n<li>sauf&nbsp;si ces actions sont strictement n&eacute;cessaires &agrave; la fourniture d\'un service de communication en ligne express&eacute;ment demand&eacute; par l\'utilisateur ou ont pour finalit&eacute; exclusive de permettre ou faciliter une communication par voie &eacute;lectronique.</li>\r\n</ul>\r\n<p>L&rsquo;article 82 de la loi Informatique et Libert&eacute;s transpose ces dispositions en droit fran&ccedil;ais.</p>\r\n<p>La CNIL rappelle que le consentement pr&eacute;vu par ces dispositions renvoie &agrave; la d&eacute;finition et aux conditions pr&eacute;vues aux articles 4(11) et 7 du RGPD. Il doit donc &ecirc;tre libre, sp&eacute;cifique, &eacute;clair&eacute;, univoque et l&rsquo;utilisateur doit &ecirc;tre en mesure de le retirer, &agrave; tout moment, avec la m&ecirc;me simplicit&eacute; qu&rsquo;il l&rsquo;a accord&eacute;.</p>\r\n<p>Afin de rappeler et d&rsquo;expliciter le droit applicable au d&eacute;p&ocirc;t et &agrave; la lecture de traceurs dans le terminal de l&rsquo;utilisateur, la CNIL a adopt&eacute; le 17 septembre 2020 des <a title=\"Lignes directrices sur les cookies et autres traceurs (PDF, 287 ko) - Nouvelle fen&ecirc;tre \" href=\"https://www.cnil.fr/sites/cnil/files/atoms/files/lignes_directrices_de_la_cnil_sur_les_cookies_et_autres_traceurs.pdf\" target=\"_blank\" rel=\"noopener\">lignes directrices</a>, compl&eacute;t&eacute;es par une <a title=\"Recommandation sur les cookies et autres traceurs (PDF, 951 ko) - Nouvelle fen&ecirc;tre \" href=\"https://www.cnil.fr/sites/cnil/files/atoms/files/recommandation-cookies-et-autres-traceurs.pdf\" target=\"_blank\" rel=\"noopener\">recommandation </a>visant notamment&nbsp;&agrave; proposer des +exemples de modalit&eacute;s pratiques de recueil du consentement.</p>'),
 		(2, 'Inscription', '<h2 style=\"text-align: justify;\">En vous inscrivant, vous &ecirc;tes consenti &agrave; introduire un cookie</h2>\r\n<p style=\"text-align: justify;\">3 type de cookie sont applicables &agrave; l\'inscription et/ou login</p>\r\n<ul style=\"text-align: justify;\">\r\n<li>HASH_KEY qui sert comme identifiant,</li>\r\n<li>NAME votre nom d\'utilisateur</li>\r\n<li>PASS votre mot de passe crypte</li>\r\n<li>PHPSESSID la S_SESSION en cours renouvel&eacute; &agrave; chaque fois que vous utilisez le site</li>\r\n</ul>\r\n<h2 style=\"text-align: justify;\">La suppression des cookies</h2>\r\n<p style=\"text-align: justify;\">La suppression des cookies se fait par la simple d&eacute;connexion au site ou la dur&eacute;e du cookie s\'efface automatiquement au bout de trois mois.</p>');";
 	break;
 
@@ -287,12 +285,6 @@ switch ($_POST['table']) {
 			`download` text NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-
-		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `description`, `idcat`, `size`, `uploader`, `date`, `ext`, `view`, `dls`, `screen`, `download`) VALUES
-		(1, 'jkhhkj', '<p>hjk</p>', 1, '123678', '0c4f77c88f5eafdc88a1f07ed3c8a471', '2024-08-20 14:39:57', 'vif', 10, 8, 'uploads/downloads/screen/coloriage-mandala-art-celtique-15.jpg', 'uploads/downloads/mandala-coloring-page-coloring-page-mandala_614522-2219.avif'),
-		(2, 'Internet Download Manager (IDM)  v6.42 Build 14', '<p>jkhkij</p>', 1, '369069', '0c4f77c88f5eafdc88a1f07ed3c8a471', '2024-08-20 15:07:14', 'jpg', 1, 1, 'uploads/downloads/screen/coloriage-mandala-art-celtique-15.jpg', 'uploads/downloads/coloriage-mandala-art-celtique-15.jpg'),
-		(3, 'gfdcxfg', '<p>hgfdghf</p>', 1, '369069', '0c4f77c88f5eafdc88a1f07ed3c8a471', '2024-08-20 15:08:29', 'jpg', 7, 4, 'uploads/downloads/screen/coloriage-mandala-art-celtique-15.jpg', 'uploads/downloads/coloriage-mandala-art-celtique-15.jpg');";
-
 	break;
 
 	case 'downloads_cat':
@@ -374,7 +366,6 @@ switch ($_POST['table']) {
 	break;
 
 	case 'faq':
-
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
@@ -463,19 +454,6 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
 
-	case 'gallery_sub_cat':
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
-			`id` int NOT NULL AUTO_INCREMENT,
-			`name` text,
-			`id_gallery` int NOT NULL,
-			`color` varchar(64) NOT NULL,
-			`bg_color` varchar(32) NOT NULL,
-			`groups_access` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-			PRIMARY KEY (`id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-	break;
-
 	case 'gallery_vote':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -510,6 +488,7 @@ switch ($_POST['table']) {
 			UNIQUE KEY `name` (`name`),
 			UNIQUE KEY `id_group` (`id_group`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `id_group`, `image`, `color`) VALUES
 		(1, 'ADMINISTRATORS', 1, 'NULL', '#ff6e00'),
 		(2, 'MEMBERS', 2, 'NULL', '#052ba0');";
@@ -527,8 +506,8 @@ switch ($_POST['table']) {
 	break;
 
 	case 'interaction':
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+	$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+	$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`title` varchar(255) DEFAULT NULL,
 			`author` varchar(32) DEFAULT NULL,
@@ -558,8 +537,8 @@ switch ($_POST['table']) {
 	break;
 
 	case 'links_cat':
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+	$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+	$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(64) DEFAULT NULL,
 			`color` varchar(16) DEFAULT NULL,
@@ -569,8 +548,8 @@ switch ($_POST['table']) {
 	break;
 
 	case 'mails_blacklist':
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+	$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+	$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(255) NOT NULL,
 			PRIMARY KEY (`id`),
@@ -629,8 +608,8 @@ switch ($_POST['table']) {
 	break;
 
 	case 'mails_config':
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+	$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+	$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(255) DEFAULT NULL,
 			`config` varchar(255) DEFAULT NULL,
@@ -652,8 +631,8 @@ switch ($_POST['table']) {
 	break;
 
 	case 'mails_msg':
-		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
-		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+	$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+	$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`mail_id` varchar(32) NOT NULL,
 			`author` varchar(32) NOT NULL,
@@ -857,7 +836,6 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
 
-
 	case 'newsletter_send':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -1041,6 +1019,7 @@ switch ($_POST['table']) {
 			`value` text NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+
 		$insert = "INSERT INTO `".$_SESSION['prefix'].$table."` (`id`, `name`, `value`) VALUES
 		(1, 'PAYPAL_SANDBOX', 'false'),
 		(2, 'PAYPAL_SANDBOX_CLIENT_ID', ''),
@@ -1318,6 +1297,38 @@ switch ($_POST['table']) {
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
 
+	case 'users_hardware':
+		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
+		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
+			`id` int NOT NULL AUTO_INCREMENT,
+			`author` varchar(32) NOT NULL,
+			`internet_connection` text,
+			`OS` text,
+			`tower` text,
+			`model_tower` text,
+			`cooling` text,
+			`model_cooling` text,
+			`cpu` text,
+			`model_cpu` text,
+			`motherboard` text,
+			`model_motherboard` text,
+			`ram` text,
+			`model_ram` text,
+			`qty_ram` text,
+			`graphics_card` text,
+			`model_graphics_card` text,
+			`ssd_m2` text,
+			`size_hdd` text,
+			`psu` text,
+			`watt` text,
+			`screen` text,
+			`screen_resolution` text,
+			`keyboard` text,
+			`mouse` text,
+			PRIMARY KEY (`id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
+	break;
+
 	case 'users_notification':
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
@@ -1436,8 +1447,8 @@ switch ($_POST['table']) {
 		(5, 'survey', 'Sondages', '1|0', '1|2', 0, 'right', 2, 'comments|forum|articles', NULL),
 		(6, 'users', 'Utilisateurs', '0', '1', 0, 'left', 1, '', NULL);";
 	break;
-
 }
+
 $pdo_options = array();
 $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
 $pdo_options[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES utf8';

@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.5 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -154,7 +154,7 @@ function configIncPhp ()
 	$content  = "<?php".PHP_EOL;
 	$content .= "/**".PHP_EOL;
 	$content .= "* Bel-CMS [Content management system]".PHP_EOL;
-	$content .= "* @version 3.0.5 [PHP8.3]".PHP_EOL;
+	$content .= "* @version 3.1.0 [PHP8.3]".PHP_EOL;
 	$content .= "* @link https://bel-cms.dev".PHP_EOL;
 	$content .= "* @link https://determe.be".PHP_EOL;
 	$content .= "* @license http://opensource.org/licenses/GPL-3.0.-copyleft".PHP_EOL;

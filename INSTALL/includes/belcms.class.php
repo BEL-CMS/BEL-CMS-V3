@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.6 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -65,7 +65,7 @@ class BelCMS
 			<html lang="fr">
 				<head>
 					<meta charset="utf-8">
-					<title>Installation de Bel-CMS : V.3.0.6</title>
+					<title>Installation de Bel-CMS : V.3.1.0</title>
 					<link href="/INSTALL/css/FontAwesome.all.6.5.2.min.css" rel="stylesheet" >
 					<link href="/INSTALL/css/bootstrap.5.2.3.min.css" rel="stylesheet">
 					<link href="/INSTALL/css/styles.css" rel="stylesheet" >
@@ -132,6 +132,7 @@ class BelCMS
 			'config_tpl',
 			'contact',
 			'contact_send',
+			'coockie_opt',
 			'donations',
 			'donations_receive',
 			'downlaods_stats',
@@ -154,10 +155,10 @@ class BelCMS
 			'interaction',
 			'links',
 			'links_cat',
-			'mails',
 			'mails_blacklist',
 			'mails_config',
 			'mails_msg',
+			'mails_status',
 			'mails_unsubscribe',
 			'maintenance',
 			'market',
@@ -182,6 +183,10 @@ class BelCMS
 			'page_stats',
 			'paypal',
 			'paypal_purchase',
+			'pricing',
+			'pricing_list',
+			'pricing_sales',
+			'rgpd',
 			'search',
 			'search_popular',
 			'stats',
@@ -196,19 +201,13 @@ class BelCMS
 			'users',
 			'users_gaming',
 			'users_groups',
+			'users_hardware',
 			'users_notification',
 			'users_page',
 			'users_profils',
 			'users_social',
 			'visitors',
-			'widgets',
-			'rgpd',
-			'contact_send',
-			'coockie_opt',
-			'gallery_sub_cat',
-			'mails_msg',
-			'mails_status',
-			'gallery_sub_cat'
+			'widgets'
 		);
 		return $tables;
 	}
