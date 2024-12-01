@@ -273,7 +273,7 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(128) NOT NULL,
-			`description` text NOT NULL,
+			`description` text DEFAULT NULL,
 			`idcat` int NOT NULL,
 			`size` varchar(64) NOT NULL,
 			`uploader` varchar(32) NOT NULL,
