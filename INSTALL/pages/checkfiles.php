@@ -11,7 +11,6 @@
 
  ?>
 <div id="main_content">
-    <h1>Vérification des droits de fichier (chmod 755)</h1>
     <div class="main_content">
         <ul id="check">
             <?php
@@ -31,6 +30,4 @@
 			</li>
 		</ul>
 	</nav>
-	<progress max="100" value="40">40%</progress>
-	<i class="pourcent">40%</i>
 </div>

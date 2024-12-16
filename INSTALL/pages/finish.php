@@ -18,6 +18,4 @@
     <div class="alert alert-secondary" role="alert">Veuillez vous inscrire immédiatement pour avoir l'accès complet à l'administration, le 1ᵉʳ utilisateur a tous les droits</div>
     <br>
     <div class="alert alert-danger" role="danger">Supprimer le dossier INSTALL qui ce trouve a la racine du FTP</div>
-    <progress max="100" value="100">100%</progress>
-    <i class="pourcent">100%</i>
 </div>

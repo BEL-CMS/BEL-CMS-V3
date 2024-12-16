@@ -37,8 +37,6 @@ else:
             </li>
         </ul>
     </nav>
-    <progress max="100" value="65">65%</progress>
-    <i class="pourcent">65%</i>
 </div>
 <?php
 endif;

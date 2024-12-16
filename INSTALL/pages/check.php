@@ -9,54 +9,62 @@
  * @author as Stive - stive@determe.be
  */
 
-$php_true      = checkPhp()    == true ? '<i style="color:green;" class="fa-regular fa-thumbs-up"></i>' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
-$checkPDO      = checkPDO()    == true ? '<i style="color:green;" class="fa-regular fa-thumbs-up"></i>' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
-$checkIntl     = checkIntl()   == true ? '<i style="color:green;" class="fa-regular fa-thumbs-up"></i>' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
-$checkMysqli   = checkMysqli() == true ? '<i style="color:green;" class="fa-regular fa-thumbs-up"></i>' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
-$smtp          = BelCMS::getIni('SMTP') == true ? '<i style="color:green;" class="fa-regular fa-thumbs-up"></i>' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
-$rewrite       = BelCMS::getIni('mod_rewrite') == true ? '<i style="color:green;" class="fa-regular fa-thumbs-up"></i>' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
-$short         = BelCMS::getIni('short_open_tag') == true ? '<i style="color:green;" class="fa-regular fa-thumbs-up"></i>' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
+$php_true    = checkPhp()    == true ? '<span class="check_green">Le PHP minimum requis est ok.</span>' : '<span class="check_red">PHP 8.x minimum requis</span>';
+$checkPDO    = checkPDO()    == true ? '<span class="check_green">la function pdo_mysql est ok.</span>' : '<span class="check_red">function pdo_mysql est requis</span>';
+$checkIntl   = checkIntl()   == true ? '<span class="check_green">L\'extension checkIntl est ok.</span' : '<span class="check_red">L\'extension checkIntl est obligatoire</span>';
+$checkMysqli = checkMysqli() == true ? '<span class="check_green">la function checkMysqli est ok.</span>' : '<span class="check_red">L\'extension checkMysqli est obligatoire</span>';
+$smtp          = BelCMS::getIni('SMTP') == true ? '<span class="check_green">la function SMTP est ok.</span>' : '<span class="check_red">L\'extension SMTP est nécessaire</span>';
+$rewrite       = BelCMS::getIni('mod_rewrite') == true ? '<span class="check_green">la function mod_rewrite est ok.</span' : '<span class="check_red">L\'extension mod_rewrite est nécessaire au bon fonctionnement des liens</span>';
+$short         = BelCMS::getIni('short_open_tag') == true ? '<span class="check_green">la function pdo_mysql est ok.</span' : '<i style="color:red;" class="fa-regular fa-thumbs-down"></i>';
 if (checkPhp() && checkPDO() && checkIntl() && checkMysqli() && BelCMS::getIni('SMTP') && BelCMS::getIni('mod_rewrite') && BelCMS::getIni('short_open_tag')) {
-	$check =  true;
+    $check =  true;
 } else {
-	$check = false;
+    $check = false;
 }
 ?>
 <div id="main_content">
-    <h1>Vérification des pré-requis</h1>
     <div class="main_content">
-        <ul id="check">
-            <li><span>PHP8</span><span><?=$php_true;?></span></li>
-			<li><span>PDO</span><span><?=$checkPDO;?></span></li>
-			<li><span>checkIntl</span><span><?=$checkIntl;?></span></li>
-			<li><span>Mysqli/MariaDB</span><span><?=$checkMysqli;?></span></li>
-			<li><span>SMTP Mail</span><span><?=$smtp;?></span></li>
-			<li><span>short_open_tag</span><span><?=$short;?></span></li>
-			<li><span>mod_rewrite</span><span><?=$rewrite;?></span></li>
+        <ul id="table_check">
+            <li>
+                <div><?=$php_true;?></div>
+            </li>
+            <li>
+                <div><?=$checkPDO;?></div>
+            </li>
+            <li>
+                <div><?=$checkIntl;?></div>
+            </li>
+            <li>
+                <div><?=$smtp;?></div>
+            </li>
+            <li>
+                <div><?=$short;?></div>
+            </li>
+            <li>
+                <div><?=$rewrite;?></div>
+            </li>
         </ul>
     </div>
-	<nav aria-label="Page navigation">
-		<ul class="pagination justify-content-end">
-			<li class="page-item">
-				<a class="page-link" onclick="location.reload(true); return false;">Rafraichir</a>
-			</li>
-			<?php 
-			if ($check === true):
-			?>
-			<li class="page-item">
-				<a class="page-link" href="index.php?page=checkfiles">Suivant</a>
-			</li>
-			<?php
-			else:
-			?>
-			<li class="page-item">
-				<a class="page-link disabled" href="#">Suivant</a>
-			</li>
-			<?php
-			endif;
-			?>
-		</ul>
-	</nav>
-	<progress max="100" value="15">15%</progress>
-	<i class="pourcent">15%</i>
+    <nav id="menu" aria-label="Page navigation">
+        <ul class="pagination justify-content-end">
+            <li class="page-item">
+                <a class="page-link reload" onclick="location.reload(true); return false;">Rafraichir</a>
+            </li>
+            <?php 
+            if ($check === true):
+            ?>
+            <li class="page-item">
+                <a class="page-link" href="index.php?page=checkfiles">Suivant</a>
+            </li>
+            <?php
+            else:
+            ?>
+            <li class="page-item">
+                <a class="page-link disabled" href="#">Suivant</a>
+            </li>
+            <?php
+            endif;
+            ?>
+        </ul>
+    </nav>
 </div>
