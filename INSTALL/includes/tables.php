@@ -129,7 +129,10 @@ switch ($_POST['table']) {
 			('', 'COOKIES', '".randomString(6)."', 1),
 			('', 'CAPTCHA', '1', 0),
 			('', 'TIME_CAPTCHA', '1', 0),
-			('','VALIDATION', '0', 0);";
+			('','VALIDATION', '0', 0)
+			('','CMS_JQUERY', '1', 0)
+			('','CMS_HIGHLIGHT', '0', 0)
+			('','CMS_FONTAWSOME', '1', 0);";
 	break;
 
 	case 'config_pages':

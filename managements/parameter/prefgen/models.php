@@ -20,9 +20,12 @@ final class ModelsPrefGen
 {
 	public function send ($data = null)
 	{
-		$data['cms_debug'] = isset($data['cms_debug']) ? 1 : 0;
-		$data['cms_log']   = isset($data['cms_log']) ? 1 : 0;
-		$data['captcha']   = empty($data['captcha']) ? 120 : (int) $data['captcha'];
+		$data['cms_debug']       = isset($data['cms_debug']) ? 1 : 0;
+		$data['cms_log']         = isset($data['cms_log']) ? 1 : 0;
+		$data['captcha']         = empty($data['captcha']) ? 120 : (int) $data['captcha'];
+		$data['cms_jquery']      = isset($data['cms_jquery']) ? 1 : 0;
+		$data['cms_highlight']   = isset($data['cms_highlight']) ? 1 : 0;
+		$data['cms_fontawsome']  = isset($data['cms_fontawsome']) ? 1 : 0;
 
 		foreach ($data as $k => $v) {
 			$sql = New BDD();
