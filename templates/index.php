@@ -11,6 +11,7 @@
 
 namespace BelCMS\Templates;
 use BelCMS\Core\Dispatcher;
+use BelCMS\Core\GetHost;
 use BelCMS\PDO\BDD;
 use BelCMS\Requires\Common;
 
@@ -28,6 +29,7 @@ class Templates
 		$var->javaScript    = self::javaScript($var->link);
 		$var->tags          = self::getTagsTPL();
 		$var->fullwide      = self::getFullWide();
+		$var->host          = GetHost::getBaseUrl();
 		$RGPD               = self::RGPD();
 		if (is_file($fileLoadTpl) === true) {
 			require $fileLoadTpl;
@@ -173,15 +175,21 @@ class Templates
 		$return         = '';
 		/* GLOBAL STYLE */
 		$files[] = 'assets/css/belcms.global.css';
-		/* jQuery ui 1.13.2 */
-		$files[] = 'assets/plugins/jquery-ui-1.13.2/themes/base/jquery-ui.min.css';
-		$files[] = 'assets/plugins/jquery-ui-1.13.2/themes/base/theme.css';
+		if ($_SESSION['CONFIG_CMS']['CMS_JQUERY'] != '0') {
+			/* jQuery ui 1.13.2 */
+			$files[] = 'assets/plugins/jquery-ui-1.13.2/themes/base/jquery-ui.min.css';
+			$files[] = 'assets/plugins/jquery-ui-1.13.2/themes/base/theme.css';
+		}
 		// NOTIFICATION */
 		$files[] = 'assets/css/belcms.notification.css';
 		/* FONTAWASOME 6.5.1 ALL */
-		$files[] = 'assets/plugins/fontawesome-6.5.1/css/all.min.css';
-		/* HightLight */
-		$files[] = 'assets/plugins/highlight/styles/github-dark-dimmed.min.css';
+		if ($_SESSION['CONFIG_CMS']['CMS_FONTAWSOME'] == '1') {
+			$files[] = 'assets/plugins/fontawesome-6.5.1/css/all.min.css';
+		}
+		if ($_SESSION['CONFIG_CMS']['CMS_HIGHLIGHT'] += '1' and $link == 'articles') {
+			/* HightLight */
+			$files[] = 'assets/plugins/highlight/styles/github-dark-dimmed.min.css';
+		}
 		/* glightbox */
 		$files[] = 'assets/plugins/glightbox/glightbox.min.css';
 		/* Calendrier */
@@ -231,23 +239,28 @@ class Templates
 		$files          = array();
 		$return         = '';
 		/* jQuery 3.7.1 */
-		$files[] = 'assets/js/jQuery/jquery-3.7.1.min.js';
-		/* jQuery ui 1.13.2 */
-		$files[] = 'assets/plugins/jquery-ui-1.13.2/jquery.js';
-		$files[] = 'assets/plugins/jquery-ui-1.13.2/jquery-ui.min.js';
+		if ($_SESSION['CONFIG_CMS']['CMS_JQUERY'] != '0') {
+			$files[] = 'assets/js/jQuery/jquery-3.7.1.min.js';
+			/* jQuery ui 1.13.2 */
+			$files[] = 'assets/plugins/jquery-ui-1.13.2/jquery-ui.min.js';
+		}
 		/* Tinymce */
 		$files[] = 'assets/plugins/tinymce/tinymce.min.js';
 		/* FONTAWASOME 6.5.1 ALL */
-		$files[] = 'assets/plugins/fontawesome-6.5.1/js/all.min.js';
-		/* HightLight */
-		$files[] = 'assets/plugins/highlight/highlight.min.js';
-		$files[] = 'assets/plugins/highlight/languages/apache.min.js';
-		$files[] = 'assets/plugins/highlight/languages/css.min.js';
-		$files[] = 'assets/plugins/highlight/languages/javascript.min.js';
-		$files[] = 'assets/plugins/highlight/languages/php.min.js';
-		$files[] = 'assets/plugins/highlight/languages/sql.min.js';
-		$files[] = 'assets/plugins/highlight/go.min.js';
-		$files[] = 'assets/plugins/highlight/set.js';
+		if ($_SESSION['CONFIG_CMS']['CMS_FONTAWSOME'] == '1') {
+			$files[] = 'assets/plugins/fontawesome-6.5.1/js/all.min.js';
+		}
+		if ($_SESSION['CONFIG_CMS']['CMS_HIGHLIGHT'] += '1' and $link == 'articles') {
+			/* HightLight */
+			$files[] = 'assets/plugins/highlight/highlight.min.js';
+			$files[] = 'assets/plugins/highlight/languages/apache.min.js';
+			$files[] = 'assets/plugins/highlight/languages/css.min.js';
+			$files[] = 'assets/plugins/highlight/languages/javascript.min.js';
+			$files[] = 'assets/plugins/highlight/languages/php.min.js';
+			$files[] = 'assets/plugins/highlight/languages/sql.min.js';
+			$files[] = 'assets/plugins/highlight/go.min.js';
+			$files[] = 'assets/plugins/highlight/set.js';
+		}
 		/* Tooltip */
 		$files[] = 'assets/plugins/tooltip/popper.min.js';
 		$files[] = 'assets/plugins/tooltip/tippy-bundle.umd.min.js';

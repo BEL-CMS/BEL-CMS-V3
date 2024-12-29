@@ -1,0 +1,76 @@
+body {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+#invoice {
+    display: block;
+    width: 1010px;
+    max-width: 100%;
+    height: 100%;
+    border: 5px solid black;
+    border-radius: 4px;
+    margin: 25px auto;
+    padding: 25px;
+    background-color: #fff;
+}
+#invoice h1 {
+    color: black;
+}
+hr {
+    border: none;
+    width: 100%;
+    margin: 10px auto;
+    height: 20px;
+    background-color: #CCC;
+}
+#invoice_infos {
+    display: flex;
+    flex-wrap: wrap;
+}
+#invoice_infos > div {
+    flex-grow: 1;
+    width: 33%;
+    padding: 20px 0;
+}
+#invoice_infos > div ul {
+    margin: auto;
+    list-style: none;
+}
+#invoice_infos > div ul li span {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+#table_invoice {
+    width: 100%;
+    border: 1px solid #CCC;
+    padding: 5px 15px;
+    border-collapse: collapse;
+
+}
+#table_invoice tr:first-child {
+    background-color: #CCC;
+}
+#table_invoice tr:first-child {
+    padding: 15px;
+}
+#table_invoice tr td {
+    padding: 18px 15px;
+}
+#table_invoice td {
+    text-align: right;
+}
+#table_invoice td:first-child {
+    text-align: left;
+}
+textarea {
+    background-color: #CCC;
+    width: 250px;
+    height: 125px;
+    resize: none;
+}
+#table_invoice_ul {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}

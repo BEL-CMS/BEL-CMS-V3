@@ -1,7 +1,7 @@
 <?php
 /**
  * Bel-CMS [Content management system]
- * @version 3.0.8 [PHP8.3]
+ * @version 3.1.0 [PHP8.3]
  * @link https://bel-cms.dev
  * @link https://determe.be
  * @license http://opensource.org/licenses/GPL-3.-copyleft
@@ -9,7 +9,6 @@
  * @author as Stive - stive@determe.be
  */
 
-namespace BELCMS\LANG;
 use BelCMS\Requires\Common;
 
 if (!defined('CHECK_INDEX')):
@@ -19,19 +18,7 @@ endif;
 
 Common::constant(array(
 	#####################################
-	# Fichier lang en français - Pricing
+	# Fichier lang en français
 	#####################################
-	'PRICE'                 => 'Prix',
-    'BIC'                   => 'BIC',
-    'ACCOUNT_NUMBER'        => 'N° de Compte',
-    'COMMUNICATION'         => 'Communication',
-	'FIRST_NAME_PSEUDO'     => 'Pseudo / Prénom',
-    'LAST_NAME'             => 'Nom de famille',
-    'EMAIL_ADRESS'          => 'Adresse e-mail',
-	'ADRESS_POSTAL'         => 'Adresse postal',
-    'PREORDER_SUCCESS'      => 'PréCommande éffectué avec succès',
-    'PREORDER_ERROR'        => 'PreCommande annulé, contacté un administrateur',
-    'THANK_YOU_FOR_BUY'     => 'Merci de votre achat',
-    'PAYMENT_IN_PROGRESS'   => 'Payement en progression',
-
-)); 
+	'SEND_NEWSLETTER_SUCCESS' => 'Vous êtes bien enregistrée à la newsletter.',
+));

@@ -1,0 +1,71 @@
+#belcms_widgets_pricing {
+	display: block;
+}
+.belcms_widgets_pricing_box {
+	display: block;
+	margin-bottom: 25px;
+}
+.belcms_widgets_pricing_header h1 {
+	color: #FFF;
+	font-size: 15px;
+	font-weight: 300;
+	padding: 40px 0;
+	margin: 0;
+	letter-spacing: 2px;
+	background: #2b303b;
+	font-family: Montserrat;
+	text-transform: uppercase;
+	text-align: center;
+}
+.belcms_widgets_pricing_header h3 {
+	margin: 0;
+	padding: 0;
+	background-color: #01bdf2;
+	color: #FFF;
+	font-size: 1em;
+	font-weight: 300;
+	letter-spacing: 0.05em;
+	line-height: 50px;
+	height: 50px;
+	text-transform: uppercase;
+	text-align: center;
+}
+.belcms_widgets_pricing_content {
+	padding: 0 20px;
+	background-color: #f5f5f7;
+	border: 1px solid #e2e1dc
+}
+.belcms_widgets_pricing_content > ul {
+	margin: 0;
+	padding: 15px;
+	background-color: #FFF;
+	color: #2b303b;
+	list-style: none;
+	border: 1px solid #e2e1dc;
+}
+.belcms_widgets_pricing_content > ul li {
+	line-height: 1.5;
+	padding: 8px 0;
+	width: 100%;
+}
+.belcms_widgets_pricing_link {
+	cursor: pointer;
+	display: block;
+	font-size: 0.9em;
+	font-weight: 700;
+	margin: 15px auto;
+	padding: 15px 0;
+	text-align: center;
+	text-transform: uppercase;
+	width: 90%;
+	background: rgba(248, 249, 251, 0.6);
+	letter-spacing: 2px;
+	font-family: Montserrat;
+	border: 1px solid rgba(120, 129, 149, 0.33);
+	transition: all 500ms ease-in-out;
+}
+.belcms_widgets_pricing_link:hover {
+	background-color: #e2e1dc;
+	color: black;
+	transition: all 500ms ease-in-out;
+}

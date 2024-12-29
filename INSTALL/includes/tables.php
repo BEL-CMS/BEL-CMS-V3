@@ -1067,12 +1067,13 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(32) NOT NULL,
-			`price` tinyint DEFAULT NULL,
+			`price` varchar(6) DEFAULT '0',
 			`per` varchar(15) DEFAULT NULL,
 			`description` text,
 			`listing` text,
 			`created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`sort_asc` varchar(1) DEFAULT NULL,
+			`actif` text,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
@@ -1082,16 +1083,16 @@ switch ($_POST['table']) {
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
 			`name` varchar(32) NOT NULL,
-			`cat_1` varchar(32) DEFAULT NULL,
-			`cat_2` varchar(32) DEFAULT NULL,
-			`cat_3` varchar(32) DEFAULT NULL,
-			`cat_4` varchar(32) DEFAULT NULL,
-			`cat_5` varchar(32) DEFAULT NULL,
-			`actif_1` tinyint(1) DEFAULT '0',
-			`actif_2` tinyint(1) DEFAULT '0',
-			`actif_3` tinyint(1) DEFAULT '0',
-			`actif_4` tinyint(1) DEFAULT '0',
-			`actif_5` tinyint(1) DEFAULT '0',
+			`cat_1` text NOT NULL,
+			`cat_2` text NOT NULL,
+			`cat_3` text NOT NULL,
+			`cat_4` text NOT NULL,
+			`cat_5` text NOT NULL,
+			`cat_6` text NOT NULL,
+			`cat_7` text NOT NULL,
+			`cat_8` text NOT NULL,
+			`cat_9` text NOT NULL,
+			`cat_10` text NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
@@ -1100,12 +1101,15 @@ switch ($_POST['table']) {
 		$drop = 'DROP TABLE IF EXISTS `'.$_SESSION['prefix'].$table.'`';
 		$sql  = "CREATE TABLE IF NOT EXISTS `".$_SESSION['prefix'].$table."` (
 			`id` int NOT NULL AUTO_INCREMENT,
+			`id_order` varchar(8) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
 			`author` varchar(32) NOT NULL,
 			`date_insert` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			`date_finish` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`plan` int DEFAULT NULL,
-			`sales` int DEFAULT '0',
-			`type` varchar(32) NOT NULL,
 			`verif` tinyint(1) NOT NULL DEFAULT '0',
+			`method` tinyint(1) NOT NULL DEFAULT '0',
+			`mail` varchar(256) DEFAULT NULL,
+			`url` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 	break;
